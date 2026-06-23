@@ -78,17 +78,29 @@ ul { list-style: none; }
   height: 60px;
   padding: 0 14px 0 20px;
   display: flex; align-items: center; gap: 28px;
-  background: rgba(12, 9, 7, 0.55);
-  backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px);
+  /* Frosted glass: soft top sheen layered over a translucent warm base. */
+  background:
+    linear-gradient(180deg, rgba(237, 219, 194, 0.07), rgba(237, 219, 194, 0) 42%),
+    rgba(12, 9, 7, 0.5);
+  backdrop-filter: blur(28px) saturate(165%);
+  -webkit-backdrop-filter: blur(28px) saturate(165%);
   border: 1px solid rgba(237, 219, 194, 0.14);
   border-radius: 16px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(237, 219, 194, 0.18),   /* crisp top edge highlight */
+    inset 0 -1px 0 rgba(0, 0, 0, 0.25);        /* subtle bottom shade */
   transition: background 300ms ease, border-color 300ms ease, box-shadow 300ms ease;
 }
 #main-nav.nav-scrolled {
-  background: rgba(9, 7, 5, 0.85);
+  background:
+    linear-gradient(180deg, rgba(237, 219, 194, 0.05), rgba(237, 219, 194, 0) 42%),
+    rgba(9, 7, 5, 0.8);
   border-color: rgba(237, 219, 194, 0.22);
-  box-shadow: 0 14px 46px rgba(0, 0, 0, 0.6);
+  box-shadow:
+    0 14px 46px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(237, 219, 194, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
 }
 
 .nav-logo { flex-shrink: 0; display: flex; align-items: center; }
@@ -110,6 +122,16 @@ ul { list-style: none; }
   transition: background 150ms;
 }
 .nav-cta:hover { background: var(--cream-hover); color: #1a120b; }
+
+/* Social icon links — shared by the nav bar and footer. */
+.nav-social { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
+.social-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--text-dim);
+  transition: color 180ms ease, transform 180ms ease;
+}
+.social-icon:hover { color: var(--cream); transform: translateY(-1px); }
+.nav-social .social-icon svg { width: 18px; height: 18px; }
 
 /* === HAMBURGER === */
 #hamburger {
@@ -269,7 +291,7 @@ footer::before {
 
 /* === RESPONSIVE === */
 @media (max-width: 860px) {
-  .nav-links, .nav-cta { display: none !important; }
+  .nav-links, .nav-cta, .nav-social { display: none !important; }
   #hamburger { display: flex; }
   #main-nav { gap: 0; }
   .footer-grid { grid-template-columns: 1fr 1fr; }

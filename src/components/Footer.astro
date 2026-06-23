@@ -1,5 +1,6 @@
 ---
 import Logo from './Logo.astro';
+import SocialIcon from './SocialIcon.astro';
 import { NAV_ITEMS, CONTACT } from '../data/site';
 ---
 
@@ -30,8 +31,8 @@ import { NAV_ITEMS, CONTACT } from '../data/site';
         <span class="footer-text footer-text-strong">{CONTACT.hoursLabel}</span>
         <span class="footer-text">{CONTACT.hours}</span>
         <div class="footer-social">
-          <a href={CONTACT.instagram} class="footer-link" rel="noopener" target="_blank">Instagram</a>
-          <a href={CONTACT.facebook} class="footer-link" rel="noopener" target="_blank">Facebook</a>
+          <a href={CONTACT.instagram} class="social-icon" rel="noopener" target="_blank" aria-label="Instagram"><SocialIcon name="instagram" /></a>
+          <a href={CONTACT.facebook} class="social-icon" rel="noopener" target="_blank" aria-label="Facebook"><SocialIcon name="facebook" /></a>
         </div>
       </div>
     </div>

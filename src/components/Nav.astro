@@ -1,6 +1,7 @@
 ---
 import Logo from './Logo.astro';
-import { NAV_ITEMS, RESERVATION_URL } from '../data/site';
+import SocialIcon from './SocialIcon.astro';
+import { NAV_ITEMS, RESERVATION_URL, CONTACT } from '../data/site';
 
 interface Props { active?: string }
 const { active } = Astro.props;
@@ -14,6 +15,10 @@ const { active } = Astro.props;
     {NAV_ITEMS.map((p) => (
       <a href={p.href} aria-current={p.id === active ? 'page' : undefined}>{p.label}</a>
     ))}
+  </div>
+  <div class="nav-social">
+    <a href={CONTACT.instagram} class="social-icon" rel="noopener" target="_blank" aria-label="Instagram"><SocialIcon name="instagram" /></a>
+    <a href={CONTACT.facebook} class="social-icon" rel="noopener" target="_blank" aria-label="Facebook"><SocialIcon name="facebook" /></a>
   </div>
   <a href={RESERVATION_URL} class="nav-cta" rel="noopener" target="_blank">Rezerwacje</a>
   <button id="hamburger" aria-label="Otwórz menu" aria-expanded="false" aria-controls="mobile-menu">
