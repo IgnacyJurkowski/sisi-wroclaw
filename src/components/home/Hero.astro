@@ -1,0 +1,68 @@
+---
+import { RESERVATION_URL } from '../../data/site';
+---
+
+<section id="start" class="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-scrim" aria-hidden="true"></div>
+
+  <div class="hero-content">
+    <h1 class="display hero-title">Serce Wrocławia<br />bije w SiSi</h1>
+    <div class="hero-actions">
+      <a href={RESERVATION_URL} class="btn-cta" rel="noopener" target="_blank">Rezerwacje</a>
+      <a href="#wydarzenia" class="btn-outline">Kalendarz imprez</a>
+    </div>
+  </div>
+
+  <a href="#ewolucja-onas" class="hero-scroll" aria-label="Przewiń w dół">
+    <span>ODKRYJ</span>
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M6 9l6 6 6-6" />
+    </svg>
+  </a>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: url('/framerusercontent.com/images/nBW0AVejCOoiy2Rctqcid0SY6Q.png') center/cover no-repeat;
+    transform: scale(1.05);
+  }
+  .hero-scrim {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(5,5,5,0.55) 0%, rgba(5,5,5,0.35) 45%, rgba(5,5,5,0.95) 100%);
+  }
+  .hero-content { position: relative; z-index: 2; padding: 0 24px; }
+  .hero-title {
+    font-size: clamp(2.6rem, 8vw, 6rem);
+    line-height: 1.05;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    color: #fff;
+    text-shadow: 0 2px 40px rgba(0,0,0,0.5);
+  }
+  .hero-actions {
+    display: flex; gap: 16px; justify-content: center;
+    margin-top: 40px; flex-wrap: wrap;
+  }
+  .hero-scroll {
+    position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+    z-index: 2;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.22em;
+    color: rgba(255,255,255,0.7);
+    animation: bob 2.4s ease-in-out infinite;
+  }
+  @keyframes bob { 0%,100% { transform: translate(-50%,0); } 50% { transform: translate(-50%,8px); } }
+  @media (prefers-reduced-motion: reduce) { .hero-scroll { animation: none; } }
+</style>

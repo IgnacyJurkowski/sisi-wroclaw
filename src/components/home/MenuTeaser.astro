@@ -1,0 +1,74 @@
+---
+const items = [
+  {
+    title: 'Koktajle',
+    body: 'Autorskie koktajle SISI to esencja nowoczesnej miksologii, w której nasi doświadczeni barmani z artystyczną precyzją łączą najwyższej jakości składniki. Każda kompozycja stanowi unikalne doznanie, zachwycające zarówno głębią smaku, jak i wyszukaną formą prezentacji z efektem „wow".',
+  },
+  {
+    title: 'Karta alkoholi',
+    body: 'Starannie wyselekcjonowane spirytualia, naturalne wina i rzemieślnicze piwa — od klasyki po pozycje, których nie znajdziesz nigdzie indziej we Wrocławiu.',
+  },
+  {
+    title: 'Przekąski',
+    body: 'Lekkie przekąski idealne do drinka i dłuższego wieczoru, przygotowywane z myślą o gościach SISI.',
+  },
+];
+---
+
+<section id="menu" class="menu-teaser">
+  <div class="container">
+    <span class="page-label" style="text-align:center;display:block;">The Cork Bar</span>
+    <h2 class="display mt-title">Menu</h2>
+
+    <div class="mt-accordion">
+      {items.map((it, i) => (
+        <details open={i === 0}>
+          <summary>
+            <span>{it.title}</span>
+            <span class="mt-plus" aria-hidden="true"></span>
+          </summary>
+          <p>{it.body}</p>
+        </details>
+      ))}
+    </div>
+
+    <div class="mt-cta">
+      <a href="/menu" class="btn-cta">Zobacz pełne menu</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .menu-teaser { padding: 96px 0; }
+  .mt-title {
+    text-align: center; font-size: clamp(2rem, 5vw, 3.4rem);
+    text-transform: uppercase; margin: 10px 0 40px;
+  }
+  .mt-accordion { max-width: 760px; margin: 0 auto; }
+  .mt-accordion details {
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .mt-accordion summary {
+    list-style: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 24px 4px;
+    font-family: 'Krona One', sans-serif;
+    font-size: clamp(1rem, 2.4vw, 1.4rem);
+    text-transform: uppercase; letter-spacing: -0.01em;
+  }
+  .mt-accordion summary::-webkit-details-marker { display: none; }
+  .mt-plus { position: relative; width: 18px; height: 18px; flex-shrink: 0; }
+  .mt-plus::before, .mt-plus::after {
+    content: ''; position: absolute; background: var(--cream);
+    top: 50%; left: 50%; transition: transform 250ms ease;
+  }
+  .mt-plus::before { width: 18px; height: 2px; transform: translate(-50%,-50%); }
+  .mt-plus::after { width: 2px; height: 18px; transform: translate(-50%,-50%); }
+  details[open] .mt-plus::after { transform: translate(-50%,-50%) scaleY(0); }
+  .mt-accordion p {
+    padding: 0 4px 28px; color: rgba(255,255,255,0.6);
+    font-size: 15px; line-height: 1.8; max-width: 640px;
+  }
+  .mt-cta { text-align: center; margin-top: 48px; }
+  @media (max-width: 600px) { .menu-teaser { padding: 64px 0; } }
+</style>

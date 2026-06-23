@@ -1,0 +1,29 @@
+---
+// Branded sponsor banner — full-bleed image with centered title.
+---
+
+<section class="chivas">
+  <div class="chivas-bg" aria-hidden="true"></div>
+  <div class="chivas-scrim" aria-hidden="true"></div>
+  <h2 class="display chivas-title">Strefa Chivas Regal</h2>
+</section>
+
+<style>
+  .chivas {
+    position: relative; overflow: hidden;
+    min-height: 420px;
+    display: flex; align-items: center; justify-content: center; text-align: center;
+  }
+  .chivas-bg {
+    position: absolute; inset: 0;
+    background: url('/framerusercontent.com/images/bHchRJgtNrxKTYRK56SCdUph2g.jpg') center/cover no-repeat;
+  }
+  .chivas-scrim { position: absolute; inset: 0; background: rgba(5,5,5,0.5); }
+  .chivas-title {
+    position: relative; z-index: 2;
+    font-size: clamp(1.8rem, 5vw, 3.4rem);
+    text-transform: uppercase; letter-spacing: 0.02em;
+    color: var(--cream); padding: 0 24px;
+    text-shadow: 0 2px 30px rgba(0,0,0,0.6);
+  }
+</style>

@@ -1,5 +1,9 @@
 [build]
-  publish = "public"
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
 
 # Correct MIME types for ES modules and Framer CMS data
 [[headers]]

@@ -1,0 +1,104 @@
+---
+import Base from '../layouts/Base.astro';
+import { CONTACT } from '../data/site';
+
+type Job = { title: string; subject: string; bullets: string[] };
+
+const jobs: Job[] = [
+  {
+    title: 'Barman',
+    subject: 'Barman',
+    bullets: [
+      'Przygotowywanie koktajli i obsługa baru',
+      'Doświadczenie za barem mile widziane',
+      'Praca w weekendy (Pt–Nd)',
+      'Znajomość języka angielskiego',
+    ],
+  },
+  {
+    title: 'Kelnerka / Kelner',
+    subject: 'Kelnerka',
+    bullets: [
+      'Obsługa gości przy stolikach',
+      'Dobra organizacja i odporność na stres',
+      'Praca w weekendy (Pt–Nd)',
+      'Znajomość języka angielskiego',
+    ],
+  },
+  {
+    title: 'Barback',
+    subject: 'Barback',
+    bullets: [
+      'Wsparcie barmana i zaopatrzenie baru',
+      'Idealne stanowisko na start w branży',
+      'Praca w weekendy (Pt–Nd)',
+      'Dyspozycyjność i zaangażowanie',
+    ],
+  },
+];
+
+const mailto = (subject: string) =>
+  `mailto:${CONTACT.email}?subject=${encodeURIComponent(`${subject} — `)}`;
+---
+
+<Base
+  title="Kariera — SiSi Wrocław"
+  description="Dołącz do zespołu SiSi Wrocław — szukamy barmana, kelnerki i barbacka."
+  ogDescription="Dołącz do zespołu SiSi Wrocław. Otwarte rekrutacje: barman, kelnerka, barback."
+  active="kariera"
+  path="/kariera"
+>
+  <div class="page-header">
+    <span class="page-label">Dołącz do nas</span>
+    <h1 class="page-title display">Kariera</h1>
+    <p class="page-subtitle">Szukamy ludzi z pasją do dobrego drinka i muzyki. Pracujemy piątek–niedziela w rytmie, który lubimy.</p>
+  </div>
+
+  <div class="kariera-wrap">
+    <div class="kariera-grid">
+      {jobs.map((job) => (
+        <article class="sisi-card job-card">
+          <h2 class="menu-section-label">Stanowisko</h2>
+          <p class="job-name">{job.title}</p>
+          <ul class="job-bullets">
+            {job.bullets.map((b) => <li>{b}</li>)}
+          </ul>
+          <a href={mailto(job.subject)} class="btn-cta job-apply">Aplikuj</a>
+        </article>
+      ))}
+    </div>
+
+    <div class="sisi-card how-card">
+      <h2 class="menu-section-label">Jak aplikować</h2>
+      <p class="how-lead">
+        Wyślij CV na <a href={`mailto:${CONTACT.email}`} class="how-mail">{CONTACT.email}</a>
+      </p>
+      <p class="how-note">
+        W tytule wiadomości wpisz stanowisko i swoje imię i nazwisko, np.&nbsp;<span>Barman — Jan Kowalski</span>
+      </p>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .kariera-wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 32px 80px; }
+  .kariera-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+    gap: 24px; margin-bottom: 32px;
+  }
+  .job-card { padding: 32px 36px; display: flex; flex-direction: column; }
+  .job-name {
+    font-size: 22px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: -0.02em; margin-bottom: 24px;
+  }
+  .job-bullets { display: flex; flex-direction: column; gap: 10px; flex: 1; margin-bottom: 32px; }
+  .job-bullets li { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.6; }
+  .job-apply { width: 100%; }
+  .how-card { padding: 32px 36px; }
+  .how-lead { font-size: 15px; color: rgba(255,255,255,0.65); line-height: 1.7; margin-bottom: 10px; }
+  .how-mail { color: var(--cream); text-decoration: underline; text-underline-offset: 4px; }
+  .how-note { font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.7; }
+  .how-note span { color: rgba(255,255,255,0.65); }
+  @media (max-width: 600px) { .kariera-wrap { padding-inline: 20px; } }
+</style>

@@ -1,0 +1,142 @@
+---
+import Base from '../layouts/Base.astro';
+import { RESERVATION_URL } from '../data/site';
+
+type Item = { name: string; desc: string; price: string };
+type Section = { label: string; items: Item[]; note?: string };
+
+const cocktails: Section = {
+  label: 'Koktajle autorskie',
+  items: [
+    { name: 'Neon Wrocław', desc: 'Gin, elderflower, tonic, ogórek, limonka', price: '34 zł' },
+    { name: 'Złoty Szlak', desc: 'Bourbon, miód wrzosowy, sok z cytryny, angostura', price: '38 zł' },
+    { name: 'The Cork Spritz', desc: 'Naturalne wino białe, aperol, woda gazowana, pomarańcza', price: '32 zł' },
+    { name: 'Midnight Smoke', desc: 'Mezcal, syrop agawowy, sok z limonki, chili', price: '42 zł' },
+    { name: 'SiSi Sour', desc: 'Vodka, marakuja, sok z cytryny, egg white foam', price: '36 zł' },
+    { name: 'Dark Passage', desc: 'Rum agricole, kawa cold brew, likier kawowy, sól', price: '40 zł' },
+  ],
+};
+
+const wines: Section = {
+  label: 'Wina naturalne',
+  note: 'Ceny: kieliszek 100ml / butelka 750ml. Karta zmienia się sezonowo.',
+  items: [
+    { name: 'Pét-Nat Bianco', desc: 'Musujące, świeże, lekko drożdżowe — Emilia-Romania', price: '28 / 140 zł' },
+    { name: 'Orange Wine, Amphora', desc: 'Maseracja na skórkach, taniczne, złożone — Gruzja', price: '32 / 160 zł' },
+    { name: 'Gamay Chillable Red', desc: 'Owocowe, lekkie, do schłodzenia — Beaujolais, Francja', price: '26 / 130 zł' },
+    { name: 'Skin Contact Rosé', desc: 'Różowy z charakterem, suchy, mineralny — Morawy', price: '28 / 138 zł' },
+  ],
+};
+
+const spirits: Section = {
+  label: 'Spirits & Whisky',
+  items: [
+    { name: "Hendrick's Gin", desc: 'Ogórek i róża, 41.4% — Scotland', price: '28 zł / 5cl' },
+    { name: 'Bulleit Bourbon', desc: 'Wysoka zawartość żyta, wanilia, dąb — Kentucky', price: '26 zł / 5cl' },
+    { name: 'El Silencio Mezcal', desc: 'Dymny, ziemisty, 40% — Oaxaca, Meksyk', price: '32 zł / 5cl' },
+    { name: 'Johnnie Walker Black Label', desc: 'Blend, 12 lat, wędzona śliwka — Scotland', price: '24 zł / 5cl' },
+    { name: 'Diplomatico Reserva Exclusiva', desc: 'Rum premium, 12 lat, wanilia, karmel — Wenezuela', price: '30 zł / 5cl' },
+    { name: 'Belvedere Vodka', desc: 'Polska, żytnia, czysta lub z tonikiem', price: '22 zł / 5cl' },
+  ],
+};
+
+const beers: Section = {
+  label: 'Piwa rzemieślnicze',
+  items: [
+    { name: 'Browar Stu Mostów — WRCLW IPA', desc: 'India Pale Ale, 6.2% | 0.4l', price: '22 zł' },
+    { name: 'Pinta — Atak Chmielu', desc: 'American Pale Ale, 5.0% | 0.5l', price: '20 zł' },
+    { name: 'Browar Cuda — NEIPA', desc: 'New England IPA, tropikalne, 6.5% | 0.33l', price: '24 zł' },
+    { name: 'Piwo bezalkoholowe', desc: 'Rotacja sezonowa | 0.33l', price: '14 zł' },
+  ],
+};
+
+const drinks: Section = {
+  label: 'Napoje',
+  items: [
+    { name: 'Tonic / Woda gazowana / Niegazowana', desc: 'Fever-Tree | 0.25l', price: '12 zł' },
+    { name: 'Cold Brew Kawa', desc: 'Parzona 18h, na lodzie | 0.3l', price: '16 zł' },
+    { name: 'Sok świeżo wyciskany', desc: 'Pomarańcza, jabłko lub mix | 0.25l', price: '14 zł' },
+  ],
+};
+---
+
+<Base
+  title="Menu — SiSi Wrocław"
+  description="Menu baru The Cork w SiSi Wrocław — autorskie koktajle, naturalne wina, rzemieślnicze piwa i wyselekcjonowane spirytualia."
+  ogDescription="Autorskie koktajle, naturalne wina, rzemieślnicze piwa. Bar The Cork w SiSi Wrocław."
+  active="menu"
+  path="/menu"
+>
+  <div class="page-header">
+    <span class="page-label">The Cork Bar</span>
+    <h1 class="page-title display">Menu</h1>
+    <p class="page-subtitle">Naturalne wina, koktajle od podstaw, selekcja spirytualiów. Karta zmienia się sezonowo.</p>
+  </div>
+
+  <div class="menu-wrap">
+    <div class="menu-grid">
+      {[cocktails, wines, spirits].map((section) => (
+        <section class="sisi-card menu-card">
+          <h2 class="menu-section-label">{section.label}</h2>
+          {section.items.map((item) => (
+            <div class="menu-item">
+              <div>
+                <p class="menu-item-name">{item.name}</p>
+                <p class="menu-item-desc">{item.desc}</p>
+              </div>
+              <span class="menu-item-price">{item.price}</span>
+            </div>
+          ))}
+          {section.note && <p class="menu-note">{section.note}</p>}
+        </section>
+      ))}
+
+      <div class="menu-stack">
+        {[beers, drinks].map((section) => (
+          <section class="sisi-card menu-card">
+            <h2 class="menu-section-label">{section.label}</h2>
+            {section.items.map((item) => (
+              <div class="menu-item">
+                <div>
+                  <p class="menu-item-name">{item.name}</p>
+                  <p class="menu-item-desc">{item.desc}</p>
+                </div>
+                <span class="menu-item-price">{item.price}</span>
+              </div>
+            ))}
+          </section>
+        ))}
+      </div>
+    </div>
+
+    <div class="menu-cta">
+      <p>Chcesz zarezerwować stolik i zamówić z wyprzedzeniem? Skontaktuj się z nami.</p>
+      <a href={RESERVATION_URL} class="btn-cta" rel="noopener" target="_blank">Zarezerwuj stolik</a>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .menu-wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 32px 80px; }
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 500px), 1fr));
+    gap: 24px;
+  }
+  .menu-card { padding: 32px 36px; }
+  .menu-stack { display: flex; flex-direction: column; gap: 24px; }
+  .menu-note {
+    font-size: 12px; color: rgba(255, 255, 255, 0.3);
+    margin-top: 20px; padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .menu-cta {
+    text-align: center; margin-top: 64px; padding-top: 48px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .menu-cta p {
+    color: rgba(255, 255, 255, 0.45); margin: 0 auto 28px;
+    font-size: 14px; line-height: 1.7; max-width: 360px;
+  }
+  @media (max-width: 600px) { .menu-wrap { padding-inline: 20px; } }
+</style>

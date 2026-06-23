@@ -1,0 +1,36 @@
+---
+import { RESERVATION_URL } from '../../data/site';
+---
+
+<section id="rezerwacja" class="reservations">
+  <div class="container res-inner">
+    <span class="page-label" style="text-align:center;display:block;">Rezerwacje</span>
+    <h2 class="display res-title">Rezerwacje</h2>
+    <p class="res-body">
+      Zaplanuj wyjątkowy wieczór i zapewnij sobie komfortowe miejsce<br />
+      w sercu naszego klubu.
+    </p>
+    <a href={RESERVATION_URL} class="btn-cta" rel="noopener" target="_blank">Zarezerwuj</a>
+
+    <div class="res-contact">
+      <p><span>Rezerwacje</span><a href="tel:+48515126260">+48 515 126 260</a></p>
+      <p><span>Eventy firmowe</span><a href="tel:+48514032930">+48 514 032 930</a> · <a href="mailto:events@r32.com.pl">events@r32.com.pl</a></p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .reservations { padding: 96px 0; }
+  .res-inner { max-width: 620px; text-align: center; }
+  .res-title { font-size: clamp(2rem, 5vw, 3.4rem); text-transform: uppercase; margin: 10px 0 20px; }
+  .res-body { color: rgba(255,255,255,0.6); font-size: 16px; line-height: 1.8; margin-bottom: 32px; }
+  .res-contact { margin-top: 48px; display: flex; flex-direction: column; gap: 12px; }
+  .res-contact p {
+    font-size: 14px; color: rgba(255,255,255,0.55);
+    display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+  }
+  .res-contact span { text-transform: uppercase; letter-spacing: 0.08em; font-size: 12px; color: rgba(255,255,255,0.35); align-self: center; }
+  .res-contact a { color: var(--cream); }
+  .res-contact a:hover { color: var(--cream-hover); }
+  @media (max-width: 600px) { .reservations { padding: 64px 0; } }
+</style>

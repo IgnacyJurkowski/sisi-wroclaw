@@ -5,25 +5,37 @@
 @font-face { font-family:'DM Sans'; src:url('/fonts.gstatic.com/s/dmsans/v17/rP2Yp2ywxg089UriI5-g4vlH9VoD8Cmcqbu0-K4.woff2') format('woff2'); font-weight:400; font-display:swap; }
 @font-face { font-family:'DM Sans'; src:url('/fonts.gstatic.com/s/dmsans/v17/rP2Yp2ywxg089UriI5-g4vlH9VoD8Cmcqbu6-K6h9Q.woff2') format('woff2'); font-weight:700; font-display:swap; }
 
+/* Krona One — display font (matches Framer export) */
+@font-face { font-family:'Krona One'; src:url('/fonts.gstatic.com/s/kronaone/v15/jAnEgHdjHcjgfIb1ZcUCNI-h3cWkWg.woff2') format('woff2'); font-weight:400; font-display:swap; }
+
 /* === BASE === */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
-  background: #30050e;
+  background: var(--bg);
   color: #fff;
   font-family: 'Montserrat', 'DM Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
 }
-img { display: block; max-width: 100%; }
+img, video { display: block; max-width: 100%; }
 a { color: inherit; text-decoration: none; }
+ul { list-style: none; }
 
 /* === CSS VARS === */
 :root {
-  --bg: #30050e;
+  --bg: #050505;          /* effective page background from the Framer export */
+  --panel: #0d0d0d;       /* section/card surface */
+  --panel-2: #131313;
   --cream: rgb(237, 219, 194);
   --cream-hover: rgb(245, 232, 213);
+  --gold: #fbd295;        /* link hover accent */
   --nav-height: 70px;
+  --maxw: 1280px;
 }
+
+/* === LAYOUT HELPERS === */
+.container { max-width: var(--maxw); margin: 0 auto; padding-inline: 32px; }
+.display { font-family: 'Krona One', 'Montserrat', sans-serif; }
 
 /* === NAV === */
 #main-nav {
@@ -36,10 +48,11 @@ a { color: inherit; text-decoration: none; }
   -webkit-backdrop-filter: blur(5px);
   background: linear-gradient(180deg, rgba(0,0,0,0.4) 6.6%, rgba(0,0,0,0.6) 100%);
   border-bottom: 1px solid rgba(255,255,255,0.1);
+  transition: background 200ms;
 }
 
 .nav-inner {
-  max-width: 1280px;
+  max-width: var(--maxw);
   margin: 0 auto;
   padding: 0 32px;
   height: 100%;
@@ -57,7 +70,7 @@ a { color: inherit; text-decoration: none; }
   color: rgba(255,255,255,0.75); letter-spacing: -0.2px;
   transition: color 180ms;
 }
-.nav-links a:hover, .nav-links a[aria-current="page"] { color: var(--cream); }
+.nav-links a:hover, .nav-links a[aria-current="page"] { color: var(--gold); }
 
 .nav-cta {
   flex-shrink: 0;
@@ -71,27 +84,31 @@ a { color: inherit; text-decoration: none; }
 .nav-cta:hover { background: var(--cream-hover); color: #000; }
 
 /* === HAMBURGER === */
-#hamburger {
+.hamburger {
   display: none; background: none; border: none; cursor: pointer;
   padding: 6px; flex-direction: column; gap: 5px; margin-left: auto;
 }
-#hamburger span { display: block; width: 22px; height: 1.5px; background: rgba(255,255,255,0.8); }
+.hamburger span { display: block; width: 22px; height: 1.5px; background: rgba(255,255,255,0.8); }
 
 /* === MOBILE MENU === */
-#mobile-menu {
+.mobile-menu {
   position: fixed; inset: 0; z-index: 40;
   background: rgba(48,5,14,0.97);
   backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
   display: flex; flex-direction: column;
   align-items: center; justify-content: center; gap: 2rem;
 }
-#mobile-menu[hidden] { display: none; }
-#mobile-menu a {
+.mobile-menu a {
   font-size: 2rem; font-weight: 700; text-transform: uppercase;
   color: rgba(255,255,255,0.7); letter-spacing: -0.03em;
   transition: color 180ms;
 }
-#mobile-menu a:hover, #mobile-menu a.active { color: var(--cream); }
+.mobile-menu a:hover, .mobile-menu a.active { color: var(--cream); }
+.mobile-close {
+  position: absolute; top: 1.5rem; right: 1.5rem;
+  background: none; border: none; color: rgba(255,255,255,0.4);
+  font-size: 2rem; cursor: pointer; line-height: 1;
+}
 
 /* === FOOTER === */
 footer {
@@ -101,7 +118,7 @@ footer {
 }
 
 .footer-inner {
-  max-width: 1280px;
+  max-width: var(--maxw);
   margin: 0 auto;
   padding: 64px 32px 40px;
 }
@@ -115,7 +132,7 @@ footer {
   margin-bottom: 24px;
 }
 
-.footer-logo { height: 52px; width: auto; }
+.footer-logo svg { height: 52px; width: auto; }
 
 .footer-col-heading {
   font-size: 18px; font-weight: 500; letter-spacing: -0.5px;
@@ -139,7 +156,7 @@ footer {
 /* === PAGE HEADER === */
 .page-header {
   padding: calc(var(--nav-height) + 5rem) 32px 4rem;
-  max-width: 1280px;
+  max-width: var(--maxw);
   margin: 0 auto;
 }
 
@@ -162,7 +179,7 @@ footer {
 
 /* === CARD === */
 .sisi-card {
-  background: rgba(0,0,0,0.3);
+  background: var(--panel);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 14px;
 }
@@ -214,7 +231,7 @@ footer {
 /* === RESPONSIVE === */
 @media (max-width: 900px) {
   .nav-links, .nav-cta { display: none !important; }
-  #hamburger { display: flex; }
+  .hamburger { display: flex; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
 }
 
@@ -222,4 +239,5 @@ footer {
   .footer-grid { grid-template-columns: 1fr; }
   .nav-inner { padding: 0 20px; }
   .page-header { padding-left: 20px; padding-right: 20px; }
+  .container { padding-inline: 20px; }
 }
