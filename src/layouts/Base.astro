@@ -12,13 +12,11 @@ interface Props {
   path?: string;
   ogTitle?: string;
   ogDescription?: string;
-  /** above-the-fold hero image to preload (desktop variant) */
+  /** above-the-fold hero image to preload (the LCP-area visual) */
   preloadImage?: string;
-  /** lighter hero image preloaded on phones (<=820px) */
-  preloadImageMobile?: string;
 }
 
-const { title, description, active, path = '', ogTitle, ogDescription, preloadImage, preloadImageMobile } = Astro.props;
+const { title, description, active, path = '', ogTitle, ogDescription, preloadImage } = Astro.props;
 const canonical = new URL(path, Astro.site).href;
 ---
 
@@ -30,12 +28,7 @@ const canonical = new URL(path, Astro.site).href;
     <script is:inline>document.documentElement.classList.add('js');</script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    {preloadImage && preloadImageMobile ? (
-      <Fragment>
-        <link rel="preload" as="image" href={preloadImageMobile} media="(max-width: 820px)" fetchpriority="high" />
-        <link rel="preload" as="image" href={preloadImage} media="(min-width: 821px)" fetchpriority="high" />
-      </Fragment>
-    ) : preloadImage && (
+    {preloadImage && (
       <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />
     )}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
