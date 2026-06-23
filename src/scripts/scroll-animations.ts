@@ -4,78 +4,67 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 /**
  * Scroll-driven animations for the SiSi site.
  *
- * Progressive enhancement: elements are only hidden once `<html class="js">`
- * is set (see the inline head script in Base.astro), so without JS everything
- * stays visible. `prefers-reduced-motion` skips all motion and reveals content.
+ * Progressive enhancement: elements only start hidden once <html class="js">
+ * is set (inline head script in Base.astro), so no-JS clients see everything.
+ *
+ * prefers-reduced-motion: we still fade content in (so it never stays hidden
+ * and there is a gentle reveal) but drop all movement and the scrubbed
+ * parallax.
  *
  * Markup hooks:
- *   [data-hero]           one-shot entrance on load (staggered)
- *   [data-reveal]         fade + rise when scrolled into view
- *   [data-reveal-group]   its direct children fade + rise, staggered
- *   [data-parallax]       scroll-linked vertical drift (scrubbed); the value
- *                         is the yPercent travel (default 12)
+ *   [data-hero]          one-shot entrance on load (staggered)
+ *   [data-reveal]        reveal when scrolled into view
+ *   [data-reveal-group]  direct children reveal, staggered
+ *   [data-parallax]      scroll-linked vertical drift; value = yPercent travel
  */
 function init() {
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduce) {
-    // CSS already restores visibility under (prefers-reduced-motion); nothing to do.
-    return;
-  }
-
   gsap.registerPlugin(ScrollTrigger);
 
-  // Hero entrance — runs immediately, no scroll needed.
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Shared "to" vars. Under reduced motion: opacity only, no movement.
+  const reveal = reduce
+    ? { opacity: 1, duration: 0.5, ease: 'power1.out' }
+    : { opacity: 1, y: 0, duration: 0.85, ease: 'power3.out' };
+
+  // Hero entrance — immediate, no scroll needed.
   const heroEls = gsap.utils.toArray<HTMLElement>('[data-hero]');
   if (heroEls.length) {
-    gsap.to(heroEls, {
-      opacity: 1,
-      y: 0,
-      duration: 1,
-      ease: 'power3.out',
-      stagger: 0.15,
-      delay: 0.15,
-    });
+    gsap.to(heroEls, { ...reveal, stagger: 0.15, delay: 0.15 });
   }
 
   // Standalone reveals.
   gsap.utils.toArray<HTMLElement>('[data-reveal]').forEach((el) => {
-    gsap.to(el, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      ease: 'power3.out',
-      scrollTrigger: { trigger: el, start: 'top 85%' },
-    });
+    gsap.to(el, { ...reveal, scrollTrigger: { trigger: el, start: 'top 85%' } });
   });
 
   // Staggered groups (cards, accordion rows, contact lines).
   gsap.utils.toArray<HTMLElement>('[data-reveal-group]').forEach((group) => {
     gsap.to(group.children, {
-      opacity: 1,
-      y: 0,
-      duration: 0.7,
-      ease: 'power3.out',
-      stagger: 0.12,
-      scrollTrigger: { trigger: group, start: 'top 80%' },
+      ...reveal,
+      stagger: 0.1,
+      scrollTrigger: { trigger: group, start: 'top 82%' },
     });
   });
 
-  // Scroll-linked parallax (hero + Chivas backgrounds).
-  gsap.utils.toArray<HTMLElement>('[data-parallax]').forEach((el) => {
-    const amount = parseFloat(el.dataset.parallax || '') || 12;
-    gsap.to(el, {
-      yPercent: amount,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: el.closest('section') || el,
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: true,
-      },
+  // Scroll-linked parallax — skipped entirely under reduced motion.
+  if (!reduce) {
+    gsap.utils.toArray<HTMLElement>('[data-parallax]').forEach((el) => {
+      const amount = parseFloat(el.dataset.parallax || '') || 12;
+      gsap.to(el, {
+        yPercent: amount,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: el.closest('section') || el,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: true,
+        },
+      });
     });
-  });
+  }
 
-  // Recalculate once fonts/images settle.
+  // Triggers were measured before images/fonts settled — recompute on load.
   window.addEventListener('load', () => ScrollTrigger.refresh());
 
   document.documentElement.dataset.anim = 'ready';

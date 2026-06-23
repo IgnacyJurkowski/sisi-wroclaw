@@ -1,0 +1,30 @@
+---
+import Logo from './Logo.astro';
+import { NAV_ITEMS, RESERVATION_URL } from '../data/site';
+
+interface Props { active?: string }
+const { active } = Astro.props;
+---
+
+<a href="#main" class="skip-link">Przejdź do treści</a>
+
+<nav id="main-nav" role="navigation" aria-label="Główna nawigacja">
+  <a href="/" class="nav-logo" aria-label="SiSi Wrocław — strona główna"><Logo /></a>
+  <div class="nav-links">
+    {NAV_ITEMS.map((p) => (
+      <a href={p.href} aria-current={p.id === active ? 'page' : undefined}>{p.label}</a>
+    ))}
+  </div>
+  <a href={RESERVATION_URL} class="nav-cta" rel="noopener" target="_blank">Rezerwacje</a>
+  <button id="hamburger" aria-label="Otwórz menu" aria-expanded="false" aria-controls="mobile-menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div id="mobile-menu" hidden role="dialog" aria-label="Menu mobilne" aria-modal="true">
+  <button id="mobile-close" aria-label="Zamknij menu">&times;</button>
+  {NAV_ITEMS.map((p) => (
+    <a href={p.href} class:list={[{ active: p.id === active }]} data-nav-link>{p.label}</a>
+  ))}
+  <a href={RESERVATION_URL} class="btn-cta" rel="noopener" target="_blank" data-nav-link style="margin-top:1rem;">Rezerwacje</a>
+</div>

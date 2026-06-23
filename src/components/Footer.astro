@@ -1,0 +1,43 @@
+---
+import Logo from './Logo.astro';
+import { NAV_ITEMS, CONTACT } from '../data/site';
+---
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="footer-logo" aria-label="SiSi Wrocław"><Logo /></a>
+        <p class="footer-tagline">Serce nocnego Wrocławia.<br />Muzyka, koktajle, atmosfera.</p>
+      </div>
+
+      <div>
+        <p class="footer-col-heading">Strony</p>
+        {NAV_ITEMS.map((p) => (
+          <a href={p.href} class="footer-link">{p.label}</a>
+        ))}
+      </div>
+
+      <div>
+        <p class="footer-col-heading">Kontakt</p>
+        <a href={`mailto:${CONTACT.email}`} class="footer-link">{CONTACT.email}</a>
+        <span class="footer-text">{CONTACT.address}</span>
+        <a href={CONTACT.phoneHref} class="footer-link">{CONTACT.phone}</a>
+      </div>
+
+      <div>
+        <p class="footer-col-heading">Godziny otwarcia</p>
+        <span class="footer-text footer-text-strong">{CONTACT.hoursLabel}</span>
+        <span class="footer-text">{CONTACT.hours}</span>
+        <div class="footer-social">
+          <a href={CONTACT.instagram} class="footer-link" rel="noopener" target="_blank">Instagram</a>
+          <a href={CONTACT.facebook} class="footer-link" rel="noopener" target="_blank">Facebook</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 SiSi Wrocław. Wszelkie prawa zastrzeżone.</p>
+    </div>
+  </div>
+</footer>

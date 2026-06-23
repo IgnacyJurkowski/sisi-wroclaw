@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css';
-import Nav from '../components/Nav.tsx';
-import Footer from '../components/Footer.tsx';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
 
 interface Props {
   title: string;
@@ -36,11 +36,12 @@ const canonical = new URL(path, Astro.site).href;
     <link rel="canonical" href={canonical} />
   </head>
   <body>
-    <Nav active={active} client:load />
+    <Nav active={active} />
     <main id="main">
       <slot />
     </main>
     <Footer />
+    <script>import '../scripts/nav.ts';</script>
     <script>import '../scripts/scroll-animations.ts';</script>
   </body>
 </html>
