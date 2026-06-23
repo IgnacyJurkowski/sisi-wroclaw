@@ -1,9 +1,13 @@
 /* === FONTS ===
-   Montserrat is loaded non-render-blocking from <head> in Base.astro (a CSS
-   @import here would chain and block first paint). */
+   All fonts are self-hosted (no third-party origin) so there is no extra
+   DNS/TCP/TLS handshake competing for bandwidth on a throttled connection. */
 
 /* Krona One - display font (matches Framer export) */
 @font-face { font-family:'Krona One'; src:url('/fonts.gstatic.com/s/kronaone/v15/jAnEgHdjHcjgfIb1ZcUCNI-h3cWkWg.woff2') format('woff2'); font-weight:400; font-display:swap; }
+
+/* Montserrat - body/UI font. One subset variable file (weights 400-700,
+   Latin + Polish only) replaces Google Fonts' per-weight subsets. */
+@font-face { font-family:'Montserrat'; src:url('/fonts/montserrat/montserrat-var.woff2') format('woff2'); font-weight:400 700; font-style:normal; font-display:swap; }
 
 /* === CSS VARS === */
 :root {
@@ -94,12 +98,14 @@ html { scrollbar-width: thin; scrollbar-color: rgba(237, 219, 194, 0.28) transpa
 
 /* Hero entrance is CSS-only (no JS dependency) and animates transform only -
    the hero text paints immediately at full opacity, so it can be the LCP
-   element without waiting for GSAP. Transform never affects layout (no CLS). */
+   element without waiting for GSAP. Transform never affects layout (no CLS).
+   Kept short and small so the above-the-fold view reaches visual completeness
+   fast (a long entrance inflates Speed Index). */
 @media (prefers-reduced-motion: no-preference) {
-  [data-hero] { animation: hero-in 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
-  .hero-actions[data-hero] { animation-delay: 0.12s; }
+  [data-hero] { animation: hero-in 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+  .hero-actions[data-hero] { animation-delay: 0.08s; }
 }
-@keyframes hero-in { from { transform: translateY(26px); } to { transform: none; } }
+@keyframes hero-in { from { transform: translateY(14px); } to { transform: none; } }
 
 /* === FLOATING NAV === */
 #main-nav {
