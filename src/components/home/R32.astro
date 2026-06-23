@@ -18,8 +18,9 @@ const gallery = [
     </div>
     <div class="r32-video" data-reveal>
       <video
+        class="r32-vid"
         src="/video/relacja-z-otwarcia.mp4"
-        autoplay muted loop playsinline preload="metadata"
+        muted loop playsinline preload="none"
         poster="/video/relacja-z-otwarcia-poster.webp"
       ></video>
     </div>
@@ -61,3 +62,21 @@ const gallery = [
   }
   @media (max-width: 600px) { .r32 { padding: 64px 0; } .r32-gallery { grid-template-columns: 1fr; } }
 </style>
+
+<script>
+  // The recap clip is below the fold, so don't download it on load (preload
+  // none). Start playback only when the section is about to enter view -
+  // keeps the ~5MB video out of the initial/critical load path.
+  const vid = document.querySelector<HTMLVideoElement>('video.r32-vid');
+  if (vid) {
+    const io = new IntersectionObserver((entries, obs) => {
+      for (const e of entries) {
+        if (e.isIntersecting) {
+          vid.play().catch(() => {});
+          obs.disconnect();
+        }
+      }
+    }, { rootMargin: '300px 0px' });
+    io.observe(vid);
+  }
+</script>

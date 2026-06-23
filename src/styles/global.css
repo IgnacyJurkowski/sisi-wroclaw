@@ -2,10 +2,6 @@
    Montserrat is loaded non-render-blocking from <head> in Base.astro (a CSS
    @import here would chain and block first paint). */
 
-/* DM Sans served locally (matches Framer export) */
-@font-face { font-family:'DM Sans'; src:url('/fonts.gstatic.com/s/dmsans/v17/rP2Yp2ywxg089UriI5-g4vlH9VoD8Cmcqbu0-K4.woff2') format('woff2'); font-weight:400; font-display:swap; }
-@font-face { font-family:'DM Sans'; src:url('/fonts.gstatic.com/s/dmsans/v17/rP2Yp2ywxg089UriI5-g4vlH9VoD8Cmcqbu6-K6h9Q.woff2') format('woff2'); font-weight:700; font-display:swap; }
-
 /* Krona One - display font (matches Framer export) */
 @font-face { font-family:'Krona One'; src:url('/fonts.gstatic.com/s/kronaone/v15/jAnEgHdjHcjgfIb1ZcUCNI-h3cWkWg.woff2') format('woff2'); font-weight:400; font-display:swap; }
 
@@ -33,7 +29,7 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'Montserrat', 'DM Sans', sans-serif;
+  font-family: 'Montserrat', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 img, video { display: block; max-width: 100%; }
