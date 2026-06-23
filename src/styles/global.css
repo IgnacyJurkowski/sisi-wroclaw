@@ -78,29 +78,28 @@ ul { list-style: none; }
   height: 60px;
   padding: 0 14px 0 20px;
   display: flex; align-items: center; gap: 28px;
-  /* Frosted glass: soft top sheen layered over a translucent warm base. */
+  /* Frosted glass: translucent warm base so the blurred backdrop shows
+     through, with a soft top sheen. Border stays uniform on all 4 edges. */
   background:
-    linear-gradient(180deg, rgba(237, 219, 194, 0.07), rgba(237, 219, 194, 0) 42%),
-    rgba(12, 9, 7, 0.5);
-  backdrop-filter: blur(28px) saturate(165%);
-  -webkit-backdrop-filter: blur(28px) saturate(165%);
-  border: 1px solid rgba(237, 219, 194, 0.14);
+    linear-gradient(180deg, rgba(237, 219, 194, 0.08), rgba(237, 219, 194, 0.02) 55%),
+    rgba(12, 9, 7, 0.4);
+  backdrop-filter: blur(26px) saturate(180%);
+  -webkit-backdrop-filter: blur(26px) saturate(180%);
+  border: 1.5px solid rgba(237, 219, 194, 0.2);
   border-radius: 16px;
   box-shadow:
     0 12px 40px rgba(0, 0, 0, 0.45),
-    inset 0 1px 0 rgba(237, 219, 194, 0.18),   /* crisp top edge highlight */
-    inset 0 -1px 0 rgba(0, 0, 0, 0.25);        /* subtle bottom shade */
+    inset 0 0 30px rgba(237, 219, 194, 0.04);   /* even, soft inner glow */
   transition: background 300ms ease, border-color 300ms ease, box-shadow 300ms ease;
 }
 #main-nav.nav-scrolled {
   background:
-    linear-gradient(180deg, rgba(237, 219, 194, 0.05), rgba(237, 219, 194, 0) 42%),
-    rgba(9, 7, 5, 0.8);
-  border-color: rgba(237, 219, 194, 0.22);
+    linear-gradient(180deg, rgba(237, 219, 194, 0.06), rgba(237, 219, 194, 0.02) 55%),
+    rgba(9, 7, 5, 0.72);
+  border-color: rgba(237, 219, 194, 0.26);
   box-shadow:
     0 14px 46px rgba(0, 0, 0, 0.6),
-    inset 0 1px 0 rgba(237, 219, 194, 0.15),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+    inset 0 0 30px rgba(237, 219, 194, 0.03);
 }
 
 .nav-logo { flex-shrink: 0; display: flex; align-items: center; }
