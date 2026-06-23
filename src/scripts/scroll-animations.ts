@@ -27,7 +27,7 @@ function init() {
     ? { opacity: 1, duration: 0.5, ease: 'power1.out' }
     : { opacity: 1, y: 0, duration: 0.85, ease: 'power3.out' };
 
-  // Hero entrance — immediate, no scroll needed.
+  // Hero entrance - immediate, no scroll needed.
   const heroEls = gsap.utils.toArray<HTMLElement>('[data-hero]');
   if (heroEls.length) {
     gsap.to(heroEls, { ...reveal, stagger: 0.15, delay: 0.15 });
@@ -47,7 +47,7 @@ function init() {
     });
   });
 
-  // Scroll-linked parallax — skipped entirely under reduced motion.
+  // Scroll-linked parallax - skipped entirely under reduced motion.
   if (!reduce) {
     gsap.utils.toArray<HTMLElement>('[data-parallax]').forEach((el) => {
       const amount = parseFloat(el.dataset.parallax || '') || 12;
@@ -64,7 +64,7 @@ function init() {
     });
   }
 
-  // Triggers were measured before images/fonts settled — recompute on load.
+  // Triggers were measured before images/fonts settled - recompute on load.
   window.addEventListener('load', () => ScrollTrigger.refresh());
 
   document.documentElement.dataset.anim = 'ready';

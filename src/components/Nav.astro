@@ -10,7 +10,7 @@ const { active } = Astro.props;
 <a href="#main" class="skip-link">Przejdź do treści</a>
 
 <nav id="main-nav" role="navigation" aria-label="Główna nawigacja">
-  <a href="/" class="nav-logo" aria-label="SiSi Wrocław — strona główna"><Logo /></a>
+  <a href="/" class="nav-logo" aria-label="SiSi Wrocław - strona główna"><Logo /></a>
   <div class="nav-links">
     {NAV_ITEMS.map((p) => (
       <a href={p.href} aria-current={p.id === active ? 'page' : undefined}>{p.label}</a>

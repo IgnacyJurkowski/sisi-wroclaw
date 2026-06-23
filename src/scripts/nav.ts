@@ -1,5 +1,5 @@
 /* Floating-nav interactions: scroll state + mobile hamburger.
-   Plain DOM, no framework — the markup is server-rendered by Nav.astro. */
+   Plain DOM, no framework - the markup is server-rendered by Nav.astro. */
 
 function initNavScroll() {
   const nav = document.getElementById('main-nav');

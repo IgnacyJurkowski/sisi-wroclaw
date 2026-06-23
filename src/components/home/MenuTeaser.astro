@@ -1,18 +1,42 @@
 ---
-const items = [
+// Homepage menu teaser, modelled on the original sisiwroclaw.pl section:
+// a "MENU" title, three icon tabs (Koktajle / Karta alkoholi / Przekąski),
+// and a description that swaps when a tab is selected. Icons are the cream
+// glyphs from the Framer export.
+type Tab = { title: string; body: string; icon: 'cocktail' | 'bottle' | 'cutlery' };
+
+const tabs: Tab[] = [
   {
     title: 'Koktajle',
-    body: 'Autorskie koktajle mieszane od podstaw — od Hugo i Fiero Spritz, przez Porn Star Martini, po klasyki jak Negroni, Old Fashioned i Long Island Iced Tea. Świeże cytrusy, dobre alkohole i precyzja za barem.',
+    icon: 'cocktail',
+    body: 'Autorskie koktajle SISI to esencja nowoczesnej miksologii, w której nasi doświadczeni barmani z artystyczną precyzją łączą najwyższej jakości składniki. Każda kompozycja stanowi unikalne doznanie, zachwycające zarówno głębią smaku, jak i wyszukaną formą prezentacji z efektem "wow".',
   },
   {
-    title: 'Piwa',
-    body: 'Belgijska klasyka z beczki — Stella Artois, Hoegaarden i Leffe — oraz butelki: Corona, Beck’s, Bud i bezalkoholowa Corona Cero.',
+    title: 'Karta alkoholi',
+    icon: 'bottle',
+    body: 'Nasza selekcja win to starannie skomponowana podróż po świecie smaków, gdzie każda butelka harmonijnie współgra z charakterem naszego miejsca. Dobieramy etykiety, które nie tylko dopełniają dania, ale przede wszystkim tworzą niezapomniane wspomnienia, czyniąc każdy wieczór wyjątkowym.',
   },
   {
-    title: 'Napoje',
-    body: 'Napoje bezalkoholowe, woda mineralna, mrożona herbata Fuze Tea, soki Cappy i pełna linia Red Bull — na każdy moment wieczoru.',
+    title: 'Przekąski',
+    icon: 'cutlery',
+    body: 'Menu naszej restauracji to kulinarna opowieść inspirowana autentycznymi smakami z całego świata. W jej sercu leży idea food sharingu - wierzymy, że radość płynąca z dzielenia się posiłkiem w dobrym towarzystwie jest najcenniejszym doznaniem. Nasze dania są stworzone do wspólnego odkrywania, zachęcają do rozmów i celebrowania chwili.',
   },
 ];
+
+const icons = {
+  cocktail: {
+    viewBox: '0 0 18 34',
+    path: 'M 0.891 0 C 0.443 0 0.08 0.362 0.08 0.81 C 0.08 1.257 0.443 1.619 0.891 1.619 L 5.173 1.619 L 5.989 4.048 L 2.513 4.048 C 2.117 4.048 1.778 4.334 1.713 4.724 L 0.092 14.439 C -0.325 16.936 0.718 19.242 2.432 20.861 C 4.01 22.337 6.036 23.243 8.189 23.438 L 8.189 28.808 L 4.372 32.618 C 3.861 33.128 4.223 34 4.946 34 L 13.054 34 C 13.776 34 14.139 33.128 13.628 32.618 L 9.811 28.808 L 9.811 23.438 C 11.964 23.243 13.99 22.337 15.568 20.861 C 17.282 19.242 18.325 16.935 17.908 14.439 L 16.287 4.724 C 16.222 4.334 15.883 4.048 15.487 4.048 L 7.699 4.048 L 6.524 0.552 C 6.414 0.223 6.105 0 5.756 0 Z M 3.201 5.667 L 6.534 5.667 L 7.885 9.69 C 5.949 9.85 4.018 10.518 2.249 11.363 Z M 8.243 5.667 L 14.799 5.667 L 15.273 8.498 C 13.551 9.401 11.698 9.943 9.912 9.721 C 9.807 9.708 9.7 9.696 9.594 9.688 Z',
+  },
+  bottle: {
+    viewBox: '0 0 12.536 34',
+    path: 'M 7.664 0 L 4.864 0 C 4.495 0 4.205 0.259 4.205 0.572 L 4.205 3.685 C 3.938 3.76 3.734 3.965 3.734 4.224 L 3.734 10.368 C 1.42 11.513 0 13.625 0 15.961 L 0 30.655 C 0 31.548 0.4 32.385 1.13 33.019 C 1.859 33.653 2.824 34 3.852 34 L 8.684 34 C 9.712 34 10.676 33.653 11.406 33.019 C 12.136 32.385 12.536 31.548 12.536 30.655 L 12.536 15.961 C 12.536 13.625 11.116 11.513 8.802 10.368 L 8.802 4.224 C 8.802 3.965 8.606 3.754 8.331 3.685 L 8.331 0.572 C 8.331 0.252 8.033 0 7.672 0 Z M 9.884 26.847 L 2.636 26.847 L 2.636 20.553 L 9.884 20.553 Z',
+  },
+  cutlery: {
+    viewBox: '0 0 25.266 34',
+    path: 'M 12.633 11.333 C 12.633 5.075 9.802 0 6.317 0 C 2.829 0 0 5.075 0 11.333 C 0 14.057 1.701 16.365 4.082 17.277 L 3.509 31.167 C 3.509 32.731 4.766 34 6.317 34 C 7.867 34 9.124 32.731 9.124 31.167 L 8.551 17.278 C 10.933 16.365 12.633 14.057 12.633 11.333 Z M 25.266 10.271 L 24.915 0 L 23.161 0 L 22.81 10.271 L 21.406 10.271 L 21.055 0 L 18.95 0 L 18.599 10.271 L 17.195 10.271 L 16.844 0 L 15.089 0 L 14.739 10.271 C 14.739 12.432 16.022 14.283 17.858 15.113 L 17.195 31.167 C 17.195 32.731 18.452 34 20.002 34 C 21.553 34 22.81 32.731 22.81 31.167 L 22.146 15.113 C 23.983 14.283 25.266 12.432 25.266 10.271 Z',
+  },
+} as const;
 ---
 
 <section id="menu" class="menu-teaser">
@@ -20,15 +44,38 @@ const items = [
     <span class="page-label" style="text-align:center;display:block;" data-reveal>Karta baru</span>
     <h2 class="display mt-title" data-reveal>Menu</h2>
 
-    <div class="mt-accordion" data-reveal-group>
-      {items.map((it, i) => (
-        <details open={i === 0}>
-          <summary>
-            <span>{it.title}</span>
-            <span class="mt-plus" aria-hidden="true"></span>
-          </summary>
-          <p>{it.body}</p>
-        </details>
+    <div class="mt-tabs" role="tablist" aria-label="Kategorie menu" data-reveal>
+      {tabs.map((t, i) => (
+        <button
+          type="button"
+          class:list={['mt-tab', { 'is-active': i === 0 }]}
+          role="tab"
+          id={`mt-tab-${i}`}
+          aria-controls={`mt-panel-${i}`}
+          aria-selected={i === 0 ? 'true' : 'false'}
+          tabindex={i === 0 ? 0 : -1}
+          data-mt-tab={i}
+        >
+          <span class="mt-tab-icon" aria-hidden="true">
+            <svg viewBox={icons[t.icon].viewBox} fill="currentColor" role="img" aria-hidden="true">
+              <path d={icons[t.icon].path} />
+            </svg>
+          </span>
+          <span class="mt-tab-label">{t.title}</span>
+        </button>
+      ))}
+    </div>
+
+    <div class="mt-panels" data-reveal>
+      {tabs.map((t, i) => (
+        <p
+          class="mt-panel"
+          role="tabpanel"
+          id={`mt-panel-${i}`}
+          aria-labelledby={`mt-tab-${i}`}
+          data-mt-panel={i}
+          hidden={i !== 0}
+        >{t.body}</p>
       ))}
     </div>
 
@@ -38,37 +85,89 @@ const items = [
   </div>
 </section>
 
+<script>
+  const section = document.getElementById('menu');
+  if (section) {
+    const tabs = Array.from(section.querySelectorAll<HTMLButtonElement>('[data-mt-tab]'));
+    const panels = Array.from(section.querySelectorAll<HTMLElement>('[data-mt-panel]'));
+
+    const select = (id: string) => {
+      tabs.forEach((tab) => {
+        const on = tab.dataset.mtTab === id;
+        tab.classList.toggle('is-active', on);
+        tab.setAttribute('aria-selected', on ? 'true' : 'false');
+        tab.tabIndex = on ? 0 : -1;
+      });
+      panels.forEach((panel) => {
+        panel.hidden = panel.dataset.mtPanel !== id;
+      });
+    };
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => select(tab.dataset.mtTab!));
+    });
+
+    // Left/Right arrows move between tabs, per the ARIA tablist pattern.
+    section.querySelector('.mt-tabs')?.addEventListener('keydown', (e) => {
+      const event = e as KeyboardEvent;
+      if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return;
+      event.preventDefault();
+      const current = tabs.findIndex((t) => t.classList.contains('is-active'));
+      const step = event.key === 'ArrowRight' ? 1 : tabs.length - 1;
+      const next = (current + step) % tabs.length;
+      select(tabs[next].dataset.mtTab!);
+      tabs[next].focus();
+    });
+  }
+</script>
+
 <style>
   .menu-teaser { padding: 96px 0; }
   .mt-title {
     text-align: center; font-size: clamp(2rem, 5vw, 3.4rem);
-    text-transform: uppercase; margin: 10px 0 40px;
+    text-transform: uppercase; margin: 10px 0 44px;
   }
-  .mt-accordion { max-width: 760px; margin: 0 auto; }
-  .mt-accordion details {
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+
+  /* Icon tabs row */
+  .mt-tabs {
+    display: flex; justify-content: center; align-items: flex-start;
+    gap: clamp(40px, 9vw, 96px);
+    max-width: 760px; margin: 0 auto;
   }
-  .mt-accordion summary {
-    list-style: none; cursor: pointer;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 24px 4px;
-    font-family: 'Krona One', sans-serif;
-    font-size: clamp(1rem, 2.4vw, 1.4rem);
-    text-transform: uppercase; letter-spacing: -0.01em;
+  .mt-tab {
+    background: none; border: none; cursor: pointer; padding: 6px 4px;
+    display: flex; flex-direction: column; align-items: center; gap: 14px;
+    color: rgba(237, 219, 194, 0.4);
+    transition: color 200ms ease;
   }
-  .mt-accordion summary::-webkit-details-marker { display: none; }
-  .mt-plus { position: relative; width: 18px; height: 18px; flex-shrink: 0; }
-  .mt-plus::before, .mt-plus::after {
-    content: ''; position: absolute; background: var(--cream);
-    top: 50%; left: 50%; transition: transform 250ms ease;
+  .mt-tab:hover { color: rgba(237, 219, 194, 0.75); }
+  .mt-tab.is-active { color: var(--cream); }
+  .mt-tab:focus-visible {
+    outline: 2px solid rgba(237, 219, 194, 0.6);
+    outline-offset: 6px; border-radius: 8px;
   }
-  .mt-plus::before { width: 18px; height: 2px; transform: translate(-50%,-50%); }
-  .mt-plus::after { width: 2px; height: 18px; transform: translate(-50%,-50%); }
-  details[open] .mt-plus::after { transform: translate(-50%,-50%) scaleY(0); }
-  .mt-accordion p {
-    padding: 0 4px 28px; color: rgba(237,219,194,0.6);
-    font-size: 15px; line-height: 1.8; max-width: 640px;
+  .mt-tab-icon { height: 34px; display: flex; align-items: flex-end; }
+  .mt-tab-icon svg { height: 100%; width: auto; display: block; }
+  .mt-tab-label {
+    font-size: 18px; font-weight: 500; letter-spacing: -0.01em;
   }
-  .mt-cta { text-align: center; margin-top: 48px; }
-  @media (max-width: 600px) { .menu-teaser { padding: 64px 0; } }
+
+  /* Description that swaps with the active tab */
+  .mt-panels {
+    max-width: 640px; margin: 40px auto 0; min-height: 132px;
+  }
+  .mt-panel {
+    text-align: center; color: rgba(237, 219, 194, 0.6);
+    font-size: 15px; line-height: 1.8; margin: 0;
+  }
+  .mt-panel[hidden] { display: none; }
+
+  .mt-cta { text-align: center; margin-top: 40px; }
+
+  @media (max-width: 600px) {
+    .menu-teaser { padding: 64px 0; }
+    .mt-tabs { gap: 32px; }
+    .mt-tab-label { font-size: 15px; }
+    .mt-panels { min-height: 168px; }
+  }
 </style>

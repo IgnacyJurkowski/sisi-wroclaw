@@ -5,18 +5,18 @@
 @font-face { font-family:'DM Sans'; src:url('/fonts.gstatic.com/s/dmsans/v17/rP2Yp2ywxg089UriI5-g4vlH9VoD8Cmcqbu0-K4.woff2') format('woff2'); font-weight:400; font-display:swap; }
 @font-face { font-family:'DM Sans'; src:url('/fonts.gstatic.com/s/dmsans/v17/rP2Yp2ywxg089UriI5-g4vlH9VoD8Cmcqbu6-K6h9Q.woff2') format('woff2'); font-weight:700; font-display:swap; }
 
-/* Krona One — display font (matches Framer export) */
+/* Krona One - display font (matches Framer export) */
 @font-face { font-family:'Krona One'; src:url('/fonts.gstatic.com/s/kronaone/v15/jAnEgHdjHcjgfIb1ZcUCNI-h3cWkWg.woff2') format('woff2'); font-weight:400; font-display:swap; }
 
 /* === CSS VARS === */
 :root {
-  --bg: #050505;          /* effective page background from the Framer export */
-  --panel: #0d0b09;       /* warm near-black section/card surface */
-  --panel-2: #14110d;
+  --bg: #27060f;          /* deep wine background, matches sisiwroclaw.pl */
+  --panel: #34101a;       /* raised wine — card surface, lighter than --bg */
+  --panel-2: #3d1320;     /* a step lighter, for nested/elevated surfaces */
   --cream: rgb(237, 219, 194);
   --cream-hover: rgb(245, 232, 213);
   --gold: #fbd295;        /* link hover accent */
-  /* Cream text scale — everything reads warm, not grey-white */
+  /* Cream text scale - everything reads warm, not grey-white */
   --text: rgb(237, 219, 194);
   --text-dim: rgba(237, 219, 194, 0.62);
   --text-faint: rgba(237, 219, 194, 0.4);
@@ -78,13 +78,15 @@ ul { list-style: none; }
   height: 60px;
   padding: 0 14px 0 20px;
   display: flex; align-items: center; gap: 28px;
-  /* Frosted glass: translucent warm base so the blurred backdrop shows
-     through, with a soft top sheen. Border stays uniform on all 4 edges. */
+  /* Frosted glass: a light, translucent warm base lets the blurred backdrop
+     show through, and brightness() lifts dark content (e.g. the hero top) so
+     the frost stays visible even when there is little contrast behind it.
+     Border stays uniform on all 4 edges. */
   background:
-    linear-gradient(180deg, rgba(237, 219, 194, 0.08), rgba(237, 219, 194, 0.02) 55%),
-    rgba(12, 9, 7, 0.4);
-  backdrop-filter: blur(26px) saturate(180%);
-  -webkit-backdrop-filter: blur(26px) saturate(180%);
+    linear-gradient(180deg, rgba(237, 219, 194, 0.10), rgba(237, 219, 194, 0.03) 55%),
+    rgba(20, 15, 12, 0.3);
+  backdrop-filter: blur(22px) saturate(150%) brightness(1.4);
+  -webkit-backdrop-filter: blur(22px) saturate(150%) brightness(1.4);
   border: 1.5px solid rgba(237, 219, 194, 0.2);
   border-radius: 16px;
   box-shadow:
@@ -93,9 +95,10 @@ ul { list-style: none; }
   transition: background 300ms ease, border-color 300ms ease, box-shadow 300ms ease;
 }
 #main-nav.nav-scrolled {
+  /* a touch more grounded once scrolling over content, still frosted */
   background:
-    linear-gradient(180deg, rgba(237, 219, 194, 0.06), rgba(237, 219, 194, 0.02) 55%),
-    rgba(9, 7, 5, 0.72);
+    linear-gradient(180deg, rgba(237, 219, 194, 0.08), rgba(237, 219, 194, 0.02) 55%),
+    rgba(20, 15, 12, 0.46);
   border-color: rgba(237, 219, 194, 0.26);
   box-shadow:
     0 14px 46px rgba(0, 0, 0, 0.6),
@@ -122,7 +125,7 @@ ul { list-style: none; }
 }
 .nav-cta:hover { background: var(--cream-hover); color: #1a120b; }
 
-/* Social icon links — shared by the nav bar and footer. */
+/* Social icon links - shared by the nav bar and footer. */
 .nav-social { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
 .social-icon {
   display: inline-flex; align-items: center; justify-content: center;
