@@ -27,11 +27,8 @@ function init() {
     ? { opacity: 1, duration: 0.5, ease: 'power1.out' }
     : { opacity: 1, y: 0, duration: 0.85, ease: 'power3.out' };
 
-  // Hero entrance - immediate, no scroll needed.
-  const heroEls = gsap.utils.toArray<HTMLElement>('[data-hero]');
-  if (heroEls.length) {
-    gsap.to(heroEls, { ...reveal, stagger: 0.15, delay: 0.15 });
-  }
+  // Hero entrance is handled in CSS (global.css `hero-in`) so above-the-fold
+  // paints without waiting for this script - keeps LCP fast.
 
   // Standalone reveals.
   gsap.utils.toArray<HTMLElement>('[data-reveal]').forEach((el) => {

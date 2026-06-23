@@ -1,5 +1,6 @@
-/* === FONTS === */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+/* === FONTS ===
+   Montserrat is loaded non-render-blocking from <head> in Base.astro (a CSS
+   @import here would chain and block first paint). */
 
 /* DM Sans served locally (matches Framer export) */
 @font-face { font-family:'DM Sans'; src:url('/fonts.gstatic.com/s/dmsans/v17/rP2Yp2ywxg089UriI5-g4vlH9VoD8Cmcqbu0-K4.woff2') format('woff2'); font-weight:400; font-display:swap; }
@@ -68,7 +69,6 @@ html { scrollbar-width: thin; scrollbar-color: rgba(237, 219, 194, 0.28) transpa
 /* === SCROLL ANIMATIONS (initial states) ===
    Applied only when JS is available (html.js). GSAP animates these to rest.
    Without JS everything stays visible; reduced-motion does a plain fade. */
-.js [data-hero],
 .js [data-reveal],
 .js [data-reveal-group] > * {
   opacity: 0;
@@ -76,12 +76,20 @@ html { scrollbar-width: thin; scrollbar-color: rgba(237, 219, 194, 0.28) transpa
   will-change: opacity, transform;
 }
 @media (prefers-reduced-motion: reduce) {
-  .js [data-hero],
   .js [data-reveal],
   .js [data-reveal-group] > * {
     transform: none !important;          /* no movement under reduced motion */
   }
 }
+
+/* Hero entrance is CSS-only (no JS dependency) and animates transform only -
+   the hero text paints immediately at full opacity, so it can be the LCP
+   element without waiting for GSAP. Transform never affects layout (no CLS). */
+@media (prefers-reduced-motion: no-preference) {
+  [data-hero] { animation: hero-in 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+  .hero-actions[data-hero] { animation-delay: 0.12s; }
+}
+@keyframes hero-in { from { transform: translateY(26px); } to { transform: none; } }
 
 /* === FLOATING NAV === */
 #main-nav {
@@ -209,11 +217,11 @@ footer::before {
 
 .footer-logo { display: inline-block; }
 .footer-logo svg { height: 46px; width: auto; }
-.footer-tagline { color: var(--text-faint); font-size: 13px; line-height: 1.7; margin-top: 18px; }
+.footer-tagline { color: rgba(237, 219, 194, 0.7); font-size: 13px; line-height: 1.7; margin-top: 18px; }
 
 .footer-col-heading {
   font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em;
-  color: var(--text-mute); margin-bottom: 16px;
+  color: rgba(237, 219, 194, 0.74); margin-bottom: 16px;
 }
 
 .footer-link, .footer-text {
@@ -227,7 +235,7 @@ footer::before {
 .footer-social { display: flex; gap: 20px; margin-top: 16px; }
 
 .footer-bottom p {
-  font-size: 12px; letter-spacing: 0.02em; color: var(--text-mute);
+  font-size: 12px; letter-spacing: 0.02em; color: rgba(237, 219, 194, 0.62);
 }
 
 /* === PAGE HEADER === */
@@ -250,7 +258,7 @@ footer::before {
 }
 
 .page-subtitle {
-  color: var(--text-faint); font-size: 14px;
+  color: rgba(237, 219, 194, 0.66); font-size: 14px;
   line-height: 1.7; margin-top: 14px; max-width: 420px;
 }
 
