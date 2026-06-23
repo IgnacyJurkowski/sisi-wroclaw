@@ -72,42 +72,37 @@ ul { list-style: none; }
 /* === FLOATING NAV === */
 #main-nav {
   position: fixed;
-  /* Centered with auto margins (not transform): a transform on the same
-     element can soften/flatten its own backdrop-filter, and the working
-     reference nav centers this way too. */
-  top: 1rem; left: 0; right: 0; margin-inline: auto;
+  top: 1rem; left: 50%; transform: translateX(-50%);
   z-index: 50;
   width: min(980px, calc(100vw - 2rem));
   height: 60px;
   padding: 0 14px 0 20px;
   display: flex; align-items: center; gap: 28px;
-  /* Frosted glass on a dark hero. The trick is to make the PANE itself read
-     as a translucent frosted surface, not rely on detail behind it: a warm
-     lifted-wine body (so the bar is visibly distinct from the dark hero) + a
-     strong blur + a bright top sheen and edge that catch light like glass. */
+  /* Frosted glass: a light, translucent warm base lets the blurred backdrop
+     show through, and brightness() lifts dark content (e.g. the hero top) so
+     the frost stays visible even when there is little contrast behind it.
+     Border stays uniform on all 4 edges. */
   background:
-    linear-gradient(180deg, rgba(255, 243, 230, 0.20), rgba(255, 243, 230, 0.06) 60%),
-    rgba(52, 28, 36, 0.42);
-  backdrop-filter: blur(28px) saturate(155%);
-  -webkit-backdrop-filter: blur(28px) saturate(155%);
-  border: 1.5px solid rgba(255, 238, 220, 0.30);
+    linear-gradient(180deg, rgba(237, 219, 194, 0.10), rgba(237, 219, 194, 0.03) 55%),
+    rgba(20, 15, 12, 0.3);
+  backdrop-filter: blur(22px) saturate(150%) brightness(1.4);
+  -webkit-backdrop-filter: blur(22px) saturate(150%) brightness(1.4);
+  border: 1.5px solid rgba(237, 219, 194, 0.2);
   border-radius: 16px;
   box-shadow:
-    0 14px 44px rgba(0, 0, 0, 0.5),
-    inset 0 1.5px 0 rgba(255, 248, 240, 0.5),    /* bright top edge = glass rim */
-    inset 0 0 24px rgba(255, 235, 215, 0.06);    /* soft inner glow */
+    0 12px 40px rgba(0, 0, 0, 0.45),
+    inset 0 0 30px rgba(237, 219, 194, 0.04);   /* even, soft inner glow */
   transition: background 300ms ease, border-color 300ms ease, box-shadow 300ms ease;
 }
 #main-nav.nav-scrolled {
-  /* a touch more grounded once scrolling over content, still clearly frosted */
+  /* a touch more grounded once scrolling over content, still frosted */
   background:
-    linear-gradient(180deg, rgba(255, 243, 230, 0.16), rgba(255, 243, 230, 0.04) 60%),
-    rgba(40, 22, 28, 0.55);
-  border-color: rgba(255, 238, 220, 0.34);
+    linear-gradient(180deg, rgba(237, 219, 194, 0.08), rgba(237, 219, 194, 0.02) 55%),
+    rgba(20, 15, 12, 0.46);
+  border-color: rgba(237, 219, 194, 0.26);
   box-shadow:
-    0 16px 50px rgba(0, 0, 0, 0.62),
-    inset 0 1.5px 0 rgba(255, 248, 240, 0.45),
-    inset 0 0 24px rgba(255, 235, 215, 0.05);
+    0 14px 46px rgba(0, 0, 0, 0.6),
+    inset 0 0 30px rgba(237, 219, 194, 0.03);
 }
 
 .nav-logo { flex-shrink: 0; display: flex; align-items: center; }
