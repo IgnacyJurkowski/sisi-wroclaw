@@ -2,108 +2,110 @@
 import Base from '../layouts/Base.astro';
 import { RESERVATION_URL } from '../data/site';
 
-type Item = { name: string; desc: string; price: string };
+type Item = { name: string; desc?: string; vol?: string; price: string };
 type Section = { label: string; items: Item[]; note?: string };
 
-const cocktails: Section = {
-  label: 'Koktajle autorskie',
+const koktajle: Section = {
+  label: 'Koktajle',
   items: [
-    { name: 'Neon Wrocław', desc: 'Gin, elderflower, tonic, ogórek, limonka', price: '34 zł' },
-    { name: 'Złoty Szlak', desc: 'Bourbon, miód wrzosowy, sok z cytryny, angostura', price: '38 zł' },
-    { name: 'The Cork Spritz', desc: 'Naturalne wino białe, aperol, woda gazowana, pomarańcza', price: '32 zł' },
-    { name: 'Midnight Smoke', desc: 'Mezcal, syrop agawowy, sok z limonki, chili', price: '42 zł' },
-    { name: 'SiSi Sour', desc: 'Vodka, marakuja, sok z cytryny, egg white foam', price: '36 zł' },
-    { name: 'Dark Passage', desc: 'Rum agricole, kawa cold brew, likier kawowy, sól', price: '40 zł' },
+    { name: 'Hugo Spritz', desc: 'St-Germain / Limonka / Mięta / Martini Prosecco / Woda gazowana', vol: '160 ml', price: '40 zł' },
+    { name: 'Fiero Spritz', desc: 'Martini Fiero / Martini Prosecco / Pomarańcze / Woda gazowana', vol: '180 ml', price: '39 zł' },
+    { name: 'Porn Star Martini', desc: 'Ostoya / Marakuja / Wanilia / Martini Prosecco', vol: '120 ml', price: '40 zł' },
+    { name: 'Whisky Sour', desc: 'Chivas XII / Cytryna / Cukier / Egg White / Angostura Bitters / Olejki pomarańczy', vol: '130 ml', price: '38 zł' },
+    { name: 'Old Fashioned', desc: 'Chivas XII / Cukier / Angostura Bitters / Skórka pomarańczy', vol: '80 ml', price: '36 zł' },
+    { name: 'Daiquiri', desc: 'Havana 7 / Limonka / Cukier', vol: '120 ml', price: '36 zł' },
+    { name: 'Cuba Libre', desc: 'Havana 7 / Limonka / Coca-Cola', vol: '200 ml', price: '36 zł' },
+    { name: 'Gin Tonic', desc: 'Beefeater 24 / 3 Cents Tonic / Cytrusy', vol: '200 ml', price: '36 zł' },
+    { name: 'Negroni', desc: 'Beefeater 24 / Czerwony wermut / Martini Bitter / Skórka pomarańczy', vol: '120 ml', price: '38 zł' },
+    { name: 'Long Island Iced Tea', desc: 'Ostoya / Beefeater 24 / Havana 3 / Olmeca Silver / Triple Sec / Coca-Cola / Limonka', vol: '180 ml', price: '48 zł' },
   ],
 };
 
-const wines: Section = {
-  label: 'Wina naturalne',
-  note: 'Ceny: kieliszek 100ml / butelka 750ml. Karta zmienia się sezonowo.',
-  items: [
-    { name: 'Pét-Nat Bianco', desc: 'Musujące, świeże, lekko drożdżowe — Emilia-Romania', price: '28 / 140 zł' },
-    { name: 'Orange Wine, Amphora', desc: 'Maseracja na skórkach, taniczne, złożone — Gruzja', price: '32 / 160 zł' },
-    { name: 'Gamay Chillable Red', desc: 'Owocowe, lekkie, do schłodzenia — Beaujolais, Francja', price: '26 / 130 zł' },
-    { name: 'Skin Contact Rosé', desc: 'Różowy z charakterem, suchy, mineralny — Morawy', price: '28 / 138 zł' },
-  ],
-};
-
-const spirits: Section = {
-  label: 'Spirits & Whisky',
-  items: [
-    { name: "Hendrick's Gin", desc: 'Ogórek i róża, 41.4% — Scotland', price: '28 zł / 5cl' },
-    { name: 'Bulleit Bourbon', desc: 'Wysoka zawartość żyta, wanilia, dąb — Kentucky', price: '26 zł / 5cl' },
-    { name: 'El Silencio Mezcal', desc: 'Dymny, ziemisty, 40% — Oaxaca, Meksyk', price: '32 zł / 5cl' },
-    { name: 'Johnnie Walker Black Label', desc: 'Blend, 12 lat, wędzona śliwka — Scotland', price: '24 zł / 5cl' },
-    { name: 'Diplomatico Reserva Exclusiva', desc: 'Rum premium, 12 lat, wanilia, karmel — Wenezuela', price: '30 zł / 5cl' },
-    { name: 'Belvedere Vodka', desc: 'Polska, żytnia, czysta lub z tonikiem', price: '22 zł / 5cl' },
-  ],
-};
-
-const beers: Section = {
-  label: 'Piwa rzemieślnicze',
-  items: [
-    { name: 'Browar Stu Mostów — WRCLW IPA', desc: 'India Pale Ale, 6.2% | 0.4l', price: '22 zł' },
-    { name: 'Pinta — Atak Chmielu', desc: 'American Pale Ale, 5.0% | 0.5l', price: '20 zł' },
-    { name: 'Browar Cuda — NEIPA', desc: 'New England IPA, tropikalne, 6.5% | 0.33l', price: '24 zł' },
-    { name: 'Piwo bezalkoholowe', desc: 'Rotacja sezonowa | 0.33l', price: '14 zł' },
-  ],
-};
-
-const drinks: Section = {
+const napoje: Section = {
   label: 'Napoje',
   items: [
-    { name: 'Tonic / Woda gazowana / Niegazowana', desc: 'Fever-Tree | 0.25l', price: '12 zł' },
-    { name: 'Cold Brew Kawa', desc: 'Parzona 18h, na lodzie | 0.3l', price: '16 zł' },
-    { name: 'Sok świeżo wyciskany', desc: 'Pomarańcza, jabłko lub mix | 0.25l', price: '14 zł' },
+    { name: 'Coca-Cola Zero / Coca-Cola Original', vol: '250 ml', price: '12 zł' },
+    { name: 'Sprite / Fanta', vol: '250 ml', price: '12 zł' },
+    { name: 'Kropla Beskidu', desc: 'Woda mineralna niegazowana', vol: '500 ml', price: '10 zł' },
+    { name: 'Délice by Kropla', desc: 'Woda mineralna niegazowana', vol: '500 ml', price: '10 zł' },
+    { name: 'Fuze Tea', desc: 'Cytryna / Brzoskwinia / Hibiskus', vol: '500 ml', price: '14 zł' },
+    { name: 'Cappy', desc: 'Multiwitamina / Grejpfrut', vol: '330 ml', price: '12 zł' },
+    { name: 'Red Bull Energy Drink', price: '16 zł' },
+    { name: 'Red Bull Sugar Free', price: '16 zł' },
+    { name: 'Red Bull Tropical Edition', price: '16 zł' },
+  ],
+};
+
+const piwoLane: Section = {
+  label: 'Piwo lane',
+  items: [
+    { name: 'Stella Artois', desc: 'Belgian lager · 5%', vol: '330 / 500 ml', price: '20 / 22 zł' },
+    { name: 'Hoegaarden', desc: 'Belgian wheat ale · 4.9%', vol: '330 / 500 ml', price: '20 / 25 zł' },
+    { name: 'Leffe', desc: 'Belgian blonde ale · 6.5%', vol: '330 / 500 ml', price: '24 / 33 zł' },
+  ],
+};
+
+const piwoButelkowe: Section = {
+  label: 'Piwo butelkowe',
+  note: 'Wszystkie butelki 330 ml.',
+  items: [
+    { name: 'Corona', desc: 'Mexican lager · 4.5%', price: '20 zł' },
+    { name: 'Corona Cero', desc: 'Mexican lager · 0%', price: '20 zł' },
+    { name: 'Leffe', desc: 'Belgian ale · Blonde 6.6% / Brune 6.5%', price: '22 zł' },
+    { name: "Beck's", desc: 'German lager · 5%', price: '20 zł' },
+    { name: 'Bud', desc: 'American lager · 5%', price: '20 zł' },
   ],
 };
 ---
 
 <Base
   title="Menu — SiSi Wrocław"
-  description="Menu baru The Cork w SiSi Wrocław — autorskie koktajle, naturalne wina, rzemieślnicze piwa i wyselekcjonowane spirytualia."
-  ogDescription="Autorskie koktajle, naturalne wina, rzemieślnicze piwa. Bar The Cork w SiSi Wrocław."
+  description="Karta baru SiSi Wrocław — autorskie koktajle, piwa belgijskie, napoje i klasyki na każdą noc."
+  ogDescription="Autorskie koktajle, piwa belgijskie i klasyki. Karta baru SiSi Wrocław."
   active="menu"
   path="/menu"
 >
   <div class="page-header" data-reveal>
-    <span class="page-label">The Cork Bar</span>
+    <span class="page-label">Karta baru</span>
     <h1 class="page-title display">Menu</h1>
-    <p class="page-subtitle">Naturalne wina, koktajle od podstaw, selekcja spirytualiów. Karta zmienia się sezonowo.</p>
+    <p class="page-subtitle">Autorskie koktajle, piwa belgijskie i klasyki na każdą noc. Ceny w złotych.</p>
   </div>
 
   <div class="menu-wrap">
     <div class="menu-grid" data-reveal-group>
-      {[cocktails, wines, spirits].map((section) => (
-        <section class="sisi-card menu-card">
-          <h2 class="menu-section-label">{section.label}</h2>
-          {section.items.map((item) => (
-            <div class="menu-item">
-              <div>
-                <p class="menu-item-name">{item.name}</p>
-                <p class="menu-item-desc">{item.desc}</p>
-              </div>
+      <section class="sisi-card menu-card menu-card-feature">
+        <h2 class="menu-section-label">{koktajle.label}</h2>
+        {koktajle.items.map((item) => (
+          <div class="menu-item">
+            <div class="menu-item-main">
+              <p class="menu-item-name">{item.name}</p>
+              {item.desc && <p class="menu-item-desc">{item.desc}</p>}
+            </div>
+            <div class="menu-item-meta">
+              {item.vol && <span class="menu-item-vol">{item.vol}</span>}
               <span class="menu-item-price">{item.price}</span>
             </div>
-          ))}
-          {section.note && <p class="menu-note">{section.note}</p>}
-        </section>
-      ))}
+          </div>
+        ))}
+      </section>
 
       <div class="menu-stack">
-        {[beers, drinks].map((section) => (
+        {[napoje, piwoLane, piwoButelkowe].map((section) => (
           <section class="sisi-card menu-card">
             <h2 class="menu-section-label">{section.label}</h2>
             {section.items.map((item) => (
               <div class="menu-item">
-                <div>
+                <div class="menu-item-main">
                   <p class="menu-item-name">{item.name}</p>
-                  <p class="menu-item-desc">{item.desc}</p>
+                  {item.desc && <p class="menu-item-desc">{item.desc}</p>}
                 </div>
-                <span class="menu-item-price">{item.price}</span>
+                <div class="menu-item-meta">
+                  {item.vol && <span class="menu-item-vol">{item.vol}</span>}
+                  <span class="menu-item-price">{item.price}</span>
+                </div>
               </div>
             ))}
+            {section.note && <p class="menu-note">{section.note}</p>}
           </section>
         ))}
       </div>
@@ -120,11 +122,23 @@ const drinks: Section = {
   .menu-wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 32px 80px; }
   .menu-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 500px), 1fr));
-    gap: 24px;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 24px; align-items: start;
   }
   .menu-card { padding: 32px 36px; }
   .menu-stack { display: flex; flex-direction: column; gap: 24px; }
+
+  /* item layout: name/desc on the left, volume + price stacked on the right */
+  .menu-item-main { min-width: 0; }
+  .menu-item-meta {
+    flex-shrink: 0; display: flex; flex-direction: column;
+    align-items: flex-end; gap: 2px; text-align: right;
+  }
+  .menu-item-vol {
+    font-size: 11px; letter-spacing: 0.04em;
+    color: var(--text-mute); white-space: nowrap;
+  }
+
   .menu-note {
     font-size: 12px; color: rgba(237, 219, 194, 0.3);
     margin-top: 20px; padding-top: 20px;
@@ -138,5 +152,7 @@ const drinks: Section = {
     color: rgba(237, 219, 194, 0.45); margin: 0 auto 28px;
     font-size: 14px; line-height: 1.7; max-width: 360px;
   }
-  @media (max-width: 600px) { .menu-wrap { padding-inline: 20px; } }
+
+  @media (max-width: 900px) { .menu-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 600px) { .menu-wrap { padding-inline: 20px; } .menu-card { padding: 28px 24px; } }
 </style>
