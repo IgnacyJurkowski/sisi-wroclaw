@@ -39,6 +39,20 @@ img, video { display: block; max-width: 100%; }
 a { color: inherit; text-decoration: none; }
 ul { list-style: none; }
 
+/* === SCROLLBAR (themed, applies to every page) === */
+html { scrollbar-width: thin; scrollbar-color: rgba(237, 219, 194, 0.28) transparent; }
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb {
+  /* slim cream pill with a wine inset border */
+  background: rgba(237, 219, 194, 0.22);
+  border-radius: 99px;
+  border: 3px solid var(--bg);
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(237, 219, 194, 0.42); background-clip: padding-box; }
+::-webkit-scrollbar-corner { background: var(--bg); }
+
 /* === LAYOUT HELPERS === */
 .container { max-width: var(--maxw); margin: 0 auto; padding-inline: 32px; }
 .display { font-family: 'Krona One', 'Montserrat', sans-serif; }
