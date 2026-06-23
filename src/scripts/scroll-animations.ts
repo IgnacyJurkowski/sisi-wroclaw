@@ -49,10 +49,15 @@ function init() {
       for (const el of parallaxEls) {
         const amount = parseFloat(el.dataset.parallax || '') || 12;
         const rect = el.getBoundingClientRect();
-        // 0 when the element's top is at the viewport bottom, 1 when its
-        // bottom reaches the viewport top - a linear pass like ScrollTrigger.
+        // Progress is 0 when the element's top is at the viewport bottom and 1
+        // when its bottom reaches the viewport top. Centering on 0.5 means the
+        // offset is 0 while the element fills/centers the viewport - which is
+        // the case for the hero at load, so the parallax never shifts the
+        // above-the-fold view *after* first paint (that would inflate Speed
+        // Index). The drift range is unchanged, just recentered on rest.
         const progress = (vh - rect.top) / (vh + rect.height);
-        el.style.transform = `translate3d(0, ${(progress * amount).toFixed(2)}%, 0)`;
+        const offset = (progress - 0.5) * amount;
+        el.style.transform = `translate3d(0, ${offset.toFixed(2)}%, 0)`;
       }
     };
     const onScroll = () => {
