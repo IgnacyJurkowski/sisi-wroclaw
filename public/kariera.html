@@ -12,99 +12,82 @@
   <meta property="og:locale" content="pl_PL">
   <link rel="canonical" href="https://sisiwroclaw.pl/kariera.html">
   <link rel="stylesheet" href="./css/style.css">
-  <script>window.tailwind={config:{theme:{extend:{colors:{accent:'#B5253B','accent-h':'#CE2C46'},fontFamily:{sans:['Inter','system-ui','sans-serif']}}}}}</script>
-  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
   <div id="nav-placeholder"></div>
 
   <main id="main">
 
-    <!-- PAGE HERO -->
-    <div class="page-hero" style="padding-top:calc(var(--nav-height,54px) + 5rem);padding-bottom:4rem;background:#080808;border-bottom:1px solid rgba(255,255,255,0.06);">
-      <div class="max-w-[1280px] mx-auto px-6">
-        <span class="section-label">Dołącz do nas</span>
-        <h1 class="text-[clamp(2.4rem,6vw,4rem)] font-bold uppercase tracking-tight leading-tight">Kariera</h1>
-        <p class="text-white/40 mt-3 text-sm max-w-md">Szukamy ludzi z pasją do dobrego drinka i muzyki. Pracujemy piątek–niedziela w rytmie, który lubimy.</p>
-      </div>
+    <div class="page-header">
+      <span class="page-label">Dołącz do nas</span>
+      <h1 class="page-title">Kariera</h1>
+      <p class="page-subtitle">Szukamy ludzi z pasją do dobrego drinka i muzyki. Pracujemy piątek–niedziela w rytmie, który lubimy.</p>
     </div>
 
-    <div class="max-w-[1280px] mx-auto px-6 py-16 md:py-20">
+    <div style="max-width:1280px;margin:0 auto;padding:0 32px 80px;">
 
       <!-- JOB CARDS -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:24px;margin-bottom:32px;">
 
         <!-- BARMAN -->
-        <div class="glass rounded-2xl p-7 md:p-9 gs-reveal flex flex-col">
-          <h2 class="text-[11px] font-bold uppercase tracking-[0.16em] text-[#B5253B] mb-5">Stanowisko</h2>
-          <p class="text-2xl font-bold uppercase tracking-tight mb-5">Barman</p>
-          <ul class="space-y-2 mb-8 flex-1">
-            <li class="text-[13px] text-white/48 leading-relaxed">Przygotowywanie koktajli i obsługa baru</li>
-            <li class="text-[13px] text-white/48 leading-relaxed">Doświadczenie za barem mile widziane</li>
-            <li class="text-[13px] text-white/48 leading-relaxed">Praca w weekendy (Pt–Nd)</li>
-            <li class="text-[13px] text-white/48 leading-relaxed">Znajomość języka angielskiego</li>
+        <div class="sisi-card" style="padding:32px 36px;display:flex;flex-direction:column;">
+          <h2 class="menu-section-label">Stanowisko</h2>
+          <p style="font-size:22px;font-weight:700;text-transform:uppercase;letter-spacing:-0.02em;margin-bottom:24px;">Barman</p>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;flex:1;margin-bottom:32px;">
+            <li style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.6;">Przygotowywanie koktajli i obsługa baru</li>
+            <li style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.6;">Doświadczenie za barem mile widziane</li>
+            <li style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.6;">Praca w weekendy (Pt–Nd)</li>
+            <li style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.6;">Znajomość języka angielskiego</li>
           </ul>
-          <a
-            href="mailto:biuro@r32.com.pl?subject=Barman%20%E2%80%94%20"
-            class="btn-cta text-center"
-          >Aplikuj</a>
+          <a href="mailto:biuro@r32.com.pl?subject=Barman%20%E2%80%94%20" class="btn-cta" style="width:100%;justify-content:center;">Aplikuj</a>
         </div>
 
         <!-- KELNERKA -->
-        <div class="glass rounded-2xl p-7 md:p-9 gs-reveal flex flex-col">
-          <h2 class="text-[11px] font-bold uppercase tracking-[0.16em] text-[#B5253B] mb-5">Stanowisko</h2>
-          <p class="text-2xl font-bold uppercase tracking-tight mb-5">Kelnerka / Kelner</p>
-          <ul class="space-y-2 mb-8 flex-1">
-            <li class="text-[13px] text-white/48 leading-relaxed">Obsługa gości przy stolikach</li>
-            <li class="text-[13px] text-white/48 leading-relaxed">Dobra organizacja i odporność na stres</li>
-            <li class="text-[13px] text-white/48 leading-relaxed">Praca w weekendy (Pt–Nd)</li>
-            <li class="text-[13px] text-white/48 leading-relaxed">Znajomość języka angielskiego</li>
+        <div class="sisi-card" style="padding:32px 36px;display:flex;flex-direction:column;">
+          <h2 class="menu-section-label">Stanowisko</h2>
+          <p style="font-size:22px;font-weight:700;text-transform:uppercase;letter-spacing:-0.02em;margin-bottom:24px;">Kelnerka / Kelner</p>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;flex:1;margin-bottom:32px;">
+            <li style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.6;">Obsługa gości przy stolikach</li>
+            <li style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.6;">Dobra organizacja i odporność na stres</li>
+            <li style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.6;">Praca w weekendy (Pt–Nd)</li>
+            <li style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.6;">Znajomość języka angielskiego</li>
           </ul>
-          <a
-            href="mailto:biuro@r32.com.pl?subject=Kelnerka%20%E2%80%94%20"
-            class="btn-cta text-center"
-          >Aplikuj</a>
+          <a href="mailto:biuro@r32.com.pl?subject=Kelnerka%20%E2%80%94%20" class="btn-cta" style="width:100%;justify-content:center;">Aplikuj</a>
         </div>
 
         <!-- BARBACK -->
-        <div class="glass rounded-2xl p-7 md:p-9 gs-reveal flex flex-col">
-          <h2 class="text-[11px] font-bold uppercase tracking-[0.16em] text-[#B5253B] mb-5">Stanowisko</h2>
-          <p class="text-2xl font-bold uppercase tracking-tight mb-5">Barback</p>
-          <ul class="space-y-2 mb-8 flex-1">
-            <li class="text-[13px] text-white/48 leading-relaxed">Wsparcie barmana i zaopatrzenie baru</li>
-            <li class="text-[13px] text-white/48 leading-relaxed">Idealne stanowisko na start w branży</li>
-            <li class="text-[13px] text-white/48 leading-relaxed">Praca w weekendy (Pt–Nd)</li>
-            <li class="text-[13px] text-white/48 leading-relaxed">Dyspozycyjność i zaangażowanie</li>
+        <div class="sisi-card" style="padding:32px 36px;display:flex;flex-direction:column;">
+          <h2 class="menu-section-label">Stanowisko</h2>
+          <p style="font-size:22px;font-weight:700;text-transform:uppercase;letter-spacing:-0.02em;margin-bottom:24px;">Barback</p>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;flex:1;margin-bottom:32px;">
+            <li style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.6;">Wsparcie barmana i zaopatrzenie baru</li>
+            <li style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.6;">Idealne stanowisko na start w branży</li>
+            <li style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.6;">Praca w weekendy (Pt–Nd)</li>
+            <li style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.6;">Dyspozycyjność i zaangażowanie</li>
           </ul>
-          <a
-            href="mailto:biuro@r32.com.pl?subject=Barback%20%E2%80%94%20"
-            class="btn-cta text-center"
-          >Aplikuj</a>
+          <a href="mailto:biuro@r32.com.pl?subject=Barback%20%E2%80%94%20" class="btn-cta" style="width:100%;justify-content:center;">Aplikuj</a>
         </div>
 
       </div>
 
       <!-- HOW TO APPLY -->
-      <div class="mt-12 gs-reveal">
-        <div class="glass rounded-2xl p-7 md:p-9">
-          <h2 class="text-[11px] font-bold uppercase tracking-[0.16em] text-[#B5253B] mb-5">Jak aplikować</h2>
-          <p class="text-[15px] text-white/65 leading-relaxed mb-3">
-            Wyślij CV na <a href="mailto:biuro@r32.com.pl" class="text-white hover:text-white/80 transition-colors underline underline-offset-4">biuro@r32.com.pl</a>
-          </p>
-          <p class="text-[13px] text-white/38 leading-relaxed">
-            W tytule wiadomości wpisz stanowisko i swoje imię i nazwisko, np.&nbsp;<span class="text-white/60">Barman — Jan Kowalski</span>
-          </p>
-        </div>
+      <div class="sisi-card" style="padding:32px 36px;">
+        <h2 class="menu-section-label">Jak aplikować</h2>
+        <p style="font-size:15px;color:rgba(255,255,255,0.65);line-height:1.7;margin-bottom:10px;">
+          Wyślij CV na <a href="mailto:biuro@r32.com.pl" style="color:var(--cream);text-decoration:underline;text-underline-offset:4px;">biuro@r32.com.pl</a>
+        </p>
+        <p style="font-size:13px;color:rgba(255,255,255,0.4);line-height:1.7;">
+          W tytule wiadomości wpisz stanowisko i swoje imię i nazwisko, np.&nbsp;<span style="color:rgba(255,255,255,0.65);">Barman — Jan Kowalski</span>
+        </p>
       </div>
 
     </div>
+
   </main>
 
   <div id="footer-placeholder"></div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-  <script src="./js/main.js" defer></script>
-  <script defer>document.addEventListener('DOMContentLoaded', () => renderNav('kariera'));</script>
+  <script src="./js/main.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', () => renderNav('kariera'));</script>
 </body>
 </html>
