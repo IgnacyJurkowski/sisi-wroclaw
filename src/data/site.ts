@@ -6,10 +6,26 @@ export const RESERVATION_URL =
 export type NavItem = { id: string; label: string; href: string };
 
 export const NAV_ITEMS: NavItem[] = [
-  { id: 'o-nas', label: 'O nas', href: '/#ewolucja-onas' },
-  { id: 'events', label: 'Wydarzenia', href: '/#wydarzenia' },
+  { id: 'events', label: 'Wydarzenia', href: '/wydarzenia' },
   { id: 'menu', label: 'Menu', href: '/menu' },
   { id: 'kariera', label: 'Kariera', href: '/kariera' },
+];
+
+export type EventItem = { title: string; date: string; note?: string; img: string };
+
+// Shared event list — feeds the homepage teaser and the /wydarzenia page.
+export const EVENTS: EventItem[] = [
+  {
+    title: 'Friday at SiSi',
+    date: '19 czerwca, 22:00',
+    img: '/framerusercontent.com/images/Vl3kSLbolFditeShXmcLZITH7A8.jpg',
+  },
+  {
+    title: 'Saturday at SiSi',
+    date: '20 czerwca, 22:00',
+    note: 'Live Act',
+    img: '/framerusercontent.com/images/loXZHRygofAyWJdOaLJm2nba20Y.png',
+  },
 ];
 
 export const CONTACT = {

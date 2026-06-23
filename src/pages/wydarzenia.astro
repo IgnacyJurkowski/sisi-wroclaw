@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+import EventCard from '../components/EventCard.astro';
+import { EVENTS } from '../data/site';
+---
+
+<Base
+  title="Wydarzenia — SiSi Wrocław"
+  description="Nadchodzące wydarzenia w SiSi Wrocław — koncerty, DJ-e i imprezy tematyczne w sercu kompleksu R32."
+  ogDescription="Koncerty, DJ-e i imprezy tematyczne. Nadchodzące wydarzenia w SiSi Wrocław."
+  active="events"
+  path="/wydarzenia"
+>
+  <div class="page-header" data-reveal>
+    <span class="page-label">Co się dzieje</span>
+    <h1 class="page-title display">Wydarzenia</h1>
+    <p class="page-subtitle">Koncerty, DJ-e i imprezy tematyczne. Sprawdź, co gramy w najbliższe weekendy i zarezerwuj stolik z wyprzedzeniem.</p>
+  </div>
+
+  <div class="events-wrap">
+    <div class="events-grid" data-reveal-group>
+      {EVENTS.map((e) => <EventCard event={e} />)}
+    </div>
+  </div>
+</Base>
+
+<style>
+  .events-wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 32px 80px; }
+  .events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
+    gap: 24px; max-width: 960px; margin: 0 auto;
+  }
+  @media (max-width: 600px) { .events-wrap { padding-inline: 20px; } }
+</style>
