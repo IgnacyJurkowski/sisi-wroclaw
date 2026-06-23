@@ -67,14 +67,14 @@ const drinks: Section = {
   active="menu"
   path="/menu"
 >
-  <div class="page-header">
+  <div class="page-header" data-reveal>
     <span class="page-label">The Cork Bar</span>
     <h1 class="page-title display">Menu</h1>
     <p class="page-subtitle">Naturalne wina, koktajle od podstaw, selekcja spirytualiów. Karta zmienia się sezonowo.</p>
   </div>
 
   <div class="menu-wrap">
-    <div class="menu-grid">
+    <div class="menu-grid" data-reveal-group>
       {[cocktails, wines, spirits].map((section) => (
         <section class="sisi-card menu-card">
           <h2 class="menu-section-label">{section.label}</h2>
@@ -109,7 +109,7 @@ const drinks: Section = {
       </div>
     </div>
 
-    <div class="menu-cta">
+    <div class="menu-cta" data-reveal>
       <p>Chcesz zarezerwować stolik i zamówić z wyprzedzeniem? Skontaktuj się z nami.</p>
       <a href={RESERVATION_URL} class="btn-cta" rel="noopener" target="_blank">Zarezerwuj stolik</a>
     </div>

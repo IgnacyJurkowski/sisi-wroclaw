@@ -18,10 +18,10 @@ const events = [
 
 <section id="wydarzenia" class="events">
   <div class="container">
-    <span class="page-label" style="text-align:center;display:block;">Wydarzenia</span>
-    <h2 class="display ev-title">Nadchodzące wydarzenia</h2>
+    <span class="page-label" style="text-align:center;display:block;" data-reveal>Wydarzenia</span>
+    <h2 class="display ev-title" data-reveal>Nadchodzące wydarzenia</h2>
 
-    <div class="ev-grid">
+    <div class="ev-grid" data-reveal-group>
       {events.map((e) => (
         <article class="ev-card">
           <div class="ev-media"><img src={e.img} alt={e.title} loading="lazy" /></div>

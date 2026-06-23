@@ -21,6 +21,9 @@ const canonical = new URL(path, Astro.site).href;
 <!DOCTYPE html>
 <html lang="pl">
   <head>
+    <!-- Mark JS as available before paint so reveal elements can start hidden
+         without ever hiding content from no-JS clients. -->
+    <script is:inline>document.documentElement.classList.add('js');</script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
@@ -38,5 +41,6 @@ const canonical = new URL(path, Astro.site).href;
       <slot />
     </main>
     <Footer />
+    <script>import '../scripts/scroll-animations.ts';</script>
   </body>
 </html>

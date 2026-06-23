@@ -48,14 +48,14 @@ const mailto = (subject: string) =>
   active="kariera"
   path="/kariera"
 >
-  <div class="page-header">
+  <div class="page-header" data-reveal>
     <span class="page-label">Dołącz do nas</span>
     <h1 class="page-title display">Kariera</h1>
     <p class="page-subtitle">Szukamy ludzi z pasją do dobrego drinka i muzyki. Pracujemy piątek–niedziela w rytmie, który lubimy.</p>
   </div>
 
   <div class="kariera-wrap">
-    <div class="kariera-grid">
+    <div class="kariera-grid" data-reveal-group>
       {jobs.map((job) => (
         <article class="sisi-card job-card">
           <h2 class="menu-section-label">Stanowisko</h2>
@@ -68,7 +68,7 @@ const mailto = (subject: string) =>
       ))}
     </div>
 
-    <div class="sisi-card how-card">
+    <div class="sisi-card how-card" data-reveal>
       <h2 class="menu-section-label">Jak aplikować</h2>
       <p class="how-lead">
         Wyślij CV na <a href={`mailto:${CONTACT.email}`} class="how-mail">{CONTACT.email}</a>

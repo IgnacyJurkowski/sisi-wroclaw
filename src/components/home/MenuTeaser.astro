@@ -17,10 +17,10 @@ const items = [
 
 <section id="menu" class="menu-teaser">
   <div class="container">
-    <span class="page-label" style="text-align:center;display:block;">The Cork Bar</span>
-    <h2 class="display mt-title">Menu</h2>
+    <span class="page-label" style="text-align:center;display:block;" data-reveal>The Cork Bar</span>
+    <h2 class="display mt-title" data-reveal>Menu</h2>
 
-    <div class="mt-accordion">
+    <div class="mt-accordion" data-reveal-group>
       {items.map((it, i) => (
         <details open={i === 0}>
           <summary>
@@ -32,7 +32,7 @@ const items = [
       ))}
     </div>
 
-    <div class="mt-cta">
+    <div class="mt-cta" data-reveal>
       <a href="/menu" class="btn-cta">Zobacz pełne menu</a>
     </div>
   </div>

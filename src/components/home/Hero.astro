@@ -3,12 +3,12 @@ import { RESERVATION_URL } from '../../data/site';
 ---
 
 <section id="start" class="hero">
-  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-bg" data-parallax="18" aria-hidden="true"></div>
   <div class="hero-scrim" aria-hidden="true"></div>
 
   <div class="hero-content">
-    <h1 class="display hero-title">Serce Wrocławia<br />bije w SiSi</h1>
-    <div class="hero-actions">
+    <h1 class="display hero-title" data-hero>Serce Wrocławia<br />bije w SiSi</h1>
+    <div class="hero-actions" data-hero>
       <a href={RESERVATION_URL} class="btn-cta" rel="noopener" target="_blank">Rezerwacje</a>
       <a href="#wydarzenia" class="btn-outline">Kalendarz imprez</a>
     </div>
@@ -34,9 +34,8 @@ import { RESERVATION_URL } from '../../data/site';
     overflow: hidden;
   }
   .hero-bg {
-    position: absolute; inset: 0;
+    position: absolute; left: 0; right: 0; top: -15%; height: 130%;
     background: url('/framerusercontent.com/images/nBW0AVejCOoiy2Rctqcid0SY6Q.png') center/cover no-repeat;
-    transform: scale(1.05);
   }
   .hero-scrim {
     position: absolute; inset: 0;

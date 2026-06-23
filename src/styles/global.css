@@ -37,6 +37,25 @@ ul { list-style: none; }
 .container { max-width: var(--maxw); margin: 0 auto; padding-inline: 32px; }
 .display { font-family: 'Krona One', 'Montserrat', sans-serif; }
 
+/* === SCROLL ANIMATIONS (initial states) ===
+   Only applied when JS is available (html.js). GSAP animates these to their
+   resting state; without JS or with reduced motion, content stays visible. */
+.js [data-hero],
+.js [data-reveal],
+.js [data-reveal-group] > * {
+  opacity: 0;
+  transform: translateY(24px);
+  will-change: opacity, transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .js [data-hero],
+  .js [data-reveal],
+  .js [data-reveal-group] > * {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
 /* === NAV === */
 #main-nav {
   position: fixed;

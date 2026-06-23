@@ -10,13 +10,13 @@ const gallery = [
 
 <section class="r32">
   <div class="container r32-top">
-    <div class="r32-text">
+    <div class="r32-text" data-reveal>
       <span class="page-label">R32</span>
       <h2 class="display r32-title">Noc bez kompromisów</h2>
       <p class="r32-body">{body}</p>
       <a href="https://www.r32.com.pl" class="btn-outline" rel="noopener" target="_blank">Odkryj R32</a>
     </div>
-    <div class="r32-video">
+    <div class="r32-video" data-reveal>
       <video
         src="/framerusercontent.com/assets/MLWPbW1dUQawJLhhun3dBwpgJak.mp4"
         autoplay muted loop playsinline preload="metadata"
@@ -25,7 +25,7 @@ const gallery = [
     </div>
   </div>
 
-  <div class="container r32-gallery">
+  <div class="container r32-gallery" data-reveal-group>
     {gallery.map((src) => (
       <div class="r32-shot"><img src={src} alt="" loading="lazy" /></div>
     ))}

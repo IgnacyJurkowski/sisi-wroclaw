@@ -9,13 +9,13 @@ const cards = [
 ---
 
 <section id="ewolucja-onas" class="about">
-  <div class="container about-head">
+  <div class="container about-head" data-reveal>
     <span class="page-label">O nas</span>
     <h2 class="display about-title">Muzyczna ewolucja wieczoru</h2>
     <p class="about-intro">{intro}</p>
   </div>
 
-  <div class="container about-grid">
+  <div class="container about-grid" data-reveal-group>
     {cards.map((c) => (
       <figure class="about-card">
         <img src={c.img} alt={c.title} loading="lazy" />
