@@ -1,0 +1,22 @@
+---
+import Base from '../layouts/Base.astro';
+import Reservations from '../components/home/Reservations.astro';
+---
+
+<Base
+  title="Rezerwacje - SiSi Wrocław"
+  description="Zarezerwuj stolik w SiSi - serce nocnego Wrocławia. Komfortowe miejsce w klubie oraz kontakt do eventów firmowych."
+  ogTitle="Rezerwacje - SiSi Wrocław"
+  ogDescription="Zaplanuj wyjątkowy wieczór i zarezerwuj miejsce w sercu naszego klubu."
+  path="/rezerwacje"
+>
+  <div class="res-page">
+    <Reservations />
+  </div>
+</Base>
+
+<style>
+  /* Lone section on its own page: clear the fixed nav and keep the footer
+     from riding up on tall screens. */
+  .res-page { padding-top: calc(var(--nav-height) - 12px); min-height: 72vh; }
+</style>
