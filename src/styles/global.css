@@ -62,19 +62,33 @@ html { scrollbar-width: thin; scrollbar-color: rgba(237, 219, 194, 0.28) transpa
 }
 .skip-link:focus { top: 1rem; }
 
-/* === SCROLL ANIMATIONS (initial states) ===
-   Applied only when JS is available (html.js). GSAP animates these to rest.
-   Without JS everything stays visible; reduced-motion does a plain fade. */
+/* === SCROLL ANIMATIONS ===
+   Applied only when JS is available (html.js). scroll-animations.ts adds
+   `.is-in` when an element scrolls into view, which transitions it to rest.
+   Without JS everything stays visible; reduced-motion fades without movement. */
 .js [data-reveal],
 .js [data-reveal-group] > * {
   opacity: 0;
   transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
   will-change: opacity, transform;
 }
+.js [data-reveal].is-in,
+.js [data-reveal-group].is-in > * {
+  opacity: 1;
+  transform: none;
+}
+/* stagger a revealed group's children */
+.js [data-reveal-group].is-in > *:nth-child(2) { transition-delay: 0.08s; }
+.js [data-reveal-group].is-in > *:nth-child(3) { transition-delay: 0.16s; }
+.js [data-reveal-group].is-in > *:nth-child(4) { transition-delay: 0.24s; }
+.js [data-reveal-group].is-in > *:nth-child(5) { transition-delay: 0.32s; }
+.js [data-reveal-group].is-in > *:nth-child(n + 6) { transition-delay: 0.40s; }
 @media (prefers-reduced-motion: reduce) {
   .js [data-reveal],
   .js [data-reveal-group] > * {
     transform: none !important;          /* no movement under reduced motion */
+    transition: opacity 0.5s ease !important;
   }
 }
 
