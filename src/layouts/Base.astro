@@ -12,9 +12,11 @@ interface Props {
   path?: string;
   ogTitle?: string;
   ogDescription?: string;
+  /** above-the-fold image to preload (the LCP element, e.g. the hero bg) */
+  preloadImage?: string;
 }
 
-const { title, description, active, path = '', ogTitle, ogDescription } = Astro.props;
+const { title, description, active, path = '', ogTitle, ogDescription, preloadImage } = Astro.props;
 const canonical = new URL(path, Astro.site).href;
 ---
 
@@ -26,6 +28,9 @@ const canonical = new URL(path, Astro.site).href;
     <script is:inline>document.documentElement.classList.add('js');</script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {preloadImage && (
+      <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />
+    )}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
     <link rel="icon" href="/favicon-16.png" type="image/png" sizes="16x16" />
