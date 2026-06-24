@@ -23,6 +23,8 @@
   --panel-2: #3d1320;     /* a step lighter, for nested/elevated surfaces */
   --cream: rgb(237, 219, 194);
   --cream-hover: rgb(245, 232, 213);
+  --cream-press: #d6bf9b;   /* darker fill on solid-button hover - lets the sheen pop */
+  --cream-active: #c7ae86;  /* a touch darker again on press */
   --gold: #fbd295;        /* link hover accent */
   /* Cream text scale - everything reads warm, not grey-white */
   --text: rgb(237, 219, 194);
@@ -168,7 +170,7 @@ html { scrollbar-width: thin; scrollbar-color: rgba(237, 219, 194, 0.28) transpa
   font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
   transition: background 150ms;
 }
-.nav-cta:hover { background: var(--cream-hover); color: #1a120b; }
+.nav-cta:hover { background: var(--cream-press); color: #1a120b; }
 
 /* Social icon links - shared by the nav bar and footer. */
 .nav-social { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
@@ -317,7 +319,7 @@ footer::before {
   font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
   cursor: pointer; transition: background 150ms;
 }
-.btn-cta:hover { background: var(--cream-hover); color: #1a120b; }
+.btn-cta:hover { background: var(--cream-press); color: #1a120b; }
 
 .btn-outline {
   display: inline-flex; align-items: center; justify-content: center;
@@ -388,23 +390,16 @@ html.loaded #page-loader { display: none; }
 @media (prefers-reduced-motion: reduce) { #page-loader { display: none; } }
 
 /* === MICRO-INTERACTIONS (perf-safe: transform/opacity only, no layout shift) === */
-/* Primary CTA: subtle lift + a one-pass sheen sweep on hover. */
-.btn-cta { position: relative; overflow: hidden; transition: background 150ms ease, transform 150ms ease, box-shadow 150ms ease; }
+/* Solid CTAs: no lift. Hover darkens the fill (see --cream-press above) so the
+   one-pass sheen sweep ("spark") reads clearly against it. */
+.btn-cta { position: relative; overflow: hidden; transition: background 180ms ease; }
 .btn-cta::after {
   content: ''; position: absolute; inset: 0; transform: translateX(-130%); pointer-events: none;
-  background: linear-gradient(110deg, transparent 32%, rgba(255, 255, 255, 0.45) 50%, transparent 68%);
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.6) 50%, transparent 70%);
   transition: transform 600ms ease;
 }
-.btn-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(0, 0, 0, 0.4); }
 .btn-cta:hover::after { transform: translateX(130%); }
-.btn-cta:active { transform: translateY(0); }
-
-.btn-outline { transition: background 150ms ease, color 150ms ease, border-color 150ms ease, transform 150ms ease; }
-.btn-outline:hover { transform: translateY(-2px); }
-.btn-outline:active { transform: translateY(0); }
-
-.nav-cta { transition: background 150ms ease, transform 150ms ease, box-shadow 150ms ease; }
-.nav-cta:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35); }
+.btn-cta:active { background: var(--cream-active); }
 
 /* Nav links: an underline that wipes in from the left on hover / current page. */
 .nav-links a { position: relative; }
@@ -424,9 +419,6 @@ html.loaded #page-loader { display: none; }
 :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
 @media (prefers-reduced-motion: reduce) {
-  .btn-cta, .nav-cta { transition: background 150ms ease; }
-  .btn-outline { transition: background 150ms ease, color 150ms ease, border-color 150ms ease; }
-  .btn-cta:hover, .btn-outline:hover, .nav-cta:hover,
   .sisi-card:hover, .ev-card:hover { transform: none; box-shadow: none; }
   .btn-cta::after { display: none; }
   .nav-links a::after { transition: none; }
