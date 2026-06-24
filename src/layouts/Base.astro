@@ -35,7 +35,13 @@ const {
   ogTitle,
   ogDescription,
   preloadImage,
-  ogImage = '/framerusercontent.com/images/nBW0AVejCOoiy2Rctqcid0SY6Q.webp',
+  // Absolute Framer CDN URL so the social card resolves (HTTP 200) on every host,
+  // including the deploy preview. The site-relative form 404s until sisiwroclaw.pl
+  // points at this build, and the CDN serves this asset as .png (the local .webp
+  // is a downscaled copy that only exists under this site's /public).
+  // TODO(ignacy): replace with a self-hosted 1200x630 image in /public/og/ once
+  // the production domain serves this build.
+  ogImage = 'https://framerusercontent.com/images/nBW0AVejCOoiy2Rctqcid0SY6Q.png',
   noindex = false,
   schema = [],
 } = Astro.props;
