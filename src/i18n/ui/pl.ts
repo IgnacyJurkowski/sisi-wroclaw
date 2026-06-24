@@ -339,7 +339,7 @@ const pl = {
         { title: 'Konferencje', body: 'Spotkania z prezentacjami i częścią merytoryczną, z wykorzystaniem dwóch ekranów.' },
         { title: 'Panele dyskusyjne', body: 'Rozmowy i debaty z udziałem prelegentów oraz publiczności.' },
         { title: 'Prezentacje', body: 'Pokazy produktów, podsumowania i wystąpienia firmowe.' },
-        { title: 'Premiery produktów', body: 'Launch nowego produktu lub marki w efektownej oprawie.' },
+        { title: 'Premiery produktów', body: 'Premiera nowego produktu lub marki w efektownej oprawie.' },
         { title: 'Kolacje firmowe', body: 'Zasiadane kolacje w restauracji The Cork.' },
         { title: 'Networking', body: 'Spotkania branżowe i wieczory w swobodnej atmosferze.' },
         { title: 'Imprezy firmowe', body: 'Wieczory integracyjne i świętowanie z energią klubu SiSi.' },
