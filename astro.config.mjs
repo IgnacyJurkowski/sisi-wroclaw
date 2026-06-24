@@ -10,4 +10,19 @@ export default defineConfig({
   // Inline component CSS into the HTML so the small stylesheets stop being
   // render-blocking network requests (improves FCP/LCP).
   build: { inlineStylesheets: 'always' },
+  // CSS handled by Lightning CSS instead of Vite's default esbuild. esbuild's
+  // minifier collapsed our `backdrop-filter` + `-webkit-backdrop-filter` pairs
+  // down to the `-webkit-` form only, which silently killed the nav / cookie /
+  // mobile-menu glass blur in Firefox and standards-mode Chromium. Lightning CSS
+  // auto-prefixes from `cssTarget`: the Safari/iOS 12 floor keeps
+  // `-webkit-backdrop-filter` for older iOS (heavy mobile audience) while
+  // emitting the standard `backdrop-filter` for every modern engine. Source CSS
+  // now carries a single unprefixed declaration; the prefixing is the build's job.
+  vite: {
+    css: { transformer: 'lightningcss' },
+    build: {
+      cssMinify: 'lightningcss',
+      cssTarget: ['chrome79', 'firefox78', 'safari12', 'edge88', 'ios12'],
+    },
+  },
 });

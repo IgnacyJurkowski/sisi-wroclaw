@@ -129,8 +129,11 @@ html { scrollbar-width: thin; scrollbar-color: rgba(237, 219, 194, 0.28) transpa
   background: rgba(39, 7, 15, 0.19);
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  /* Single standard declaration; Lightning CSS auto-prefixes (-webkit-) from
+     the browserslist targets. Writing the -webkit- line by hand makes the
+     minifier collapse the pair down to -webkit-only, which breaks the blur in
+     Firefox and standards-mode Chromium. */
   backdrop-filter: blur(7.5px);
-  -webkit-backdrop-filter: blur(7.5px);
   border: 1px solid rgba(39, 7, 15, 0.5);
   transition: background 300ms ease, border-color 300ms ease, box-shadow 300ms ease;
 }
@@ -183,7 +186,7 @@ html { scrollbar-width: thin; scrollbar-color: rgba(237, 219, 194, 0.28) transpa
 #mobile-menu {
   position: fixed; inset: 0; z-index: 60;
   background: rgba(5, 4, 3, 0.97);
-  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px); /* -webkit- added by Lightning CSS autoprefix */
   display: flex; flex-direction: column;
   align-items: center; justify-content: center; gap: 2rem;
 }
@@ -436,8 +439,7 @@ html.loaded #page-loader { display: none; }
   background: rgba(28, 10, 17, 0.92);
   border: 1px solid rgba(237, 219, 194, 0.18);
   border-radius: 16px; padding: 18px 22px;
-  backdrop-filter: blur(18px) saturate(140%);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  backdrop-filter: blur(18px) saturate(140%); /* -webkit- added by Lightning CSS autoprefix */
   box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
 }
 .cookie-banner[hidden] { display: none; }
