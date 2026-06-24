@@ -1,0 +1,337 @@
+---
+/* Accessible custom dropdown.
+   Progressive enhancement: a real <select> is always rendered (works without JS,
+   submits with the form, and is what the form's validation reads). When JS runs
+   it is visually hidden but kept focusable so programmatic .focus() from the
+   validator lands here and is redirected to the styled button. The custom UI is
+   a button + role="listbox" that mirrors the native value.
+
+   Why this exists: native <option> popups render on the OS-default (white)
+   background while inheriting our cream text -> unreadable. A custom panel lets
+   us control contrast and match the venue's dark-wine theme. */
+interface Option {
+  value: string;
+  label: string;
+}
+interface Props {
+  id: string;
+  name: string;
+  options: Option[];
+  placeholder: string;
+  required?: boolean;
+  describedby?: string;
+  /** id of the visible <label> so the button is announced with it. */
+  labelledby?: string;
+}
+const { id, name, options, placeholder, required = false, describedby, labelledby } = Astro.props;
+const valueId = `${id}-value`;
+const listId = `${id}-list`;
+const btnLabelledby = [labelledby, valueId].filter(Boolean).join(' ');
+---
+
+<div class="cselect" data-cselect>
+  <select
+    id={id}
+    name={name}
+    class="cselect-native"
+    required={required}
+    aria-describedby={describedby}
+    data-cselect-native
+  >
+    <option value="">{placeholder}</option>
+    {options.map((o) => <option value={o.value}>{o.label}</option>)}
+  </select>
+
+  <button
+    type="button"
+    class="cselect-btn"
+    data-cselect-btn
+    hidden
+    aria-haspopup="listbox"
+    aria-expanded="false"
+    aria-controls={listId}
+    aria-labelledby={btnLabelledby}
+  >
+    <span class="cselect-value" id={valueId} data-cselect-value data-placeholder={placeholder} data-empty>
+      {placeholder}
+    </span>
+    <svg class="cselect-chevron" width="14" height="14" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+      <path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  </button>
+
+  <ul class="cselect-list" id={listId} role="listbox" tabindex="-1" aria-labelledby={labelledby} data-cselect-list hidden>
+    {
+      options.map((o, i) => (
+        <li class="cselect-option" role="option" id={`${id}-opt-${i}`} data-value={o.value} aria-selected="false">
+          {o.label}
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<style>
+  .cselect { position: relative; width: 100%; }
+
+  /* No-JS fallback: style the native select like the form's text inputs and,
+     crucially, give its option popup a dark background so cream text reads. */
+  .cselect-native {
+    width: 100%;
+    padding: 11px 13px;
+    border-radius: 9px;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--cream);
+    font: inherit;
+    font-size: 14px;
+  }
+  .cselect-native option {
+    background: #2a0a12;
+    color: var(--cream);
+  }
+  .cselect-native:focus {
+    outline: 2px solid rgba(237, 219, 194, 0.5);
+    outline-offset: 1px;
+    border-color: transparent;
+  }
+
+  /* When enhanced, hide the native control but keep it focusable (so the
+     validator's .focus() works and bounces to the button). */
+  .cselect-enhanced .cselect-native {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .cselect-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+    padding: 11px 13px;
+    border-radius: 9px;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--cream);
+    font: inherit;
+    font-size: 14px;
+    text-align: left;
+    cursor: pointer;
+  }
+  .cselect-btn:hover { border-color: rgba(237, 219, 194, 0.28); }
+  .cselect-btn:focus-visible {
+    outline: 2px solid rgba(237, 219, 194, 0.5);
+    outline-offset: 1px;
+    border-color: transparent;
+  }
+  .cselect-btn[data-invalid] { border-color: #c25c74; }
+  .cselect-value { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cselect-value[data-empty] { color: var(--text-faint); }
+  .cselect-chevron { flex-shrink: 0; color: rgba(237, 219, 194, 0.6); transition: transform 180ms ease; }
+  .cselect-btn[aria-expanded='true'] .cselect-chevron { transform: rotate(180deg); }
+
+  .cselect-list {
+    position: absolute;
+    z-index: 40;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    margin: 0;
+    padding: 6px;
+    list-style: none;
+    max-height: 260px;
+    overflow-y: auto;
+    background: #2a0a12;
+    border: 1px solid rgba(237, 219, 194, 0.16);
+    border-radius: 11px;
+    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.5);
+  }
+  .cselect-option {
+    padding: 9px 11px;
+    border-radius: 7px;
+    color: var(--cream);
+    font-size: 14px;
+    line-height: 1.3;
+    cursor: pointer;
+  }
+  .cselect-option.is-active { background: rgba(251, 210, 149, 0.14); color: var(--cream-hover); }
+  .cselect-option[aria-selected='true'] {
+    background: rgba(251, 210, 149, 0.1);
+    font-weight: 600;
+  }
+  .cselect-option[aria-selected='true'].is-active { background: rgba(251, 210, 149, 0.2); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cselect-chevron { transition: none; }
+  }
+</style>
+
+<script>
+  function initCustomSelect(root: HTMLElement): void {
+    const native = root.querySelector<HTMLSelectElement>('[data-cselect-native]');
+    const btn = root.querySelector<HTMLButtonElement>('[data-cselect-btn]');
+    const list = root.querySelector<HTMLUListElement>('[data-cselect-list]');
+    const valueEl = root.querySelector<HTMLElement>('[data-cselect-value]');
+    if (!native || !btn || !list || !valueEl) return;
+
+    const options = Array.from(list.querySelectorAll<HTMLLIElement>('[role="option"]'));
+    const placeholder = valueEl.getAttribute('data-placeholder') || '';
+    let open = false;
+    let activeIndex = -1;
+
+    root.classList.add('cselect-enhanced');
+    btn.hidden = false;
+    native.tabIndex = -1;
+    native.setAttribute('aria-hidden', 'true');
+
+    const selectedIndex = (): number =>
+      options.findIndex((o) => o.getAttribute('data-value') === native.value);
+
+    function syncFromNative(): void {
+      const idx = selectedIndex();
+      options.forEach((o, i) => o.setAttribute('aria-selected', i === idx ? 'true' : 'false'));
+      if (idx >= 0) {
+        valueEl!.textContent = options[idx].textContent;
+        valueEl!.removeAttribute('data-empty');
+      } else {
+        valueEl!.textContent = placeholder;
+        valueEl!.setAttribute('data-empty', '');
+      }
+    }
+
+    function setActive(i: number): void {
+      options.forEach((o) => o.classList.remove('is-active'));
+      activeIndex = i;
+      if (i >= 0 && i < options.length) {
+        options[i].classList.add('is-active');
+        btn!.setAttribute('aria-activedescendant', options[i].id);
+        options[i].scrollIntoView({ block: 'nearest' });
+      } else {
+        btn!.removeAttribute('aria-activedescendant');
+      }
+    }
+
+    function openList(): void {
+      if (open) return;
+      open = true;
+      list!.hidden = false;
+      btn!.setAttribute('aria-expanded', 'true');
+      const sel = selectedIndex();
+      setActive(sel >= 0 ? sel : 0);
+      document.addEventListener('click', onDocClick, true);
+    }
+
+    function closeList(focusBtn: boolean): void {
+      if (!open) return;
+      open = false;
+      list!.hidden = true;
+      btn!.setAttribute('aria-expanded', 'false');
+      btn!.removeAttribute('aria-activedescendant');
+      options.forEach((o) => o.classList.remove('is-active'));
+      document.removeEventListener('click', onDocClick, true);
+      if (focusBtn) btn!.focus();
+    }
+
+    function commit(i: number): void {
+      if (i < 0 || i >= options.length) return;
+      native!.value = options[i].getAttribute('data-value') || '';
+      native!.removeAttribute('aria-invalid');
+      native!.dispatchEvent(new Event('change', { bubbles: true }));
+      syncFromNative();
+      closeList(true);
+    }
+
+    function onDocClick(e: MouseEvent): void {
+      if (!root.contains(e.target as Node)) closeList(false);
+    }
+
+    btn.addEventListener('click', () => (open ? closeList(true) : openList()));
+
+    btn.addEventListener('keydown', (e: KeyboardEvent) => {
+      switch (e.key) {
+        case 'ArrowDown':
+          e.preventDefault();
+          if (!open) openList();
+          else setActive(Math.min(activeIndex + 1, options.length - 1));
+          break;
+        case 'ArrowUp':
+          e.preventDefault();
+          if (!open) openList();
+          else setActive(Math.max(activeIndex - 1, 0));
+          break;
+        case 'Home':
+          if (open) { e.preventDefault(); setActive(0); }
+          break;
+        case 'End':
+          if (open) { e.preventDefault(); setActive(options.length - 1); }
+          break;
+        case 'Enter':
+        case ' ':
+          e.preventDefault();
+          if (!open) openList();
+          else commit(activeIndex);
+          break;
+        case 'Escape':
+          if (open) { e.preventDefault(); closeList(true); }
+          break;
+        case 'Tab':
+          if (open) closeList(false);
+          break;
+        default:
+          if (e.key.length === 1 && !e.metaKey && !e.ctrlKey && !e.altKey) {
+            const ch = e.key.toLowerCase();
+            const start = (activeIndex + 1) % options.length;
+            for (let n = 0; n < options.length; n++) {
+              const i = (start + n) % options.length;
+              if ((options[i].textContent || '').trim().toLowerCase().startsWith(ch)) {
+                if (!open) openList();
+                setActive(i);
+                break;
+              }
+            }
+          }
+      }
+    });
+
+    options.forEach((opt, i) => {
+      opt.addEventListener('click', () => commit(i));
+      opt.addEventListener('mousemove', () => {
+        if (activeIndex !== i) setActive(i);
+      });
+    });
+
+    // Validator focuses the (hidden) native control; bounce to the button.
+    native.addEventListener('focus', () => btn!.focus());
+
+    // Mirror the validator's invalid state onto the visible button.
+    const mo = new MutationObserver(() => {
+      if (native.getAttribute('aria-invalid') === 'true') btn!.setAttribute('data-invalid', '');
+      else btn!.removeAttribute('data-invalid');
+    });
+    mo.observe(native, { attributes: true, attributeFilter: ['aria-invalid'] });
+
+    // Re-sync after form.reset() (fired on successful submit).
+    const form = native.closest('form');
+    if (form) form.addEventListener('reset', () => window.setTimeout(syncFromNative, 0));
+
+    // Clicking the label should focus the styled button, not the hidden select.
+    if (native.id) {
+      const lbl = document.querySelector<HTMLLabelElement>(`label[for="${native.id}"]`);
+      if (lbl) lbl.addEventListener('click', (e) => { e.preventDefault(); btn!.focus(); });
+    }
+
+    syncFromNative();
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-cselect]').forEach(initCustomSelect);
+</script>

@@ -339,6 +339,18 @@ const cs: UI = {
         { title: 'Soukromé akce značek', body: 'Uzavřené akce na míru značce.' },
       ],
     },
+    included: {
+      heading: 'Co zajišťujeme',
+      intro: 'Obsluhu akce bereme na sebe - od baru a cateringu po hudební doprovod.',
+      items: [
+        { title: 'Bar a barmani', body: 'Plně vybavený bar s profesionální obsluhou a volitelným open barem s koktejly.' },
+        { title: 'Catering', body: 'Menu a catering na míru vaší akci.' },
+        { title: 'Hudba', body: 'DJ a živá hudba - rozsah po domluvě.' },
+        { title: 'Šatna', body: 'Šatnová služba pro vaše hosty.' },
+        { title: 'Úklidový servis', body: 'Průběžný úklid po celou dobu akce.' },
+        { title: 'Koordinace', body: 'Technická a organizační podpora v každé fázi.' },
+      ],
+    },
     spaces: {
       heading: 'Prostory',
       theCork: {
@@ -400,6 +412,9 @@ const cs: UI = {
         { q: 'Lze formát akce přizpůsobit?', a: 'Ano, koncept přizpůsobíme akci. Popište své potřeby v poptávce a tým potvrdí dostupné možnosti.' },
         { q: 'Jak ověřím dostupnost termínu?', a: 'Pošlete poptávku přes formulář na této stránce, nebo nám zavolejte či napište.' },
         { q: 'Co uvést v poptávce?', a: 'Preferovaný termín, počet hostů a formát akce. Požadavky na catering, techniku či bezbariérovost prosím uveďte v poptávce, aby tým mohl potvrdit dostupné možnosti.' },
+        { q: 'Zajišťujete catering a bar?', a: 'Ano. Catering i barovou obsluhu zajišťujeme na místě. Tradiční prvky, jako je dort, lze přinést po předchozí domluvě.' },
+        { q: 'Můžeme přijít s vlastním fotografem?', a: 'Ano. Fotografickou dokumentaci může zajistit fotograf vybraný organizátorem.' },
+        { q: 'Jak si zarezervovat termín?', a: 'Termín potvrzujeme smlouvou a zálohou, zbývající část je splatná před akcí. Detaily domlouváme individuálně.' },
       ],
     },
     finalCta: {
@@ -432,6 +447,7 @@ const cs: UI = {
       date: 'Preferovaný termín',
       dateFlexible: 'Termín je flexibilní',
       space: 'Preferovaný prostor',
+      spacePlaceholder: 'Vyberte prostor',
       spaceOptions: {
         cork: 'The Cork',
         sisi: 'SiSi',

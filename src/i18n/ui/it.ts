@@ -339,6 +339,18 @@ const it: UI = {
         { title: 'Eventi privati di brand', body: 'Eventi a porte chiuse su misura per il brand.' },
       ],
     },
+    included: {
+      heading: 'Cosa offriamo',
+      intro: 'Ci occupiamo noi dell\'evento - dal bar al catering fino alla musica.',
+      items: [
+        { title: 'Bar e barman', body: 'Bar completo con servizio professionale e open bar con cocktail su richiesta.' },
+        { title: 'Catering', body: 'Menù e catering su misura per il tuo evento.' },
+        { title: 'Musica', body: 'DJ e musica dal vivo - modalità da concordare.' },
+        { title: 'Guardaroba', body: 'Servizio di guardaroba per i tuoi ospiti.' },
+        { title: 'Servizio di pulizia', body: 'Pulizia continua per tutta la durata dell\'evento.' },
+        { title: 'Coordinamento', body: 'Supporto tecnico e organizzativo in ogni fase.' },
+      ],
+    },
     spaces: {
       heading: 'Spazi',
       theCork: {
@@ -400,6 +412,9 @@ const it: UI = {
         { q: 'Si può personalizzare il formato dell\'evento?', a: 'Sì, costruiamo il concept sull\'evento. Descrivi le tue esigenze nella richiesta e il team confermerà le opzioni disponibili.' },
         { q: 'Come verifico la disponibilità?', a: 'Invia una richiesta tramite il modulo in questa pagina, oppure chiamaci o scrivici.' },
         { q: 'Cosa includere nella richiesta?', a: 'La data preferita, il numero di ospiti e il formato dell\'evento. Segnala nella richiesta eventuali esigenze di catering, tecniche o di accessibilità, così il team potrà confermare le opzioni disponibili.' },
+        { q: 'Fornite catering e bar?', a: 'Sì. Catering e servizio bar sono forniti in loco. Elementi tradizionali come una torta possono essere portati previo accordo.' },
+        { q: 'Possiamo portare un nostro fotografo?', a: 'Sì. La documentazione fotografica può essere affidata a un fotografo scelto dall\'organizzatore.' },
+        { q: 'Come si blocca una data?', a: 'La data si conferma con contratto e acconto, con il saldo dovuto prima dell\'evento. I dettagli si concordano caso per caso.' },
       ],
     },
     finalCta: {
@@ -432,6 +447,7 @@ const it: UI = {
       date: 'Data preferita',
       dateFlexible: 'La data è flessibile',
       space: 'Spazio preferito',
+      spacePlaceholder: 'Scegli lo spazio',
       spaceOptions: {
         cork: 'The Cork',
         sisi: 'SiSi',

@@ -340,6 +340,18 @@ const de: UI = {
         { title: 'Private Markenevents', body: 'Geschlossene Events, auf die Marke zugeschnitten.' },
       ],
     },
+    included: {
+      heading: 'Was wir bereitstellen',
+      intro: 'Die Eventbetreuung übernehmen wir - von Bar und Catering bis zur musikalischen Begleitung.',
+      items: [
+        { title: 'Bar & Barpersonal', body: 'Vollständige Bar mit professionellem Service und optionaler Open Bar mit Cocktails.' },
+        { title: 'Catering', body: 'Menü und Catering, abgestimmt auf dein Event.' },
+        { title: 'Musik', body: 'DJ und Live-Musik - Umfang nach Absprache.' },
+        { title: 'Garderobe', body: 'Garderobenservice für deine Gäste.' },
+        { title: 'Reinigungsservice', body: 'Laufende Reinigung während des gesamten Events.' },
+        { title: 'Koordination', body: 'Technische und organisatorische Unterstützung in jeder Phase.' },
+      ],
+    },
     spaces: {
       heading: 'Räume',
       theCork: {
@@ -401,6 +413,9 @@ const de: UI = {
         { q: 'Lässt sich das Eventformat anpassen?', a: 'Ja, wir gestalten das Konzept nach dem Event. Beschreibe deine Wünsche in der Anfrage, und das Team bestätigt die verfügbaren Optionen.' },
         { q: 'Wie frage ich die Verfügbarkeit an?', a: 'Sende eine Anfrage über das Formular auf dieser Seite oder ruf an bzw. schreib uns.' },
         { q: 'Was sollte die Anfrage enthalten?', a: 'Deinen Wunschtermin, die Gästezahl und das Eventformat. Bitte vermerke Catering-, Technik- oder Barrierefreiheitswünsche in der Anfrage, damit das Team die verfügbaren Optionen bestätigen kann.' },
+        { q: 'Stellt ihr Catering und Bar?', a: 'Ja. Catering und Barservice stellen wir vor Ort. Traditionelle Elemente wie eine Torte können nach vorheriger Absprache mitgebracht werden.' },
+        { q: 'Können wir einen eigenen Fotografen mitbringen?', a: 'Ja. Die fotografische Dokumentation kann ein vom Organisator gewählter Fotograf übernehmen.' },
+        { q: 'Wie sichere ich mir einen Termin?', a: 'Der Termin wird mit Vertrag und Anzahlung bestätigt, der Restbetrag ist vor dem Event fällig. Die Details stimmen wir individuell ab.' },
       ],
     },
     finalCta: {
@@ -433,6 +448,7 @@ const de: UI = {
       date: 'Wunschtermin',
       dateFlexible: 'Der Termin ist flexibel',
       space: 'Bevorzugter Raum',
+      spacePlaceholder: 'Bereich wählen',
       spaceOptions: {
         cork: 'The Cork',
         sisi: 'SiSi',

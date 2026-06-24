@@ -3,6 +3,7 @@ import { type Locale } from '../../i18n/config';
 import { localizedPath } from '../../i18n/routes';
 import { useTranslations } from '../../i18n/t';
 import { CONTACT } from '../../data/site';
+import CustomSelect from '../CustomSelect.astro';
 
 interface Props { locale: Locale }
 const { locale } = Astro.props;
@@ -71,11 +72,16 @@ const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
         </div>
 
         <div class="b2b-field">
-          <label for="b2b-type">{f.eventType} <span class="req" aria-hidden="true">*</span></label>
-          <select id="b2b-type" name="event_type" required aria-describedby="err-event_type">
-            <option value="">{f.eventTypePlaceholder}</option>
-            {eventTypeKeys.map((k) => <option value={k}>{f.eventTypeOptions[k]}</option>)}
-          </select>
+          <label id="lbl-b2b-type" for="b2b-type">{f.eventType} <span class="req" aria-hidden="true">*</span></label>
+          <CustomSelect
+            id="b2b-type"
+            name="event_type"
+            required
+            placeholder={f.eventTypePlaceholder}
+            labelledby="lbl-b2b-type"
+            describedby="err-event_type"
+            options={eventTypeKeys.map((k) => ({ value: k, label: f.eventTypeOptions[k] }))}
+          />
           <p class="b2b-field-error" id="err-event_type" data-error hidden></p>
         </div>
 
@@ -95,11 +101,14 @@ const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
         </div>
 
         <div class="b2b-field">
-          <label for="b2b-space">{f.space} <span class="opt">{f.optional}</span></label>
-          <select id="b2b-space" name="space">
-            <option value=""></option>
-            {spaceKeys.map((k) => <option value={k}>{f.spaceOptions[k]}</option>)}
-          </select>
+          <label id="lbl-b2b-space" for="b2b-space">{f.space} <span class="opt">{f.optional}</span></label>
+          <CustomSelect
+            id="b2b-space"
+            name="space"
+            placeholder={f.spacePlaceholder}
+            labelledby="lbl-b2b-space"
+            options={spaceKeys.map((k) => ({ value: k, label: f.spaceOptions[k] }))}
+          />
         </div>
 
         <div class="b2b-field">

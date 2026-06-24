@@ -339,6 +339,18 @@ const en: UI = {
         { title: 'Private brand events', body: 'Closed events tailored to the brand.' },
       ],
     },
+    included: {
+      heading: 'What we provide',
+      intro: 'We take care of the event - from the bar and catering to live music.',
+      items: [
+        { title: 'Bar & bartenders', body: 'A full bar with professional service and an optional open bar with cocktails.' },
+        { title: 'Catering', body: 'Menu and catering tailored to your event.' },
+        { title: 'Music', body: 'DJ and live music - scope agreed with you.' },
+        { title: 'Cloakroom', body: 'Cloakroom service for your guests.' },
+        { title: 'Cleaning service', body: 'Ongoing cleaning throughout the event.' },
+        { title: 'Coordination', body: 'Technical and organisational support at every stage.' },
+      ],
+    },
     spaces: {
       heading: 'Spaces',
       theCork: {
@@ -400,6 +412,9 @@ const en: UI = {
         { q: 'Can the event format be tailored?', a: 'Yes, we shape the concept to the event. Describe your needs in the enquiry and the team will confirm the available options.' },
         { q: 'How do I check availability?', a: 'Send an enquiry through the form on this page, or call or email us.' },
         { q: 'What should I include in the enquiry?', a: 'Your preferred date, the number of guests and the event format. Please flag any catering, technical or accessibility requirements in the enquiry so the team can confirm the available options.' },
+        { q: 'Do you provide catering and a bar?', a: 'Yes. Catering and bar service are provided on site. Traditional items such as a cake may be brought in by prior arrangement.' },
+        { q: 'Can we bring our own photographer?', a: 'Yes. Photography may be handled by a photographer of the organiser\'s choice.' },
+        { q: 'How do I secure a date?', a: 'The date is confirmed with a contract and a deposit, with the balance due before the event. Details are agreed individually.' },
       ],
     },
     finalCta: {
@@ -432,6 +447,7 @@ const en: UI = {
       date: 'Preferred date',
       dateFlexible: 'The date is flexible',
       space: 'Preferred space',
+      spacePlaceholder: 'Select a space',
       spaceOptions: {
         cork: 'The Cork',
         sisi: 'SiSi',

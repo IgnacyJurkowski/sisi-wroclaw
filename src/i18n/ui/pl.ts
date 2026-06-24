@@ -343,6 +343,18 @@ const pl = {
         { title: 'Prywatne eventy marek', body: 'Zamknięte wydarzenia dopasowane do charakteru marki.' },
       ],
     },
+    included: {
+      heading: 'Co zapewniamy',
+      intro: 'Obsługę wydarzenia bierzemy na siebie - od baru i cateringu po oprawę muzyczną.',
+      items: [
+        { title: 'Bar i barmani', body: 'Profesjonalny bar z obsługą barmańską oraz opcją open baru z koktajlami.' },
+        { title: 'Catering', body: 'Menu i catering dopasowane do charakteru wydarzenia.' },
+        { title: 'Oprawa muzyczna', body: 'DJ oraz muzyka na żywo - zakres do uzgodnienia.' },
+        { title: 'Szatnia', body: 'Obsługa szatni dla Twoich gości.' },
+        { title: 'Serwis sprzątający', body: 'Bieżący serwis czystości przez cały czas trwania wydarzenia.' },
+        { title: 'Koordynacja', body: 'Wsparcie techniczne i organizacyjne na każdym etapie.' },
+      ],
+    },
     spaces: {
       heading: 'Przestrzenie',
       theCork: {
@@ -404,6 +416,9 @@ const pl = {
         { q: 'Czy format wydarzenia można dopasować?', a: 'Tak, koncepcję dopasowujemy do charakteru wydarzenia. Opisz swoje potrzeby w zapytaniu, a zespół potwierdzi dostępne opcje.' },
         { q: 'Jak zapytać o dostępność terminu?', a: 'Wyślij zapytanie przez formularz na tej stronie albo zadzwoń lub napisz do nas.' },
         { q: 'Jakie informacje warto podać w zapytaniu?', a: 'Planowany termin, liczbę gości i format wydarzenia. Wymagania dotyczące cateringu, techniki czy dostępności prosimy zaznaczyć w zapytaniu, aby zespół potwierdził dostępne opcje.' },
+        { q: 'Czy zapewniacie catering i bar?', a: 'Tak. Catering i obsługę barmańską zapewniamy na miejscu. Elementy tradycyjne, jak tort, można przynieść po wcześniejszym uzgodnieniu.' },
+        { q: 'Czy możemy przyjść z własnym fotografem?', a: 'Tak. Dokumentację fotograficzną może realizować fotograf wybrany przez Organizatora.' },
+        { q: 'Jak zarezerwować termin?', a: 'Termin potwierdzamy umową i zaliczką, a pozostała część jest płatna przed wydarzeniem. Szczegóły ustalamy indywidualnie.' },
       ],
     },
     finalCta: {
@@ -436,6 +451,7 @@ const pl = {
       date: 'Preferowany termin',
       dateFlexible: 'Termin jest elastyczny',
       space: 'Preferowana przestrzeń',
+      spacePlaceholder: 'Wybierz przestrzeń',
       spaceOptions: {
         cork: 'The Cork',
         sisi: 'SiSi',
