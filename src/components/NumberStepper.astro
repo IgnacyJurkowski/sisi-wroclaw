@@ -1,0 +1,122 @@
+---
+/* Custom number stepper. Keeps a native <input type="number"> (so it stays a
+   real spinbutton — Up/Down arrows work, value submits and the form validator
+   reads it) but hides the browser's default spinner and adds themed - / +
+   buttons. The buttons are not in the tab order: keyboard users use the input's
+   native arrow keys, the buttons are a pointer affordance. */
+interface Props {
+  id: string;
+  name: string;
+  min?: number;
+  required?: boolean;
+  describedby?: string;
+  decreaseLabel: string;
+  increaseLabel: string;
+}
+const { id, name, min = 1, required = false, describedby, decreaseLabel, increaseLabel } = Astro.props;
+---
+
+<div class="b2b-stepper" data-stepper data-min={min}>
+  <button type="button" class="b2b-stepper-btn" data-step="-1" aria-label={decreaseLabel} tabindex="-1">
+    <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+      <path d="M3 8h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+    </svg>
+  </button>
+  <input
+    id={id}
+    name={name}
+    class="b2b-stepper-input"
+    type="number"
+    min={min}
+    inputmode="numeric"
+    required={required}
+    aria-describedby={describedby}
+    data-stepper-input
+  />
+  <button type="button" class="b2b-stepper-btn" data-step="1" aria-label={increaseLabel} tabindex="-1">
+    <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+      <path d="M8 3v10M3 8h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+    </svg>
+  </button>
+</div>
+
+<style>
+  .b2b-stepper {
+    display: flex;
+    align-items: stretch;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    background: rgba(255, 255, 255, 0.03);
+    overflow: hidden;
+  }
+  .b2b-stepper:focus-within {
+    outline: 2px solid rgba(237, 219, 194, 0.5);
+    outline-offset: 1px;
+    border-color: transparent;
+  }
+  .b2b-stepper:has(input[aria-invalid='true']) { border-color: #c25c74; }
+  .b2b-stepper-input {
+    flex: 1;
+    min-width: 0;
+    text-align: center;
+    border: none;
+    background: transparent;
+    outline: none;
+    color: var(--cream);
+    font: inherit;
+    font-size: 14px;
+    padding: 11px 6px;
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+  .b2b-stepper-input::-webkit-outer-spin-button,
+  .b2b-stepper-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .b2b-stepper-btn {
+    flex-shrink: 0;
+    width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(237, 219, 194, 0.05);
+    border: none;
+    color: var(--cream);
+    cursor: pointer;
+    transition: background 150ms ease;
+  }
+  .b2b-stepper-btn:first-child { border-right: 1px solid var(--line); }
+  .b2b-stepper-btn:last-child { border-left: 1px solid var(--line); }
+  .b2b-stepper-btn:hover { background: rgba(237, 219, 194, 0.14); }
+  .b2b-stepper-btn:active { background: rgba(237, 219, 194, 0.2); }
+</style>
+
+<script>
+  function initStepper(root: HTMLElement): void {
+    const input = root.querySelector<HTMLInputElement>('[data-stepper-input]');
+    if (!input) return;
+    const min = parseInt(root.getAttribute('data-min') || '1', 10);
+
+    root.querySelectorAll<HTMLButtonElement>('[data-step]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const step = parseInt(btn.getAttribute('data-step') || '0', 10);
+        const cur = parseInt(input.value, 10);
+        const next = Number.isNaN(cur) ? min : Math.max(min, cur + step);
+        input.value = String(next);
+        input.removeAttribute('aria-invalid');
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+      });
+    });
+
+    input.addEventListener('blur', () => {
+      const raw = input.value.trim();
+      if (raw === '') return;
+      const n = parseInt(raw, 10);
+      input.value = Number.isNaN(n) ? '' : String(Math.max(min, n));
+    });
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-stepper]').forEach(initStepper);
+</script>

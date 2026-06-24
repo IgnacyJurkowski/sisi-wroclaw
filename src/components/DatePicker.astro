@@ -1,0 +1,378 @@
+---
+/* Custom (rendered) date picker for the enquiry form.
+   - Two modes: a specific date or a date range.
+   - A readonly text input holds the localized display value and submits as the
+     existing `preferred_date` field (so the form validator keeps working); a
+     hidden `<name>_iso` field carries an unambiguous machine value.
+   - The calendar grid is keyboard-navigable (roving tabindex + arrow keys) and
+     month/weekday names come from Intl in the page locale. Past dates are
+     disabled. No third-party library, no native date popup. */
+interface Props {
+  id: string;
+  name: string;
+  locale: string;
+  required?: boolean;
+  describedby?: string;
+  placeholder: string;
+  modeSingle: string;
+  modeRange: string;
+  prevMonth: string;
+  nextMonth: string;
+  clear: string;
+}
+const {
+  id,
+  name,
+  locale,
+  required = false,
+  describedby,
+  placeholder,
+  modeSingle,
+  modeRange,
+  prevMonth,
+  nextMonth,
+  clear,
+} = Astro.props;
+---
+
+<div class="b2b-dp" data-dp data-locale={locale}>
+  <div class="b2b-dp-modes" role="group">
+    <button type="button" class="b2b-dp-mode is-on" data-dp-mode="single" aria-pressed="true">{modeSingle}</button>
+    <button type="button" class="b2b-dp-mode" data-dp-mode="range" aria-pressed="false">{modeRange}</button>
+  </div>
+
+  <div class="b2b-dp-control">
+    <input
+      id={id}
+      name={name}
+      class="b2b-dp-input"
+      type="text"
+      readonly
+      required={required}
+      placeholder={placeholder}
+      aria-describedby={describedby}
+      aria-haspopup="dialog"
+      aria-expanded="false"
+      autocomplete="off"
+      data-field-date
+      data-dp-input
+    />
+    <input type="hidden" name={`${name}_iso`} data-dp-iso />
+    <button type="button" class="b2b-dp-clear" data-dp-clear hidden aria-label={clear}>
+      <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+        <path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+      </svg>
+    </button>
+    <svg class="b2b-dp-icon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+      <rect x="2" y="3" width="12" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="1.3" />
+      <path d="M2 6h12M5.5 1.5v3M10.5 1.5v3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+    </svg>
+
+    <div class="b2b-dp-pop" data-dp-pop hidden role="dialog" aria-label={placeholder} aria-modal="false">
+      <div class="b2b-dp-nav">
+        <button type="button" class="b2b-dp-navbtn" data-dp-prev aria-label={prevMonth}>
+          <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3l-5 5 5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <span class="b2b-dp-title" data-dp-title aria-live="polite"></span>
+        <button type="button" class="b2b-dp-navbtn" data-dp-next aria-label={nextMonth}>
+          <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <div class="b2b-dp-weekdays" data-dp-weekdays aria-hidden="true"></div>
+      <div class="b2b-dp-grid" role="grid" data-dp-grid></div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .b2b-dp { display: flex; flex-direction: column; gap: 8px; }
+  .b2b-dp-modes { display: inline-flex; gap: 4px; padding: 3px; border-radius: 9px; background: rgba(255,255,255,0.03); border: 1px solid var(--line); align-self: flex-start; }
+  .b2b-dp-mode {
+    border: none; background: transparent; color: rgba(237,219,194,0.6);
+    font: inherit; font-size: 12px; padding: 6px 12px; border-radius: 6px; cursor: pointer;
+    transition: background 150ms ease, color 150ms ease;
+  }
+  .b2b-dp-mode:hover { color: var(--cream); }
+  .b2b-dp-mode.is-on { background: rgba(237,219,194,0.12); color: var(--cream); }
+
+  .b2b-dp-control { position: relative; }
+  .b2b-dp-input {
+    width: 100%; padding: 11px 64px 11px 13px; border-radius: 9px;
+    border: 1px solid var(--line); background: rgba(255,255,255,0.03);
+    color: var(--cream); font: inherit; font-size: 14px; cursor: pointer;
+  }
+  .b2b-dp-input::placeholder { color: var(--text-faint); }
+  .b2b-dp-input:focus { outline: 2px solid rgba(237,219,194,0.5); outline-offset: 1px; border-color: transparent; }
+  .b2b-dp-input[aria-invalid='true'] { border-color: #c25c74; }
+  .b2b-dp-icon { position: absolute; right: 13px; top: 50%; transform: translateY(-50%); color: rgba(237,219,194,0.6); pointer-events: none; }
+  .b2b-dp-clear {
+    position: absolute; right: 38px; top: 50%; transform: translateY(-50%);
+    width: 22px; height: 22px; display: flex; align-items: center; justify-content: center;
+    border: none; background: rgba(237,219,194,0.1); border-radius: 50%; color: var(--cream); cursor: pointer;
+  }
+  .b2b-dp-clear:hover { background: rgba(237,219,194,0.22); }
+
+  .b2b-dp-pop {
+    position: absolute; z-index: 45; top: calc(100% + 6px); left: 0;
+    width: 300px; max-width: calc(100vw - 48px); padding: 12px;
+    background: #2a0a12; border: 1px solid rgba(237,219,194,0.16); border-radius: 12px;
+    box-shadow: 0 18px 44px rgba(0,0,0,0.5);
+  }
+  .b2b-dp-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .b2b-dp-navbtn {
+    width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+    border: none; background: transparent; color: var(--cream); border-radius: 8px; cursor: pointer;
+  }
+  .b2b-dp-navbtn:hover { background: rgba(237,219,194,0.12); }
+  .b2b-dp-title { font-size: 14px; font-weight: 600; color: var(--cream); text-transform: capitalize; }
+  .b2b-dp-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-bottom: 4px; }
+  .b2b-dp-weekdays span { text-align: center; font-size: 11px; color: var(--text-faint); padding: 4px 0; text-transform: uppercase; }
+  .b2b-dp-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+  .b2b-dp-day {
+    aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+    border: none; background: transparent; color: var(--cream); font: inherit; font-size: 13px;
+    border-radius: 8px; cursor: pointer;
+  }
+  .b2b-dp-day:hover:not(:disabled) { background: rgba(237,219,194,0.12); }
+  .b2b-dp-day.is-other { color: rgba(237,219,194,0.28); }
+  .b2b-dp-day:disabled { color: rgba(237,219,194,0.18); cursor: default; }
+  .b2b-dp-day.is-range { background: rgba(251,210,149,0.14); border-radius: 0; }
+  .b2b-dp-day.is-edge { background: var(--cream); color: #1a120b; font-weight: 700; }
+  .b2b-dp-day.is-start { border-top-left-radius: 8px; border-bottom-left-radius: 8px; }
+  .b2b-dp-day.is-end { border-top-right-radius: 8px; border-bottom-right-radius: 8px; }
+  .b2b-dp-day:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
+
+  @media (max-width: 640px) { .b2b-dp-pop { width: 280px; } }
+</style>
+
+<script>
+  type Mode = 'single' | 'range';
+
+  function startOfDay(d: Date): Date {
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  }
+  function addDays(d: Date, n: number): Date {
+    const x = new Date(d);
+    x.setDate(x.getDate() + n);
+    return x;
+  }
+  function sameDay(a: Date | null, b: Date | null): boolean {
+    return !!a && !!b && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+  }
+  function iso(d: Date): string {
+    const p = (n: number) => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+  }
+  // Monday-first column index (0..6) for a JS day (0=Sun).
+  function col(d: Date): number {
+    return (d.getDay() + 6) % 7;
+  }
+
+  function initDatePicker(root: HTMLElement): void {
+    const locale = root.getAttribute('data-locale') || 'pl';
+    const input = root.querySelector<HTMLInputElement>('[data-dp-input]');
+    const isoEl = root.querySelector<HTMLInputElement>('[data-dp-iso]');
+    const pop = root.querySelector<HTMLElement>('[data-dp-pop]');
+    const grid = root.querySelector<HTMLElement>('[data-dp-grid]');
+    const weekdays = root.querySelector<HTMLElement>('[data-dp-weekdays]');
+    const titleEl = root.querySelector<HTMLElement>('[data-dp-title]');
+    const clearBtn = root.querySelector<HTMLButtonElement>('[data-dp-clear]');
+    const modeBtns = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-dp-mode]'));
+    if (!input || !isoEl || !pop || !grid || !weekdays || !titleEl || !clearBtn) return;
+
+    const today = startOfDay(new Date());
+    const fmtTitle = new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric' });
+    const fmtDay = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short', year: 'numeric' });
+    const fmtWeekday = new Intl.DateTimeFormat(locale, { weekday: 'short' });
+
+    let mode: Mode = 'single';
+    let single: Date | null = null;
+    let start: Date | null = null;
+    let end: Date | null = null;
+    let view = new Date(today.getFullYear(), today.getMonth(), 1);
+    let focus = new Date(today);
+    let open = false;
+
+    // Weekday headers (Mon..Sun).
+    const ref = new Date(2024, 0, 1); // a Monday
+    let wk = '';
+    for (let i = 0; i < 7; i++) wk += `<span>${fmtWeekday.format(addDays(ref, i))}</span>`;
+    weekdays.innerHTML = wk;
+
+    function setMode(m: Mode): void {
+      if (mode === m) return;
+      mode = m;
+      modeBtns.forEach((b) => {
+        const on = b.getAttribute('data-dp-mode') === m;
+        b.classList.toggle('is-on', on);
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+      clearValue();
+      if (open) render();
+    }
+
+    function showValue(): void {
+      if (mode === 'single' && single) {
+        input!.value = fmtDay.format(single);
+        isoEl!.value = iso(single);
+      } else if (mode === 'range' && start && end) {
+        input!.value = `${fmtDay.format(start)} – ${fmtDay.format(end)}`;
+        isoEl!.value = `${iso(start)}/${iso(end)}`;
+      } else if (mode === 'range' && start) {
+        input!.value = fmtDay.format(start);
+        isoEl!.value = iso(start);
+      } else {
+        input!.value = '';
+        isoEl!.value = '';
+      }
+      clearBtn!.hidden = !input!.value;
+      if (input!.value) input!.removeAttribute('aria-invalid');
+    }
+
+    function clearValue(): void {
+      single = null; start = null; end = null;
+      showValue();
+    }
+
+    function render(): void {
+      titleEl!.textContent = fmtTitle.format(view);
+      const first = new Date(view.getFullYear(), view.getMonth(), 1);
+      const gridStart = addDays(first, -col(first));
+      let html = '';
+      for (let i = 0; i < 42; i++) {
+        const d = addDays(gridStart, i);
+        const disabled = d < today;
+        const other = d.getMonth() !== view.getMonth();
+        const cls = ['b2b-dp-day'];
+        if (other) cls.push('is-other');
+        let inRange = false, isStart = false, isEnd = false, isSel = false;
+        if (mode === 'range' && start && end) {
+          if (d >= start && d <= end) inRange = true;
+          if (sameDay(d, start)) isStart = true;
+          if (sameDay(d, end)) isEnd = true;
+        } else if (mode === 'range' && start) {
+          if (sameDay(d, start)) { isStart = true; isEnd = true; }
+        } else if (mode === 'single' && single) {
+          if (sameDay(d, single)) isSel = true;
+        }
+        if (inRange && !isStart && !isEnd) cls.push('is-range');
+        if (isStart) cls.push('is-range', 'is-start', 'is-edge');
+        if (isEnd) cls.push('is-range', 'is-end', 'is-edge');
+        if (isSel) cls.push('is-edge');
+        const tab = sameDay(d, focus) ? '0' : '-1';
+        html += `<button type="button" class="${cls.join(' ')}" role="gridcell" data-iso="${iso(d)}" tabindex="${tab}"${disabled ? ' disabled aria-disabled="true"' : ''}${(isSel || isStart || isEnd) ? ' aria-selected="true"' : ''}>${d.getDate()}</button>`;
+      }
+      grid!.innerHTML = html;
+    }
+
+    function focusDay(): void {
+      const el = grid!.querySelector<HTMLButtonElement>('[tabindex="0"]');
+      if (el) el.focus();
+    }
+
+    function setView(d: Date): void {
+      view = new Date(d.getFullYear(), d.getMonth(), 1);
+    }
+
+    function openPop(): void {
+      if (open) return;
+      open = true;
+      pop!.hidden = false;
+      input!.setAttribute('aria-expanded', 'true');
+      const anchor = mode === 'single' ? single : start;
+      focus = anchor && anchor >= today ? new Date(anchor) : new Date(today);
+      setView(focus);
+      render();
+      document.addEventListener('click', onDocClick, true);
+      window.setTimeout(focusDay, 0);
+    }
+    function closePop(focusInput: boolean): void {
+      if (!open) return;
+      open = false;
+      pop!.hidden = true;
+      input!.setAttribute('aria-expanded', 'false');
+      document.removeEventListener('click', onDocClick, true);
+      if (focusInput) input!.focus();
+    }
+    function onDocClick(e: MouseEvent): void {
+      if (!root.contains(e.target as Node)) closePop(false);
+    }
+
+    function pick(d: Date): void {
+      if (d < today) return;
+      if (mode === 'single') {
+        single = d;
+        showValue();
+        closePop(true);
+      } else {
+        if (!start || (start && end)) {
+          start = d; end = null;
+          showValue();
+          render();
+        } else if (d < start) {
+          start = d; end = null;
+          showValue();
+          render();
+        } else {
+          end = d;
+          showValue();
+          closePop(true);
+        }
+      }
+    }
+
+    function moveFocus(d: Date): void {
+      const clamped = d < today ? new Date(today) : d;
+      focus = clamped;
+      if (clamped.getMonth() !== view.getMonth() || clamped.getFullYear() !== view.getFullYear()) setView(clamped);
+      render();
+      focusDay();
+    }
+
+    // --- events ---
+    modeBtns.forEach((b) => b.addEventListener('click', () => setMode(b.getAttribute('data-dp-mode') as Mode)));
+
+    input.addEventListener('click', () => (open ? closePop(true) : openPop()));
+    input.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPop(); }
+    });
+
+    clearBtn.addEventListener('click', () => { clearValue(); input!.focus(); });
+
+    root.querySelector('[data-dp-prev]')!.addEventListener('click', () => { setView(addDays(new Date(view), -1)); render(); });
+    root.querySelector('[data-dp-next]')!.addEventListener('click', () => { view = new Date(view.getFullYear(), view.getMonth() + 1, 1); render(); });
+
+    grid.addEventListener('click', (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-iso]');
+      if (!btn || btn.disabled) return;
+      pick(new Date(btn.getAttribute('data-iso') + 'T00:00:00'));
+    });
+
+    grid.addEventListener('keydown', (e: KeyboardEvent) => {
+      switch (e.key) {
+        case 'ArrowLeft': e.preventDefault(); moveFocus(addDays(focus, -1)); break;
+        case 'ArrowRight': e.preventDefault(); moveFocus(addDays(focus, 1)); break;
+        case 'ArrowUp': e.preventDefault(); moveFocus(addDays(focus, -7)); break;
+        case 'ArrowDown': e.preventDefault(); moveFocus(addDays(focus, 7)); break;
+        case 'Home': e.preventDefault(); moveFocus(addDays(focus, -col(focus))); break;
+        case 'End': e.preventDefault(); moveFocus(addDays(focus, 6 - col(focus))); break;
+        case 'PageUp': e.preventDefault(); moveFocus(new Date(focus.getFullYear(), focus.getMonth() - 1, focus.getDate())); break;
+        case 'PageDown': e.preventDefault(); moveFocus(new Date(focus.getFullYear(), focus.getMonth() + 1, focus.getDate())); break;
+        case 'Enter': case ' ': e.preventDefault(); pick(new Date(focus)); break;
+        case 'Escape': e.preventDefault(); closePop(true); break;
+      }
+    });
+
+    const form = input.closest('form');
+    if (form) form.addEventListener('reset', () => window.setTimeout(() => { mode = 'single'; setModeButtons(); clearValue(); }, 0));
+    function setModeButtons(): void {
+      modeBtns.forEach((b) => {
+        const on = b.getAttribute('data-dp-mode') === 'single';
+        b.classList.toggle('is-on', on);
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+    }
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-dp]').forEach(initDatePicker);
+</script>

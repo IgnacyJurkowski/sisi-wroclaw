@@ -4,6 +4,8 @@ import { localizedPath } from '../../i18n/routes';
 import { useTranslations } from '../../i18n/t';
 import { CONTACT } from '../../data/site';
 import CustomSelect from '../CustomSelect.astro';
+import NumberStepper from '../NumberStepper.astro';
+import DatePicker from '../DatePicker.astro';
 
 interface Props { locale: Locale }
 const { locale } = Astro.props;
@@ -87,13 +89,33 @@ const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
 
         <div class="b2b-field">
           <label for="b2b-guests">{f.guests} <span class="req" aria-hidden="true">*</span></label>
-          <input id="b2b-guests" name="guests" type="number" min="1" inputmode="numeric" required aria-describedby="err-guests" />
+          <NumberStepper
+            id="b2b-guests"
+            name="guests"
+            min={1}
+            required
+            describedby="err-guests"
+            decreaseLabel={f.guestsDecrease}
+            increaseLabel={f.guestsIncrease}
+          />
           <p class="b2b-field-error" id="err-guests" data-error hidden></p>
         </div>
 
         <div class="b2b-field">
           <label for="b2b-date">{f.date} <span class="req" aria-hidden="true">*</span></label>
-          <input id="b2b-date" name="preferred_date" type="text" aria-describedby="err-preferred_date" data-field-date />
+          <DatePicker
+            id="b2b-date"
+            name="preferred_date"
+            locale={locale}
+            required
+            describedby="err-preferred_date"
+            placeholder={f.datePlaceholder}
+            modeSingle={f.dateModeSingle}
+            modeRange={f.dateModeRange}
+            prevMonth={f.datePrevMonth}
+            nextMonth={f.dateNextMonth}
+            clear={f.dateClear}
+          />
           <label class="b2b-check">
             <input type="checkbox" name="date_flexible" value="yes" data-field-flexible /> {f.dateFlexible}
           </label>
@@ -269,8 +291,24 @@ const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
     outline: 2px solid rgba(237,219,194,0.5); outline-offset: 1px; border-color: transparent;
   }
   .b2b-field [aria-invalid='true'] { border-color: #c25c74; }
-  .b2b-check { flex-direction: row !important; align-items: flex-start; gap: 10px; font-size: 13px; line-height: 1.5; color: rgba(237,219,194,0.7); }
-  .b2b-check input { width: auto; margin-top: 2px; }
+  .b2b-check { flex-direction: row !important; align-items: flex-start; gap: 10px; font-size: 13px; line-height: 1.5; color: rgba(237,219,194,0.7); cursor: pointer; }
+  /* Custom tick: hide the native box and draw our own. */
+  .b2b-check input[type="checkbox"] {
+    appearance: none; -webkit-appearance: none;
+    flex-shrink: 0; width: 18px; height: 18px; margin: 1px 0 0; padding: 0;
+    border: 1px solid var(--line); border-radius: 5px;
+    background: rgba(255,255,255,0.03); cursor: pointer; position: relative;
+    transition: background 150ms ease, border-color 150ms ease;
+  }
+  .b2b-check input[type="checkbox"]:hover { border-color: rgba(237,219,194,0.4); }
+  .b2b-check input[type="checkbox"]:checked { background: var(--cream); border-color: var(--cream); }
+  .b2b-check input[type="checkbox"]:checked::after {
+    content: ''; position: absolute; left: 5px; top: 1px;
+    width: 5px; height: 9px; border: solid #1a120b; border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  .b2b-check input[type="checkbox"]:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .b2b-check input[type="checkbox"][aria-invalid='true'] { border-color: #c25c74; }
   .b2b-consent a { color: var(--cream); text-decoration: underline; text-underline-offset: 3px; }
   .b2b-field-error { color: #e7889b; font-size: 12px; }
   .b2b-form-actions { margin-top: 26px; }
