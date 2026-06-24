@@ -125,31 +125,20 @@ html { scrollbar-width: thin; scrollbar-color: rgba(237, 219, 194, 0.28) transpa
   height: 60px;
   padding: 0 14px 0 20px;
   display: flex; align-items: center; gap: 28px;
-  /* Frosted glass: a light, translucent warm base lets the blurred backdrop
-     show through, and brightness() lifts dark content (e.g. the hero top) so
-     the frost stays visible even when there is little contrast behind it.
-     Border stays uniform on all 4 edges. */
-  background:
-    linear-gradient(180deg, rgba(237, 219, 194, 0.10), rgba(237, 219, 194, 0.03) 55%),
-    rgba(20, 15, 12, 0.3);
-  backdrop-filter: blur(22px) saturate(150%) brightness(1.4);
-  -webkit-backdrop-filter: blur(22px) saturate(150%) brightness(1.4);
-  border: 1.5px solid rgba(237, 219, 194, 0.2);
+  /* Glass effect from https://css.glass */
+  background: rgba(39, 7, 15, 0.19);
   border-radius: 16px;
-  box-shadow:
-    0 12px 40px rgba(0, 0, 0, 0.45),
-    inset 0 0 30px rgba(237, 219, 194, 0.04);   /* even, soft inner glow */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(7.5px);
+  -webkit-backdrop-filter: blur(7.5px);
+  border: 1px solid rgba(39, 7, 15, 0.5);
   transition: background 300ms ease, border-color 300ms ease, box-shadow 300ms ease;
 }
 #main-nav.nav-scrolled {
-  /* a touch more grounded once scrolling over content, still frosted */
-  background:
-    linear-gradient(180deg, rgba(237, 219, 194, 0.08), rgba(237, 219, 194, 0.02) 55%),
-    rgba(20, 15, 12, 0.46);
-  border-color: rgba(237, 219, 194, 0.26);
-  box-shadow:
-    0 14px 46px rgba(0, 0, 0, 0.6),
-    inset 0 0 30px rgba(237, 219, 194, 0.03);
+  /* Slightly more grounded once scrolling over content - same glass, more tint
+     so the nav links stay legible against busy sections below the hero. */
+  background: rgba(39, 7, 15, 0.45);
+  box-shadow: 0 6px 34px rgba(0, 0, 0, 0.22);
 }
 
 .nav-logo { flex-shrink: 0; display: flex; align-items: center; }
