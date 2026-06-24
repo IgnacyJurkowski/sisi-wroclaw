@@ -113,7 +113,7 @@ const en: UI = {
     bookTable: 'Book a table',
     calendar: 'Event calendar',
     seeAllEvents: 'See all events',
-    seeFullMenu: 'See the full menu',
+    seeFullMenu: 'View the bar menu',
     discoverR32: 'Discover R32',
     enquire: 'Request a date',
     planEvent: 'Plan your event',

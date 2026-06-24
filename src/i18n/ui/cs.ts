@@ -113,7 +113,7 @@ const cs: UI = {
     bookTable: 'Rezervovat stůl',
     calendar: 'Kalendář akcí',
     seeAllEvents: 'Zobrazit všechny akce',
-    seeFullMenu: 'Zobrazit celé menu',
+    seeFullMenu: 'Zobrazit barový lístek',
     discoverR32: 'Objevte R32',
     enquire: 'Zeptat se na termín',
     planEvent: 'Naplánovat akci',

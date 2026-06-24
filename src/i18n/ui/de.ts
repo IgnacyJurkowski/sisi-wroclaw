@@ -114,7 +114,7 @@ const de: UI = {
     bookTable: 'Tisch buchen',
     calendar: 'Veranstaltungskalender',
     seeAllEvents: 'Alle Veranstaltungen',
-    seeFullMenu: 'Komplettes Menü ansehen',
+    seeFullMenu: 'Barkarte ansehen',
     discoverR32: 'R32 entdecken',
     enquire: 'Termin anfragen',
     planEvent: 'Event planen',

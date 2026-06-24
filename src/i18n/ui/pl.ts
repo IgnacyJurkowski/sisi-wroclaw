@@ -116,7 +116,7 @@ const pl = {
     bookTable: 'Zarezerwuj stolik',
     calendar: 'Kalendarz imprez',
     seeAllEvents: 'Zobacz wszystkie wydarzenia',
-    seeFullMenu: 'Zobacz pełne menu',
+    seeFullMenu: 'Zobacz kartę baru',
     discoverR32: 'Odkryj R32',
     enquire: 'Zapytaj o termin',
     planEvent: 'Zaplanuj wydarzenie',
