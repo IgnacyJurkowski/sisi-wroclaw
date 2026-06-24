@@ -1,36 +1,88 @@
 ---
-import { RESERVATION_URL } from '../../data/site';
+import { RESERVATION_URL, CONTACT } from '../../data/site';
+
+const mapHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(CONTACT.address)}`;
 ---
 
 <section id="rezerwacja" class="reservations">
-  <div class="container res-inner" data-reveal-group>
-    <span class="page-label" style="text-align:center;display:block;">Rezerwacje</span>
-    <h2 class="display res-title">Rezerwacje</h2>
-    <p class="res-body">
-      Zaplanuj wyjątkowy wieczór i zapewnij sobie komfortowe miejsce<br />
-      w sercu naszego klubu.
-    </p>
-    <a href={RESERVATION_URL} class="btn-cta" rel="noopener" target="_blank">Zarezerwuj</a>
-
-    <div class="res-contact">
-      <p><span>Rezerwacje</span><a href="tel:+48515126260">+48 515 126 260</a></p>
-      <p><span>Eventy firmowe</span><a href="tel:+48514032930">+48 514 032 930</a> · <a href="mailto:events@r32.com.pl">events@r32.com.pl</a></p>
+  <div class="container res-grid">
+    <div class="res-pitch" data-reveal>
+      <span class="page-label">Rezerwacje</span>
+      <h2 class="display res-title">Zarezerwuj stolik</h2>
+      <p class="res-body">
+        Zaplanuj wyjątkowy wieczór i zapewnij sobie komfortowe miejsce w sercu
+        naszego klubu. Rezerwacja online zajmuje chwilę - resztę zostaw nam.
+      </p>
+      <a href={RESERVATION_URL} class="btn-cta res-cta" rel="noopener" target="_blank">Zarezerwuj online</a>
+      <p class="res-reassure">Potwierdzenie od ręki · najlepsze stoliki znikają pierwsze</p>
     </div>
+
+    <aside class="sisi-card res-info" data-reveal>
+      <div class="res-row">
+        <span class="res-k">Godziny</span>
+        <span class="res-v">{CONTACT.hoursLabel}<br />{CONTACT.hours}</span>
+      </div>
+      <div class="res-row">
+        <span class="res-k">Adres</span>
+        <span class="res-v"><a href={mapHref} rel="noopener" target="_blank">{CONTACT.address}</a></span>
+      </div>
+      <div class="res-row">
+        <span class="res-k">Rezerwacje</span>
+        <span class="res-v"><a href={CONTACT.phoneHref}>{CONTACT.phone}</a></span>
+      </div>
+      <div class="res-row">
+        <span class="res-k">Eventy firmowe</span>
+        <span class="res-v">
+          <a href="tel:+48514032930">+48 514 032 930</a>
+          <a href="mailto:events@r32.com.pl">events@r32.com.pl</a>
+        </span>
+      </div>
+    </aside>
   </div>
 </section>
 
 <style>
-  .reservations { padding: 96px 0; }
-  .res-inner { max-width: 620px; text-align: center; }
-  .res-title { font-size: clamp(2rem, 5vw, 3.4rem); text-transform: uppercase; margin: 10px 0 20px; }
-  .res-body { color: rgba(237,219,194,0.6); font-size: 16px; line-height: 1.8; margin-bottom: 32px; }
-  .res-contact { margin-top: 48px; display: flex; flex-direction: column; gap: 12px; }
-  .res-contact p {
-    font-size: 14px; color: rgba(237,219,194,0.55);
-    display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+  .reservations { padding: 56px 0 96px; }
+  .res-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 48px; align-items: center;
+    max-width: 1040px; margin: 0 auto;
   }
-  .res-contact span { text-transform: uppercase; letter-spacing: 0.08em; font-size: 12px; color: rgba(237,219,194,0.35); align-self: center; }
-  .res-contact a { color: var(--cream); }
-  .res-contact a:hover { color: var(--cream-hover); }
-  @media (max-width: 600px) { .reservations { padding: 64px 0; } }
+  .res-title {
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    text-transform: uppercase; color: var(--cream);
+    margin: 12px 0 20px; line-height: 1.05;
+  }
+  .res-body {
+    color: rgba(237, 219, 194, 0.62); font-size: 16px; line-height: 1.8;
+    margin-bottom: 28px; max-width: 460px;
+  }
+  .res-cta { padding: 15px 34px; font-size: 13px; }
+  .res-reassure {
+    margin-top: 18px; font-size: 12px; letter-spacing: 0.03em;
+    color: rgba(237, 219, 194, 0.42);
+  }
+
+  .res-info { padding: 22px 30px; }
+  .res-row {
+    display: flex; justify-content: space-between; gap: 24px;
+    padding: 16px 0; border-bottom: 1px solid var(--line);
+  }
+  .res-row:last-child { border-bottom: none; }
+  .res-k {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--text-faint); white-space: nowrap; padding-top: 3px;
+  }
+  .res-v {
+    font-size: 14px; color: var(--cream); text-align: right;
+    line-height: 1.6; display: flex; flex-direction: column; gap: 2px;
+  }
+  .res-v a { color: var(--cream); }
+  .res-v a:hover { color: var(--cream-hover); }
+
+  @media (max-width: 820px) {
+    .res-grid { grid-template-columns: 1fr; gap: 30px; max-width: 520px; }
+  }
+  @media (max-width: 600px) { .reservations { padding: 32px 0 72px; } }
 </style>

@@ -338,8 +338,14 @@ footer::before {
 
 /* === RESPONSIVE === */
 @media (max-width: 860px) {
-  .nav-links, .nav-cta, .nav-social { display: none !important; }
-  #hamburger { display: flex; }
+  .nav-links, .nav-social { display: none !important; }
+  /* Keep booking one tap away on mobile: the CTA stays in the bar (compact),
+     pushed right, with the hamburger beside it. */
+  .nav-cta {
+    display: inline-flex; margin-left: auto;
+    padding: 8px 15px; font-size: 10px; letter-spacing: 0.06em;
+  }
+  #hamburger { display: flex; margin-left: 14px; }
   #main-nav { gap: 0; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
 }
