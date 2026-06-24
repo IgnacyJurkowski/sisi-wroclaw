@@ -77,17 +77,17 @@ export const CONTACT = {
 };
 
 /* Legal entity behind SiSi - powers the legal pages (Regulamin, Polityka
-   prywatności, Polityka cookies, Kontakt).
-   TODO(legal): fill in the real registration data below, and have a lawyer
-   review the final legal copy before relying on it. */
+   prywatności, Polityka cookies, Kontakt). Registration data from the KRS
+   register (KRS 0001085945, rejestr.io). Have a lawyer review the final legal
+   copy before relying on it. */
 export const COMPANY = {
-  legalName: 'UZUPEŁNIĆ: pełna nazwa firmy / spółki (np. R32 Sp. z o.o.)',
+  legalName: 'Rzeźnicza 32 Sp. z o.o.',
   tradeName: 'SiSi Wrocław',
-  street: 'Rzeźnicza 32',
+  street: 'Rzeźnicza 32-33',
   postalCity: '50-130 Wrocław',
-  nip: 'UZUPEŁNIĆ: NIP',
-  regon: 'UZUPEŁNIĆ: REGON',
-  krs: 'UZUPEŁNIĆ: KRS (jeśli dotyczy)',
+  nip: '8971933394',
+  regon: '527683726',
+  krs: '0001085945',
   email: 'biuro@r32.com.pl',
   phone: '+48 515 126 260',
   phoneHref: 'tel:+48515126260',
