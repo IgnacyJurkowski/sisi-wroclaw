@@ -70,3 +70,124 @@ export const CONTACT = {
   instagram: 'https://www.instagram.com/sisiwroclaw/',
   facebook: 'https://www.facebook.com/sisimusicclub',
 };
+
+/* === STRUCTURED DATA (JSON-LD) ===
+   Single source for SEO/GEO machine-readable facts. Google's local pack and AI
+   answer engines (GEO) read this to state what SiSi is, where it is, when it's
+   open and what's on. Keep the address/geo correct - those drive maps. */
+export const BUSINESS = {
+  name: 'SiSi Wrocław',
+  url: 'https://sisiwroclaw.pl',
+  logo: 'https://sisiwroclaw.pl/apple-touch-icon.png',
+  image: 'https://sisiwroclaw.pl/framerusercontent.com/images/nBW0AVejCOoiy2Rctqcid0SY6Q.webp',
+  description:
+    'SiSi to serce nocnego Wrocławia - muzyka na żywo, najlepsi DJ-e, autorskie koktajle i wyjątkowa atmosfera w sercu kompleksu R32.',
+  streetAddress: 'Rzeźnicza 32',
+  locality: 'Wrocław',
+  region: 'Dolnośląskie',
+  // TODO(verify): postal code + coordinates are best-effort for the Old Town
+  // address. Confirm against the real venue and correct here if needed.
+  postalCode: '50-130',
+  country: 'PL',
+  latitude: 51.1106,
+  longitude: 17.0286,
+  priceRange: '$$',
+};
+
+function addressLd() {
+  return {
+    '@type': 'PostalAddress',
+    streetAddress: BUSINESS.streetAddress,
+    addressLocality: BUSINESS.locality,
+    addressRegion: BUSINESS.region,
+    postalCode: BUSINESS.postalCode,
+    addressCountry: BUSINESS.country,
+  };
+}
+
+/** Site-wide venue entity (LocalBusiness → NightClub). */
+export function nightClubSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'NightClub',
+    '@id': `${BUSINESS.url}/#nightclub`,
+    name: BUSINESS.name,
+    url: BUSINESS.url,
+    logo: BUSINESS.logo,
+    image: BUSINESS.image,
+    description: BUSINESS.description,
+    telephone: CONTACT.phoneHref.replace('tel:', ''),
+    email: CONTACT.email,
+    priceRange: BUSINESS.priceRange,
+    currenciesAccepted: 'PLN',
+    address: addressLd(),
+    geo: { '@type': 'GeoCoordinates', latitude: BUSINESS.latitude, longitude: BUSINESS.longitude },
+    hasMap: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+      `${BUSINESS.streetAddress}, ${BUSINESS.locality}`,
+    )}`,
+    openingHoursSpecification: [
+      { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Friday', 'Saturday'], opens: '22:00', closes: '04:00' },
+    ],
+    sameAs: [CONTACT.instagram, CONTACT.facebook],
+    acceptsReservations: 'True',
+    potentialAction: {
+      '@type': 'ReserveAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: RESERVATION_URL,
+        inLanguage: 'pl-PL',
+        actionPlatform: [
+          'http://schema.org/DesktopWebPlatform',
+          'http://schema.org/MobileWebPlatform',
+        ],
+      },
+      result: { '@type': 'Reservation', name: 'Rezerwacja stolika' },
+    },
+  };
+}
+
+/** WebSite entity, linked to the venue as publisher. */
+export function websiteSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${BUSINESS.url}/#website`,
+    url: BUSINESS.url,
+    name: BUSINESS.name,
+    inLanguage: 'pl-PL',
+    publisher: { '@id': `${BUSINESS.url}/#nightclub` },
+  };
+}
+
+/** Day after `iso` (YYYY-MM-DD); club nights end at 04:00 the next morning. */
+function nextDay(iso: string) {
+  const d = new Date(`${iso}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + 1);
+  return d.toISOString().slice(0, 10);
+}
+
+/** One Event object per upcoming night - powers Google/GEO event surfaces. */
+export function eventSchema(list: EventItem[]) {
+  return list.map((e) => {
+    const ev: Record<string, unknown> = {
+      '@context': 'https://schema.org',
+      '@type': 'Event',
+      name: e.note ? `${e.title} - ${e.note}` : e.title,
+      startDate: `${e.iso}T22:00:00+02:00`,
+      endDate: `${nextDay(e.iso)}T04:00:00+02:00`,
+      eventStatus: 'https://schema.org/EventScheduled',
+      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+      image: [`${BUSINESS.url}${e.img}`],
+      url: `${BUSINESS.url}/wydarzenia`,
+      location: { '@type': 'Place', name: BUSINESS.name, address: addressLd() },
+      organizer: { '@type': 'Organization', name: BUSINESS.name, url: BUSINESS.url },
+      offers: {
+        '@type': 'Offer',
+        url: RESERVATION_URL,
+        availability: 'https://schema.org/InStock',
+      },
+    };
+    if (e.note) ev.performer = { '@type': 'PerformingGroup', name: e.note };
+    return ev;
+  });
+}

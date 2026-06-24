@@ -2,6 +2,8 @@
 import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import PageLoader from '../components/PageLoader.astro';
+import { nightClubSchema, websiteSchema } from '../data/site';
 
 interface Props {
   title: string;
@@ -14,18 +16,36 @@ interface Props {
   ogDescription?: string;
   /** above-the-fold hero image to preload (the LCP-area visual) */
   preloadImage?: string;
+  /** social-share image; path is resolved against the site origin */
+  ogImage?: string;
+  /** extra page-level JSON-LD objects (e.g. Event list) rendered in <head> */
+  schema?: Record<string, unknown>[];
 }
 
-const { title, description, active, path = '', ogTitle, ogDescription, preloadImage } = Astro.props;
+const {
+  title,
+  description,
+  active,
+  path = '',
+  ogTitle,
+  ogDescription,
+  preloadImage,
+  ogImage = '/framerusercontent.com/images/nBW0AVejCOoiy2Rctqcid0SY6Q.webp',
+  schema = [],
+} = Astro.props;
 const canonical = new URL(path, Astro.site).href;
+const ogImageUrl = new URL(ogImage, Astro.site).href;
+const jsonLd = [nightClubSchema(), websiteSchema(), ...schema];
 ---
 
 <!DOCTYPE html>
 <html lang="pl">
   <head>
     <!-- Mark JS as available before paint so reveal elements can start hidden
-         without ever hiding content from no-JS clients. -->
-    <script is:inline>document.documentElement.classList.add('js');</script>
+         without ever hiding content from no-JS clients. Session-gate the intro
+         loader so it plays once per visit, not on every internal navigation
+         (Astro is MPA - each click is a full page load). -->
+    <script is:inline>document.documentElement.classList.add('js');try{if(sessionStorage.getItem('sisi-seen'))document.documentElement.classList.add('loaded');else sessionStorage.setItem('sisi-seen','1');}catch(e){}</script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {preloadImage && (
@@ -47,9 +67,26 @@ const canonical = new URL(path, Astro.site).href;
     <meta property="og:description" content={ogDescription ?? description} />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="pl_PL" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="SiSi Wrocław" />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:alt" content={ogTitle ?? title} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={ogTitle ?? title} />
+    <meta name="twitter:description" content={ogDescription ?? description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <!-- Legacy geo hints; the NightClub JSON-LD below is the primary signal. -->
+    <meta name="geo.region" content="PL-DS" />
+    <meta name="geo.placename" content="Wrocław" />
+    <meta name="geo.position" content="51.1106;17.0286" />
+    <meta name="ICBM" content="51.1106, 17.0286" />
     <link rel="canonical" href={canonical} />
+    {jsonLd.map((s) => (
+      <script type="application/ld+json" set:html={JSON.stringify(s)} />
+    ))}
   </head>
   <body>
+    <PageLoader />
     <Nav active={active} />
     <main id="main">
       <slot />

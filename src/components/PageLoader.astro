@@ -1,0 +1,14 @@
+---
+// First-visit intro loader. Pure CSS animation (no JS dependency to appear or
+// disappear): it fades itself out and ends visually hidden, so even no-JS
+// clients are never trapped behind it. Session-gating + reduced-motion are
+// handled in global.css via the `html.loaded` class set in Base.astro.
+import Logo from './Logo.astro';
+---
+
+<div id="page-loader" aria-hidden="true">
+  <div class="pl-inner">
+    <span class="pl-logo"><Logo /></span>
+    <span class="pl-bar"><span class="pl-bar-fill"></span></span>
+  </div>
+</div>

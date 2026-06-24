@@ -6,6 +6,11 @@ import R32 from '../components/home/R32.astro';
 import MenuTeaser from '../components/home/MenuTeaser.astro';
 import Events from '../components/home/Events.astro';
 import Chivas from '../components/home/Chivas.astro';
+import { splitEvents, eventSchema } from '../data/site';
+
+// Mirror the Events teaser (soonest 2) so the Event JSON-LD matches what's
+// actually rendered on this page.
+const homeEvents = splitEvents().upcoming.slice(0, 2);
 ---
 
 <Base
@@ -15,6 +20,7 @@ import Chivas from '../components/home/Chivas.astro';
   ogDescription="Muzyka na żywo, DJ-e, autorskie koktajle. Serce nocnego Wrocławia."
   path="/"
   preloadImage="/framerusercontent.com/images/nBW0AVejCOoiy2Rctqcid0SY6Q.webp"
+  schema={eventSchema(homeEvents)}
 >
   <Hero />
   <About />

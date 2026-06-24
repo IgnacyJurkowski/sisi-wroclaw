@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import EventCard from '../components/EventCard.astro';
-import { splitEvents } from '../data/site';
+import { splitEvents, eventSchema } from '../data/site';
 
 const { upcoming, past } = splitEvents();
 const future = upcoming.slice(0, 6);
@@ -13,6 +13,7 @@ const future = upcoming.slice(0, 6);
   ogDescription="Koncerty, DJ-e i imprezy tematyczne. Nadchodzące wydarzenia i archiwum SiSi Wrocław."
   active="events"
   path="/wydarzenia"
+  schema={eventSchema(future)}
 >
   <div class="page-header" data-reveal>
     <span class="page-label">Co się dzieje</span>

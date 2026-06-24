@@ -350,3 +350,78 @@ footer::before {
   .page-header { padding-left: 20px; padding-right: 20px; }
   .container { padding-inline: 20px; }
 }
+
+/* === PAGE LOADER (first-visit only; session-gated in Base.astro) ===
+   CSS-driven so it needs no JS to appear or clear. The logo fades/scales in
+   while a fill bar runs, then the whole overlay fades out and ends hidden.
+   Background matches --bg so the hand-off to the hero is seamless, and it
+   clears by ~1s to keep LCP in the green. */
+#page-loader {
+  position: fixed; inset: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg);
+  animation: pl-out 0.4s ease 0.55s forwards;
+}
+.pl-inner { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+.pl-logo { display: block; animation: pl-logo-in 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.pl-logo svg { height: 54px; width: auto; }
+.pl-bar {
+  display: block; width: 120px; height: 2px; border-radius: 99px;
+  background: rgba(237, 219, 194, 0.16); overflow: hidden;
+}
+.pl-bar-fill {
+  display: block; height: 100%; width: 100%;
+  transform-origin: left; background: var(--cream);
+  animation: pl-fill 0.6s ease both;
+}
+@keyframes pl-logo-in { from { opacity: 0; transform: translateY(6px) scale(0.96); } to { opacity: 1; transform: none; } }
+@keyframes pl-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes pl-out { to { opacity: 0; visibility: hidden; } }
+/* Already seen this session, or reduced motion: don't show it at all. */
+html.loaded #page-loader { display: none; }
+@media (prefers-reduced-motion: reduce) { #page-loader { display: none; } }
+
+/* === MICRO-INTERACTIONS (perf-safe: transform/opacity only, no layout shift) === */
+/* Primary CTA: subtle lift + a one-pass sheen sweep on hover. */
+.btn-cta { position: relative; overflow: hidden; transition: background 150ms ease, transform 150ms ease, box-shadow 150ms ease; }
+.btn-cta::after {
+  content: ''; position: absolute; inset: 0; transform: translateX(-130%); pointer-events: none;
+  background: linear-gradient(110deg, transparent 32%, rgba(255, 255, 255, 0.45) 50%, transparent 68%);
+  transition: transform 600ms ease;
+}
+.btn-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(0, 0, 0, 0.4); }
+.btn-cta:hover::after { transform: translateX(130%); }
+.btn-cta:active { transform: translateY(0); }
+
+.btn-outline { transition: background 150ms ease, color 150ms ease, border-color 150ms ease, transform 150ms ease; }
+.btn-outline:hover { transform: translateY(-2px); }
+.btn-outline:active { transform: translateY(0); }
+
+.nav-cta { transition: background 150ms ease, transform 150ms ease, box-shadow 150ms ease; }
+.nav-cta:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35); }
+
+/* Nav links: an underline that wipes in from the left on hover / current page. */
+.nav-links a { position: relative; }
+.nav-links a::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -5px; height: 1.5px;
+  background: var(--cream); transform: scaleX(0); transform-origin: left;
+  transition: transform 220ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.nav-links a:hover::after, .nav-links a[aria-current="page"]::after { transform: scaleX(1); }
+
+/* Cards lift on hover; archived event cards stay put (they're done). */
+.sisi-card, .ev-card { transition: transform 300ms ease, border-color 300ms ease, box-shadow 300ms ease; }
+.sisi-card:hover, .ev-card:hover { transform: translateY(-4px); border-color: rgba(237, 219, 194, 0.26); box-shadow: 0 18px 40px rgba(0, 0, 0, 0.38); }
+.ev-card.past:hover { transform: none; box-shadow: none; border-color: rgba(255, 255, 255, 0.08); }
+
+/* Visible, on-brand focus ring for keyboard users (trust + a11y). */
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-cta, .nav-cta { transition: background 150ms ease; }
+  .btn-outline { transition: background 150ms ease, color 150ms ease, border-color 150ms ease; }
+  .btn-cta:hover, .btn-outline:hover, .nav-cta:hover,
+  .sisi-card:hover, .ev-card:hover { transform: none; box-shadow: none; }
+  .btn-cta::after { display: none; }
+  .nav-links a::after { transition: none; }
+}
