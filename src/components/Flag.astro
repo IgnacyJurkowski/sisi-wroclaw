@@ -1,0 +1,35 @@
+---
+/* Small inline SVG flags for the language switcher. SVG (not emoji) because
+   flag emoji don't render on Windows - they fall back to two-letter codes. */
+import type { Locale } from '../i18n/config';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+---
+<span class="flag" aria-hidden="true">
+  {locale === 'pl' && (
+    <svg viewBox="0 0 30 20"><rect width="30" height="20" fill="#fff"/><rect y="10" width="30" height="10" fill="#dc143c"/></svg>
+  )}
+  {locale === 'en' && (
+    <svg viewBox="0 0 30 20">
+      <rect width="30" height="20" fill="#012169"/>
+      <path d="M0,0 30,20 M30,0 0,20" stroke="#fff" stroke-width="4"/>
+      <path d="M0,0 30,20 M30,0 0,20" stroke="#c8102e" stroke-width="2"/>
+      <rect x="12.5" width="5" height="20" fill="#fff"/><rect y="7.5" width="30" height="5" fill="#fff"/>
+      <rect x="13.5" width="3" height="20" fill="#c8102e"/><rect y="8.5" width="30" height="3" fill="#c8102e"/>
+    </svg>
+  )}
+  {locale === 'de' && (
+    <svg viewBox="0 0 30 20"><rect width="30" height="20" fill="#ffce00"/><rect width="30" height="13.34" fill="#dd0000"/><rect width="30" height="6.67" fill="#000"/></svg>
+  )}
+  {locale === 'it' && (
+    <svg viewBox="0 0 30 20"><rect width="30" height="20" fill="#fff"/><rect width="10" height="20" fill="#009246"/><rect x="20" width="10" height="20" fill="#ce2b37"/></svg>
+  )}
+  {locale === 'cs' && (
+    <svg viewBox="0 0 30 20"><rect width="30" height="10" fill="#fff"/><rect y="10" width="30" height="10" fill="#d7141a"/><path d="M0,0 15,10 0,20 Z" fill="#11457e"/></svg>
+  )}
+</span>
+
+<style>
+  .flag { display: inline-flex; line-height: 0; }
+  .flag svg { width: 22px; height: auto; border-radius: 3px; box-shadow: 0 0 0 1px rgba(237, 219, 194, 0.25); }
+</style>

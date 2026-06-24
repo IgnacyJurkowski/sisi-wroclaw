@@ -19,19 +19,25 @@ const reservationsHref = localizedPath('reservations', locale);
 <a href="#main" class="skip-link">{t.nav.skip}</a>
 
 <nav id="main-nav" role="navigation" aria-label={t.nav.mainNav}>
-  <a href={homeHref} class="nav-logo" aria-label={t.nav.homeAria}><Logo /></a>
-  <div class="nav-links">
-    {links.map((p) => (
-      <a href={p.href} aria-current={p.key === active ? 'page' : undefined}>{p.label}</a>
-    ))}
+  <div class="nav-left">
+    <a href={homeHref} class="nav-logo" aria-label={t.nav.homeAria}><Logo /></a>
   </div>
-  <div class="nav-social">
-    <a href={CONTACT.instagram} class="social-icon" rel="noopener" target="_blank" aria-label="Instagram"><SocialIcon name="instagram" /></a>
-    <a href={CONTACT.facebook} class="social-icon" rel="noopener" target="_blank" aria-label="Facebook"><SocialIcon name="facebook" /></a>
-    <a href={CONTACT.tripadvisor} class="social-icon" rel="noopener" target="_blank" aria-label="Tripadvisor"><SocialIcon name="tripadvisor" /></a>
+  <div class="nav-center">
+    <div class="nav-links">
+      {links.map((p) => (
+        <a href={p.href} aria-current={p.key === active ? 'page' : undefined}>{p.label}</a>
+      ))}
+    </div>
+    <a href={reservationsHref} class="nav-cta">{t.nav.reservations}</a>
   </div>
-  <div class="nav-lang"><LocaleSwitcher locale={locale} routeKey={active ?? 'home'} variant="bar" /></div>
-  <a href={reservationsHref} class="nav-cta">{t.nav.reservations}</a>
+  <div class="nav-right">
+    <div class="nav-social">
+      <a href={CONTACT.instagram} class="social-icon" rel="noopener" target="_blank" aria-label="Instagram"><SocialIcon name="instagram" /></a>
+      <a href={CONTACT.facebook} class="social-icon" rel="noopener" target="_blank" aria-label="Facebook"><SocialIcon name="facebook" /></a>
+      <a href={CONTACT.tripadvisor} class="social-icon" rel="noopener" target="_blank" aria-label="Tripadvisor"><SocialIcon name="tripadvisor" /></a>
+    </div>
+    <div class="nav-lang"><LocaleSwitcher locale={locale} routeKey={active ?? 'home'} variant="bar" /></div>
+  </div>
   <button id="hamburger" aria-label={t.nav.openMenu} aria-expanded="false" aria-controls="mobile-menu">
     <span></span><span></span><span></span>
   </button>

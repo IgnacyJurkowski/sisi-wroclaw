@@ -126,7 +126,7 @@ html { scrollbar-width: thin; scrollbar-color: rgba(237, 219, 194, 0.28) transpa
   padding: 0 14px 0 20px;
   display: flex; align-items: center; gap: 28px;
   /* Glass effect from https://css.glass */
-  background: rgba(39, 7, 15, 0.19);
+  background: rgba(39, 7, 15, 0.3);
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   /* Single standard declaration; Lightning CSS auto-prefixes (-webkit-) from
@@ -134,7 +134,7 @@ html { scrollbar-width: thin; scrollbar-color: rgba(237, 219, 194, 0.28) transpa
      minifier collapse the pair down to -webkit-only, which breaks the blur in
      Firefox and standards-mode Chromium. */
   backdrop-filter: blur(7.5px);
-  border: 1px solid rgba(39, 7, 15, 0.5);
+  border: 1px solid rgba(237, 219, 194, 0.35);
   transition: background 300ms ease, border-color 300ms ease, box-shadow 300ms ease;
 }
 #main-nav.nav-scrolled {
@@ -144,10 +144,17 @@ html { scrollbar-width: thin; scrollbar-color: rgba(237, 219, 194, 0.28) transpa
   box-shadow: 0 6px 34px rgba(0, 0, 0, 0.22);
 }
 
+.nav-left { flex: 1; display: flex; align-items: center; min-width: 0; }
 .nav-logo { flex-shrink: 0; display: flex; align-items: center; }
 .nav-logo svg { height: 30px; width: auto; }
 
-.nav-links { display: flex; align-items: center; gap: 26px; flex: 1; justify-content: center; }
+/* The 4 links + the Rezerwacje button are one cluster, centered in the bar.
+   nav-left and nav-right both take flex:1, so the cluster sits dead-center
+   regardless of the logo / social-group widths. */
+.nav-center { display: flex; align-items: center; gap: 26px; flex-shrink: 0; }
+.nav-right { flex: 1; display: flex; align-items: center; justify-content: flex-end; gap: 16px; min-width: 0; }
+
+.nav-links { display: flex; align-items: center; gap: 26px; }
 .nav-links a {
   font-size: 13px; font-weight: 500; letter-spacing: 0.02em;
   color: var(--text-dim); transition: color 180ms;
@@ -173,6 +180,8 @@ html { scrollbar-width: thin; scrollbar-color: rgba(237, 219, 194, 0.28) transpa
 }
 .social-icon:hover { color: var(--cream); transform: translateY(-1px); }
 .nav-social .social-icon svg { width: 18px; height: 18px; }
+/* No lift on the nav social icons (cleaner against the floating bar). */
+.nav-social .social-icon:hover { transform: none; }
 
 /* === HAMBURGER === */
 #hamburger {
@@ -344,11 +353,13 @@ footer::before {
 
 /* === RESPONSIVE === */
 @media (max-width: 860px) {
-  .nav-links, .nav-social, .nav-lang { display: none !important; }
+  .nav-links, .nav-right { display: none !important; }
   /* Keep booking one tap away on mobile: the CTA stays in the bar (compact),
-     pushed right, with the hamburger beside it. */
+     pushed right by the logo group's flex:1, with the hamburger beside it. */
+  .nav-left { flex: 1; }
+  .nav-center { flex-shrink: 0; }
   .nav-cta {
-    display: inline-flex; margin-left: auto;
+    display: inline-flex;
     padding: 8px 15px; font-size: 10px; letter-spacing: 0.06em;
   }
   #hamburger { display: flex; margin-left: 14px; }
@@ -409,7 +420,7 @@ html.loaded #page-loader { display: none; }
 /* Nav links: an underline that wipes in from the left on hover / current page. */
 .nav-links a { position: relative; }
 .nav-links a::after {
-  content: ''; position: absolute; left: 0; right: 0; bottom: -5px; height: 1.5px;
+  content: ''; position: absolute; left: 0; right: 0; bottom: -5px; height: 2px;
   background: var(--cream); transform: scaleX(0); transform-origin: left;
   transition: transform 220ms cubic-bezier(0.2, 0.7, 0.2, 1);
 }
