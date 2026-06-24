@@ -10,6 +10,17 @@ import { useTranslations } from '../i18n/t';
 export const RESERVATION_URL =
   'https://emenago.com/inner/cart/6619/0519b014958d73fb0d5d2d58c360a661/pl';
 
+/**
+ * Canonical outbound reservation link (the emenago cart) with campaign tracking.
+ * `content` marks the CTA location, e.g. 'hero', 'event_card', 'header'.
+ * TODO(ignacy): emenago only exposes the Polish (/pl) cart here, so every locale
+ * currently lands on the /pl cart. Confirm whether localized cart URLs exist
+ * (/en, /de, /it, /cs) and thread `locale` through this helper if so.
+ */
+export function reservationUrl(content: string): string {
+  return `${RESERVATION_URL}?utm_source=website&utm_medium=cta&utm_campaign=reservation&utm_content=${content}`;
+}
+
 // `start` is the complete ISO date-time (Europe/Warsaw, summer offset +02:00);
 // every visible date label is generated from it (see src/i18n/format.ts). Keep
 // the weekday in a title consistent with the real weekday of `start`.

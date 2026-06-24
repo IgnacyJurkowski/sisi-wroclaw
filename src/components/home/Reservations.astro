@@ -1,5 +1,5 @@
 ---
-import { RESERVATION_URL, CONTACT } from '../../data/site';
+import { reservationUrl, CONTACT } from '../../data/site';
 import { type Locale } from '../../i18n/config';
 import { useTranslations } from '../../i18n/t';
 
@@ -16,7 +16,7 @@ const mapHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComp
       <span class="page-label">{t.reservationsHome.eyebrow}</span>
       <h2 class="display res-title">{t.reservationsHome.title}</h2>
       <p class="res-body">{t.reservationsHome.body}</p>
-      <a href={RESERVATION_URL} class="btn-cta res-cta" rel="noopener" target="_blank">{t.buttons.reserveOnline}</a>
+      <a href={reservationUrl('reservations_section')} class="btn-cta res-cta" rel="noopener" target="_blank">{t.buttons.reserveOnline}</a>
       <p class="res-reassure">{t.reservationsHome.reassure}</p>
     </div>
 

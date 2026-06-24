@@ -1,5 +1,5 @@
 ---
-import { RESERVATION_URL } from '../../data/site';
+import { reservationUrl } from '../../data/site';
 import { type Locale } from '../../i18n/config';
 import { localizedPath } from '../../i18n/routes';
 import { useTranslations } from '../../i18n/t';
@@ -17,7 +17,7 @@ const eventsHref = localizedPath('events', locale);
   <div class="hero-content">
     <h1 class="display hero-title" data-hero>{t.hero.titleLine1}<br />{t.hero.titleLine2}</h1>
     <div class="hero-actions" data-hero>
-      <a href={RESERVATION_URL} class="btn-cta" rel="noopener" target="_blank">{t.nav.reservations}</a>
+      <a href={reservationUrl('hero')} class="btn-cta" rel="noopener" target="_blank">{t.nav.reservations}</a>
       <a href={eventsHref} class="btn-outline">{t.buttons.calendar}</a>
     </div>
   </div>

@@ -1,6 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { RESERVATION_URL } from '../../data/site';
+import { reservationUrl } from '../../data/site';
 import { type Locale } from '../../i18n/config';
 import { useTranslations } from '../../i18n/t';
 
@@ -156,7 +156,7 @@ const stack = [
 
     <div class="menu-cta" data-reveal>
       <p>{t.menuPage.ctaText}</p>
-      <a href={RESERVATION_URL} class="btn-cta" rel="noopener" target="_blank">{t.buttons.bookTable}</a>
+      <a href={reservationUrl('menu')} class="btn-cta" rel="noopener" target="_blank">{t.buttons.bookTable}</a>
     </div>
   </div>
 </Base>
