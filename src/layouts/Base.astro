@@ -83,8 +83,9 @@ const robotsContent = !isProductionHost
     <link rel="icon" href="/favicon-16.png" type="image/png" sizes="16x16" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="theme-color" content="#27060f" />
-    <!-- Fonts are self-hosted (declared in global.css). Preload Krona One, the
-         hero display face that renders the LCP heading. -->
+    <!-- Fonts are self-hosted (declared in global.css). Preload Krona One (the
+         LCP hero heading). Montserrat is inlined as a data URI in the CSS, so it
+         needs no preload - it is already present when the stylesheet parses. -->
     <link rel="preload" as="font" type="font/woff2" href="/fonts.gstatic.com/s/kronaone/v15/jAnEgHdjHcjgfIb1ZcUCNI-h3cWkWg.woff2" crossorigin />
     <title>{title}</title>
     <meta name="description" content={description} />
