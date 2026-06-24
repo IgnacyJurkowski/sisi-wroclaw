@@ -1,0 +1,461 @@
+/* Czech. Mirrors the shape of pl.ts (enforced by `: UI`). */
+import type { UI } from './pl';
+
+const cs: UI = {
+  meta: {
+    home: {
+      title: 'SiSi Wrocław - Music Club & Bar',
+      description:
+        'SiSi je srdcem nočního života ve Vratislavi - živá hudba, špičkoví DJ, autorské koktejly a jedinečná atmosféra v komplexu R32.',
+      ogDescription: 'Živá hudba, DJ a autorské koktejly. Srdce noční Vratislavi.',
+    },
+    events: {
+      title: 'Akce - SiSi Wrocław',
+      description:
+        'Nadcházející akce v SiSi Wrocław - koncerty, DJ a tematické večery v komplexu R32. Prohlédněte si i archiv minulých nocí.',
+      ogDescription: 'Koncerty, DJ a tematické večery. Nadcházející akce a archiv SiSi Wrocław.',
+    },
+    menu: {
+      title: 'Menu - SiSi Wrocław',
+      description: 'Barové menu SiSi Wrocław - autorské koktejly, polská vína, belgická piva a Night Menu by The Cork.',
+      ogDescription: 'Autorské koktejly, polská vína a Night Menu by The Cork. SiSi Wrocław.',
+    },
+    careers: {
+      title: 'Kariéra - SiSi Wrocław',
+      description: 'Přidejte se k týmu SiSi Wrocław - hledáme barmany, obsluhu a barbacka.',
+      ogDescription: 'Přidejte se k týmu SiSi Wrocław. Volné pozice: barman, číšník, barback.',
+    },
+    reservations: {
+      title: 'Rezervace - SiSi Wrocław',
+      description: 'Rezervujte si stůl v SiSi - srdci noční Vratislavi. Podmínky rezervace a kontakt pro firemní akce.',
+      ogDescription: 'Naplánujte si výjimečný večer a zajistěte si místo v srdci klubu.',
+    },
+    corporate: {
+      title: 'Firemní akce - SiSi & The Cork Wrocław',
+      description:
+        'Prostor pro firemní akce v centru Vratislavi: konference, panely, prezentace, večeře, uvedení produktů a networking. 663 m², až 150 míst k sezení v The Cork, 2 obrazovky.',
+      ogDescription: 'Konference, prezentace, večeře a večerní firemní akce v centru Vratislavi. SiSi & The Cork.',
+    },
+    contact: {
+      title: 'Kontakt - SiSi Wrocław',
+      description:
+        'Kontaktní a firemní údaje SiSi Wrocław - adresa, telefon, e-mail a registrační údaje (NIP, REGON, KRS).',
+      ogDescription: 'Kontaktní a firemní údaje SiSi Wrocław.',
+    },
+    terms: {
+      title: 'Pravidla - SiSi Wrocław',
+      description: 'Provozní řád SiSi Wrocław - vstup, rezervace stolů, chování v podniku a reklamace.',
+      ogDescription: 'Provozní řád SiSi Wrocław - vstup, rezervace, pravidla a reklamace.',
+    },
+    privacy: {
+      title: 'Ochrana soukromí - SiSi Wrocław',
+      description: 'Zásady ochrany osobních údajů SiSi Wrocław - správce, účely a právní základy zpracování a vaše práva podle GDPR.',
+      ogDescription: 'Jak zpracováváme osobní údaje v SiSi Wrocław - v souladu s GDPR.',
+    },
+    cookies: {
+      title: 'Zásady cookies - SiSi Wrocław',
+      description: 'Zásady cookies SiSi Wrocław - jaké cookies a místní úložiště používáme a jak spravovat souhlas.',
+      ogDescription: 'Jaké cookies SiSi Wrocław používá a jak je spravovat.',
+    },
+    notFound: {
+      title: '404 - Stránka nenalezena | SiSi Wrocław',
+      description: 'Hledaná stránka neexistuje. Vraťte se na úvodní stránku SiSi Wrocław.',
+      ogDescription: 'Stránka nenalezena. Vraťte se na úvodní stránku SiSi Wrocław.',
+    },
+  },
+
+  nav: {
+    home: 'Úvod',
+    events: 'Akce',
+    menu: 'Menu',
+    careers: 'Kariéra',
+    corporate: 'Pro firmy',
+    reservations: 'Rezervace',
+    skip: 'Přejít na obsah',
+    mainNav: 'Hlavní navigace',
+    mobileNav: 'Mobilní menu',
+    openMenu: 'Otevřít menu',
+    closeMenu: 'Zavřít menu',
+    langLabel: 'Výběr jazyka',
+    langCurrent: 'Aktuální jazyk',
+    homeAria: 'SiSi Wrocław - úvodní stránka',
+  },
+
+  footer: {
+    tagline: 'Srdce noční Vratislavi. Hudba, koktejly, atmosféra.',
+    pagesHeading: 'Stránky',
+    contactHeading: 'Kontakt',
+    hoursHeading: 'Otevírací doba',
+    legalHeading: 'Právní informace',
+    rights: '© 2026 SiSi Wrocław. Všechna práva vyhrazena.',
+  },
+
+  cookie: {
+    text: 'Používáme cookies a podobné technologie nezbytné pro provoz webu. Podrobnosti najdete v našich {cookies} a {privacy}.',
+    cookiesLink: 'Zásadách cookies',
+    privacyLink: 'Zásadách ochrany soukromí',
+    accept: 'Souhlasím',
+    reject: 'Jen nezbytné',
+    dialogLabel: 'Souhlas s cookies',
+  },
+
+  buttons: {
+    reserveOnline: 'Rezervovat online',
+    reserve: 'Rezervovat',
+    bookTable: 'Rezervovat stůl',
+    calendar: 'Kalendář akcí',
+    seeAllEvents: 'Zobrazit všechny akce',
+    seeFullMenu: 'Zobrazit celé menu',
+    discoverR32: 'Objevte R32',
+    enquire: 'Zeptat se na termín',
+    planEvent: 'Naplánovat akci',
+    learnSpaces: 'Poznat prostory',
+    home: 'Úvod',
+  },
+
+  hero: {
+    titleLine1: 'Srdce Vratislavi',
+    titleLine2: 'bije v SiSi',
+    discover: 'OBJEVTE',
+  },
+
+  about: {
+    eyebrow: 'O nás',
+    title: 'Hudební evoluce večera',
+    intro:
+      'SISI je prostor, kde má večer svůj vlastní rytmus. Začínáme atmosférickou živou hudbou - ideální kulisou pro odpočinek a rozhovor. Poté plynule přecházíme k energickým setům nejlepších DJ, kteří roztančí parket až do rána. Vytváříme místo pro hosty, kteří oceňují nejvyšší kvalitu a nezapomenutelnou, jedinečnou atmosféru.',
+    cards: [
+      'Moderní hudební prostor',
+      'Friday Session',
+      'Live Acty: hudební předehra k výjimečné noci',
+    ],
+  },
+
+  r32: {
+    eyebrow: 'R32',
+    title: 'Noc bez kompromisů',
+    body: 'Začněte večer večeří v naší restauraci The Cork a plynule se přesuňte do světa SISI - pulzujícího srdce komplexu R32 a místa, kde budete chtít zůstat déle.',
+  },
+
+  menuTeaser: {
+    eyebrow: 'Barové menu',
+    title: 'Menu',
+    tabs: [
+      {
+        title: 'Koktejly',
+        body: 'Autorské koktejly SISI jsou esencí moderní mixologie - naši zkušení barmani s uměleckou precizností spojují suroviny nejvyšší kvality. Každý drink je jedinečným zážitkem, který okouzlí hloubkou chuti i propracovanou prezentací s efektem "wow".',
+      },
+      {
+        title: 'Nápojový lístek',
+        body: 'Sázíme na polská vinařství - náš lístek je výběrem domácích vín, od suchých bílých po plná červená, podávaných po sklenici i v lahvi. Doplňuje jej pečlivě vybraná nabídka destilátů a piv, včetně belgických klasik - aby si vybral každý.',
+      },
+      {
+        title: 'Něco k zakousnutí',
+        body: 'Naše Night Menu připravuje The Cork - je stvořené ke sdílení u stolu: kaviár, ústřice, sýrová a uzeninová prkénka (charcuterie). Elegantní pochoutky, které dokonale doplní večer u koktejlu nebo sklenice vína.',
+      },
+    ],
+  },
+
+  chivas: { title: 'Chivas Regal Zone' },
+
+  homeEvents: {
+    eyebrow: 'Akce',
+    title: 'Nadcházející akce',
+  },
+
+  homeB2B: {
+    eyebrow: 'Firemní akce',
+    title: 'Uspořádejte firemní akci v SiSi',
+    body: 'Konference, prezentace, večeře, uvedení produktů a večerní firemní akce. Spojte restauraci The Cork s energií SiSi a uspořádejte vše na jednom místě v centru Vratislavi.',
+  },
+
+  reservationsHome: {
+    eyebrow: 'Rezervace',
+    title: 'Rezervovat stůl',
+    body: 'Naplánujte si výjimečný večer a zajistěte si pohodlné místo v srdci našeho klubu. Online rezervace zabere chvíli - o zbytek se postaráme my.',
+    reassure: 'Okamžité potvrzení · nejlepší stoly mizí první',
+    info: {
+      hours: 'Otevírací doba',
+      address: 'Adresa',
+      reservations: 'Rezervace',
+      corporate: 'Firemní akce',
+    },
+  },
+
+  eventsPage: {
+    label: 'Co se děje',
+    title: 'Akce',
+    subtitle:
+      'Koncerty, DJ a tematické večery. Posuňte se a podívejte, co hrajeme nejbližší víkendy - a nahlédněte do archivu minulých nocí.',
+    upcoming: 'Nadcházející',
+    archive: 'Archiv',
+    scrollHint: 'posunout →',
+    empty: 'Brzy ohlásíme další akce - sledujte nás na Instagramu.',
+  },
+
+  eventCard: {
+    reserve: 'Rezervovat',
+    finished: 'Akce skončila',
+  },
+
+  menuPage: {
+    label: 'Barové menu',
+    title: 'Menu',
+    subtitle: 'Autorské koktejly, polská vína, belgická piva a Night Menu by The Cork. Ceny v PLN.',
+    sections: {
+      cocktails: 'Koktejly',
+      drinks: 'Nealko nápoje',
+      draught: 'Točené pivo',
+      bottled: 'Lahvové pivo',
+      wines: 'Vinný lístek',
+      nightMenu: 'Night Menu by The Cork',
+    },
+    bottledNote: 'Všechny lahve 330 ml.',
+    wineLead: 'Sázíme na polská vinařství - výběr domácích vín, od suchých bílých po plná červená, podávaných po sklenici i v lahvi.',
+    nightLead: 'Elegantní pochoutky ke sdílení, připravené The Cork: kaviár, ústřice, sýrová a uzeninová prkénka (charcuterie).',
+    foodwineNote: 'Kompletní vinný lístek a Night Menu jsou k dispozici v klubu - zeptejte se obsluhy na aktuální nabídku a ceny.',
+    ctaText: 'Chcete rezervovat stůl a objednat předem? Ozvěte se nám.',
+  },
+
+  careersPage: {
+    label: 'Přidejte se',
+    title: 'Kariéra',
+    subtitle: 'Hledáme lidi s vášní pro dobré drinky a hudbu. Klub funguje v pátek a sobotu - barmani i během týdne, v otevírací době The Cork.',
+    positionLabel: 'Pozice',
+    apply: 'Reagovat',
+    howToApply: 'Jak se přihlásit',
+    howLead: 'Pošlete životopis na {email}',
+    howNote: 'Do předmětu uveďte pozici a své jméno a příjmení, např. {example}.',
+    howExample: 'Barman - Jan Kowalski',
+    jobs: [
+      {
+        title: 'Barman',
+        bullets: [
+          'Příprava koktejlů a obsluha baru',
+          'Zkušenost za barem výhodou',
+          'Pátek a sobota, možné směny během týdne (doba The Cork)',
+          'Znalost angličtiny',
+        ],
+      },
+      {
+        title: 'Číšník / Servírka',
+        bullets: [
+          'Obsluha hostů u stolů',
+          'Dobrá organizace a odolnost vůči stresu',
+          'Práce o víkendu (pátek-sobota)',
+          'Znalost angličtiny',
+        ],
+      },
+      {
+        title: 'Barback',
+        bullets: [
+          'Podpora barmana a zásobování baru',
+          'Ideální pozice na start v oboru',
+          'Práce o víkendu (pátek-sobota)',
+          'Flexibilita a nasazení',
+        ],
+      },
+    ],
+  },
+
+  reservationsPage: {
+    conditionsTitle: 'Podmínky rezervace',
+    conditions: [
+      'Cena rezervace je 50 PLN na osobu - celou částku lze utratit u stolu u obsluhy.',
+      'V pátek je vstup pro hosty s rezervací zdarma.',
+      'V sobotu se k rezervaci připočítává vstup 30 PLN na osobu.',
+      'Při rezervaci si můžete předvybrat položky z menu, které budou na hosty čekat po příchodu.',
+      'K dispozici jsou také speciální balíčky za zvýhodněné ceny.',
+      'Po rezervaci prosím vyčkejte na potvrzení a zaslání podrobných podmínek.',
+      'Rezervace se potvrzuje platbou předem do 120 minut od obdržení údajů. Bez platby v této lhůtě se rezervace automaticky ruší.',
+      'Rezervaci je třeba vyzvednout mezi 22:00 a 23:30. Při zpoždění delším než 30 minut může být stůl přenechán jiným hostům.',
+      'Vstup je vyhrazen hostům starším 21 let s platným dokladem totožnosti.',
+      'Platí výběr u vstupu a dress code smart casual. Obsluha si vyhrazuje právo odepřít vstup bez udání důvodu, i hostům s rezervací (zaplacená částka se v takovém případě vrací).',
+    ],
+    note: 'Ceny se mohou během speciálních akcí měnit. Podrobné podmínky jsou potvrzovány při každé rezervaci.',
+  },
+
+  contactPage: {
+    label: 'Informace',
+    subtitle: 'Rezervace, firemní akce a registrační údaje společnosti provozující klub SiSi.',
+    contactHeading: 'Kontakt',
+    reservationsLabel: 'Rezervace stolů',
+    corporateLabel: 'Firemní akce',
+    addressLabel: 'Adresa',
+    hoursLabel: 'Otevírací doba',
+    registryHeading: 'Firemní údaje',
+    registryIntro: 'Klub SiSi provozuje a osobní údaje spravuje:',
+    legalForm: 'Právní forma: společnost s ručením omezeným (sp. z o.o.). Rejstříkový soud: Okresní soud pro Wrocław-Fabryczna ve Vratislavi.',
+  },
+
+  legal: {
+    updatedLabel: 'Poslední aktualizace:',
+    convenienceNote:
+      'Tento překlad je poskytován pouze pro pohodlí. V případě rozporu je rozhodující polská verze.',
+  },
+
+  notFound: {
+    label: 'Chyba 404',
+    title: 'Tato stránka tu není',
+    body: 'Vypadá to, že hledaná stránka zmizela jako poslední host za úsvitu. Vraťte se na úvod nebo se podívejte, co hrajeme.',
+  },
+
+  b2b: {
+    hero: {
+      eyebrow: 'Firemní akce v centru Vratislavi',
+      title: 'Prostor pro akce, které zůstanou v paměti',
+      body: 'Od konferencí, panelů a prezentací po večeře, uvedení produktů, networking a večerní firemní akce. Spojte restauraci The Cork s energií SiSi a uspořádejte celou akci na jednom místě.',
+      ctaPrimary: 'Zeptat se na termín',
+      ctaSecondary: 'Poznat prostory',
+    },
+    facts: {
+      heading: 'Prostor v číslech',
+      items: [
+        { value: '663 m²', label: 'prostoru pro akce' },
+        { value: 'až 150', label: 'míst k sezení v The Cork' },
+        { value: '2 obrazovky', label: 'pro prezentace' },
+        { value: 'centrum', label: 'Vratislavi' },
+      ],
+    },
+    formats: {
+      heading: 'Formáty akcí',
+      intro: 'Jedno místo pro oficiální část i večer.',
+      items: [
+        { title: 'Konference', body: 'Setkání s prezentacemi a programem, se dvěma obrazovkami.' },
+        { title: 'Panelové diskuse', body: 'Rozhovory a debaty s řečníky a publikem.' },
+        { title: 'Prezentace', body: 'Představení produktů, firemní shrnutí a vystoupení.' },
+        { title: 'Uvedení produktů', body: 'Uveďte nový produkt nebo značku v efektním prostředí.' },
+        { title: 'Firemní večeře', body: 'Večeře vsedě v restauraci The Cork.' },
+        { title: 'Networking', body: 'Oborová setkání a večery v uvolněné atmosféře.' },
+        { title: 'Firemní večírky', body: 'Týmové oslavy s energií SiSi.' },
+        { title: 'Soukromé akce značek', body: 'Uzavřené akce na míru značce.' },
+      ],
+    },
+    spaces: {
+      heading: 'Prostory',
+      theCork: {
+        title: 'The Cork',
+        body: 'Restaurace v srdci R32 - přirozená kulisa pro oficiální část i večer.',
+        points: [
+          'Večeře vsedě, prezentace a denní jednání',
+          'Až 150 míst k sezení',
+          '2 obrazovky pro prezentace',
+        ],
+      },
+      sisi: {
+        title: 'SiSi',
+        body: 'Music club s energií, která uzavře večer.',
+        points: [
+          'Večerní programy, networking a oslavy',
+          'Živá hudba a DJ',
+        ],
+      },
+      combined: {
+        title: 'Celý komplex R32',
+        body: 'Plynule přejděte z formální části nebo večeře do večerního programu - vše na jednom místě, na celkem 663 m² prostoru.',
+      },
+    },
+    why: {
+      heading: 'Proč právě toto místo',
+      items: [
+        { title: 'Oficiální část i večer na jednom místě', body: 'Konference nebo večeře plynule přejde do večerního programu.' },
+        { title: 'Centrum Vratislavi', body: 'Výhodná poloha v srdci města.' },
+        { title: 'Restaurace a klub', body: 'The Cork a SiSi v rámci jednoho komplexu R32.' },
+        { title: 'Flexibilní formát', body: 'Koncept akce přizpůsobíme vašim potřebám.' },
+        { title: 'Dvě obrazovky', body: 'Připravené zázemí pro prezentace a panely.' },
+        { title: 'Přímý kontakt s týmem', body: 'Mluvíte přímo s lidmi, kteří akci vedou.' },
+      ],
+    },
+    process: {
+      heading: 'Jak to funguje',
+      steps: [
+        { title: 'Pošlete poptávku', body: 'Napište termín, formát a počet hostů, které zvažujete.' },
+        { title: 'Probereme detaily', body: 'Domluvíme formát akce a vaše požadavky.' },
+        { title: 'Dostanete nabídku', body: 'Připravíme nabídku na míru.' },
+        { title: 'Potvrdíte termín', body: 'Zafixujeme datum a všechny detaily.' },
+        { title: 'Zrealizujeme akci', body: 'Postaráme se o průběh akce.' },
+      ],
+    },
+    projects: {
+      heading: 'Vybrané realizace',
+      emptyTitle: 'Máme zkušenosti s realizací velkých akcí.',
+      emptyBody: 'Brzy představíme vybrané projekty.',
+    },
+    faq: {
+      heading: 'Časté dotazy',
+      items: [
+        { q: 'Jaké firemní akce u vás lze uspořádat?', a: 'Konference, panely, prezentace, uvedení produktů, firemní večeře, networking, firemní večírky a soukromé akce značek.' },
+        { q: 'Kolik míst k sezení má The Cork?', a: 'Restaurace The Cork pojme až 150 hostů k sezení.' },
+        { q: 'Lze uspořádat prezentaci nebo panelovou diskusi?', a: 'Ano. Prostor je vhodný pro prezentace a panely a k dispozici jsou 2 obrazovky.' },
+        { q: 'Jsou k dispozici obrazovky?', a: 'Ano, k dispozici jsou 2 obrazovky pro prezentace.' },
+        { q: 'Lze The Cork a SiSi využít v rámci jedné akce?', a: 'Ano. Oficiální část nebo večeři v The Cork lze propojit s večerním programem v SiSi.' },
+        { q: 'Lze formát akce přizpůsobit?', a: 'Ano, koncept přizpůsobíme akci. Popište své potřeby v poptávce a tým potvrdí dostupné možnosti.' },
+        { q: 'Jak ověřím dostupnost termínu?', a: 'Pošlete poptávku přes formulář na této stránce, nebo nám zavolejte či napište.' },
+        { q: 'Co uvést v poptávce?', a: 'Preferovaný termín, počet hostů a formát akce. Požadavky na catering, techniku či bezbariérovost prosím uveďte v poptávce, aby tým mohl potvrdit dostupné možnosti.' },
+      ],
+    },
+    finalCta: {
+      heading: 'Pojďme si promluvit o vaší akci',
+      body: 'Napište nám preferovaný termín, počet hostů a formát akce. Náš tým připraví nabídku na míru.',
+      cta: 'Zeptat se na termín',
+    },
+    form: {
+      legend: 'Poptávka akce',
+      requiredHint: 'Pole označená * jsou povinná.',
+      optional: '(nepovinné)',
+      companyName: 'Název firmy',
+      contactPerson: 'Kontaktní osoba',
+      email: 'E-mail',
+      phone: 'Telefon',
+      eventType: 'Typ akce',
+      eventTypePlaceholder: 'Vyberte typ',
+      eventTypeOptions: {
+        conference: 'Konference',
+        panel: 'Panelová diskuse',
+        presentation: 'Prezentace',
+        launch: 'Uvedení produktu',
+        dinner: 'Firemní večeře',
+        networking: 'Networking',
+        party: 'Firemní večírek',
+        private: 'Soukromá akce značky',
+        other: 'Jiné',
+      },
+      guests: 'Odhadovaný počet hostů',
+      date: 'Preferovaný termín',
+      dateFlexible: 'Termín je flexibilní',
+      space: 'Preferovaný prostor',
+      spaceOptions: {
+        cork: 'The Cork',
+        sisi: 'SiSi',
+        both: 'Oba prostory',
+        unsure: 'Zatím nevím',
+      },
+      duration: 'Délka akce',
+      presentation: 'Požadavky na prezentaci nebo panel',
+      catering: 'Požadavky na catering',
+      technical: 'Další technické požadavky',
+      message: 'Zpráva',
+      messagePlaceholder: 'Stručně popište svou akci.',
+      consent: 'Souhlasím s kontaktováním ohledně své poptávky a potvrzuji, že jsem se seznámil(a) se {privacy}.',
+      consentPrivacyLink: 'Zásadami ochrany soukromí',
+      submit: 'Odeslat poptávku',
+      sending: 'Odesílání…',
+      errorSummary: 'Opravte zvýrazněná pole, abyste mohli formulář odeslat.',
+      errors: {
+        required: 'Toto pole je povinné.',
+        email: 'Zadejte platnou e-mailovou adresu.',
+        consent: 'Souhlas je nutný k odeslání poptávky.',
+      },
+      success: {
+        title: 'Děkujeme za vaši poptávku.',
+        body: 'Ozveme se vám s nabídkou. V naléhavém případě nám zavolejte nebo napište.',
+      },
+      error: {
+        title: 'Formulář se nepodařilo odeslat.',
+        body: 'Zkuste to prosím za chvíli znovu, nebo nás kontaktujte přímo:',
+      },
+    },
+  },
+};
+
+export default cs;
