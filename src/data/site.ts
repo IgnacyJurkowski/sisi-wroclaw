@@ -13,9 +13,8 @@ export const RESERVATION_URL =
 /**
  * Canonical outbound reservation link (the emenago cart) with campaign tracking.
  * `content` marks the CTA location, e.g. 'hero', 'event_card', 'header'.
- * TODO(ignacy): emenago only exposes the Polish (/pl) cart here, so every locale
- * currently lands on the /pl cart. Confirm whether localized cart URLs exist
- * (/en, /de, /it, /cs) and thread `locale` through this helper if so.
+ * Note: emenago has no localized carts, so every locale uses the /pl cart. The
+ * reservation flow is slated to be rebuilt in-house, which will replace this.
  */
 export function reservationUrl(content: string): string {
   return `${RESERVATION_URL}?utm_source=website&utm_medium=cta&utm_campaign=reservation&utm_content=${content}`;
