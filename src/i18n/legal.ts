@@ -183,7 +183,6 @@ const pl_cookies: LegalDoc = {
       paragraphs: ['Obecnie strona wykorzystuje wyłącznie pamięć niezbędną do działania:'],
       items: [
         'sisi-cookie-consent (localStorage) - zapamiętuje Twój wybór dotyczący zgody na cookies.',
-        'sisi-seen (sessionStorage) - oznacza, że animacja powitalna została już wyświetlona w danej sesji.',
         'Niezbędne pliki techniczne dostawcy hostingu, służące prawidłowemu dostarczeniu strony.',
       ],
     },
@@ -368,7 +367,6 @@ const en_cookies: LegalDoc = {
       paragraphs: ['The site currently uses only storage essential to its operation:'],
       items: [
         'sisi-cookie-consent (localStorage) - remembers your cookie choice.',
-        'sisi-seen (sessionStorage) - marks that the intro animation has already played in this session.',
         'Essential technical files from the hosting provider that deliver the site correctly.',
       ],
     },

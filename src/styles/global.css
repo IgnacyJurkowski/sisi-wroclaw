@@ -374,35 +374,6 @@ footer::before {
   .container { padding-inline: 20px; }
 }
 
-/* === PAGE LOADER (first-visit only; session-gated in Base.astro) ===
-   CSS-driven so it needs no JS to appear or clear. The logo fades/scales in
-   while a fill bar runs, then the whole overlay fades out and ends hidden.
-   Background matches --bg so the hand-off to the hero is seamless, and it
-   clears by ~1s to keep LCP in the green. */
-#page-loader {
-  position: fixed; inset: 0; z-index: 1000;
-  display: flex; align-items: center; justify-content: center;
-  background: var(--bg);
-  animation: pl-out 0.4s ease 0.55s forwards;
-}
-.pl-inner { display: flex; flex-direction: column; align-items: center; gap: 20px; }
-.pl-logo { display: block; animation: pl-logo-in 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
-.pl-logo svg { height: 54px; width: auto; }
-.pl-bar {
-  display: block; width: 120px; height: 2px; border-radius: 99px;
-  background: rgba(237, 219, 194, 0.16); overflow: hidden;
-}
-.pl-bar-fill {
-  display: block; height: 100%; width: 100%;
-  transform-origin: left; background: var(--cream);
-  animation: pl-fill 0.6s ease both;
-}
-@keyframes pl-logo-in { from { opacity: 0; transform: translateY(6px) scale(0.96); } to { opacity: 1; transform: none; } }
-@keyframes pl-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-@keyframes pl-out { to { opacity: 0; visibility: hidden; } }
-/* Already seen this session, or reduced motion: don't show it at all. */
-html.loaded #page-loader { display: none; }
-@media (prefers-reduced-motion: reduce) { #page-loader { display: none; } }
 
 /* === MICRO-INTERACTIONS (perf-safe: transform/opacity only, no layout shift) === */
 /* Solid CTAs (hero, cards + the top nav button): no lift. Hover darkens the
