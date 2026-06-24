@@ -8,6 +8,13 @@
    (more widely read than Polish) and are flagged for professional legal
    translation + review (see docs/I18N.md). The Polish version stays binding. */
 
+// TODO(ignacy): commission professional DE/IT/CS legal translations; until then
+//   keep the English fallback and the "Polish version is authoritative" banner.
+// TODO(ignacy): confirm the guest reservation terms in this regulamin (21+
+//   admission, 50 zł reservation per person, 30 zł Saturday entry) with the
+//   reservation provider and staff, then also surface them in a guest-facing FAQ,
+//   not only here in the regulamin.
+
 import { type Locale } from './config';
 
 export type LegalSection = { heading: string; paragraphs?: string[]; items?: string[] };

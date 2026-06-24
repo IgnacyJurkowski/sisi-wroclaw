@@ -41,6 +41,8 @@ export interface CaseStudy {
 const everyLocale = (value: string): L10n =>
   Object.fromEntries(LOCALES.map((l) => [l, value])) as L10n;
 
+// TODO(ignacy): add 2+ real, approved case studies for "Wybrane realizacje".
+// Until a published:true entry exists, the section renders its empty state.
 export const CASE_STUDIES: CaseStudy[] = [
   // --- DEVELOPMENT-ONLY EXAMPLE (published: false -> never rendered publicly).
   // Shows the shape a real project should follow. Replace with verified data.

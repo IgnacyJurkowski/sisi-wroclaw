@@ -315,6 +315,9 @@ const pl = {
     body: 'Wygląda na to, że strona, której szukasz, zniknęła jak ostatni gość o świcie. Wróć na stronę główną albo sprawdź, co u nas gramy.',
   },
 
+  // TODO(ignacy): the B2B service claims in this section (open bar, bringing a
+  // cake, external photographer, deposit / payment terms, continuous cleaning)
+  // need an internal approval record before they are treated as confirmed.
   b2b: {
     hero: {
       eyebrow: 'Eventy firmowe w centrum Wrocławia',
