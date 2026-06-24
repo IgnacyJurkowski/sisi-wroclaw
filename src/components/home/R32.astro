@@ -1,5 +1,10 @@
 ---
-const body = `Zacznij wieczór od kolacji w naszej restauracji The Cork, by płynnie przenieść się do świata SISI - pulsującego serca kompleksu R32 i miejsca, w którym zechcesz zostać na dłużej.`;
+import { type Locale } from '../../i18n/config';
+import { useTranslations } from '../../i18n/t';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
 
 const gallery = [
   '/framerusercontent.com/images/u3EOm1VtOnATOkUYHKikl5aBc.webp',
@@ -11,10 +16,10 @@ const gallery = [
 <section class="r32">
   <div class="container r32-top">
     <div class="r32-text" data-reveal>
-      <span class="page-label">R32</span>
-      <h2 class="display r32-title">Noc bez kompromisów</h2>
-      <p class="r32-body">{body}</p>
-      <a href="https://www.r32.com.pl" class="btn-outline" rel="noopener" target="_blank">Odkryj R32</a>
+      <span class="page-label">{t.r32.eyebrow}</span>
+      <h2 class="display r32-title">{t.r32.title}</h2>
+      <p class="r32-body">{t.r32.body}</p>
+      <a href="https://www.r32.com.pl" class="btn-outline" rel="noopener" target="_blank">{t.buttons.discoverR32}</a>
     </div>
     <div class="r32-video" data-reveal>
       <video

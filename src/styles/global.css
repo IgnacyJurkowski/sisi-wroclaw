@@ -338,9 +338,21 @@ footer::before {
   margin: 64px 0;
 }
 
+/* Language selector sits between the social icons and the booking CTA. */
+.nav-lang { flex-shrink: 0; margin-left: 4px; }
+
+/* Convenience-translation banner shown on non-Polish legal pages. */
+.legal-convenience {
+  border: 1px solid var(--line); border-left: 3px solid var(--gold);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 12px 16px; border-radius: 8px;
+  font-size: 13px; line-height: 1.6; color: var(--text-dim);
+  margin-bottom: 28px;
+}
+
 /* === RESPONSIVE === */
 @media (max-width: 860px) {
-  .nav-links, .nav-social { display: none !important; }
+  .nav-links, .nav-social, .nav-lang { display: none !important; }
   /* Keep booking one tap away on mobile: the CTA stays in the bar (compact),
      pushed right, with the hamburger beside it. */
   .nav-cta {

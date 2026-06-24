@@ -5,6 +5,47 @@
 [build.environment]
   NODE_VERSION = "22"
 
+# Root -> default locale (forced: shadows the build-time fallback index.html).
+[[redirects]]
+  from = "/"
+  to = "/pl/"
+  status = 301
+  force = true
+
+# Legacy pre-i18n Polish URLs -> their localized equivalents (permanent).
+[[redirects]]
+  from = "/wydarzenia"
+  to = "/pl/wydarzenia/"
+  status = 301
+[[redirects]]
+  from = "/menu"
+  to = "/pl/menu/"
+  status = 301
+[[redirects]]
+  from = "/kariera"
+  to = "/pl/kariera/"
+  status = 301
+[[redirects]]
+  from = "/rezerwacje"
+  to = "/pl/rezerwacje/"
+  status = 301
+[[redirects]]
+  from = "/kontakt"
+  to = "/pl/kontakt/"
+  status = 301
+[[redirects]]
+  from = "/regulamin"
+  to = "/pl/regulamin/"
+  status = 301
+[[redirects]]
+  from = "/polityka-prywatnosci"
+  to = "/pl/polityka-prywatnosci/"
+  status = 301
+[[redirects]]
+  from = "/polityka-cookies"
+  to = "/pl/polityka-cookies/"
+  status = 301
+
 # Correct MIME types for ES modules and Framer CMS data
 [[headers]]
   for = "/**/*.mjs"

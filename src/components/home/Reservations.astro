@@ -1,5 +1,11 @@
 ---
 import { RESERVATION_URL, CONTACT } from '../../data/site';
+import { type Locale } from '../../i18n/config';
+import { useTranslations } from '../../i18n/t';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
 
 const mapHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(CONTACT.address)}`;
 ---
@@ -7,34 +13,31 @@ const mapHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComp
 <section id="rezerwacja" class="reservations">
   <div class="container res-grid">
     <div class="res-pitch" data-reveal>
-      <span class="page-label">Rezerwacje</span>
-      <h2 class="display res-title">Zarezerwuj stolik</h2>
-      <p class="res-body">
-        Zaplanuj wyjątkowy wieczór i zapewnij sobie komfortowe miejsce w sercu
-        naszego klubu. Rezerwacja online zajmuje chwilę - resztę zostaw nam.
-      </p>
-      <a href={RESERVATION_URL} class="btn-cta res-cta" rel="noopener" target="_blank">Zarezerwuj online</a>
-      <p class="res-reassure">Potwierdzenie od ręki · najlepsze stoliki znikają pierwsze</p>
+      <span class="page-label">{t.reservationsHome.eyebrow}</span>
+      <h2 class="display res-title">{t.reservationsHome.title}</h2>
+      <p class="res-body">{t.reservationsHome.body}</p>
+      <a href={RESERVATION_URL} class="btn-cta res-cta" rel="noopener" target="_blank">{t.buttons.reserveOnline}</a>
+      <p class="res-reassure">{t.reservationsHome.reassure}</p>
     </div>
 
     <aside class="sisi-card res-info" data-reveal>
       <div class="res-row">
-        <span class="res-k">Godziny</span>
-        <span class="res-v">{CONTACT.hoursLabel}<br />{CONTACT.hours}</span>
+        <span class="res-k">{t.reservationsHome.info.hours}</span>
+        <span class="res-v">{t.common.hoursDays}<br />{CONTACT.hours}</span>
       </div>
       <div class="res-row">
-        <span class="res-k">Adres</span>
+        <span class="res-k">{t.reservationsHome.info.address}</span>
         <span class="res-v"><a href={mapHref} rel="noopener" target="_blank">{CONTACT.address}</a></span>
       </div>
       <div class="res-row">
-        <span class="res-k">Rezerwacje</span>
+        <span class="res-k">{t.reservationsHome.info.reservations}</span>
         <span class="res-v"><a href={CONTACT.phoneHref}>{CONTACT.phone}</a></span>
       </div>
       <div class="res-row">
-        <span class="res-k">Eventy firmowe</span>
+        <span class="res-k">{t.reservationsHome.info.corporate}</span>
         <span class="res-v">
-          <a href="tel:+48514032930">+48 514 032 930</a>
-          <a href="mailto:events@r32.com.pl">events@r32.com.pl</a>
+          <a href={CONTACT.eventsPhoneHref}>{CONTACT.eventsPhone}</a>
+          <a href={`mailto:${CONTACT.eventsEmail}`}>{CONTACT.eventsEmail}</a>
         </span>
       </div>
     </aside>

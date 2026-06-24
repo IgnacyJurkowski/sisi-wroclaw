@@ -5,47 +5,56 @@ import Footer from '../components/Footer.astro';
 import PageLoader from '../components/PageLoader.astro';
 import CookieBanner from '../components/CookieBanner.astro';
 import { nightClubSchema, websiteSchema } from '../data/site';
+import { DEFAULT_LOCALE, LOCALE_LANG, LOCALE_OG, type Locale } from '../i18n/config';
+import { alternates, localizedPath, type RouteKey } from '../i18n/routes';
 
 interface Props {
+  locale: Locale;
+  /** route identity - drives canonical, hreflang and the active nav item.
+      Omitted for utility pages (404), which are noindexed. */
+  routeKey?: RouteKey;
   title: string;
   description: string;
-  /** nav item id to mark as current */
-  active?: string;
-  /** path appended to the site origin for the canonical/og url, e.g. "/menu" */
-  path?: string;
   ogTitle?: string;
   ogDescription?: string;
   /** above-the-fold hero image to preload (the LCP-area visual) */
   preloadImage?: string;
   /** social-share image; path is resolved against the site origin */
   ogImage?: string;
+  /** keep the page out of the index (utility pages) */
+  noindex?: boolean;
   /** extra page-level JSON-LD objects (e.g. Event list) rendered in <head> */
   schema?: Record<string, unknown>[];
 }
 
 const {
+  locale,
+  routeKey,
   title,
   description,
-  active,
-  path = '',
   ogTitle,
   ogDescription,
   preloadImage,
   ogImage = '/framerusercontent.com/images/nBW0AVejCOoiy2Rctqcid0SY6Q.webp',
+  noindex = false,
   schema = [],
 } = Astro.props;
-const canonical = new URL(path, Astro.site).href;
+
+const canonical = routeKey ? new URL(localizedPath(routeKey, locale), Astro.site).href : undefined;
 const ogImageUrl = new URL(ogImage, Astro.site).href;
-const jsonLd = [nightClubSchema(), websiteSchema(), ...schema];
+const hreflangs = routeKey
+  ? alternates(routeKey).map((a) => ({ locale: a.locale, href: new URL(a.path, Astro.site).href }))
+  : [];
+const xDefault = routeKey ? new URL(localizedPath(routeKey, DEFAULT_LOCALE), Astro.site).href : undefined;
+const jsonLd = [nightClubSchema(locale), websiteSchema(locale), ...schema];
 ---
 
 <!DOCTYPE html>
-<html lang="pl">
+<html lang={LOCALE_LANG[locale]}>
   <head>
     <!-- Mark JS as available before paint so reveal elements can start hidden
          without ever hiding content from no-JS clients. Session-gate the intro
-         loader so it plays once per visit, not on every internal navigation
-         (Astro is MPA - each click is a full page load). -->
+         loader so it plays once per visit, not on every internal navigation. -->
     <script is:inline>document.documentElement.classList.add('js');try{if(sessionStorage.getItem('sisi-seen'))document.documentElement.classList.add('loaded');else sessionStorage.setItem('sisi-seen','1');}catch(e){}</script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -58,17 +67,22 @@ const jsonLd = [nightClubSchema(), websiteSchema(), ...schema];
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="theme-color" content="#27060f" />
     <!-- Fonts are self-hosted (declared in global.css). Preload Krona One, the
-         hero display face that renders the LCP heading. Montserrat loads via
-         font-display:swap on the same origin - no third-party handshake. -->
+         hero display face that renders the LCP heading. -->
     <link rel="preload" as="font" type="font/woff2" href="/fonts.gstatic.com/s/kronaone/v15/jAnEgHdjHcjgfIb1ZcUCNI-h3cWkWg.woff2" crossorigin />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow'} />
+    {canonical && <link rel="canonical" href={canonical} />}
+    {hreflangs.map((h) => <link rel="alternate" hreflang={h.locale} href={h.href} />)}
+    {xDefault && <link rel="alternate" hreflang="x-default" href={xDefault} />}
     <meta property="og:title" content={ogTitle ?? title} />
     <meta property="og:description" content={ogDescription ?? description} />
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content="pl_PL" />
-    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={LOCALE_OG[locale]} />
+    {hreflangs.filter((h) => h.locale !== locale).map((h) => (
+      <meta property="og:locale:alternate" content={LOCALE_OG[h.locale]} />
+    ))}
+    {canonical && <meta property="og:url" content={canonical} />}
     <meta property="og:site_name" content="SiSi Wrocław" />
     <meta property="og:image" content={ogImageUrl} />
     <meta property="og:image:alt" content={ogTitle ?? title} />
@@ -81,19 +95,18 @@ const jsonLd = [nightClubSchema(), websiteSchema(), ...schema];
     <meta name="geo.placename" content="Wrocław" />
     <meta name="geo.position" content="51.1106;17.0286" />
     <meta name="ICBM" content="51.1106, 17.0286" />
-    <link rel="canonical" href={canonical} />
     {jsonLd.map((s) => (
       <script type="application/ld+json" set:html={JSON.stringify(s)} />
     ))}
   </head>
   <body>
     <PageLoader />
-    <Nav active={active} />
+    <Nav locale={locale} active={routeKey} />
     <main id="main">
       <slot />
     </main>
-    <Footer />
-    <CookieBanner />
+    <Footer locale={locale} />
+    <CookieBanner locale={locale} />
     <script>import '../scripts/nav.ts';</script>
     <script>import '../scripts/scroll-animations.ts';</script>
   </body>

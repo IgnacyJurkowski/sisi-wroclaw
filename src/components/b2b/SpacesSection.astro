@@ -1,0 +1,53 @@
+---
+import { type Locale } from '../../i18n/config';
+import { useTranslations } from '../../i18n/t';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const s = t.b2b.spaces;
+---
+
+<section id="b2b-spaces" class="b2b-spaces">
+  <div class="container">
+    <h2 class="display b2b-section-title">{s.heading}</h2>
+    <div class="b2b-spaces-grid" data-reveal-group>
+      <article class="sisi-card b2b-space">
+        <h3 class="b2b-space-title display">{s.theCork.title}</h3>
+        <p class="b2b-space-body">{s.theCork.body}</p>
+        <ul class="b2b-space-points">
+          {s.theCork.points.map((p) => <li>{p}</li>)}
+        </ul>
+      </article>
+      <article class="sisi-card b2b-space">
+        <h3 class="b2b-space-title display">{s.sisi.title}</h3>
+        <p class="b2b-space-body">{s.sisi.body}</p>
+        <ul class="b2b-space-points">
+          {s.sisi.points.map((p) => <li>{p}</li>)}
+        </ul>
+      </article>
+    </div>
+    <article class="sisi-card b2b-combined" data-reveal>
+      <h3 class="b2b-space-title display">{s.combined.title}</h3>
+      <p class="b2b-space-body">{s.combined.body}</p>
+    </article>
+    <div class="b2b-spaces-cta" data-reveal>
+      <a href="#b2b-enquiry" class="btn-cta">{t.buttons.planEvent}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .b2b-spaces { padding: 72px 0; }
+  .b2b-section-title { font-size: clamp(1.5rem, 3.4vw, 2.2rem); text-transform: uppercase; text-align: center; margin-bottom: 36px; }
+  .b2b-spaces-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  .b2b-space { padding: 32px 32px; }
+  .b2b-combined { padding: 28px 32px; margin-top: 22px; border-color: rgba(251, 210, 149, 0.28); }
+  .b2b-space-title { font-size: 1.4rem; text-transform: uppercase; margin-bottom: 14px; }
+  .b2b-space-body { color: rgba(237,219,194,0.62); font-size: 15px; line-height: 1.7; }
+  .b2b-space-points { list-style: none; margin: 18px 0 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
+  .b2b-space-points li { position: relative; padding-left: 20px; font-size: 13px; line-height: 1.6; color: rgba(237,219,194,0.6); }
+  .b2b-space-points li::before { content: ''; position: absolute; left: 3px; top: 8px; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+  .b2b-spaces-cta { text-align: center; margin-top: 36px; }
+  @media (max-width: 760px) { .b2b-spaces-grid { grid-template-columns: 1fr; } .b2b-space { padding: 28px 24px; } }
+</style>

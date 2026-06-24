@@ -1,0 +1,67 @@
+---
+import Base from '../../layouts/Base.astro';
+import { CONTACT, COMPANY, LEGAL_UPDATED } from '../../data/site';
+import { type Locale } from '../../i18n/config';
+import { useTranslations } from '../../i18n/t';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const mapHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(CONTACT.address)}`;
+---
+
+<Base
+  locale={locale}
+  routeKey="contact"
+  title={t.meta.contact.title}
+  description={t.meta.contact.description}
+  ogDescription={t.meta.contact.ogDescription}
+>
+  <div class="page-header" data-reveal>
+    <span class="page-label">{t.contactPage.label}</span>
+    <h1 class="page-title display">{t.nav.contact}</h1>
+    <p class="page-subtitle">{t.contactPage.subtitle}</p>
+  </div>
+
+  <div class="legal" data-reveal>
+    <div class="contact-cols">
+      <section>
+        <h2>{t.contactPage.contactHeading}</h2>
+        <p>
+          <strong>{t.contactPage.reservationsLabel}</strong><br />
+          <a href={CONTACT.phoneHref}>{CONTACT.phone}</a><br />
+          <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
+        </p>
+        <p>
+          <strong>{t.contactPage.corporateLabel}</strong><br />
+          <a href={CONTACT.eventsPhoneHref}>{CONTACT.eventsPhone}</a><br />
+          <a href={`mailto:${CONTACT.eventsEmail}`}>{CONTACT.eventsEmail}</a>
+        </p>
+        <p>
+          <strong>{t.contactPage.addressLabel}</strong><br />
+          <a href={mapHref} rel="noopener" target="_blank">{COMPANY.street}, {COMPANY.postalCity}</a>
+        </p>
+        <p>
+          <strong>{t.contactPage.hoursLabel}</strong><br />
+          {t.common.hoursDays}, {CONTACT.hours}
+        </p>
+      </section>
+
+      <section>
+        <h2>{t.contactPage.registryHeading}</h2>
+        <p>{t.contactPage.registryIntro}</p>
+        <ul>
+          <li><strong>{COMPANY.legalName}</strong></li>
+          <li>{COMPANY.street}, {COMPANY.postalCity}</li>
+          <li>NIP: {COMPANY.nip}</li>
+          <li>REGON: {COMPANY.regon}</li>
+          <li>KRS: {COMPANY.krs}</li>
+        </ul>
+        <p>{t.contactPage.legalForm}</p>
+      </section>
+    </div>
+
+    <p class="legal-meta">{t.legal.updatedLabel} {LEGAL_UPDATED}</p>
+  </div>
+</Base>

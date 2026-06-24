@@ -1,22 +1,24 @@
 ---
+// Static 404 defaults to Polish; the language selector lets visitors switch.
 import Base from '../layouts/Base.astro';
+import { DEFAULT_LOCALE } from '../i18n/config';
+import { localizedPath } from '../i18n/routes';
+import { useTranslations } from '../i18n/t';
+
+const locale = DEFAULT_LOCALE;
+const t = useTranslations(locale);
+const homeHref = localizedPath('home', locale);
+const eventsHref = localizedPath('events', locale);
 ---
 
-<Base
-  title="404 - Nie znaleziono strony | SiSi Wrocław"
-  description="Strona, której szukasz, nie istnieje. Wróć na stronę główną SiSi Wrocław."
-  path="/404"
->
+<Base locale={locale} title={t.meta.notFound.title} description={t.meta.notFound.description} noindex>
   <section class="nf">
-    <span class="page-label">Błąd 404</span>
-    <h1 class="display nf-title">Tej strony nie ma</h1>
-    <p class="nf-body">
-      Wygląda na to, że strona, której szukasz, zniknęła jak ostatni gość o świcie.
-      Wróć na stronę główną albo sprawdź, co u nas gramy.
-    </p>
+    <span class="page-label">{t.notFound.label}</span>
+    <h1 class="display nf-title">{t.notFound.title}</h1>
+    <p class="nf-body">{t.notFound.body}</p>
     <div class="nf-actions">
-      <a href="/" class="btn-cta">Strona główna</a>
-      <a href="/wydarzenia" class="btn-outline">Wydarzenia</a>
+      <a href={homeHref} class="btn-cta">{t.buttons.home}</a>
+      <a href={eventsHref} class="btn-outline">{t.nav.events}</a>
     </div>
   </section>
 </Base>

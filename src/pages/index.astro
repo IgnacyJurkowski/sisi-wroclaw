@@ -1,31 +1,26 @@
 ---
-import Base from '../layouts/Base.astro';
-import Hero from '../components/home/Hero.astro';
-import About from '../components/home/About.astro';
-import R32 from '../components/home/R32.astro';
-import MenuTeaser from '../components/home/MenuTeaser.astro';
-import Events from '../components/home/Events.astro';
-import Chivas from '../components/home/Chivas.astro';
-import { splitEvents, eventSchema } from '../data/site';
+// Root: send visitors to the default-locale home. A Netlify 301 (netlify.toml)
+// is the authoritative redirect for crawlers; this page is the build-time/local
+// fallback and is noindexed so it never competes with /pl/.
+import { DEFAULT_LOCALE } from '../i18n/config';
+import { localizedPath } from '../i18n/routes';
 
-// Mirror the Events teaser (soonest 2) so the Event JSON-LD matches what's
-// actually rendered on this page.
-const homeEvents = splitEvents().upcoming.slice(0, 2);
+const target = localizedPath('home', DEFAULT_LOCALE); // /pl/
+const canonical = new URL(target, Astro.site).href;
 ---
 
-<Base
-  title="SiSi Wrocław - Music Club & Bar"
-  description="SiSi to serce nocnego Wrocławia - muzyka na żywo, najlepsi DJ-e, autorskie koktajle i wyjątkowa atmosfera w sercu kompleksu R32."
-  ogTitle="SiSi Wrocław - Music Club & Bar"
-  ogDescription="Muzyka na żywo, DJ-e, autorskie koktajle. Serce nocnego Wrocławia."
-  path="/"
-  preloadImage="/framerusercontent.com/images/nBW0AVejCOoiy2Rctqcid0SY6Q.webp"
-  schema={eventSchema(homeEvents)}
->
-  <Hero />
-  <About />
-  <R32 />
-  <MenuTeaser />
-  <Events />
-  <Chivas />
-</Base>
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SiSi Wrocław - Music Club & Bar</title>
+    <meta name="robots" content="noindex, follow" />
+    <link rel="canonical" href={canonical} />
+    <meta http-equiv="refresh" content={`0; url=${target}`} />
+    <script is:inline>location.replace('/pl/');</script>
+  </head>
+  <body>
+    <a href={target}>SiSi Wrocław</a>
+  </body>
+</html>

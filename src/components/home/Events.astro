@@ -1,6 +1,14 @@
 ---
 import EventCard from '../EventCard.astro';
 import { splitEvents } from '../../data/site';
+import { type Locale } from '../../i18n/config';
+import { localizedPath } from '../../i18n/routes';
+import { useTranslations } from '../../i18n/t';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const eventsHref = localizedPath('events', locale);
 
 // Homepage teaser - preview the soonest upcoming events, link out to the full page.
 const teaser = splitEvents().upcoming.slice(0, 2);
@@ -8,15 +16,15 @@ const teaser = splitEvents().upcoming.slice(0, 2);
 
 <section id="wydarzenia" class="events">
   <div class="container">
-    <span class="page-label" style="text-align:center;display:block;" data-reveal>Wydarzenia</span>
-    <h2 class="display ev-title" data-reveal>Nadchodzące wydarzenia</h2>
+    <span class="page-label" style="text-align:center;display:block;" data-reveal>{t.homeEvents.eyebrow}</span>
+    <h2 class="display ev-title" data-reveal>{t.homeEvents.title}</h2>
 
     <div class="ev-grid" data-reveal-group>
-      {teaser.map((e) => <EventCard event={e} />)}
+      {teaser.map((e) => <EventCard event={e} locale={locale} />)}
     </div>
 
     <div class="ev-more" data-reveal>
-      <a href="/wydarzenia" class="btn-outline">Zobacz wszystkie wydarzenia</a>
+      <a href={eventsHref} class="btn-outline">{t.buttons.seeAllEvents}</a>
     </div>
   </div>
 </section>

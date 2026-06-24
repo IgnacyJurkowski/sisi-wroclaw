@@ -1,11 +1,17 @@
 ---
 // Branded sponsor banner - full-bleed image with centered title.
+import { type Locale } from '../../i18n/config';
+import { useTranslations } from '../../i18n/t';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
 ---
 
 <section class="chivas">
   <div class="chivas-bg" data-parallax="14" aria-hidden="true"></div>
   <div class="chivas-scrim" aria-hidden="true"></div>
-  <h2 class="display chivas-title" data-reveal>Strefa Chivas Regal</h2>
+  <h2 class="display chivas-title" data-reveal>{t.chivas.title}</h2>
 </section>
 
 <style>

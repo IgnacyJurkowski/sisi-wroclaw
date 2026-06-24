@@ -1,0 +1,38 @@
+---
+import { LOCALES, type Locale } from '../i18n/config';
+import { ROUTE_KEYS, SLUGS, type RouteKey } from '../i18n/routes';
+import HomePage from '../components/pages/HomePage.astro';
+import EventsPage from '../components/pages/EventsPage.astro';
+import MenuPage from '../components/pages/MenuPage.astro';
+import CareersPage from '../components/pages/CareersPage.astro';
+import ReservationsPage from '../components/pages/ReservationsPage.astro';
+import ContactPage from '../components/pages/ContactPage.astro';
+import CorporatePage from '../components/pages/CorporatePage.astro';
+import LegalPage from '../components/pages/LegalPage.astro';
+
+// One static page per (locale, route) from the central route map.
+export function getStaticPaths() {
+  const paths: { params: { path: string }; props: { locale: Locale; routeKey: RouteKey } }[] = [];
+  for (const locale of LOCALES) {
+    for (const key of ROUTE_KEYS) {
+      const slug = SLUGS[key][locale];
+      const path = slug ? `${locale}/${slug}` : `${locale}`;
+      paths.push({ params: { path }, props: { locale, routeKey: key } });
+    }
+  }
+  return paths;
+}
+
+const { locale, routeKey } = Astro.props;
+---
+
+{routeKey === 'home' && <HomePage locale={locale} />}
+{routeKey === 'events' && <EventsPage locale={locale} />}
+{routeKey === 'menu' && <MenuPage locale={locale} />}
+{routeKey === 'careers' && <CareersPage locale={locale} />}
+{routeKey === 'reservations' && <ReservationsPage locale={locale} />}
+{routeKey === 'corporate' && <CorporatePage locale={locale} />}
+{routeKey === 'contact' && <ContactPage locale={locale} />}
+{(routeKey === 'terms' || routeKey === 'privacy' || routeKey === 'cookies') && (
+  <LegalPage locale={locale} legalKey={routeKey} />
+)}

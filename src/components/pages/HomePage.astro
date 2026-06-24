@@ -1,0 +1,39 @@
+---
+import Base from '../../layouts/Base.astro';
+import Hero from '../home/Hero.astro';
+import About from '../home/About.astro';
+import R32 from '../home/R32.astro';
+import MenuTeaser from '../home/MenuTeaser.astro';
+import Events from '../home/Events.astro';
+import HomeCorporate from '../home/HomeCorporate.astro';
+import Chivas from '../home/Chivas.astro';
+import { splitEvents, eventSchema } from '../../data/site';
+import { type Locale } from '../../i18n/config';
+import { useTranslations } from '../../i18n/t';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+// Mirror the Events teaser (soonest 2) so the Event JSON-LD matches the page.
+const homeEvents = splitEvents().upcoming.slice(0, 2);
+---
+
+<Base
+  locale={locale}
+  routeKey="home"
+  title={t.meta.home.title}
+  description={t.meta.home.description}
+  ogTitle={t.meta.home.title}
+  ogDescription={t.meta.home.ogDescription}
+  preloadImage="/framerusercontent.com/images/nBW0AVejCOoiy2Rctqcid0SY6Q.webp"
+  schema={eventSchema(homeEvents, locale)}
+>
+  <Hero locale={locale} />
+  <About locale={locale} />
+  <R32 locale={locale} />
+  <MenuTeaser locale={locale} />
+  <Events locale={locale} />
+  <HomeCorporate locale={locale} />
+  <Chivas locale={locale} />
+</Base>

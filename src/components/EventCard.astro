@@ -1,9 +1,13 @@
 ---
 import { RESERVATION_URL } from '../data/site';
 import type { EventItem } from '../data/site';
+import { type Locale } from '../i18n/config';
+import { formatEventDate, dateTimeAttr } from '../i18n/format';
+import { useTranslations } from '../i18n/t';
 
-interface Props { event: EventItem; past?: boolean }
-const { event, past = false } = Astro.props;
+interface Props { event: EventItem; locale: Locale; past?: boolean }
+const { event, locale, past = false } = Astro.props;
+const t = useTranslations(locale);
 ---
 
 <article class:list={['ev-card', { past }]}>
@@ -11,10 +15,10 @@ const { event, past = false } = Astro.props;
   <div class="ev-body">
     <h3 class="display ev-name">{event.title}</h3>
     {event.note && <p class="ev-note">{event.note}</p>}
-    <p class="ev-date"><time datetime={`${event.iso}T22:00:00+02:00`}>{event.date}</time></p>
+    <p class="ev-date"><time datetime={dateTimeAttr(event.start)}>{formatEventDate(event.start, locale)}</time></p>
     {past
-      ? <span class="ev-done">Wydarzenie zakończone</span>
-      : <a href={RESERVATION_URL} class="btn-cta" rel="noopener" target="_blank">Zarezerwuj</a>}
+      ? <span class="ev-done">{t.eventCard.finished}</span>
+      : <a href={RESERVATION_URL} class="btn-cta" rel="noopener" target="_blank">{t.eventCard.reserve}</a>}
   </div>
 </article>
 

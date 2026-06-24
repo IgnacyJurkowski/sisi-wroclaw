@@ -1,0 +1,75 @@
+---
+import Base from '../../layouts/Base.astro';
+import { CONTACT } from '../../data/site';
+import { type Locale } from '../../i18n/config';
+import { useTranslations, interpolate } from '../../i18n/t';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const mailto = (subject: string) =>
+  `mailto:${CONTACT.email}?subject=${encodeURIComponent(`${subject} - `)}`;
+---
+
+<Base
+  locale={locale}
+  routeKey="careers"
+  title={t.meta.careers.title}
+  description={t.meta.careers.description}
+  ogDescription={t.meta.careers.ogDescription}
+>
+  <div class="page-header" data-reveal>
+    <span class="page-label">{t.careersPage.label}</span>
+    <h1 class="page-title display">{t.careersPage.title}</h1>
+    <p class="page-subtitle">{t.careersPage.subtitle}</p>
+  </div>
+
+  <div class="kariera-wrap">
+    <div class="kariera-grid" data-reveal-group>
+      {t.careersPage.jobs.map((job) => (
+        <article class="sisi-card job-card">
+          <p class="menu-section-label">{t.careersPage.positionLabel}</p>
+          <h2 class="job-name">{job.title}</h2>
+          <ul class="job-bullets">
+            {job.bullets.map((b) => <li>{b}</li>)}
+          </ul>
+          <a href={mailto(job.title)} class="btn-cta job-apply">{t.careersPage.apply}</a>
+        </article>
+      ))}
+    </div>
+
+    <div class="sisi-card how-card" data-reveal>
+      <h2 class="menu-section-label">{t.careersPage.howToApply}</h2>
+      <p class="how-lead" set:html={interpolate(t.careersPage.howLead, {
+        email: `<a href="mailto:${CONTACT.email}" class="how-mail">${CONTACT.email}</a>`,
+      })} />
+      <p class="how-note" set:html={interpolate(t.careersPage.howNote, {
+        example: `<span>${t.careersPage.howExample}</span>`,
+      })} />
+    </div>
+  </div>
+</Base>
+
+<style>
+  .kariera-wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 32px 80px; }
+  .kariera-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+    gap: 24px; margin-bottom: 32px;
+  }
+  .job-card { padding: 32px 36px; display: flex; flex-direction: column; }
+  .job-name {
+    font-size: 22px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: -0.02em; margin-bottom: 24px;
+  }
+  .job-bullets { display: flex; flex-direction: column; gap: 10px; flex: 1; margin-bottom: 32px; }
+  .job-bullets li { font-size: 13px; color: rgba(237,219,194,0.5); line-height: 1.6; }
+  .job-apply { width: 100%; }
+  .how-card { padding: 32px 36px; }
+  .how-lead { font-size: 15px; color: rgba(237,219,194,0.65); line-height: 1.7; margin-bottom: 10px; }
+  .how-mail { color: var(--cream); text-decoration: underline; text-underline-offset: 4px; }
+  .how-note { font-size: 13px; color: rgba(237,219,194,0.4); line-height: 1.7; }
+  .how-note span { color: rgba(237,219,194,0.65); }
+  @media (max-width: 600px) { .kariera-wrap { padding-inline: 20px; } }
+</style>

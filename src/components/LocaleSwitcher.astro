@@ -1,0 +1,101 @@
+---
+import { LOCALE_NAMES, type Locale } from '../i18n/config';
+import { alternates, type RouteKey } from '../i18n/routes';
+import { useTranslations } from '../i18n/t';
+
+interface Props { locale: Locale; routeKey: RouteKey; variant?: 'bar' | 'inline' }
+const { locale, routeKey, variant = 'bar' } = Astro.props;
+const t = useTranslations(locale);
+const alts = alternates(routeKey);
+---
+
+{variant === 'bar' ? (
+  <details class="lang-switcher" data-lang-switcher>
+    <summary class="lang-current" aria-label={`${t.nav.langLabel}: ${LOCALE_NAMES[locale]}`}>
+      <span aria-hidden="true" class="lang-code">{locale.toUpperCase()}</span>
+      <span class="lang-name">{LOCALE_NAMES[locale]}</span>
+      <svg class="lang-caret" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
+    </summary>
+    <ul class="lang-dropdown" role="list">
+      {alts.map((a) => (
+        <li>
+          <a href={a.path} lang={a.locale} hreflang={a.locale} aria-current={a.locale === locale ? 'true' : undefined}>{LOCALE_NAMES[a.locale]}</a>
+        </li>
+      ))}
+    </ul>
+  </details>
+) : (
+  <nav class="lang-inline" aria-label={t.nav.langLabel}>
+    <span class="lang-inline-label">{t.nav.langLabel}</span>
+    <ul role="list">
+      {alts.map((a) => (
+        <li>
+          <a href={a.path} lang={a.locale} hreflang={a.locale} aria-current={a.locale === locale ? 'true' : undefined} data-nav-link>{LOCALE_NAMES[a.locale]}</a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+)}
+
+<script>
+  // <details> already toggles + traps keyboard natively. Add Esc + outside-click.
+  document.querySelectorAll<HTMLDetailsElement>('details[data-lang-switcher]').forEach((el) => {
+    const summary = el.querySelector('summary');
+    el.addEventListener('keydown', (e) => {
+      if ((e as KeyboardEvent).key === 'Escape' && el.open) { el.open = false; summary?.focus(); }
+    });
+    document.addEventListener('click', (e) => {
+      if (el.open && !el.contains(e.target as Node)) el.open = false;
+    });
+  });
+</script>
+
+<style>
+  /* --- bar (desktop) --- */
+  .lang-switcher { position: relative; }
+  .lang-current {
+    list-style: none; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 7px 12px; border-radius: 10px; border: 1px solid var(--line);
+    color: var(--cream); font-size: 12px; letter-spacing: 0.04em;
+    background: rgba(255, 255, 255, 0.03);
+    transition: background 180ms ease; white-space: nowrap;
+  }
+  .lang-current::-webkit-details-marker { display: none; }
+  .lang-current:hover { background: rgba(255, 255, 255, 0.08); }
+  .lang-current:focus-visible { outline: 2px solid rgba(237, 219, 194, 0.6); outline-offset: 2px; }
+  .lang-name { display: inline; }
+  .lang-caret { transition: transform 200ms ease; opacity: 0.7; }
+  .lang-switcher[open] .lang-caret { transform: rotate(180deg); }
+  @media (max-width: 1100px) { .lang-bar-hide-name .lang-name { display: none; } }
+
+  .lang-dropdown {
+    position: absolute; right: 0; top: calc(100% + 8px);
+    z-index: 60; min-width: 160px; margin: 0; padding: 6px; list-style: none;
+    background: #2a0a13; border: 1px solid var(--line); border-radius: 12px;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
+  }
+  .lang-dropdown a {
+    display: block; padding: 9px 12px; border-radius: 8px;
+    color: var(--cream); font-size: 14px; text-decoration: none;
+  }
+  .lang-dropdown a:hover { background: rgba(255, 255, 255, 0.07); }
+  .lang-dropdown a[aria-current='true'] { color: var(--gold); font-weight: 600; }
+
+  /* --- inline (mobile menu) --- */
+  .lang-inline { margin-top: 1.5rem; width: 100%; }
+  .lang-inline-label {
+    display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--text-faint); margin-bottom: 12px;
+  }
+  .lang-inline ul {
+    list-style: none; margin: 0; padding: 0;
+    display: flex; flex-wrap: wrap; gap: 10px;
+  }
+  .lang-inline a {
+    display: inline-block; padding: 8px 14px; border-radius: 999px;
+    border: 1px solid var(--line); color: var(--cream);
+    font-size: 14px; text-decoration: none;
+  }
+  .lang-inline a[aria-current='true'] { border-color: var(--gold); color: var(--gold); }
+</style>

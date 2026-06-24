@@ -1,0 +1,60 @@
+---
+import Base from '../../layouts/Base.astro';
+import B2BHero from '../b2b/B2BHero.astro';
+import VenueFacts from '../b2b/VenueFacts.astro';
+import EventFormats from '../b2b/EventFormats.astro';
+import SpacesSection from '../b2b/SpacesSection.astro';
+import EventProcess from '../b2b/EventProcess.astro';
+import CaseStudies from '../b2b/CaseStudies.astro';
+import B2BFAQ from '../b2b/B2BFAQ.astro';
+import B2BEnquiryForm from '../b2b/B2BEnquiryForm.astro';
+import { corporateServiceSchema } from '../../data/site';
+import { type Locale } from '../../i18n/config';
+import { localizedPath } from '../../i18n/routes';
+import { useTranslations } from '../../i18n/t';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const url = new URL(localizedPath('corporate', locale), Astro.site).href;
+const homeUrl = new URL(localizedPath('home', locale), Astro.site).href;
+
+// FAQPage schema - valid only because the same Q&A are visibly rendered below.
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: t.b2b.faq.items.map((i) => ({
+    '@type': 'Question',
+    name: i.q,
+    acceptedAnswer: { '@type': 'Answer', text: i.a },
+  })),
+};
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'SiSi Wrocław', item: homeUrl },
+    { '@type': 'ListItem', position: 2, name: t.nav.corporate, item: url },
+  ],
+};
+---
+
+<Base
+  locale={locale}
+  routeKey="corporate"
+  title={t.meta.corporate.title}
+  description={t.meta.corporate.description}
+  ogTitle={t.meta.corporate.title}
+  ogDescription={t.meta.corporate.ogDescription}
+  schema={[corporateServiceSchema(locale), faqSchema, breadcrumb]}
+>
+  <B2BHero locale={locale} />
+  <VenueFacts locale={locale} />
+  <EventFormats locale={locale} />
+  <SpacesSection locale={locale} />
+  <EventProcess locale={locale} />
+  <CaseStudies locale={locale} />
+  <B2BFAQ locale={locale} />
+  <B2BEnquiryForm locale={locale} />
+</Base>

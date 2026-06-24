@@ -64,6 +64,10 @@ const it: UI = {
     },
   },
 
+  common: {
+    hoursDays: 'Venerdì - Sabato',
+  },
+
   nav: {
     home: 'Home',
     events: 'Eventi',
@@ -71,6 +75,10 @@ const it: UI = {
     careers: 'Lavora con noi',
     corporate: 'Aziende',
     reservations: 'Prenotazioni',
+    contact: 'Contatti',
+    terms: 'Regolamento',
+    privacy: 'Privacy',
+    cookies: 'Cookie',
     skip: 'Vai al contenuto',
     mainNav: 'Navigazione principale',
     mobileNav: 'Menu mobile',

@@ -1,18 +1,24 @@
 ---
-const intro = `SISI to przestrzeń, w której wieczór ma swój wyjątkowy rytm. Rozpoczynamy od klimatycznej muzyki na żywo, która tworzy idealne tło dla relaksu i rozmów. Następnie płynnie przechodzimy do dynamicznych setów najlepszych DJ-ów, gwarantujących energię i taniec do samego rana. Tworzymy miejsce dla gości ceniących najwyższą jakość i niezapomnianą, wyjątkową atmosferę.`;
+import { type Locale } from '../../i18n/config';
+import { useTranslations } from '../../i18n/t';
 
-const cards = [
-  { img: '/framerusercontent.com/images/QxXDx4GN74BgGuzaDth23HA.webp', title: 'Nowoczesna przestrzeń muzyczna' },
-  { img: '/framerusercontent.com/images/RHdmR5s8jXTtyexi8FJLI4WDkig.webp', title: 'Friday Session' },
-  { img: '/framerusercontent.com/images/RMGSDUbOPnta4fZZQKL5BcnP3Pw.webp', title: 'Live Acty: muzyczny wstęp do wyjątkowej nocy' },
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const imgs = [
+  '/framerusercontent.com/images/QxXDx4GN74BgGuzaDth23HA.webp',
+  '/framerusercontent.com/images/RHdmR5s8jXTtyexi8FJLI4WDkig.webp',
+  '/framerusercontent.com/images/RMGSDUbOPnta4fZZQKL5BcnP3Pw.webp',
 ];
+const cards = imgs.map((img, i) => ({ img, title: t.about.cards[i] }));
 ---
 
 <section id="ewolucja-onas" class="about">
   <div class="container about-head" data-reveal>
-    <span class="page-label">O nas</span>
-    <h2 class="display about-title">Muzyczna ewolucja wieczoru</h2>
-    <p class="about-intro">{intro}</p>
+    <span class="page-label">{t.about.eyebrow}</span>
+    <h2 class="display about-title">{t.about.title}</h2>
+    <p class="about-intro">{t.about.intro}</p>
   </div>
 
   <div class="container about-grid" data-reveal-group>

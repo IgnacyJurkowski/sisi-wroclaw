@@ -1,0 +1,54 @@
+---
+import Base from '../../layouts/Base.astro';
+import { COMPANY, CONTACT, LEGAL_UPDATED } from '../../data/site';
+import { DEFAULT_LOCALE, type Locale } from '../../i18n/config';
+import { getLegal, type LegalKey } from '../../i18n/legal';
+import { useTranslations, interpolate } from '../../i18n/t';
+
+interface Props { locale: Locale; legalKey: LegalKey }
+const { locale, legalKey } = Astro.props;
+const t = useTranslations(locale);
+const { doc } = getLegal(legalKey, locale);
+
+const tokens: Record<string, string> = {
+  legalName: COMPANY.legalName,
+  street: COMPANY.street,
+  postalCity: COMPANY.postalCity,
+  nip: COMPANY.nip,
+  regon: COMPANY.regon,
+  email: COMPANY.email,
+  phone: COMPANY.phone,
+  eventsPhone: CONTACT.eventsPhone,
+  eventsEmail: CONTACT.eventsEmail,
+};
+const fill = (s: string) => interpolate(s, tokens);
+const meta = t.meta[legalKey];
+---
+
+<Base
+  locale={locale}
+  routeKey={legalKey}
+  title={meta.title}
+  description={meta.description}
+  ogDescription={meta.ogDescription}
+>
+  <div class="page-header" data-reveal>
+    <span class="page-label">{t.footer.legalHeading}</span>
+    <h1 class="page-title display">{t.nav[legalKey]}</h1>
+    <p class="page-subtitle">{meta.ogDescription}</p>
+  </div>
+
+  <div class="legal" data-reveal>
+    {locale !== DEFAULT_LOCALE && (
+      <p class="legal-convenience">{t.legal.convenienceNote}</p>
+    )}
+    {doc.sections.map((s) => (
+      <Fragment>
+        <h2>{fill(s.heading)}</h2>
+        {s.paragraphs?.map((p) => <p>{fill(p)}</p>)}
+        {s.items && <ul>{s.items.map((i) => <li>{fill(i)}</li>)}</ul>}
+      </Fragment>
+    ))}
+    <p class="legal-meta">{t.legal.updatedLabel} {LEGAL_UPDATED}</p>
+  </div>
+</Base>

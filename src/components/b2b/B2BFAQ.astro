@@ -1,0 +1,43 @@
+---
+import { type Locale } from '../../i18n/config';
+import { useTranslations } from '../../i18n/t';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const faq = t.b2b.faq;
+---
+
+<section class="b2b-faq">
+  <div class="container">
+    <h2 class="display b2b-section-title">{faq.heading}</h2>
+    <div class="b2b-faq-list" data-reveal>
+      {faq.items.map((item) => (
+        <details class="b2b-faq-item">
+          <summary>
+            <span>{item.q}</span>
+            <svg class="b2b-faq-caret" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
+          </summary>
+          <p>{item.a}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .b2b-faq { padding: 32px 0 72px; }
+  .b2b-section-title { font-size: clamp(1.5rem, 3.4vw, 2.2rem); text-transform: uppercase; text-align: center; margin-bottom: 36px; }
+  .b2b-faq-list { max-width: 760px; margin: 0 auto; }
+  .b2b-faq-item { border-bottom: 1px solid var(--line); }
+  .b2b-faq-item summary {
+    list-style: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between; gap: 18px;
+    padding: 20px 4px; color: var(--cream); font-size: 16px; line-height: 1.4;
+  }
+  .b2b-faq-item summary::-webkit-details-marker { display: none; }
+  .b2b-faq-item summary:focus-visible { outline: 2px solid rgba(237,219,194,0.6); outline-offset: 2px; border-radius: 6px; }
+  .b2b-faq-caret { flex-shrink: 0; opacity: 0.7; transition: transform 200ms ease; }
+  .b2b-faq-item[open] .b2b-faq-caret { transform: rotate(180deg); }
+  .b2b-faq-item p { padding: 0 4px 22px; color: rgba(237,219,194,0.62); font-size: 14px; line-height: 1.75; }
+</style>

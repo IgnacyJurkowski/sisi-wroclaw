@@ -64,6 +64,10 @@ const cs: UI = {
     },
   },
 
+  common: {
+    hoursDays: 'Pátek - Sobota',
+  },
+
   nav: {
     home: 'Úvod',
     events: 'Akce',
@@ -71,6 +75,10 @@ const cs: UI = {
     careers: 'Kariéra',
     corporate: 'Pro firmy',
     reservations: 'Rezervace',
+    contact: 'Kontakt',
+    terms: 'Pravidla',
+    privacy: 'Ochrana soukromí',
+    cookies: 'Zásady cookies',
     skip: 'Přejít na obsah',
     mainNav: 'Hlavní navigace',
     mobileNav: 'Mobilní menu',

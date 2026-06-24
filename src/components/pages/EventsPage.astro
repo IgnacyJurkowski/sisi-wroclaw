@@ -1,51 +1,57 @@
 ---
-import Base from '../layouts/Base.astro';
-import EventCard from '../components/EventCard.astro';
-import { splitEvents, eventSchema } from '../data/site';
+import Base from '../../layouts/Base.astro';
+import EventCard from '../EventCard.astro';
+import { splitEvents, eventSchema } from '../../data/site';
+import { type Locale } from '../../i18n/config';
+import { useTranslations } from '../../i18n/t';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
 
 const { upcoming, past } = splitEvents();
 const future = upcoming.slice(0, 6);
 ---
 
 <Base
-  title="Wydarzenia - SiSi Wrocław"
-  description="Nadchodzące wydarzenia w SiSi Wrocław - koncerty, DJ-e i imprezy tematyczne w sercu kompleksu R32. Zobacz też archiwum minionych nocy."
-  ogDescription="Koncerty, DJ-e i imprezy tematyczne. Nadchodzące wydarzenia i archiwum SiSi Wrocław."
-  active="events"
-  path="/wydarzenia"
-  schema={eventSchema(future)}
+  locale={locale}
+  routeKey="events"
+  title={t.meta.events.title}
+  description={t.meta.events.description}
+  ogDescription={t.meta.events.ogDescription}
+  schema={eventSchema(future, locale)}
 >
   <div class="page-header" data-reveal>
-    <span class="page-label">Co się dzieje</span>
-    <h1 class="page-title display">Wydarzenia</h1>
-    <p class="page-subtitle">Koncerty, DJ-e i imprezy tematyczne. Przewiń, by zobaczyć, co gramy w najbliższe weekendy - i zajrzyj do archiwum minionych nocy.</p>
+    <span class="page-label">{t.eventsPage.label}</span>
+    <h1 class="page-title display">{t.eventsPage.title}</h1>
+    <p class="page-subtitle">{t.eventsPage.subtitle}</p>
   </div>
 
   <section class="ev-section" data-reveal>
     <div class="ev-row-head">
-      <h2 class="display ev-row-title">Nadchodzące</h2>
-      <span class="ev-hint" aria-hidden="true">przewiń →</span>
+      <h2 class="display ev-row-title">{t.eventsPage.upcoming}</h2>
+      <span class="ev-hint" aria-hidden="true">{t.eventsPage.scrollHint}</span>
     </div>
     {future.length > 0 ? (
       <ul class="ev-row">
         {future.map((e) => (
-          <li class="ev-slide"><EventCard event={e} /></li>
+          <li class="ev-slide"><EventCard event={e} locale={locale} /></li>
         ))}
       </ul>
     ) : (
-      <p class="ev-empty">Wkrótce ogłosimy kolejne wydarzenia - śledź nas na Instagramie.</p>
+      <p class="ev-empty">{t.eventsPage.empty}</p>
     )}
   </section>
 
   {past.length > 0 && (
     <section class="ev-section archive" data-reveal>
       <div class="ev-row-head">
-        <h2 class="display ev-row-title">Archiwum</h2>
-        <span class="ev-hint" aria-hidden="true">przewiń →</span>
+        <h2 class="display ev-row-title">{t.eventsPage.archive}</h2>
+        <span class="ev-hint" aria-hidden="true">{t.eventsPage.scrollHint}</span>
       </div>
       <ul class="ev-row">
         {past.map((e) => (
-          <li class="ev-slide"><EventCard event={e} past /></li>
+          <li class="ev-slide"><EventCard event={e} locale={locale} past /></li>
         ))}
       </ul>
     </section>
@@ -53,42 +59,32 @@ const future = upcoming.slice(0, 6);
 </Base>
 
 <style>
-  /* Edge inset that lines the rows up with the centered page container,
-     while letting them scroll full-bleed across the viewport. */
   .ev-section {
     --edge: max(32px, calc((100vw - var(--maxw)) / 2 + 32px));
     margin-bottom: 72px;
   }
   .ev-section:last-of-type { margin-bottom: 96px; }
-
   .ev-row-head {
     display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
     padding-inline: var(--edge); margin-bottom: 24px;
   }
   .ev-row-title { font-size: clamp(1.4rem, 3vw, 2rem); text-transform: uppercase; }
   .ev-hint { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); }
-
-  /* Horizontal scroll-snap row. */
   .ev-row {
     display: flex; gap: 20px; margin: 0; list-style: none;
     overflow-x: auto; overflow-y: hidden;
-    scroll-snap-type: x mandatory;
-    scroll-padding-inline: var(--edge);
+    scroll-snap-type: x mandatory; scroll-padding-inline: var(--edge);
     -webkit-overflow-scrolling: touch;
     padding: 4px var(--edge) 22px;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(237, 219, 194, 0.2) transparent;
+    scrollbar-width: thin; scrollbar-color: rgba(237, 219, 194, 0.2) transparent;
   }
   .ev-row::-webkit-scrollbar { height: 8px; }
   .ev-row::-webkit-scrollbar-track { background: transparent; }
   .ev-row::-webkit-scrollbar-thumb { background: rgba(237, 219, 194, 0.18); border-radius: 99px; }
   .ev-row::-webkit-scrollbar-thumb:hover { background: rgba(237, 219, 194, 0.32); }
-
   .ev-slide { flex: 0 0 300px; scroll-snap-align: start; }
   .ev-slide > :global(.ev-card) { height: 100%; }
-
   .ev-empty { padding-inline: var(--edge); color: var(--text-dim); font-size: 16px; }
-
   @media (max-width: 600px) {
     .ev-section { --edge: 20px; }
     .ev-slide { flex-basis: 82vw; }

@@ -1,0 +1,42 @@
+---
+import { type Locale } from '../../i18n/config';
+import { useTranslations } from '../../i18n/t';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const f = t.b2b.facts;
+---
+
+<section class="b2b-facts" aria-label={f.heading}>
+  <div class="container">
+    <h2 class="display b2b-section-title">{f.heading}</h2>
+    <ul class="b2b-facts-grid" data-reveal-group>
+      {f.items.map((item) => (
+        <li class="b2b-fact sisi-card">
+          <span class="b2b-fact-value display">{item.value}</span>
+          <span class="b2b-fact-label">{item.label}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .b2b-facts { padding: 72px 0; }
+  .b2b-section-title {
+    font-size: clamp(1.5rem, 3.4vw, 2.2rem); text-transform: uppercase;
+    text-align: center; margin-bottom: 36px;
+  }
+  .b2b-facts-grid {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+  }
+  .b2b-fact {
+    text-align: center; padding: 30px 18px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .b2b-fact-value { font-size: clamp(1.6rem, 3.4vw, 2.4rem); color: var(--gold); line-height: 1; }
+  .b2b-fact-label { font-size: 13px; color: rgba(237,219,194,0.6); line-height: 1.5; }
+  @media (max-width: 760px) { .b2b-facts-grid { grid-template-columns: 1fr 1fr; } }
+</style>

@@ -1,0 +1,37 @@
+---
+import { type Locale } from '../../i18n/config';
+import { localizedPath } from '../../i18n/routes';
+import { useTranslations } from '../../i18n/t';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const href = localizedPath('corporate', locale);
+---
+
+<section class="home-b2b">
+  <div class="container home-b2b-inner" data-reveal>
+    <span class="page-label">{t.homeB2B.eyebrow}</span>
+    <h2 class="display home-b2b-title">{t.homeB2B.title}</h2>
+    <p class="home-b2b-body">{t.homeB2B.body}</p>
+    <a href={href} class="btn-cta">{t.nav.corporate}</a>
+  </div>
+</section>
+
+<style>
+  .home-b2b { padding: 40px 0 96px; }
+  .home-b2b-inner {
+    max-width: 760px; text-align: center;
+    border: 1px solid var(--line); border-radius: 20px;
+    padding: 48px 32px; background: rgba(255, 255, 255, 0.02);
+  }
+  .home-b2b-title {
+    font-size: clamp(1.7rem, 4vw, 2.6rem); text-transform: uppercase;
+    line-height: 1.12; margin: 12px 0 18px;
+  }
+  .home-b2b-body {
+    color: rgba(237, 219, 194, 0.62); font-size: 16px; line-height: 1.8;
+    max-width: 540px; margin: 0 auto 28px;
+  }
+  @media (max-width: 600px) { .home-b2b { padding: 24px 0 72px; } .home-b2b-inner { padding: 36px 22px; } }
+</style>

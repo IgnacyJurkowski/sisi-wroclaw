@@ -1,0 +1,31 @@
+---
+import { type Locale } from '../../i18n/config';
+import type { CaseStudy } from '../../data/caseStudies';
+
+interface Props { study: CaseStudy; locale: Locale }
+const { study, locale } = Astro.props;
+const alt = study.imageAlt?.[locale] ?? study.title[locale];
+---
+
+<article class="case-card sisi-card">
+  {study.image && (
+    <div class="case-media"><img src={study.image} alt={alt} loading="lazy" /></div>
+  )}
+  <div class="case-body">
+    <p class="case-meta">{study.category} · {study.year}</p>
+    <h3 class="case-title display">{study.title[locale]}</h3>
+    <p class="case-summary">{study.summary[locale]}</p>
+    {study.guestCount ? <p class="case-stat">{study.guestCount}</p> : null}
+  </div>
+</article>
+
+<style>
+  .case-card { overflow: hidden; display: flex; flex-direction: column; padding: 0; }
+  .case-media { aspect-ratio: 4 / 3; overflow: hidden; }
+  .case-media img { width: 100%; height: 100%; object-fit: cover; }
+  .case-body { padding: 24px 26px 28px; }
+  .case-meta { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); margin-bottom: 8px; }
+  .case-title { font-size: 1.2rem; text-transform: uppercase; margin-bottom: 10px; }
+  .case-summary { font-size: 14px; line-height: 1.6; color: rgba(237,219,194,0.6); }
+  .case-stat { margin-top: 12px; color: var(--gold); font-size: 14px; }
+</style>

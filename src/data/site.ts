@@ -1,65 +1,58 @@
-/* Shared site data - single source of truth for nav, footer and contact details. */
+/* Shared site data - single source of truth for contact details, events,
+   verified venue facts and structured data. Translatable prose lives in
+   src/i18n/ui/*; this file holds brand-invariant facts (prices, phones, ISO
+   dates) plus locale-aware JSON-LD builders. */
+
+import { type Locale } from '../i18n/config';
+import { localizedPath } from '../i18n/routes';
+import { useTranslations } from '../i18n/t';
 
 export const RESERVATION_URL =
   'https://emenago.com/inner/cart/6619/0519b014958d73fb0d5d2d58c360a661/pl';
 
-export type NavItem = { id: string; label: string; href: string };
+// `start` is the complete ISO date-time (Europe/Warsaw, summer offset +02:00);
+// every visible date label is generated from it (see src/i18n/format.ts). Keep
+// the weekday in a title consistent with the real weekday of `start`.
+export type EventItem = { title: string; start: string; note?: string; img: string };
 
-export const NAV_ITEMS: NavItem[] = [
-  { id: 'events', label: 'Wydarzenia', href: '/wydarzenia' },
-  { id: 'menu', label: 'Menu', href: '/menu' },
-  { id: 'kariera', label: 'Kariera', href: '/kariera' },
-];
-
-// `iso` (YYYY-MM-DD) is the sortable/comparable date; `date` is the display
-// string. splitEvents() uses `iso` to split upcoming vs. archive at build time.
-export type EventItem = { title: string; date: string; iso: string; note?: string; img: string };
-
-// Shared event list - feeds the homepage teaser and the /wydarzenia page.
-// Placeholder line-up: edit titles/dates/images as real events are booked.
-// NOTE: weekday in the title must match the real weekday of `iso`, and every
-// date must fall on an opening night (Fri/Sat). 2026: Fridays 5/12/19/26 Jun,
-// 3/10 Jul; Saturdays 6/13/20/27 Jun, 4/11 Jul.
+// Placeholder line-up - edit titles/dates/images as real events are booked.
+// 2026 opening nights: Fri 5/12/19/26 Jun, 3/10 Jul; Sat 6/13/20/27 Jun, 4/11 Jul.
 export const EVENTS: EventItem[] = [
   // --- Upcoming ---
-  { title: 'Friday at SiSi', date: '26 czerwca, 22:00', iso: '2026-06-26', note: 'DJ ADB',
+  { title: 'Friday at SiSi', start: '2026-06-26T22:00:00+02:00', note: 'DJ ADB',
     img: '/framerusercontent.com/images/Vl3kSLbolFditeShXmcLZITH7A8.webp' },
-  { title: 'Saturday at SiSi', date: '27 czerwca, 22:00', iso: '2026-06-27', note: 'Live Act',
+  { title: 'Saturday at SiSi', start: '2026-06-27T22:00:00+02:00', note: 'Live Act',
     img: '/framerusercontent.com/images/RMGSDUbOPnta4fZZQKL5BcnP3Pw.webp' },
-  { title: 'Latino Night', date: '3 lipca, 22:00', iso: '2026-07-03', note: 'DJ Mike Lynx',
+  { title: 'Latino Night', start: '2026-07-03T22:00:00+02:00', note: 'DJ Mike Lynx',
     img: '/framerusercontent.com/images/bHchRJgtNrxKTYRK56SCdUph2g.webp' },
-  { title: 'Saturday at SiSi', date: '4 lipca, 22:00', iso: '2026-07-04', note: 'Live Act',
+  { title: 'Saturday at SiSi', start: '2026-07-04T22:00:00+02:00', note: 'Live Act',
     img: '/framerusercontent.com/images/cDJcCUEanjQSoFpALHKgU3hNpQ.webp' },
-  { title: 'House Sessions', date: '10 lipca, 22:00', iso: '2026-07-10', note: 'DJ ADB',
+  { title: 'House Sessions', start: '2026-07-10T22:00:00+02:00', note: 'DJ ADB',
     img: '/framerusercontent.com/images/MHGypGkoM6EkRCjBAVKzMUmwRG4.webp' },
-  { title: 'Saturday at SiSi', date: '11 lipca, 22:00', iso: '2026-07-11', note: 'Special Guest',
+  { title: 'Saturday at SiSi', start: '2026-07-11T22:00:00+02:00', note: 'Special Guest',
     img: '/framerusercontent.com/images/u3EOm1VtOnATOkUYHKikl5aBc.webp' },
 
   // --- Archive ---
-  { title: "Midsummer's Eve", date: '20 czerwca, 22:00', iso: '2026-06-20', note: 'Noc Świętojańska',
+  { title: "Midsummer's Eve", start: '2026-06-20T22:00:00+02:00', note: 'Noc Świętojańska',
     img: '/framerusercontent.com/images/loXZHRygofAyWJdOaLJm2nba20Y.webp' },
-  { title: 'Friday at SiSi', date: '19 czerwca, 22:00', iso: '2026-06-19', note: 'DJ ADB',
+  { title: 'Friday at SiSi', start: '2026-06-19T22:00:00+02:00', note: 'DJ ADB',
     img: '/framerusercontent.com/images/Vl3kSLbolFditeShXmcLZITH7A8.webp' },
-  { title: 'Saturday at SiSi', date: '13 czerwca, 22:00', iso: '2026-06-13', note: 'Live Act',
+  { title: 'Saturday at SiSi', start: '2026-06-13T22:00:00+02:00', note: 'Live Act',
     img: '/framerusercontent.com/images/RHdmR5s8jXTtyexi8FJLI4WDkig.webp' },
-  { title: 'Friday at SiSi', date: '12 czerwca, 22:00', iso: '2026-06-12', note: 'DJ Mike Lynx',
+  { title: 'Friday at SiSi', start: '2026-06-12T22:00:00+02:00', note: 'DJ Mike Lynx',
     img: '/framerusercontent.com/images/QxXDx4GN74BgGuzaDth23HA.webp' },
-  { title: 'Saturday at SiSi', date: '6 czerwca, 22:00', iso: '2026-06-06', note: 'Live Act',
+  { title: 'Saturday at SiSi', start: '2026-06-06T22:00:00+02:00', note: 'Live Act',
     img: '/framerusercontent.com/images/MHGypGkoM6EkRCjBAVKzMUmwRG4.webp' },
-  { title: 'Friday at SiSi', date: '5 czerwca, 22:00', iso: '2026-06-05', note: 'DJ ADB',
+  { title: 'Friday at SiSi', start: '2026-06-05T22:00:00+02:00', note: 'DJ ADB',
     img: '/framerusercontent.com/images/cDJcCUEanjQSoFpALHKgU3hNpQ.webp' },
 ];
 
-/** Split events into upcoming (soonest first) and past (most recent first),
-    relative to the build date. */
+/** Split events into upcoming (soonest first) and past (most recent first). */
 export function splitEvents(list: EventItem[] = EVENTS) {
-  const today = new Date().toISOString().slice(0, 10);
-  const upcoming = list
-    .filter((e) => e.iso >= today)
-    .sort((a, b) => a.iso.localeCompare(b.iso));
-  const past = list
-    .filter((e) => e.iso < today)
-    .sort((a, b) => b.iso.localeCompare(a.iso));
+  const now = Date.now();
+  const ms = (e: EventItem) => new Date(e.start).getTime();
+  const upcoming = list.filter((e) => ms(e) >= now).sort((a, b) => ms(a) - ms(b));
+  const past = list.filter((e) => ms(e) < now).sort((a, b) => ms(b) - ms(a));
   return { upcoming, past };
 }
 
@@ -71,7 +64,6 @@ export const CONTACT = {
   eventsPhone: '+48 514 032 930',
   eventsPhoneHref: 'tel:+48514032930',
   eventsEmail: 'events@r32.com.pl',
-  hoursLabel: 'Piątek - Sobota',
   hours: '22:00 - 04:00',
   instagram: 'https://www.instagram.com/sisiwroclaw/',
   facebook: 'https://www.facebook.com/sisimusicclub',
@@ -79,10 +71,9 @@ export const CONTACT = {
     'https://www.tripadvisor.com/Attraction_Review-g274812-d34327483-Reviews-SISI_Wroclaw_Music_Club-Wroclaw_Lower_Silesia_Province_Southern_Poland.html',
 };
 
-/* Legal entity behind SiSi - powers the legal pages (Regulamin, Polityka
-   prywatności, Polityka cookies, Kontakt). Registration data from the KRS
-   register (KRS 0001085945, rejestr.io). Have a lawyer review the final legal
-   copy before relying on it. */
+/* Legal entity behind SiSi - powers the legal pages. Registration data from the
+   KRS register (KRS 0001085945, rejestr.io). Have a lawyer review the final
+   legal copy before relying on it. */
 export const COMPANY = {
   legalName: 'Rzeźnicza 32 Sp. z o.o.',
   tradeName: 'SiSi Wrocław',
@@ -99,17 +90,21 @@ export const COMPANY = {
 // Shown as the "last updated" date on the legal pages.
 export const LEGAL_UPDATED = '24 czerwca 2026';
 
-/* === STRUCTURED DATA (JSON-LD) ===
-   Single source for SEO/GEO machine-readable facts. Google's local pack and AI
-   answer engines (GEO) read this to state what SiSi is, where it is, when it's
-   open and what's on. Keep the address/geo correct - those drive maps. */
+/* Verified B2B / corporate-event facts (source-of-truth). Do NOT imply SiSi
+   itself seats 150 - that figure is The Cork's seated capacity. */
+export const VENUE_FACTS = {
+  areaSqm: 663,
+  theCorkSeated: 150,
+  presentationScreens: 2,
+};
+
+/* === STRUCTURED DATA (JSON-LD) === Locale-aware: url + description differ per
+   language; the venue @id is stable across locales. Keep address/geo correct. */
 export const BUSINESS = {
   name: 'SiSi Wrocław',
   url: 'https://sisiwroclaw.pl',
   logo: 'https://sisiwroclaw.pl/apple-touch-icon.png',
   image: 'https://sisiwroclaw.pl/framerusercontent.com/images/nBW0AVejCOoiy2Rctqcid0SY6Q.webp',
-  description:
-    'SiSi to serce nocnego Wrocławia - muzyka na żywo, najlepsi DJ-e, autorskie koktajle i wyjątkowa atmosfera w sercu kompleksu R32.',
   streetAddress: 'Rzeźnicza 32-33',
   locality: 'Wrocław',
   region: 'Dolnośląskie',
@@ -122,6 +117,10 @@ export const BUSINESS = {
   priceRange: '$$',
 };
 
+function absolute(path: string) {
+  return `${BUSINESS.url}${path}`;
+}
+
 function addressLd() {
   return {
     '@type': 'PostalAddress',
@@ -133,17 +132,18 @@ function addressLd() {
   };
 }
 
-/** Site-wide venue entity (LocalBusiness → NightClub). */
-export function nightClubSchema() {
+/** Site-wide venue entity (LocalBusiness -> NightClub), localized url + description. */
+export function nightClubSchema(locale: Locale = 'pl') {
+  const t = useTranslations(locale);
   return {
     '@context': 'https://schema.org',
     '@type': 'NightClub',
     '@id': `${BUSINESS.url}/#nightclub`,
     name: BUSINESS.name,
-    url: BUSINESS.url,
+    url: absolute(localizedPath('home', locale)),
     logo: BUSINESS.logo,
     image: BUSINESS.image,
-    description: BUSINESS.description,
+    description: t.meta.home.description,
     telephone: CONTACT.phoneHref.replace('tel:', ''),
     email: CONTACT.email,
     priceRange: BUSINESS.priceRange,
@@ -163,59 +163,65 @@ export function nightClubSchema() {
       target: {
         '@type': 'EntryPoint',
         urlTemplate: RESERVATION_URL,
-        inLanguage: 'pl-PL',
+        inLanguage: locale,
         actionPlatform: [
           'http://schema.org/DesktopWebPlatform',
           'http://schema.org/MobileWebPlatform',
         ],
       },
-      result: { '@type': 'Reservation', name: 'Rezerwacja stolika' },
+      result: { '@type': 'Reservation', name: t.buttons.bookTable },
     },
   };
 }
 
 /** WebSite entity, linked to the venue as publisher. */
-export function websiteSchema() {
+export function websiteSchema(locale: Locale = 'pl') {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     '@id': `${BUSINESS.url}/#website`,
-    url: BUSINESS.url,
+    url: absolute(localizedPath('home', locale)),
     name: BUSINESS.name,
-    inLanguage: 'pl-PL',
+    inLanguage: locale,
     publisher: { '@id': `${BUSINESS.url}/#nightclub` },
   };
 }
 
-/** Day after `iso` (YYYY-MM-DD); club nights end at 04:00 the next morning. */
-function nextDay(iso: string) {
-  const d = new Date(`${iso}T00:00:00Z`);
-  d.setUTCDate(d.getUTCDate() + 1);
-  return d.toISOString().slice(0, 10);
-}
-
-/** One Event object per upcoming night - powers Google/GEO event surfaces. */
-export function eventSchema(list: EventItem[]) {
+/** One Event object per night, with locale-aware event-page url. */
+export function eventSchema(list: EventItem[], locale: Locale = 'pl') {
+  const eventsUrl = absolute(localizedPath('events', locale));
   return list.map((e) => {
+    const end = new Date(new Date(e.start).getTime() + 6 * 60 * 60 * 1000).toISOString();
     const ev: Record<string, unknown> = {
       '@context': 'https://schema.org',
       '@type': 'Event',
       name: e.note ? `${e.title} - ${e.note}` : e.title,
-      startDate: `${e.iso}T22:00:00+02:00`,
-      endDate: `${nextDay(e.iso)}T04:00:00+02:00`,
+      startDate: e.start,
+      endDate: end,
       eventStatus: 'https://schema.org/EventScheduled',
       eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-      image: [`${BUSINESS.url}${e.img}`],
-      url: `${BUSINESS.url}/wydarzenia`,
+      image: [absolute(e.img)],
+      url: eventsUrl,
       location: { '@type': 'Place', name: BUSINESS.name, address: addressLd() },
       organizer: { '@type': 'Organization', name: BUSINESS.name, url: BUSINESS.url },
-      offers: {
-        '@type': 'Offer',
-        url: RESERVATION_URL,
-        availability: 'https://schema.org/InStock',
-      },
+      offers: { '@type': 'Offer', url: RESERVATION_URL, availability: 'https://schema.org/InStock' },
     };
     if (e.note) ev.performer = { '@type': 'PerformingGroup', name: e.note };
     return ev;
   });
+}
+
+/** B2B venue/service entity for the corporate-events page. */
+export function corporateServiceSchema(locale: Locale = 'pl') {
+  const t = useTranslations(locale);
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    serviceType: t.b2b.hero.eyebrow,
+    name: t.meta.corporate.title,
+    description: t.meta.corporate.description,
+    url: absolute(localizedPath('corporate', locale)),
+    areaServed: { '@type': 'City', name: 'Wrocław' },
+    provider: { '@id': `${BUSINESS.url}/#nightclub` },
+  };
 }

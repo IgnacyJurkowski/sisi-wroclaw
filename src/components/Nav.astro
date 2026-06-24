@@ -1,19 +1,28 @@
 ---
 import Logo from './Logo.astro';
 import SocialIcon from './SocialIcon.astro';
-import { NAV_ITEMS, CONTACT } from '../data/site';
+import LocaleSwitcher from './LocaleSwitcher.astro';
+import { CONTACT } from '../data/site';
+import { type Locale } from '../i18n/config';
+import { NAV_KEYS, localizedPath, type RouteKey } from '../i18n/routes';
+import { useTranslations } from '../i18n/t';
 
-interface Props { active?: string }
-const { active } = Astro.props;
+interface Props { locale: Locale; active?: RouteKey }
+const { locale, active } = Astro.props;
+const t = useTranslations(locale);
+
+const links = NAV_KEYS.map((key) => ({ key, href: localizedPath(key, locale), label: t.nav[key] }));
+const homeHref = localizedPath('home', locale);
+const reservationsHref = localizedPath('reservations', locale);
 ---
 
-<a href="#main" class="skip-link">Przejdź do treści</a>
+<a href="#main" class="skip-link">{t.nav.skip}</a>
 
-<nav id="main-nav" role="navigation" aria-label="Główna nawigacja">
-  <a href="/" class="nav-logo" aria-label="SiSi Wrocław - strona główna"><Logo /></a>
+<nav id="main-nav" role="navigation" aria-label={t.nav.mainNav}>
+  <a href={homeHref} class="nav-logo" aria-label={t.nav.homeAria}><Logo /></a>
   <div class="nav-links">
-    {NAV_ITEMS.map((p) => (
-      <a href={p.href} aria-current={p.id === active ? 'page' : undefined}>{p.label}</a>
+    {links.map((p) => (
+      <a href={p.href} aria-current={p.key === active ? 'page' : undefined}>{p.label}</a>
     ))}
   </div>
   <div class="nav-social">
@@ -21,16 +30,18 @@ const { active } = Astro.props;
     <a href={CONTACT.facebook} class="social-icon" rel="noopener" target="_blank" aria-label="Facebook"><SocialIcon name="facebook" /></a>
     <a href={CONTACT.tripadvisor} class="social-icon" rel="noopener" target="_blank" aria-label="Tripadvisor"><SocialIcon name="tripadvisor" /></a>
   </div>
-  <a href="/rezerwacje" class="nav-cta">Rezerwacje</a>
-  <button id="hamburger" aria-label="Otwórz menu" aria-expanded="false" aria-controls="mobile-menu">
+  <div class="nav-lang"><LocaleSwitcher locale={locale} routeKey={active ?? 'home'} variant="bar" /></div>
+  <a href={reservationsHref} class="nav-cta">{t.nav.reservations}</a>
+  <button id="hamburger" aria-label={t.nav.openMenu} aria-expanded="false" aria-controls="mobile-menu">
     <span></span><span></span><span></span>
   </button>
 </nav>
 
-<div id="mobile-menu" hidden role="dialog" aria-label="Menu mobilne" aria-modal="true">
-  <button id="mobile-close" aria-label="Zamknij menu">&times;</button>
-  {NAV_ITEMS.map((p) => (
-    <a href={p.href} class:list={[{ active: p.id === active }]} data-nav-link>{p.label}</a>
+<div id="mobile-menu" hidden role="dialog" aria-label={t.nav.mobileNav} aria-modal="true">
+  <button id="mobile-close" aria-label={t.nav.closeMenu}>&times;</button>
+  {links.map((p) => (
+    <a href={p.href} class:list={[{ active: p.key === active }]} data-nav-link>{p.label}</a>
   ))}
-  <a href="/rezerwacje" class="btn-cta" data-nav-link style="margin-top:1rem;">Rezerwacje</a>
+  <a href={reservationsHref} class="btn-cta" data-nav-link style="margin-top:1rem;">{t.nav.reservations}</a>
+  <LocaleSwitcher locale={locale} routeKey={active ?? 'home'} variant="inline" />
 </div>

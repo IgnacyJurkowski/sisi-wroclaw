@@ -3,25 +3,17 @@
 // a "MENU" title, three icon tabs (Koktajle / Karta alkoholi / Przekąski),
 // and a description that swaps when a tab is selected. Icons are the cream
 // glyphs from the Framer export.
-type Tab = { title: string; body: string; icon: 'cocktail' | 'bottle' | 'cutlery' };
+import { type Locale } from '../../i18n/config';
+import { localizedPath } from '../../i18n/routes';
+import { useTranslations } from '../../i18n/t';
 
-const tabs: Tab[] = [
-  {
-    title: 'Koktajle',
-    icon: 'cocktail',
-    body: 'Autorskie koktajle SISI to esencja nowoczesnej miksologii, w której nasi doświadczeni barmani z artystyczną precyzją łączą najwyższej jakości składniki. Każda kompozycja stanowi unikalne doznanie, zachwycające zarówno głębią smaku, jak i wyszukaną formą prezentacji z efektem "wow".',
-  },
-  {
-    title: 'Karta alkoholi',
-    icon: 'bottle',
-    body: 'Stawiamy na polskie winnice - nasza karta to selekcja rodzimych win, od wytrawnych bieli po pełne czerwienie, podawanych kieliszkiem i butelką. Uzupełnia ją starannie wybrany wachlarz alkoholi oraz piw, w tym belgijskich klasyków - tak, by każdy znalazł coś dla siebie.',
-  },
-  {
-    title: 'Przekąski',
-    icon: 'cutlery',
-    body: 'Nasze Night Menu przygotowuje The Cork - to propozycja stworzona do dzielenia się przy stoliku: kawior, ostrygi, deski serów i wędlin (charcuterie). Eleganckie przekąski, które idealnie dopełniają wieczór przy koktajlu lub kieliszku wina.',
-  },
-];
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const menuHref = localizedPath('menu', locale);
+
+const iconNames = ['cocktail', 'bottle', 'cutlery'] as const;
+const tabs = t.menuTeaser.tabs.map((tab, i) => ({ ...tab, icon: iconNames[i] }));
 
 const icons = {
   cocktail: {
@@ -41,10 +33,10 @@ const icons = {
 
 <section id="menu" class="menu-teaser">
   <div class="container">
-    <span class="page-label" style="text-align:center;display:block;" data-reveal>Karta baru</span>
-    <h2 class="display mt-title" data-reveal>Menu</h2>
+    <span class="page-label" style="text-align:center;display:block;" data-reveal>{t.menuTeaser.eyebrow}</span>
+    <h2 class="display mt-title" data-reveal>{t.menuTeaser.title}</h2>
 
-    <div class="mt-tabs" role="tablist" aria-label="Kategorie menu" data-reveal>
+    <div class="mt-tabs" role="tablist" aria-label={t.menuTeaser.eyebrow} data-reveal>
       {tabs.map((t, i) => (
         <button
           type="button"
@@ -80,7 +72,7 @@ const icons = {
     </div>
 
     <div class="mt-cta" data-reveal>
-      <a href="/menu" class="btn-cta">Zobacz pełne menu</a>
+      <a href={menuHref} class="btn-cta">{t.buttons.seeFullMenu}</a>
     </div>
   </div>
 </section>

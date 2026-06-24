@@ -66,6 +66,10 @@ const pl = {
     },
   },
 
+  common: {
+    hoursDays: 'Piątek - Sobota',
+  },
+
   nav: {
     home: 'Strona główna',
     events: 'Wydarzenia',
@@ -73,6 +77,10 @@ const pl = {
     careers: 'Kariera',
     corporate: 'Dla firm',
     reservations: 'Rezerwacje',
+    contact: 'Kontakt',
+    terms: 'Regulamin',
+    privacy: 'Polityka prywatności',
+    cookies: 'Polityka cookies',
     skip: 'Przejdź do treści',
     mainNav: 'Główna nawigacja',
     mobileNav: 'Menu mobilne',

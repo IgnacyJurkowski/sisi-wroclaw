@@ -1,0 +1,49 @@
+---
+import { type Locale } from '../../i18n/config';
+import { useTranslations } from '../../i18n/t';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const p = t.b2b.process;
+---
+
+<section class="b2b-process">
+  <div class="container">
+    <h2 class="display b2b-section-title">{p.heading}</h2>
+    <ol class="b2b-steps" data-reveal-group>
+      {p.steps.map((step, i) => (
+        <li class="b2b-step">
+          <span class="b2b-step-num" aria-hidden="true">{i + 1}</span>
+          <div>
+            <h3 class="b2b-step-title">{step.title}</h3>
+            <p class="b2b-step-body">{step.body}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .b2b-process { padding: 32px 0 72px; }
+  .b2b-section-title { font-size: clamp(1.5rem, 3.4vw, 2.2rem); text-transform: uppercase; text-align: center; margin-bottom: 40px; }
+  .b2b-steps {
+    list-style: none; margin: 0 auto; padding: 0; max-width: 760px;
+    display: flex; flex-direction: column; gap: 18px;
+  }
+  .b2b-step {
+    display: flex; gap: 20px; align-items: flex-start;
+    padding: 22px 26px; border: 1px solid var(--line); border-radius: 14px;
+    background: rgba(255,255,255,0.02);
+  }
+  .b2b-step-num {
+    flex-shrink: 0; width: 38px; height: 38px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--gold); color: var(--gold);
+    font-family: var(--font-display, inherit); font-size: 15px;
+  }
+  .b2b-step-title { font-size: 16px; text-transform: uppercase; letter-spacing: 0.02em; color: var(--cream); margin-bottom: 5px; }
+  .b2b-step-body { font-size: 14px; line-height: 1.6; color: rgba(237,219,194,0.6); }
+  @media (max-width: 540px) { .b2b-step { padding: 18px 18px; gap: 14px; } }
+</style>
