@@ -9,6 +9,14 @@
    Latin + Polish only) replaces Google Fonts' per-weight subsets. */
 @font-face { font-family:'Montserrat'; src:url('/fonts/montserrat/montserrat-var.woff2') format('woff2'); font-weight:400 700; font-style:normal; font-display:swap; }
 
+/* Metric-matched fallbacks: a local sans-serif scaled (size-adjust) and
+   metric-overridden so it occupies the *exact* same box as the real face.
+   The text holds its layout during font-display:swap, so swapping in the real
+   font causes no reflow (zero layout shift). Values computed from each face's
+   own metrics vs Arial. Used via the font stacks below ('… fallback'). */
+@font-face { font-family:'Krona One fallback'; src:local('Arial'),local('Helvetica Neue'),local('Roboto'),local('Liberation Sans'); size-adjust:148.28%; ascent-override:66.85%; descent-override:17.45%; line-gap-override:0.00%; }
+@font-face { font-family:'Montserrat fallback'; src:local('Arial'),local('Helvetica Neue'),local('Roboto'),local('Liberation Sans'); size-adjust:110.48%; ascent-override:87.62%; descent-override:22.72%; line-gap-override:0.00%; }
+
 /* === CSS VARS === */
 :root {
   --bg: #27060f;          /* deep wine background, matches sisiwroclaw.pl */
@@ -33,7 +41,7 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'Montserrat', system-ui, sans-serif;
+  font-family: 'Montserrat', 'Montserrat fallback', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 img, video { display: block; max-width: 100%; }
@@ -56,7 +64,7 @@ html { scrollbar-width: thin; scrollbar-color: rgba(237, 219, 194, 0.28) transpa
 
 /* === LAYOUT HELPERS === */
 .container { max-width: var(--maxw); margin: 0 auto; padding-inline: 32px; }
-.display { font-family: 'Krona One', 'Montserrat', sans-serif; }
+.display { font-family: 'Krona One', 'Krona One fallback', 'Montserrat fallback', sans-serif; }
 
 /* === SKIP LINK === */
 .skip-link {
