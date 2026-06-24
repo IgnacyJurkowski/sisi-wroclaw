@@ -63,9 +63,10 @@ assert('form honeypot', enB2B.includes('netlify-honeypot="bot-field"'));
 assert('form consent required', /name="consent"[^>]*required/.test(enB2B));
 assert('form netlify-enabled', enB2B.includes('data-netlify="true"'));
 
-// --- legal: en translated + convenience note; de fallback + note ---
+// --- legal: en = convenience note; de/it/cs = English body + "shown in English" banner ---
 assert('en terms convenience note', read('en/terms/index.html').includes('provided for convenience'));
-assert('de legal convenience note', read('de/datenschutz/index.html').includes('nur der Bequemlichkeit'));
+assert('de legal english-fallback banner', read('de/datenschutz/index.html').includes('bewusst auf Englisch'));
+assert('de legal body is English fallback', read('de/datenschutz/index.html').includes('Data controller'));
 assert('age is 21+ (terms)', read('en/terms/index.html').includes('over 21'));
 
 // --- redirects configured ---

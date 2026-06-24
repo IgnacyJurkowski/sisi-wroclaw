@@ -1,8 +1,9 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { CONTACT, COMPANY, LEGAL_UPDATED } from '../../data/site';
+import { CONTACT, COMPANY, LEGAL_UPDATED_ISO } from '../../data/site';
 import { type Locale } from '../../i18n/config';
 import { useTranslations } from '../../i18n/t';
+import { formatLongDate } from '../../i18n/format';
 
 interface Props { locale: Locale }
 const { locale } = Astro.props;
@@ -62,6 +63,6 @@ const mapHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComp
       </section>
     </div>
 
-    <p class="legal-meta">{t.legal.updatedLabel} {LEGAL_UPDATED}</p>
+    <p class="legal-meta">{t.legal.updatedLabel} {formatLongDate(LEGAL_UPDATED_ISO, locale)}</p>
   </div>
 </Base>

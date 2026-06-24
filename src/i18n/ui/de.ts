@@ -301,6 +301,8 @@ const de: UI = {
     updatedLabel: 'Zuletzt aktualisiert:',
     convenienceNote:
       'Diese Übersetzung dient nur der Bequemlichkeit. Bei Abweichungen ist die polnische Fassung maßgeblich.',
+    englishFallbackNote:
+      'Die folgenden rechtlichen Texte werden bewusst auf Englisch angezeigt, da derzeit keine deutsche Übersetzung vorliegt. Verbindlich ist ausschließlich die polnische Fassung.',
   },
 
   notFound: {

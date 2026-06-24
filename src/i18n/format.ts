@@ -26,6 +26,17 @@ export function dateTimeAttr(isoStart: string): string {
   return isoStart;
 }
 
+/** "24 czerwca 2026" / "24 June 2026" / "24. Juni 2026" … — a date with no time,
+    used for the legal "last updated" label so it reads in the page's language. */
+export function formatLongDate(iso: string, locale: Locale): string {
+  return new Intl.DateTimeFormat(locale, {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    timeZone: TIMEZONE,
+  }).format(new Date(iso));
+}
+
 /** Localized integer (e.g. 150, 663) with the locale's grouping. */
 export function formatNumber(n: number, locale: Locale): string {
   return new Intl.NumberFormat(locale).format(n);

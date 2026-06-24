@@ -300,6 +300,8 @@ const en: UI = {
     updatedLabel: 'Last updated:',
     convenienceNote:
       'This translation is provided for convenience only. In case of any discrepancy, the Polish version prevails.',
+    englishFallbackNote:
+      'The legal text below is provided in English. The legally binding version is the Polish original.',
   },
 
   notFound: {

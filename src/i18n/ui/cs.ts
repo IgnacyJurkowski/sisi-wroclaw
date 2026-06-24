@@ -300,6 +300,8 @@ const cs: UI = {
     updatedLabel: 'Poslední aktualizace:',
     convenienceNote:
       'Tento překlad je poskytován pouze pro pohodlí. V případě rozporu je rozhodující polská verze.',
+    englishFallbackNote:
+      'Právní texty níže jsou záměrně zobrazeny v angličtině, protože český překlad zatím není k dispozici. Závazná je výhradně polská verze.',
   },
 
   notFound: {

@@ -301,9 +301,12 @@ const pl = {
 
   legal: {
     updatedLabel: 'Ostatnia aktualizacja:',
-    // Shown only on non-Polish legal pages.
+    // Shown on the English legal pages (en text is a convenience translation).
     convenienceNote:
       'Tłumaczenie udostępniono wyłącznie dla wygody. W razie rozbieżności wiążąca jest polska wersja językowa.',
+    // Shown on DE/IT/CS legal pages, which display the English text on purpose.
+    englishFallbackNote:
+      'Treść prawna jest tu prezentowana w języku angielskim. Wiążąca pozostaje polska wersja językowa.',
   },
 
   notFound: {

@@ -8,9 +8,40 @@ interface Props { locale: Locale }
 const { locale } = Astro.props;
 const t = useTranslations(locale);
 
-// Product names and ingredient lists are brand-invariant (kept untranslated);
-// only the section labels and surrounding copy are localized.
+// Cocktail and spirit brand names stay as-is (Hugo Spritz, Chivas XII, …); the
+// generic ingredient words are localized so non-Polish guests can read what's in
+// each drink. Brand tokens simply fall through the glossary unchanged.
 type Item = { name: string; desc?: string; vol?: string; price: string };
+
+const INGREDIENTS: Record<string, Partial<Record<Locale, string>>> = {
+  'Limonka': { en: 'Lime', de: 'Limette', it: 'Lime', cs: 'Limetka' },
+  'Mięta': { en: 'Mint', de: 'Minze', it: 'Menta', cs: 'Máta' },
+  'Woda gazowana': { en: 'Sparkling water', de: 'Sodawasser', it: 'Acqua frizzante', cs: 'Sodová voda' },
+  'Pomarańcze': { en: 'Oranges', de: 'Orangen', it: 'Arance', cs: 'Pomeranče' },
+  'Marakuja': { en: 'Passion fruit', de: 'Maracuja', it: 'Frutto della passione', cs: 'Marakuja' },
+  'Wanilia': { en: 'Vanilla', de: 'Vanille', it: 'Vaniglia', cs: 'Vanilka' },
+  'Cytryna': { en: 'Lemon', de: 'Zitrone', it: 'Limone', cs: 'Citron' },
+  'Cukier': { en: 'Sugar', de: 'Zucker', it: 'Zucchero', cs: 'Cukr' },
+  'Egg White': { en: 'Egg white', de: 'Eiweiß', it: 'Albume', cs: 'Bílek' },
+  'Olejki pomarańczy': { en: 'Orange oils', de: 'Orangenöl', it: "Oli d'arancia", cs: 'Pomerančový olej' },
+  'Skórka pomarańczy': { en: 'Orange peel', de: 'Orangenschale', it: "Scorza d'arancia", cs: 'Pomerančová kůra' },
+  'Cytrusy': { en: 'Citrus', de: 'Zitrusfrüchte', it: 'Agrumi', cs: 'Citrusy' },
+  'Czerwony wermut': { en: 'Red vermouth', de: 'Roter Wermut', it: 'Vermouth rosso', cs: 'Červený vermut' },
+  'Woda mineralna niegazowana': { en: 'Still mineral water', de: 'Stilles Mineralwasser', it: 'Acqua minerale naturale', cs: 'Neperlivá minerální voda' },
+  'Brzoskwinia': { en: 'Peach', de: 'Pfirsich', it: 'Pesca', cs: 'Broskev' },
+  'Hibiskus': { en: 'Hibiscus', de: 'Hibiskus', it: 'Ibisco', cs: 'Ibišek' },
+  'Multiwitamina': { en: 'Multivitamin', de: 'Multivitamin', it: 'Multivitaminico', cs: 'Multivitamin' },
+  'Grejpfrut': { en: 'Grapefruit', de: 'Grapefruit', it: 'Pompelmo', cs: 'Grapefruit' },
+};
+
+// Split on " / ", translate each known generic token, keep brand tokens as-is.
+// Polish (and any token absent from the glossary) keeps the original word.
+function localizeDesc(desc: string, loc: Locale): string {
+  return desc
+    .split(' / ')
+    .map((tok) => INGREDIENTS[tok.trim()]?.[loc] ?? tok.trim())
+    .join(' / ');
+}
 
 const koktajle: Item[] = [
   { name: 'Hugo Spritz', desc: 'St-Germain / Limonka / Mięta / Martini Prosecco / Woda gazowana', vol: '160 ml', price: '40 zł' },
@@ -79,7 +110,7 @@ const stack = [
           <div class="menu-item">
             <div class="menu-item-main">
               <p class="menu-item-name">{item.name}</p>
-              {item.desc && <p class="menu-item-desc">{item.desc}</p>}
+              {item.desc && <p class="menu-item-desc">{localizeDesc(item.desc, locale)}</p>}
             </div>
             <div class="menu-item-meta">
               {item.vol && <span class="menu-item-vol">{item.vol}</span>}
@@ -97,7 +128,7 @@ const stack = [
               <div class="menu-item">
                 <div class="menu-item-main">
                   <p class="menu-item-name">{item.name}</p>
-                  {item.desc && <p class="menu-item-desc">{item.desc}</p>}
+                  {item.desc && <p class="menu-item-desc">{localizeDesc(item.desc, locale)}</p>}
                 </div>
                 <div class="menu-item-meta">
                   {item.vol && <span class="menu-item-vol">{item.vol}</span>}

@@ -87,8 +87,9 @@ export const COMPANY = {
   phoneHref: 'tel:+48515126260',
 };
 
-// Shown as the "last updated" date on the legal pages.
-export const LEGAL_UPDATED = '24 czerwca 2026';
+// "Last updated" date for the legal pages, stored as ISO so each locale can
+// format it in its own language (see i18n/format.ts → formatLongDate).
+export const LEGAL_UPDATED_ISO = '2026-06-24';
 
 /* Verified B2B / corporate-event facts (source-of-truth). Do NOT imply SiSi
    itself seats 150 - that figure is The Cork's seated capacity. */

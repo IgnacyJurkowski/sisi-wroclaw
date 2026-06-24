@@ -1,10 +1,12 @@
 /* Long-form legal content, kept out of the strict UI dictionary so it can carry
-   a Polish fallback. Company data is interpolated from {tokens} (single source,
-   avoids whitespace-glue bugs). Non-Polish legal pages always show the
-   "convenience translation" banner (ui.legal.convenienceNote).
+   a fallback. Company data is interpolated from {tokens} (single source, avoids
+   whitespace-glue bugs). Non-default legal pages show a banner: en gets the
+   "convenience translation" note (ui.legal.convenienceNote); de/it/cs get the
+   "shown in English on purpose" note (ui.legal.englishFallbackNote).
 
-   Translation status: pl, en complete. de/it/cs currently fall back to pl and
-   are flagged for professional legal translation + review (see docs/I18N.md). */
+   Translation status: pl, en complete. de/it/cs fall back to the ENGLISH text
+   (more widely read than Polish) and are flagged for professional legal
+   translation + review (see docs/I18N.md). The Polish version stays binding. */
 
 import { type Locale } from './config';
 
@@ -390,10 +392,12 @@ const LEGAL: Record<LegalKey, Partial<Record<Locale, LegalDoc>>> = {
   cookies: { pl: pl_cookies, en: en_cookies },
 };
 
-/** Returns the document for a locale, falling back to Polish. `translated`
-    is false when the fallback was used (de/it/cs today). */
+/** Returns the document for a locale. pl/en have real translations; de/it/cs
+    fall back to the English text (far more widely read than Polish) with a
+    banner explaining the fallback. `translated` is false when the fallback was
+    used, which the page uses to pick the right banner. */
 export function getLegal(key: LegalKey, locale: Locale): { doc: LegalDoc; translated: boolean } {
   const doc = LEGAL[key][locale];
   if (doc) return { doc, translated: true };
-  return { doc: LEGAL[key].pl as LegalDoc, translated: false };
+  return { doc: LEGAL[key].en as LegalDoc, translated: false };
 }
