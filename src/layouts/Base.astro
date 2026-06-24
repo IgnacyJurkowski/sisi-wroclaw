@@ -53,6 +53,19 @@ const hreflangs = routeKey
   : [];
 const xDefault = routeKey ? new URL(localizedPath(routeKey, DEFAULT_LOCALE), Astro.site).href : undefined;
 const jsonLd = [nightClubSchema(locale), websiteSchema(locale), ...schema];
+
+// Index only the canonical production domain. Netlify deploy previews, branch
+// deploys, and the *.netlify.app production deploy all stay out of the index
+// until sisiwroclaw.pl points at this build. Detected from Netlify's build env
+// (CONTEXT + URL), so no per-deploy host is hardcoded beyond the canonical one.
+const PRODUCTION_URL = 'https://sisiwroclaw.pl';
+const isProductionHost =
+  process.env.CONTEXT === 'production' && process.env.URL === PRODUCTION_URL;
+const robotsContent = !isProductionHost
+  ? 'noindex, nofollow'
+  : noindex
+    ? 'noindex, follow'
+    : 'index, follow';
 ---
 
 <!DOCTYPE html>
@@ -77,7 +90,7 @@ const jsonLd = [nightClubSchema(locale), websiteSchema(locale), ...schema];
     <link rel="preload" as="font" type="font/woff2" href="/fonts.gstatic.com/s/kronaone/v15/jAnEgHdjHcjgfIb1ZcUCNI-h3cWkWg.woff2" crossorigin />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow'} />
+    <meta name="robots" content={robotsContent} />
     {canonical && <link rel="canonical" href={canonical} />}
     {hreflangs.map((h) => <link rel="alternate" hreflang={h.locale} href={h.href} />)}
     {xDefault && <link rel="alternate" hreflang="x-default" href={xDefault} />}
