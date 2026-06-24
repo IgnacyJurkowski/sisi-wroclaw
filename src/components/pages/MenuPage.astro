@@ -9,8 +9,11 @@ const { locale } = Astro.props;
 const t = useTranslations(locale);
 
 // Cocktail and spirit brand names stay as-is (Hugo Spritz, Chivas XII, …); the
-// generic ingredient words are localized so non-Polish guests can read what's in
-// each drink. Brand tokens simply fall through the glossary unchanged.
+// generic ingredient words and beer-style descriptors are localized so non-Polish
+// guests can read what's in each drink. Brand tokens simply fall through unchanged.
+// Cocktail ingredients are keyed by their Polish source word, so `pl` is omitted
+// (the source text is already Polish). Beer styles are keyed by their English
+// source text, so they carry an explicit `pl` value too.
 type Item = { name: string; desc?: string; vol?: string; price: string };
 
 const INGREDIENTS: Record<string, Partial<Record<Locale, string>>> = {
@@ -32,15 +35,30 @@ const INGREDIENTS: Record<string, Partial<Record<Locale, string>>> = {
   'Hibiskus': { en: 'Hibiscus', de: 'Hibiskus', it: 'Ibisco', cs: 'Ibišek' },
   'Multiwitamina': { en: 'Multivitamin', de: 'Multivitamin', it: 'Multivitaminico', cs: 'Multivitamin' },
   'Grejpfrut': { en: 'Grapefruit', de: 'Grapefruit', it: 'Pompelmo', cs: 'Grapefruit' },
+  // Beer styles (source text is English; ABV and Blonde/Brune variant names stay).
+  'Belgian lager': { pl: 'lager belgijski', en: 'Belgian lager', de: 'belgisches Lager', it: 'lager belga', cs: 'belgický ležák' },
+  'Belgian wheat ale': { pl: 'belgijskie piwo pszeniczne', en: 'Belgian wheat ale', de: 'belgisches Weißbier', it: 'birra di frumento belga', cs: 'belgické pšeničné pivo' },
+  'Belgian blonde ale': { pl: 'belgijski jasny ale', en: 'Belgian blonde ale', de: 'belgisches Blond Ale', it: 'blonde ale belga', cs: 'belgický světlý ale' },
+  'Belgian ale': { pl: 'ale belgijski', en: 'Belgian ale', de: 'belgisches Ale', it: 'ale belga', cs: 'belgický ale' },
+  'Mexican lager': { pl: 'lager meksykański', en: 'Mexican lager', de: 'mexikanisches Lager', it: 'lager messicano', cs: 'mexický ležák' },
+  'German lager': { pl: 'lager niemiecki', en: 'German lager', de: 'deutsches Lager', it: 'lager tedesco', cs: 'německý ležák' },
+  'American lager': { pl: 'lager amerykański', en: 'American lager', de: 'amerikanisches Lager', it: 'lager americano', cs: 'americký ležák' },
 };
 
-// Split on " / ", translate each known generic token, keep brand tokens as-is.
-// Polish (and any token absent from the glossary) keeps the original word.
+// Localize each generic token, keeping brand tokens, ABV and volumes as-is. Descs
+// use " / " between ingredients and " · " between a beer style and its ABV; split
+// on both so each token can be looked up. Polish (and any token absent from the
+// glossary) keeps the original word.
 function localizeDesc(desc: string, loc: Locale): string {
   return desc
-    .split(' / ')
-    .map((tok) => INGREDIENTS[tok.trim()]?.[loc] ?? tok.trim())
-    .join(' / ');
+    .split(' · ')
+    .map((part) =>
+      part
+        .split(' / ')
+        .map((tok) => INGREDIENTS[tok.trim()]?.[loc] ?? tok.trim())
+        .join(' / '),
+    )
+    .join(' · ');
 }
 
 // Bottled wines currently poured. Producer + wine names are brand-invariant; the
