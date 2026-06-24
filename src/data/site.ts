@@ -17,19 +17,22 @@ export type EventItem = { title: string; date: string; iso: string; note?: strin
 
 // Shared event list - feeds the homepage teaser and the /wydarzenia page.
 // Placeholder line-up: edit titles/dates/images as real events are booked.
+// NOTE: weekday in the title must match the real weekday of `iso`, and every
+// date must fall on an opening night (Fri/Sat). 2026: Fridays 5/12/19/26 Jun,
+// 3/10 Jul; Saturdays 6/13/20/27 Jun, 4/11 Jul.
 export const EVENTS: EventItem[] = [
   // --- Upcoming ---
-  { title: 'Friday at SiSi', date: '27 czerwca, 22:00', iso: '2026-06-27', note: 'DJ ADB',
+  { title: 'Friday at SiSi', date: '26 czerwca, 22:00', iso: '2026-06-26', note: 'DJ ADB',
     img: '/framerusercontent.com/images/Vl3kSLbolFditeShXmcLZITH7A8.webp' },
-  { title: 'Saturday at SiSi', date: '28 czerwca, 22:00', iso: '2026-06-28', note: 'Live Act',
+  { title: 'Saturday at SiSi', date: '27 czerwca, 22:00', iso: '2026-06-27', note: 'Live Act',
     img: '/framerusercontent.com/images/RMGSDUbOPnta4fZZQKL5BcnP3Pw.webp' },
-  { title: 'Latino Night', date: '4 lipca, 22:00', iso: '2026-07-04', note: 'DJ Mike Lynx',
+  { title: 'Latino Night', date: '3 lipca, 22:00', iso: '2026-07-03', note: 'DJ Mike Lynx',
     img: '/framerusercontent.com/images/bHchRJgtNrxKTYRK56SCdUph2g.webp' },
-  { title: 'Saturday at SiSi', date: '5 lipca, 22:00', iso: '2026-07-05', note: 'Live Act',
+  { title: 'Saturday at SiSi', date: '4 lipca, 22:00', iso: '2026-07-04', note: 'Live Act',
     img: '/framerusercontent.com/images/cDJcCUEanjQSoFpALHKgU3hNpQ.webp' },
-  { title: 'House Sessions', date: '11 lipca, 22:00', iso: '2026-07-11', note: 'DJ ADB',
+  { title: 'House Sessions', date: '10 lipca, 22:00', iso: '2026-07-10', note: 'DJ ADB',
     img: '/framerusercontent.com/images/MHGypGkoM6EkRCjBAVKzMUmwRG4.webp' },
-  { title: 'Saturday at SiSi', date: '12 lipca, 22:00', iso: '2026-07-12', note: 'Special Guest',
+  { title: 'Saturday at SiSi', date: '11 lipca, 22:00', iso: '2026-07-11', note: 'Special Guest',
     img: '/framerusercontent.com/images/u3EOm1VtOnATOkUYHKikl5aBc.webp' },
 
   // --- Archive ---
@@ -37,13 +40,13 @@ export const EVENTS: EventItem[] = [
     img: '/framerusercontent.com/images/loXZHRygofAyWJdOaLJm2nba20Y.webp' },
   { title: 'Friday at SiSi', date: '19 czerwca, 22:00', iso: '2026-06-19', note: 'DJ ADB',
     img: '/framerusercontent.com/images/Vl3kSLbolFditeShXmcLZITH7A8.webp' },
-  { title: 'Saturday at SiSi', date: '14 czerwca, 22:00', iso: '2026-06-14', note: 'Live Act',
+  { title: 'Saturday at SiSi', date: '13 czerwca, 22:00', iso: '2026-06-13', note: 'Live Act',
     img: '/framerusercontent.com/images/RHdmR5s8jXTtyexi8FJLI4WDkig.webp' },
-  { title: 'Friday at SiSi', date: '13 czerwca, 22:00', iso: '2026-06-13', note: 'DJ Mike Lynx',
+  { title: 'Friday at SiSi', date: '12 czerwca, 22:00', iso: '2026-06-12', note: 'DJ Mike Lynx',
     img: '/framerusercontent.com/images/QxXDx4GN74BgGuzaDth23HA.webp' },
-  { title: 'Saturday at SiSi', date: '7 czerwca, 22:00', iso: '2026-06-07', note: 'Live Act',
+  { title: 'Saturday at SiSi', date: '6 czerwca, 22:00', iso: '2026-06-06', note: 'Live Act',
     img: '/framerusercontent.com/images/MHGypGkoM6EkRCjBAVKzMUmwRG4.webp' },
-  { title: 'Friday at SiSi', date: '6 czerwca, 22:00', iso: '2026-06-06', note: 'DJ ADB',
+  { title: 'Friday at SiSi', date: '5 czerwca, 22:00', iso: '2026-06-05', note: 'DJ ADB',
     img: '/framerusercontent.com/images/cDJcCUEanjQSoFpALHKgU3hNpQ.webp' },
 ];
 
@@ -62,7 +65,7 @@ export function splitEvents(list: EventItem[] = EVENTS) {
 
 export const CONTACT = {
   email: 'biuro@r32.com.pl',
-  address: 'Rzeźnicza 32, Wrocław',
+  address: 'Rzeźnicza 32-33, 50-130 Wrocław',
   phone: '+48 515 126 260',
   phoneHref: 'tel:+48515126260',
   eventsPhone: '+48 514 032 930',
@@ -107,11 +110,11 @@ export const BUSINESS = {
   image: 'https://sisiwroclaw.pl/framerusercontent.com/images/nBW0AVejCOoiy2Rctqcid0SY6Q.webp',
   description:
     'SiSi to serce nocnego Wrocławia - muzyka na żywo, najlepsi DJ-e, autorskie koktajle i wyjątkowa atmosfera w sercu kompleksu R32.',
-  streetAddress: 'Rzeźnicza 32',
+  streetAddress: 'Rzeźnicza 32-33',
   locality: 'Wrocław',
   region: 'Dolnośląskie',
-  // TODO(verify): postal code + coordinates are best-effort for the Old Town
-  // address. Confirm against the real venue and correct here if needed.
+  // Address + postal code confirmed against the KRS registration.
+  // TODO(verify): coordinates are best-effort for the Old Town address.
   postalCode: '50-130',
   country: 'PL',
   latitude: 51.1106,
@@ -153,7 +156,7 @@ export function nightClubSchema() {
     openingHoursSpecification: [
       { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Friday', 'Saturday'], opens: '22:00', closes: '04:00' },
     ],
-    sameAs: [CONTACT.instagram, CONTACT.facebook],
+    sameAs: [CONTACT.instagram, CONTACT.facebook, CONTACT.tripadvisor],
     acceptsReservations: 'True',
     potentialAction: {
       '@type': 'ReserveAction',

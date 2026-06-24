@@ -111,6 +111,18 @@ const piwoButelkowe: Section = {
       </div>
     </div>
 
+    <section class="sisi-card menu-foodwine" data-reveal>
+      <div class="fw-col">
+        <h2 class="menu-section-label">Karta win</h2>
+        <p class="fw-lead">Stawiamy na polskie winnice - selekcja rodzimych win, od wytrawnych bieli po pełne czerwienie, podawanych kieliszkiem i butelką.</p>
+      </div>
+      <div class="fw-col">
+        <h2 class="menu-section-label">Night Menu by The Cork</h2>
+        <p class="fw-lead">Eleganckie przekąski do dzielenia, przygotowane przez The Cork: kawior, ostrygi, deski serów i wędlin (charcuterie).</p>
+      </div>
+      <p class="menu-note fw-note">Pełna karta win oraz Night Menu dostępne w klubie - zapytaj obsługę o aktualną ofertę i ceny.</p>
+    </section>
+
     <div class="menu-cta" data-reveal>
       <p>Chcesz zarezerwować stolik i zamówić z wyprzedzeniem? Skontaktuj się z nami.</p>
       <a href={RESERVATION_URL} class="btn-cta" rel="noopener" target="_blank">Zarezerwuj stolik</a>
@@ -153,6 +165,14 @@ const piwoButelkowe: Section = {
     font-size: 14px; line-height: 1.7; max-width: 360px;
   }
 
+  .menu-foodwine {
+    margin-top: 24px; padding: 32px 36px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 28px 48px;
+  }
+  .fw-lead { font-size: 14px; line-height: 1.7; color: rgba(237, 219, 194, 0.6); }
+  .fw-note { grid-column: 1 / -1; margin-top: 4px; }
+
   @media (max-width: 900px) { .menu-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 700px) { .menu-foodwine { grid-template-columns: 1fr; gap: 24px; } }
   @media (max-width: 600px) { .menu-wrap { padding-inline: 20px; } .menu-card { padding: 28px 24px; } }
 </style>
