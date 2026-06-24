@@ -452,6 +452,10 @@ html.loaded #page-loader { display: none; }
   box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
 }
 .cookie-banner[hidden] { display: none; }
+/* The mobile menu is a modal overlay (z 60) but the banner sits at z 900;
+   suppress the banner while the menu is open so they don't stack. They are
+   siblings under <body> (Astro adds no wrappers), so `~` reaches it. */
+#mobile-menu:not([hidden]) ~ .cookie-banner { display: none; }
 .cookie-text { flex: 1 1 280px; margin: 0; font-size: 13px; line-height: 1.6; color: var(--text-dim); }
 .cookie-text a { color: var(--cream); text-decoration: underline; text-underline-offset: 3px; }
 .cookie-actions { display: flex; gap: 10px; flex-shrink: 0; }
