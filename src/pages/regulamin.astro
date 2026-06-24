@@ -1,0 +1,98 @@
+---
+import Base from '../layouts/Base.astro';
+import { CONTACT, COMPANY, LEGAL_UPDATED } from '../data/site';
+---
+
+<Base
+  title="Regulamin - SiSi Wrocław"
+  description="Regulamin klubu SiSi Wrocław - zasady wstępu, rezerwacji stolików, przebywania na terenie lokalu, reklamacji oraz postanowienia końcowe."
+  ogDescription="Regulamin klubu SiSi Wrocław - wstęp, rezerwacje, zasady i reklamacje."
+  path="/regulamin"
+>
+  <div class="page-header" data-reveal>
+    <span class="page-label">Informacje prawne</span>
+    <h1 class="page-title display">Regulamin</h1>
+    <p class="page-subtitle">Zasady korzystania z klubu SiSi oraz dokonywania rezerwacji stolików.</p>
+  </div>
+
+  <div class="legal" data-reveal>
+    <h2>1. Postanowienia ogólne</h2>
+    <p>
+      1.1. Niniejszy Regulamin określa zasady wstępu i przebywania na terenie
+      klubu SiSi (dalej: „Klub") oraz zasady dokonywania rezerwacji stolików.
+    </p>
+    <p>
+      1.2. Podmiotem prowadzącym Klub jest <strong>{COMPANY.legalName}</strong>,
+      {COMPANY.street}, {COMPANY.postalCity}, NIP: {COMPANY.nip}, REGON:
+      {COMPANY.regon} (dalej: „Organizator").
+    </p>
+    <p>
+      1.3. Wejście na teren Klubu oznacza akceptację postanowień niniejszego
+      Regulaminu oraz zobowiązanie do jego przestrzegania.
+    </p>
+
+    <h2>2. Zasady wstępu</h2>
+    <ul>
+      <li>Wstęp do Klubu mają wyłącznie osoby pełnoletnie (ukończone 18 lat). Obsługa ma prawo zażądać okazania dokumentu potwierdzającego wiek.</li>
+      <li>Organizator zastrzega sobie prawo odmowy wstępu bez podania przyczyny, w szczególności osobom nietrzeźwym, pod wpływem środków odurzających lub zachowującym się agresywnie.</li>
+      <li>Na terenie Klubu obowiązuje zakaz wnoszenia własnego alkoholu, napojów, środków odurzających, broni oraz przedmiotów niebezpiecznych.</li>
+      <li>Organizator może wprowadzić wymagania dotyczące stroju (dress code) oraz limit miejsc wynikający z przepisów bezpieczeństwa.</li>
+    </ul>
+
+    <h2>3. Rezerwacje stolików</h2>
+    <ul>
+      <li>Rezerwacji stolika można dokonać online za pośrednictwem systemu rezerwacji dostępnego na stronie, telefonicznie pod numerem <a href={CONTACT.phoneHref}>{CONTACT.phone}</a> lub mailowo: <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>.</li>
+      <li>Rezerwacja jest skuteczna z chwilą jej potwierdzenia przez Organizatora. Dane podane w rezerwacji muszą być prawdziwe i kompletne.</li>
+      <li>Organizator może uzależnić rezerwację od wpłaty zadatku lub minimalnej kwoty zamówienia. Szczegółowe warunki (w tym kwoty, terminy i zasady zwrotu) podawane są w procesie rezerwacji. <span class="legal-note">[Do uzupełnienia zgodnie z rzeczywistą polityką lokalu.]</span></li>
+      <li>Niewykorzystanie rezerwacji (brak przybycia) w ustalonym czasie może skutkować jej anulowaniem i zwolnieniem stolika.</li>
+      <li>Rezerwacje na eventy firmowe i grupowe prowadzone są odrębnie: <a href={CONTACT.eventsPhoneHref}>{CONTACT.eventsPhone}</a>, <a href={`mailto:${CONTACT.eventsEmail}`}>{CONTACT.eventsEmail}</a>.</li>
+    </ul>
+
+    <h2>4. Zasady przebywania na terenie Klubu</h2>
+    <ul>
+      <li>Gość zobowiązany jest stosować się do poleceń obsługi oraz służb porządkowych (ochrony).</li>
+      <li>Teren Klubu może być objęty monitoringiem wizyjnym prowadzonym w celu zapewnienia bezpieczeństwa osób i mienia. Szczegóły w <a href="/polityka-prywatnosci">Polityce prywatności</a>. <span class="legal-note">[Usunąć, jeśli monitoring nie jest stosowany.]</span></li>
+      <li>Zabronione jest zachowanie zagrażające bezpieczeństwu, porządkowi lub naruszające dobra innych Gości.</li>
+      <li>Za szkody wyrządzone umyślnie na mieniu Klubu Gość ponosi odpowiedzialność na zasadach ogólnych Kodeksu cywilnego.</li>
+    </ul>
+
+    <h2>5. Odpowiedzialność</h2>
+    <p>
+      5.1. Organizator nie ponosi odpowiedzialności za rzeczy pozostawione bez
+      nadzoru na terenie Klubu, o ile nie zostały oddane na przechowanie do
+      szatni.
+    </p>
+    <p>
+      5.2. Organizator odpowiada za niewykonanie lub nienależyte wykonanie usług
+      na zasadach określonych w powszechnie obowiązujących przepisach prawa.
+    </p>
+
+    <h2>6. Reklamacje</h2>
+    <p>
+      6.1. Reklamacje dotyczące usług można składać mailowo na adres
+      <a href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a> lub pisemnie na adres
+      Organizatora.
+    </p>
+    <p>
+      6.2. Reklamacja powinna zawierać dane kontaktowe oraz opis zastrzeżeń.
+      Organizator rozpatruje reklamacje w terminie 14 dni od dnia ich
+      otrzymania.
+    </p>
+
+    <h2>7. Dane osobowe</h2>
+    <p>
+      Zasady przetwarzania danych osobowych Gości, w tym w związku z
+      rezerwacjami, opisane są w <a href="/polityka-prywatnosci">Polityce
+      prywatności</a>.
+    </p>
+
+    <h2>8. Postanowienia końcowe</h2>
+    <ul>
+      <li>W sprawach nieuregulowanych Regulaminem zastosowanie mają przepisy prawa polskiego, w szczególności Kodeksu cywilnego.</li>
+      <li>Organizator zastrzega sobie prawo do zmiany Regulaminu. Zmiany wchodzą w życie z chwilą publikacji na stronie.</li>
+      <li>Konsument może skorzystać z pozasądowych sposobów rozpatrywania reklamacji i dochodzenia roszczeń, w tym z platformy ODR (ec.europa.eu/consumers/odr).</li>
+    </ul>
+
+    <p class="legal-meta">Ostatnia aktualizacja: {LEGAL_UPDATED}</p>
+  </div>
+</Base>

@@ -1,0 +1,41 @@
+---
+// Cookie / local-storage consent banner. The site currently uses only
+// essential storage (the intro-loader session flag and this consent choice),
+// so there is nothing to block - but the banner records an explicit choice and
+// is the hook to gate any future analytics behind consent.
+//
+// Rendered hidden; an inline script reveals it only when no choice is stored,
+// so returning visitors never see a flash. Position is fixed, so it never
+// shifts layout (keeps CLS at 0).
+---
+
+<div id="cookie-banner" class="cookie-banner" role="dialog" aria-live="polite"
+     aria-label="Zgoda na pliki cookies" hidden>
+  <p class="cookie-text">
+    Używamy plików cookies i podobnych technologii niezbędnych do działania
+    strony. Szczegóły znajdziesz w <a href="/polityka-cookies">Polityce cookies</a>
+    oraz <a href="/polityka-prywatnosci">Polityce prywatności</a>.
+  </p>
+  <div class="cookie-actions">
+    <button type="button" class="btn-outline cookie-btn" data-cookie="rejected">Tylko niezbędne</button>
+    <button type="button" class="btn-cta cookie-btn" data-cookie="accepted">Akceptuję</button>
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    try {
+      var KEY = 'sisi-cookie-consent';
+      if (localStorage.getItem(KEY)) return; // already decided
+      var el = document.getElementById('cookie-banner');
+      if (!el) return;
+      el.hidden = false;
+      el.addEventListener('click', function (e) {
+        var btn = e.target.closest('[data-cookie]');
+        if (!btn) return;
+        try { localStorage.setItem(KEY, btn.getAttribute('data-cookie')); } catch (_) {}
+        el.hidden = true;
+      });
+    } catch (_) {}
+  })();
+</script>

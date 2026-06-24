@@ -65,11 +65,36 @@ export const CONTACT = {
   address: 'Rzeźnicza 32, Wrocław',
   phone: '+48 515 126 260',
   phoneHref: 'tel:+48515126260',
+  eventsPhone: '+48 514 032 930',
+  eventsPhoneHref: 'tel:+48514032930',
+  eventsEmail: 'events@r32.com.pl',
   hoursLabel: 'Piątek - Sobota',
   hours: '22:00 - 04:00',
   instagram: 'https://www.instagram.com/sisiwroclaw/',
   facebook: 'https://www.facebook.com/sisimusicclub',
+  tripadvisor:
+    'https://www.tripadvisor.com/Attraction_Review-g274812-d34327483-Reviews-SISI_Wroclaw_Music_Club-Wroclaw_Lower_Silesia_Province_Southern_Poland.html',
 };
+
+/* Legal entity behind SiSi - powers the legal pages (Regulamin, Polityka
+   prywatności, Polityka cookies, Kontakt).
+   TODO(legal): fill in the real registration data below, and have a lawyer
+   review the final legal copy before relying on it. */
+export const COMPANY = {
+  legalName: 'UZUPEŁNIĆ: pełna nazwa firmy / spółki (np. R32 Sp. z o.o.)',
+  tradeName: 'SiSi Wrocław',
+  street: 'Rzeźnicza 32',
+  postalCity: '50-130 Wrocław',
+  nip: 'UZUPEŁNIĆ: NIP',
+  regon: 'UZUPEŁNIĆ: REGON',
+  krs: 'UZUPEŁNIĆ: KRS (jeśli dotyczy)',
+  email: 'biuro@r32.com.pl',
+  phone: '+48 515 126 260',
+  phoneHref: 'tel:+48515126260',
+};
+
+// Shown as the "last updated" date on the legal pages.
+export const LEGAL_UPDATED = '24 czerwca 2026';
 
 /* === STRUCTURED DATA (JSON-LD) ===
    Single source for SEO/GEO machine-readable facts. Google's local pack and AI
