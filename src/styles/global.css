@@ -390,16 +390,17 @@ html.loaded #page-loader { display: none; }
 @media (prefers-reduced-motion: reduce) { #page-loader { display: none; } }
 
 /* === MICRO-INTERACTIONS (perf-safe: transform/opacity only, no layout shift) === */
-/* Solid CTAs: no lift. Hover darkens the fill (see --cream-press above) so the
-   one-pass sheen sweep ("spark") reads clearly against it. */
-.btn-cta { position: relative; overflow: hidden; transition: background 180ms ease; }
-.btn-cta::after {
+/* Solid CTAs (hero, cards + the top nav button): no lift. Hover darkens the
+   fill (see --cream-press above) so the one-pass sheen sweep ("spark") reads
+   clearly against it. */
+.btn-cta, .nav-cta { position: relative; overflow: hidden; transition: background 180ms ease; }
+.btn-cta::after, .nav-cta::after {
   content: ''; position: absolute; inset: 0; transform: translateX(-130%); pointer-events: none;
   background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.6) 50%, transparent 70%);
   transition: transform 600ms ease;
 }
-.btn-cta:hover::after { transform: translateX(130%); }
-.btn-cta:active { background: var(--cream-active); }
+.btn-cta:hover::after, .nav-cta:hover::after { transform: translateX(130%); }
+.btn-cta:active, .nav-cta:active { background: var(--cream-active); }
 
 /* Nav links: an underline that wipes in from the left on hover / current page. */
 .nav-links a { position: relative; }
@@ -420,6 +421,6 @@ html.loaded #page-loader { display: none; }
 
 @media (prefers-reduced-motion: reduce) {
   .sisi-card:hover, .ev-card:hover { transform: none; box-shadow: none; }
-  .btn-cta::after { display: none; }
+  .btn-cta::after, .nav-cta::after { display: none; }
   .nav-links a::after { transition: none; }
 }
