@@ -11,7 +11,7 @@ const { event, past = false } = Astro.props;
   <div class="ev-body">
     <h3 class="display ev-name">{event.title}</h3>
     {event.note && <p class="ev-note">{event.note}</p>}
-    <p class="ev-date">{event.date}</p>
+    <p class="ev-date"><time datetime={`${event.iso}T22:00:00+02:00`}>{event.date}</time></p>
     {past
       ? <span class="ev-done">Wydarzenie zakończone</span>
       : <a href={RESERVATION_URL} class="btn-cta" rel="noopener" target="_blank">Zarezerwuj</a>}
