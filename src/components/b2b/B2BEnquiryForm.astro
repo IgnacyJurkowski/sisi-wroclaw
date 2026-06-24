@@ -291,21 +291,24 @@ const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
     outline: 2px solid rgba(237,219,194,0.5); outline-offset: 1px; border-color: transparent;
   }
   .b2b-field [aria-invalid='true'] { border-color: #c25c74; }
-  .b2b-check { flex-direction: row !important; align-items: flex-start; gap: 10px; font-size: 13px; line-height: 1.5; color: rgba(237,219,194,0.7); cursor: pointer; }
+  .b2b-check { flex-direction: row !important; align-items: center; gap: 11px; font-size: 13px; line-height: 1.5; color: rgba(237,219,194,0.7); cursor: pointer; }
+  /* Consent text wraps, so keep its tick aligned to the first line, not centred. */
+  .b2b-consent { align-items: flex-start; }
   /* Custom tick: hide the native box and draw our own. */
   .b2b-check input[type="checkbox"] {
     appearance: none; -webkit-appearance: none;
-    flex-shrink: 0; width: 18px; height: 18px; margin: 1px 0 0; padding: 0;
+    flex-shrink: 0; width: 18px; height: 18px; margin: 0; padding: 0;
     border: 1px solid var(--line); border-radius: 5px;
     background: rgba(255,255,255,0.03); cursor: pointer; position: relative;
     transition: background 150ms ease, border-color 150ms ease;
   }
+  .b2b-consent input[type="checkbox"] { margin-top: 1px; }
   .b2b-check input[type="checkbox"]:hover { border-color: rgba(237,219,194,0.4); }
   .b2b-check input[type="checkbox"]:checked { background: var(--cream); border-color: var(--cream); }
   .b2b-check input[type="checkbox"]:checked::after {
-    content: ''; position: absolute; left: 5px; top: 1px;
-    width: 5px; height: 9px; border: solid #1a120b; border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
+    content: ''; position: absolute; left: 50%; top: 50%;
+    width: 4px; height: 8px; border: solid #1a120b; border-width: 0 2px 2px 0;
+    transform: translate(-50%, -50%) rotate(45deg);
   }
   .b2b-check input[type="checkbox"]:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
   .b2b-check input[type="checkbox"][aria-invalid='true'] { border-color: #c25c74; }
