@@ -1,13 +1,20 @@
 /* === FONTS ===
    All fonts are self-hosted (no third-party origin) so there is no extra
-   DNS/TCP/TLS handshake competing for bandwidth on a throttled connection. */
+   DNS/TCP/TLS handshake competing for bandwidth on a throttled connection.
+
+   font-display:optional - the font is used only if it arrives within a ~100ms
+   block window; otherwise the fallback is shown for that load and the web font
+   is NOT swapped in later. No swap means zero layout shift (CLS) and no late
+   visual change (Speed Index). Fast connections (and repeat visits, cached)
+   still get the real fonts from first paint; only the slowest first-loads fall
+   back to system fonts for that one view. */
 
 /* Krona One - display font (matches Framer export) */
-@font-face { font-family:'Krona One'; src:url('/fonts.gstatic.com/s/kronaone/v15/jAnEgHdjHcjgfIb1ZcUCNI-h3cWkWg.woff2') format('woff2'); font-weight:400; font-display:swap; }
+@font-face { font-family:'Krona One'; src:url('/fonts.gstatic.com/s/kronaone/v15/jAnEgHdjHcjgfIb1ZcUCNI-h3cWkWg.woff2') format('woff2'); font-weight:400; font-display:optional; }
 
 /* Montserrat - body/UI font. One subset variable file (weights 400-700,
    Latin + Polish only) replaces Google Fonts' per-weight subsets. */
-@font-face { font-family:'Montserrat'; src:url('/fonts/montserrat/montserrat-var.woff2') format('woff2'); font-weight:400 700; font-style:normal; font-display:swap; }
+@font-face { font-family:'Montserrat'; src:url('/fonts/montserrat/montserrat-var.woff2') format('woff2'); font-weight:400 700; font-style:normal; font-display:optional; }
 
 /* === CSS VARS === */
 :root {
