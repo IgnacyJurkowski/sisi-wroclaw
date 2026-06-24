@@ -43,6 +43,28 @@ function localizeDesc(desc: string, loc: Locale): string {
     .join(' / ');
 }
 
+// Bottled wines currently poured. Producer + wine names are brand-invariant; the
+// wine type is localized. Prices, by-the-glass options, Night Menu items and
+// allergens are still TODO (see below).
+const WINE_TYPES: Record<'red' | 'white' | 'rose' | 'semiDryWhite', Record<Locale, string>> = {
+  red: { pl: 'czerwone', en: 'red', de: 'Rotwein', it: 'rosso', cs: 'červené' },
+  white: { pl: 'białe', en: 'white', de: 'Weißwein', it: 'bianco', cs: 'bílé' },
+  rose: { pl: 'różowe', en: 'rosé', de: 'Rosé', it: 'rosato', cs: 'růžové' },
+  semiDryWhite: {
+    pl: 'białe półwytrawne', en: 'semi-dry white', de: 'Weißwein halbtrocken',
+    it: 'bianco semisecco', cs: 'bílé polosuché',
+  },
+};
+
+const wines: { name: string; type: keyof typeof WINE_TYPES }[] = [
+  { name: "L'Opera Triada", type: 'red' },
+  { name: "L'Opera Halka", type: 'semiDryWhite' },
+  { name: 'Turnau Rosé', type: 'rose' },
+  { name: 'Turnau Hibernal', type: 'white' },
+  { name: 'Turnau Pinot Noir', type: 'red' },
+  { name: 'Dom Charbielin Solaris', type: 'white' },
+];
+
 const koktajle: Item[] = [
   { name: 'Hugo Spritz', desc: 'St-Germain / Limonka / Mięta / Martini Prosecco / Woda gazowana', vol: '160 ml', price: '40 zł' },
   { name: 'Fiero Spritz', desc: 'Martini Fiero / Martini Prosecco / Pomarańcze / Woda gazowana', vol: '180 ml', price: '39 zł' },
@@ -142,14 +164,21 @@ const stack = [
       </div>
     </div>
 
-    {/* TODO(ignacy): itemize the wine list (names, by-glass/bottle prices),
-        the Night Menu items, and allergens. Until these are listed, the home CTA
-        says "bar menu" (seeFullMenu) rather than "full menu", since this section
-        only directs guests to ask staff. */}
+    {/* TODO(ignacy): bottled wines are now listed by name; still need prices and
+        by-the-glass options, the Night Menu items, and allergens. Until prices
+        land, the home CTA stays "bar menu" (seeFullMenu), not "full menu". */}
     <section class="sisi-card menu-foodwine" data-reveal>
       <div class="fw-col">
         <h2 class="menu-section-label">{t.menuPage.sections.wines}</h2>
         <p class="fw-lead">{t.menuPage.wineLead}</p>
+        <ul class="fw-wines">
+          {wines.map((w) => (
+            <li class="fw-wine">
+              <span class="fw-wine-name">{w.name}</span>
+              <span class="fw-wine-type">{WINE_TYPES[w.type][locale]}</span>
+            </li>
+          ))}
+        </ul>
       </div>
       <div class="fw-col">
         <h2 class="menu-section-label">{t.menuPage.sections.nightMenu}</h2>
@@ -185,6 +214,10 @@ const stack = [
     display: grid; grid-template-columns: 1fr 1fr; gap: 28px 48px;
   }
   .fw-lead { font-size: 14px; line-height: 1.7; color: rgba(237, 219, 194, 0.6); }
+  .fw-wines { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .fw-wine { display: flex; justify-content: space-between; gap: 16px; align-items: baseline; }
+  .fw-wine-name { font-size: 14px; color: rgba(237, 219, 194, 0.85); }
+  .fw-wine-type { font-size: 12px; color: var(--text-mute); white-space: nowrap; }
   .fw-note { grid-column: 1 / -1; margin-top: 4px; }
   .menu-cta { text-align: center; margin-top: 64px; padding-top: 48px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
   .menu-cta p { color: rgba(237, 219, 194, 0.45); margin: 0 auto 28px; font-size: 14px; line-height: 1.7; max-width: 360px; }
