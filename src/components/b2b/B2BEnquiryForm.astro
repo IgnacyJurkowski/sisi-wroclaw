@@ -41,8 +41,11 @@ const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
       <input type="hidden" name="locale" value={locale} />
       <input type="hidden" name="page" data-field-page value="" />
       <input type="hidden" name="utm" data-field-utm value="" />
+      <!-- Netlify honeypot: kept in the markup for spam filtering, but hidden
+           from sight (.b2b-hp), from the a11y tree (aria-hidden), and from the
+           tab order (tabindex=-1). No visible/announced label text. -->
       <p class="b2b-hp" aria-hidden="true">
-        <label>Do not fill this in: <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+        <input type="text" name="bot-field" tabindex="-1" autocomplete="off" />
       </p>
 
       <p class="b2b-form-hint">{f.requiredHint}</p>
