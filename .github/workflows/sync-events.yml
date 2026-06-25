@@ -6,7 +6,11 @@ name: Sync events from Drive
 
 on:
   schedule:
-    - cron: '*/30 * * * *' # every 30 min
+    # Every 30 min, but at :07 / :37 rather than :00 / :30. GitHub's scheduler
+    # is best-effort and most heavily delayed/dropped on the hour and half-hour
+    # (peak load), so an off-peak offset publishes far more reliably. It can
+    # still lag a few minutes; use the "Run workflow" button for an instant sync.
+    - cron: '7,37 * * * *'
   workflow_dispatch: {}
 
 # Never let two syncs (cron + manual) race each other or a human push.
