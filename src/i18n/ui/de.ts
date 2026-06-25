@@ -218,8 +218,9 @@ const de: UI = {
     sections: {
       cocktails: 'Cocktails',
       drinks: 'Alkoholfreie Getränke',
-      draught: 'Bier vom Fass',
-      bottled: 'Flaschenbier',
+      beer: 'Bier',
+      draught: 'Vom Fass',
+      bottled: 'Flasche',
       wines: 'Weinkarte',
       nightMenu: 'Night Menu by The Cork',
     },

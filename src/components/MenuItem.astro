@@ -1,0 +1,17 @@
+---
+// One priced row in a menu card (name + optional desc on the left, optional
+// volume + price on the right). Styles (.menu-item*) live in global.css. The
+// desc is expected pre-localized by the caller.
+interface Props { name: string; desc?: string; vol?: string; price: string }
+const { name, desc, vol, price } = Astro.props;
+---
+<div class="menu-item">
+  <div class="menu-item-main">
+    <p class="menu-item-name">{name}</p>
+    {desc && <p class="menu-item-desc">{desc}</p>}
+  </div>
+  <div class="menu-item-meta">
+    {vol && <span class="menu-item-vol">{vol}</span>}
+    <span class="menu-item-price">{price}</span>
+  </div>
+</div>

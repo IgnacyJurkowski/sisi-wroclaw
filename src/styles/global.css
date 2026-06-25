@@ -349,8 +349,9 @@ footer::before {
 .menu-section-label {
   display: flex; align-items: center; gap: 11px;
   font-family: 'Cal Sans', 'Trebuchet MS', system-ui, sans-serif;
-  font-size: 1.4rem; font-weight: 400; letter-spacing: 0.01em;
-  color: var(--cream); margin-bottom: 24px;
+  font-size: 1.25rem; font-weight: 400;
+  text-transform: uppercase; letter-spacing: 0.04em;
+  color: var(--gold); margin-bottom: 24px;
 }
 .menu-section-label svg {
   width: 24px; height: 24px; flex-shrink: 0;
@@ -367,6 +368,12 @@ footer::before {
 .menu-item-name { font-size: 15px; font-weight: 600; color: var(--text); }
 .menu-item-desc { font-size: 13px; color: var(--text-faint); margin-top: 3px; }
 .menu-item-price { flex-shrink: 0; font-size: 13px; font-weight: 600; color: var(--cream); white-space: nowrap; }
+.menu-item-main { min-width: 0; }
+.menu-item-meta {
+  flex-shrink: 0; display: flex; flex-direction: column;
+  align-items: flex-end; gap: 2px; text-align: right;
+}
+.menu-item-vol { font-size: 11px; letter-spacing: 0.04em; color: var(--text-mute); white-space: nowrap; }
 
 /* === BUTTONS === */
 .btn-cta {

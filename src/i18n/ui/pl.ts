@@ -220,8 +220,9 @@ const pl = {
     sections: {
       cocktails: 'Koktajle',
       drinks: 'Napoje',
-      draught: 'Piwo lane',
-      bottled: 'Piwo butelkowe',
+      beer: 'Piwo',
+      draught: 'Lane',
+      bottled: 'Butelkowe',
       wines: 'Karta win',
       nightMenu: 'Night Menu by The Cork',
     },

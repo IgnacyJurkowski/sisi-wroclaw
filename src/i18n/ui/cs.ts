@@ -217,8 +217,9 @@ const cs: UI = {
     sections: {
       cocktails: 'Koktejly',
       drinks: 'Nealko nápoje',
-      draught: 'Točené pivo',
-      bottled: 'Lahvové pivo',
+      beer: 'Pivo',
+      draught: 'Točené',
+      bottled: 'Lahvové',
       wines: 'Vinný lístek',
       nightMenu: 'Night Menu by The Cork',
     },

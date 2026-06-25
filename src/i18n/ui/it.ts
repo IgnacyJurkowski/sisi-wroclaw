@@ -217,8 +217,9 @@ const it: UI = {
     sections: {
       cocktails: 'Cocktail',
       drinks: 'Bibite',
-      draught: 'Birra alla spina',
-      bottled: 'Birra in bottiglia',
+      beer: 'Birra',
+      draught: 'Alla spina',
+      bottled: 'In bottiglia',
       wines: 'Carta dei vini',
       nightMenu: 'Night Menu by The Cork',
     },

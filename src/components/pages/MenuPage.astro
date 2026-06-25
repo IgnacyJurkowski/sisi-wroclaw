@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import MenuItem from '../MenuItem.astro';
 import { reservationUrl } from '../../data/site';
 import { type Locale } from '../../i18n/config';
 import { useTranslations } from '../../i18n/t';
@@ -132,12 +133,6 @@ const piwoButelkowe: Item[] = [
   { name: 'Bud', desc: 'American lager · 5%', price: '20 zł' },
 ];
 
-const stack = [
-  { label: t.menuPage.sections.drinks, items: napoje, icon: 'glass' },
-  { label: t.menuPage.sections.draught, items: piwoLane, icon: 'beer' },
-  { label: t.menuPage.sections.bottled, items: piwoButelkowe, note: t.menuPage.bottledNote, icon: 'beer' },
-];
-
 // Section-header icons (Lucide, MIT). Stroke glyphs rendered in --gold next to
 // the Cal Sans label; the inner paths are injected with set:html into one <svg>.
 const ICONS: Record<string, string> = {
@@ -162,69 +157,63 @@ const ICONS: Record<string, string> = {
     <p class="page-subtitle">{t.menuPage.subtitle}</p>
   </div>
 
+  {/* TODO(ignacy): wines now show by-glass/bottle prices; still need the Night
+      Menu items and allergens. Until those land, the home CTA stays "bar menu"
+      (seeFullMenu), not "full menu". */}
   <div class="menu-wrap">
     <div class="menu-grid" data-reveal-group>
-      <section class="sisi-card menu-card menu-card-feature">
-        <h2 class="menu-section-label"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.martini} />{t.menuPage.sections.cocktails}</h2>
-        {koktajle.map((item) => (
-          <div class="menu-item">
-            <div class="menu-item-main">
-              <p class="menu-item-name">{item.name}</p>
-              {item.desc && <p class="menu-item-desc">{localizeDesc(item.desc, locale)}</p>}
-            </div>
-            <div class="menu-item-meta">
-              {item.vol && <span class="menu-item-vol">{item.vol}</span>}
-              <span class="menu-item-price">{item.price}</span>
-            </div>
-          </div>
-        ))}
-      </section>
-
+      {/* LEFT: cocktails, wine, night menu */}
       <div class="menu-stack">
-        {stack.map((section) => (
-          <section class="sisi-card menu-card">
-            <h2 class="menu-section-label"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS[section.icon]} />{section.label}</h2>
-            {section.items.map((item) => (
-              <div class="menu-item">
-                <div class="menu-item-main">
-                  <p class="menu-item-name">{item.name}</p>
-                  {item.desc && <p class="menu-item-desc">{localizeDesc(item.desc, locale)}</p>}
-                </div>
-                <div class="menu-item-meta">
-                  {item.vol && <span class="menu-item-vol">{item.vol}</span>}
-                  <span class="menu-item-price">{item.price}</span>
-                </div>
-              </div>
-            ))}
-            {section.note && <p class="menu-note">{section.note}</p>}
-          </section>
-        ))}
-      </div>
-    </div>
-
-    {/* TODO(ignacy): wines now show by-glass/bottle prices; still need the Night
-        Menu items and allergens. Until those land, the home CTA stays "bar menu"
-        (seeFullMenu), not "full menu". */}
-    <div class="menu-grid menu-grid-bottom" data-reveal-group>
-      <section class="sisi-card menu-card">
-        <h2 class="menu-section-label"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.wine} />{t.menuPage.sections.wines}</h2>
-        <p class="fw-lead">{t.menuPage.wineLead}</p>
-        <ul class="fw-wines">
-          {wines.map((w) => (
-            <li class="fw-wine">
-              <span class="fw-wine-name">{w.name}</span>
-              <span class="fw-wine-type">{WINE_TYPES[w.type][locale]}</span>
-            </li>
+        <section class="sisi-card menu-card">
+          <h2 class="menu-section-label"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.martini} />{t.menuPage.sections.cocktails}</h2>
+          {koktajle.map((item) => (
+            <MenuItem name={item.name} desc={item.desc ? localizeDesc(item.desc, locale) : undefined} vol={item.vol} price={item.price} />
           ))}
-        </ul>
-        <p class="fw-price">{WINE_PRICE[locale]}</p>
-      </section>
+        </section>
 
-      <section class="sisi-card menu-card">
-        <h2 class="menu-section-label"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.utensils} />{t.menuPage.sections.nightMenu}</h2>
-        <p class="fw-lead">{t.menuPage.nightLead}</p>
-        <p class="menu-note">{t.menuPage.foodwineNote}</p>
-      </section>
+        <section class="sisi-card menu-card">
+          <h2 class="menu-section-label"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.wine} />{t.menuPage.sections.wines}</h2>
+          <p class="fw-lead">{t.menuPage.wineLead}</p>
+          <ul class="fw-wines">
+            {wines.map((w) => (
+              <li class="fw-wine">
+                <span class="fw-wine-name">{w.name}</span>
+                <span class="fw-wine-type">{WINE_TYPES[w.type][locale]}</span>
+              </li>
+            ))}
+          </ul>
+          <p class="fw-price">{WINE_PRICE[locale]}</p>
+        </section>
+
+        <section class="sisi-card menu-card">
+          <h2 class="menu-section-label"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.utensils} />{t.menuPage.sections.nightMenu}</h2>
+          <p class="fw-lead">{t.menuPage.nightLead}</p>
+          <p class="menu-note">{t.menuPage.foodwineNote}</p>
+        </section>
+      </div>
+
+      {/* RIGHT: soft drinks, beer (draught + bottled in one card) */}
+      <div class="menu-stack">
+        <section class="sisi-card menu-card">
+          <h2 class="menu-section-label"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.glass} />{t.menuPage.sections.drinks}</h2>
+          {napoje.map((item) => (
+            <MenuItem name={item.name} desc={item.desc ? localizeDesc(item.desc, locale) : undefined} vol={item.vol} price={item.price} />
+          ))}
+        </section>
+
+        <section class="sisi-card menu-card">
+          <h2 class="menu-section-label"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.beer} />{t.menuPage.sections.beer}</h2>
+          <p class="menu-subsection">{t.menuPage.sections.draught}</p>
+          {piwoLane.map((item) => (
+            <MenuItem name={item.name} desc={item.desc ? localizeDesc(item.desc, locale) : undefined} vol={item.vol} price={item.price} />
+          ))}
+          <p class="menu-subsection">{t.menuPage.sections.bottled}</p>
+          {piwoButelkowe.map((item) => (
+            <MenuItem name={item.name} desc={item.desc ? localizeDesc(item.desc, locale) : undefined} vol={item.vol} price={item.price} />
+          ))}
+          <p class="menu-note">{t.menuPage.bottledNote}</p>
+        </section>
+      </div>
     </div>
 
     <div class="menu-cta" data-reveal>
@@ -237,22 +226,22 @@ const ICONS: Record<string, string> = {
 <style>
   .menu-wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 32px 80px; }
   .menu-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 24px; align-items: start; }
-  .menu-grid-bottom { grid-template-columns: 1fr 1fr; margin-top: 24px; }
-  /* Stronger frosted glass than the base .sisi-card: more transparent + a
-     heavier blur so the drifting circle field reads clearly through the cards. */
+  /* One unified frosted glass for every card: a deep wine tint (matching --bg)
+     at enough opacity that the drifting field reads as a soft glow behind the
+     card, not a bright wash. Plain blur, no saturate (that was over-brightening). */
   .menu-card {
     padding: 32px 36px;
-    background: rgba(40, 12, 22, 0.28);
-    backdrop-filter: blur(18px) saturate(135%);
-    border-color: rgba(237, 219, 194, 0.16);
+    background: rgba(28, 6, 13, 0.66);
+    backdrop-filter: blur(14px);
+    border-color: rgba(237, 219, 194, 0.14);
   }
   .menu-stack { display: flex; flex-direction: column; gap: 24px; }
-  .menu-item-main { min-width: 0; }
-  .menu-item-meta {
-    flex-shrink: 0; display: flex; flex-direction: column;
-    align-items: flex-end; gap: 2px; text-align: right;
+  /* Draught / bottled labels inside the single Beer card. */
+  .menu-subsection {
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.14em; color: var(--text-mute); margin: 22px 0 4px;
   }
-  .menu-item-vol { font-size: 11px; letter-spacing: 0.04em; color: var(--text-mute); white-space: nowrap; }
+  .menu-section-label + .menu-subsection { margin-top: 4px; }
   .menu-note {
     font-size: 12px; color: rgba(237, 219, 194, 0.3);
     margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.06);
