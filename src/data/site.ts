@@ -57,12 +57,19 @@ export const EVENTS: EventItem[] = [
     img: '/framerusercontent.com/images/cDJcCUEanjQSoFpALHKgU3hNpQ.webp' },
 ];
 
-/** Split events into upcoming (soonest first) and past (most recent first). */
-export function splitEvents(list: EventItem[] = EVENTS) {
-  const now = Date.now();
-  const ms = (e: EventItem) => new Date(e.start).getTime();
-  const upcoming = list.filter((e) => ms(e) >= now).sort((a, b) => ms(a) - ms(b));
-  const past = list.filter((e) => ms(e) < now).sort((a, b) => ms(b) - ms(a));
+// A club night runs ~6 hours past its listed start, so an event only becomes
+// "past" once it has actually ended - the same +6h end that eventSchema() emits.
+// This keeps a 22:00-04:00 night in the upcoming list (not the archive) while it
+// is still happening, instead of flipping to "finished" at 22:00.
+export const EVENT_DURATION_MS = 6 * 60 * 60 * 1000;
+
+/** Split events into upcoming (soonest first) and past (most recent first).
+    `now` is injectable so the upcoming/past boundary is unit-testable. */
+export function splitEvents(list: EventItem[] = EVENTS, now: number = Date.now()) {
+  const startMs = (e: EventItem) => new Date(e.start).getTime();
+  const endMs = (e: EventItem) => startMs(e) + EVENT_DURATION_MS;
+  const upcoming = list.filter((e) => endMs(e) >= now).sort((a, b) => startMs(a) - startMs(b));
+  const past = list.filter((e) => endMs(e) < now).sort((a, b) => startMs(b) - startMs(a));
   return { upcoming, past };
 }
 
@@ -204,7 +211,7 @@ export function websiteSchema(locale: Locale = 'pl') {
 export function eventSchema(list: EventItem[], locale: Locale = 'pl') {
   const eventsUrl = absolute(localizedPath('events', locale));
   return list.map((e) => {
-    const end = new Date(new Date(e.start).getTime() + 6 * 60 * 60 * 1000).toISOString();
+    const end = new Date(new Date(e.start).getTime() + EVENT_DURATION_MS).toISOString();
     const ev: Record<string, unknown> = {
       '@context': 'https://schema.org',
       '@type': 'Event',
