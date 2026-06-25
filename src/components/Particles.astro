@@ -10,12 +10,12 @@
  * The Sass `random()` loop from the reference is replaced by build-time
  * generation here: a seeded RNG scatters each layer's circles into one
  * box-shadow value, so the field is identical on every page and reproducible
- * build-to-build. Only a transform animates each rasterized layer (the shadow
- * is painted once), so the compositor carries the motion with no main-thread
- * work and no repaint on scroll. A duplicate ::after offset by the tile height
- * makes the upward drift loop seamlessly.
+ * build-to-build. Each rasterized layer animates two cheap, compositor-only
+ * properties: a transform (the upward drift) and opacity (a staggered twinkle
+ * that makes the field sparkle). A duplicate ::after offset by the tile height
+ * loops the drift seamlessly.
  *
- * Reduced motion freezes the drift (a still starfield is still lovely).
+ * Reduced motion freezes both drift and sparkle (a still field is still lovely).
  */
 type Rand = () => number;
 function rng(seed: number): Rand {
@@ -43,24 +43,30 @@ const r = rng(20260625);
 
 const cream = ['rgba(237,219,194,0.85)', 'rgba(245,232,213,0.7)'];
 const gold = ['rgba(251,210,149,0.7)', 'rgba(245,232,213,0.6)'];
-const orb = ['rgba(251,210,149,0.18)', 'rgba(237,219,194,0.16)'];
-const big = ['rgba(245,232,213,0.12)', 'rgba(251,210,149,0.10)'];
+const orbCol = ['rgba(251,210,149,0.20)', 'rgba(237,219,194,0.18)'];
+const bigCol = ['rgba(245,232,213,0.13)', 'rgba(251,210,149,0.11)'];
+const bright = ['rgba(255,250,242,0.95)', 'rgba(255,243,214,0.92)'];   // sparkle A
+const brightG = ['rgba(255,238,205,0.95)', 'rgba(255,250,242,0.9)'];   // sparkle B
 
-const sm = field(r, 220, W, H, cream);        // fine dust
+const sm = field(r, 200, W, H, cream);        // fine dust
 const md = field(r, 90, W, H, gold);          // mid motes
 const bgDots = field(r, 40, W, H, cream);     // larger sparse points
-const orbs = field(r, 26, W, H, orb, 4, 1);   // soft glowing circles
-const lg = field(r, 14, W, H, big, 8, 2);     // big soft bokeh
+const orbs = field(r, 26, W, H, orbCol, 5, 1); // soft glowing circles
+const lg = field(r, 14, W, H, bigCol, 10, 2);  // big soft bokeh
+const spA = field(r, 26, W, H, bright);        // bright sparkles (fast twinkle)
+const spB = field(r, 22, W, H, brightG);       // bright sparkles (offset phase)
 
-const vars = `--sm:${sm}; --md:${md}; --bg2:${bgDots}; --orb:${orbs}; --lg:${lg}`;
+const vars = `--sm:${sm}; --md:${md}; --bg2:${bgDots}; --orb:${orbs}; --lg:${lg}; --spA:${spA}; --spB:${spB}`;
 ---
 
 <div class="circles" aria-hidden="true" style={vars}>
-  <div class="cir sm"></div>
-  <div class="cir md"></div>
-  <div class="cir bg"></div>
-  <div class="cir orb"></div>
   <div class="cir lg"></div>
+  <div class="cir orb"></div>
+  <div class="cir bg"></div>
+  <div class="cir md"></div>
+  <div class="cir sm"></div>
+  <div class="cir spA"></div>
+  <div class="cir spB"></div>
 </div>
 
 <style>
@@ -76,32 +82,41 @@ const vars = `--sm:${sm}; --md:${md}; --bg2:${bgDots}; --orb:${orbs}; --lg:${lg}
       radial-gradient(ellipse at 50% -10%, rgba(140, 36, 52, 0.18) 0%, rgba(0, 0, 0, 0) 45%),
       var(--bg);
   }
-  /* Each layer is a 1px anchor carrying its circles in a single box-shadow;
-     the ::after is the same field shifted one tile down for a seamless loop. */
+  /* Each layer is a tiny anchor carrying its circles in a single box-shadow;
+     the ::after is the same field shifted one tile down for a seamless loop.
+     floatUp drifts (transform), tw twinkles (opacity) — both compositor-only.
+     --lo is each layer's dim point so big orbs pulse gently, sparks flicker hard. */
   .cir {
     position: absolute; top: 0; left: 0;
     border-radius: 50%; background: transparent;
-    animation: floatUp linear infinite;
-    will-change: transform;
+    will-change: transform, opacity;
   }
   .cir::after {
     content: ""; position: absolute; top: 2000px; left: 0;
     border-radius: 50%;
   }
-  .cir.sm { width: 1px; height: 1px; box-shadow: var(--sm); animation-duration: 90s; }
-  .cir.sm::after { width: 1px; height: 1px; box-shadow: var(--sm); }
-  .cir.md { width: 2px; height: 2px; box-shadow: var(--md); animation-duration: 140s; }
-  .cir.md::after { width: 2px; height: 2px; box-shadow: var(--md); }
-  .cir.bg { width: 3px; height: 3px; box-shadow: var(--bg2); animation-duration: 200s; }
-  .cir.bg::after { width: 3px; height: 3px; box-shadow: var(--bg2); }
-  .cir.orb { width: 7px; height: 7px; box-shadow: var(--orb); filter: blur(0.5px); animation-duration: 240s; }
-  .cir.orb::after { width: 7px; height: 7px; box-shadow: var(--orb); }
-  .cir.lg { width: 11px; height: 11px; box-shadow: var(--lg); filter: blur(1px); animation-duration: 320s; }
-  .cir.lg::after { width: 11px; height: 11px; box-shadow: var(--lg); }
+  .cir.sm  { width: 2px;  height: 2px;  box-shadow: var(--sm);  --lo: 0.35; animation: floatUp 90s linear infinite, tw 7s ease-in-out infinite; }
+  .cir.sm::after  { width: 2px;  height: 2px;  box-shadow: var(--sm); }
+  .cir.md  { width: 3px;  height: 3px;  box-shadow: var(--md);  --lo: 0.4;  animation: floatUp 140s linear infinite, tw 9s ease-in-out infinite -3s; }
+  .cir.md::after  { width: 3px;  height: 3px;  box-shadow: var(--md); }
+  .cir.bg  { width: 4px;  height: 4px;  box-shadow: var(--bg2); --lo: 0.5;  animation: floatUp 200s linear infinite, tw 11s ease-in-out infinite -5s; }
+  .cir.bg::after  { width: 4px;  height: 4px;  box-shadow: var(--bg2); }
+  .cir.orb { width: 12px; height: 12px; box-shadow: var(--orb); filter: blur(0.5px); --lo: 0.6;  animation: floatUp 240s linear infinite, tw 15s ease-in-out infinite; }
+  .cir.orb::after { width: 12px; height: 12px; box-shadow: var(--orb); }
+  .cir.lg  { width: 20px; height: 20px; box-shadow: var(--lg); filter: blur(1px);  --lo: 0.65; animation: floatUp 320s linear infinite, tw 19s ease-in-out infinite -4s; }
+  .cir.lg::after  { width: 20px; height: 20px; box-shadow: var(--lg); }
+  .cir.spA { width: 2px;  height: 2px;  box-shadow: var(--spA); --lo: 0.1;  animation: floatUp 70s linear infinite, tw 3.2s ease-in-out infinite; }
+  .cir.spA::after { width: 2px;  height: 2px;  box-shadow: var(--spA); }
+  .cir.spB { width: 2px;  height: 2px;  box-shadow: var(--spB); --lo: 0.12; animation: floatUp 82s linear infinite, tw 4.6s ease-in-out infinite -1.6s; }
+  .cir.spB::after { width: 2px;  height: 2px;  box-shadow: var(--spB); }
 
   @keyframes floatUp {
     from { transform: translateY(0); }
     to   { transform: translateY(-2000px); }
+  }
+  @keyframes tw {
+    0%, 100% { opacity: var(--lo, 0.3); }
+    50%      { opacity: 1; }
   }
 
   @media (prefers-reduced-motion: reduce) {
