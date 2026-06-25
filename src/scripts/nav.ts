@@ -12,7 +12,6 @@ function initNavScroll() {
 function initHamburger() {
   const hamburger = document.getElementById('hamburger');
   const menu = document.getElementById('mobile-menu');
-  const closeBtn = document.getElementById('mobile-close');
   if (!hamburger || !menu) return;
 
   const focusable = () =>
@@ -31,8 +30,9 @@ function initHamburger() {
     hamburger.focus();
   };
 
-  hamburger.addEventListener('click', open);
-  closeBtn?.addEventListener('click', close);
+  // The hamburger is the only toggle: its 3 lines morph to an X when open
+  // (aria-expanded drives the CSS), and tapping the X closes the menu.
+  hamburger.addEventListener('click', () => (menu.hidden ? open() : close()));
 
   // Close after choosing a destination (incl. same-page hash links).
   menu.querySelectorAll<HTMLElement>('[data-nav-link]').forEach((link) =>

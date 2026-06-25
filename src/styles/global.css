@@ -183,13 +183,23 @@ html { scrollbar-width: thin; scrollbar-color: rgba(237, 219, 194, 0.28) transpa
 /* No lift on the nav social icons (cleaner against the floating bar). */
 .nav-social .social-icon:hover { transform: none; }
 
-/* === HAMBURGER === */
+/* === HAMBURGER (3 lines that morph into an X when the menu is open) === */
 #hamburger {
   display: none; background: none; border: none; cursor: pointer;
-  padding: 6px; flex-direction: column; gap: 5px; margin-left: auto;
+  flex-direction: column; align-items: center; justify-content: center;
+  gap: 5px; width: 38px; height: 38px; margin-left: 6px;
 }
-#hamburger span { display: block; width: 22px; height: 1.5px; background: var(--cream); }
-#hamburger span:last-child { width: 14px; opacity: 0.55; }
+#hamburger span {
+  display: block; width: 24px; height: 2px; background: var(--cream);
+  border-radius: 2px; transition: transform 0.32s ease, opacity 0.2s ease;
+}
+/* Lines are 2px tall with 5px gaps, so adjacent centers sit 7px apart: the
+   outer lines travel 7px to meet in the middle and rotate into the X; the
+   middle line fades out. aria-expanded is toggled by nav.ts. */
+#hamburger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+#hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+#hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+@media (prefers-reduced-motion: reduce) { #hamburger span { transition: none; } }
 
 /* === MOBILE MENU === */
 #mobile-menu {
@@ -197,21 +207,33 @@ html { scrollbar-width: thin; scrollbar-color: rgba(237, 219, 194, 0.28) transpa
   background: rgba(5, 4, 3, 0.97);
   backdrop-filter: blur(24px); /* -webkit- added by Lightning CSS autoprefix */
   display: flex; flex-direction: column;
-  align-items: center; justify-content: center; gap: 2rem;
+  align-items: center; justify-content: center;
+  /* top clears the floating bar; bottom leaves room for the social row */
+  padding: 96px 24px 44px;
 }
 #mobile-menu[hidden] { display: none; }
-#mobile-menu a {
-  font-size: 2rem; font-weight: 700; text-transform: uppercase;
-  color: var(--text-dim); letter-spacing: -0.02em;
+.mobile-menu-links { display: flex; flex-direction: column; align-items: center; gap: 1.6rem; }
+/* Menu links use the display face (Krona One), not the body Montserrat. */
+#mobile-menu a[data-nav-link]:not(.btn-cta) {
+  font-family: 'Krona One', 'Montserrat', sans-serif;
+  font-size: 1.5rem; font-weight: 400; text-transform: uppercase;
+  color: var(--text-dim); letter-spacing: 0.01em;
   transition: color 180ms;
 }
 #mobile-menu a:hover, #mobile-menu a.active { color: var(--cream); }
-#mobile-menu .btn-cta { font-size: 13px; }
-#mobile-close {
-  position: absolute; top: 1.5rem; right: 1.5rem;
-  background: none; border: none; color: var(--text-faint);
-  font-size: 2.4rem; cursor: pointer; line-height: 1;
+/* Reservation button: brand burgundy instead of the cream default. */
+#mobile-menu .mobile-cta {
+  margin-top: 1.4rem; font-size: 13px;
+  background: var(--panel); color: var(--cream);
+  border: 1px solid rgba(237, 219, 194, 0.3);
 }
+#mobile-menu .mobile-cta:hover { background: var(--panel-2); color: var(--cream); }
+/* Social icons pinned at the very bottom of the menu. */
+.mobile-social {
+  position: absolute; left: 0; right: 0; bottom: 40px;
+  display: flex; justify-content: center; gap: 30px;
+}
+.mobile-social .social-icon svg { width: 22px; height: 22px; }
 
 /* === FOOTER (glass, dark, premium) === */
 footer {
@@ -364,17 +386,16 @@ footer::before {
 
 /* === RESPONSIVE === */
 @media (max-width: 860px) {
-  .nav-links, .nav-right { display: none !important; }
-  /* Keep booking one tap away on mobile: the CTA stays in the bar (compact),
-     pushed right by the logo group's flex:1, with the hamburger beside it. */
+  /* Collapsed bar: logo (left), language switcher + hamburger (right).
+     The links, the Rezerwacje CTA and the social row all live in the menu now. */
+  .nav-center, .nav-social { display: none !important; }
   .nav-left { flex: 1; }
-  .nav-center { flex-shrink: 0; }
-  .nav-cta {
-    display: inline-flex;
-    padding: 8px 15px; font-size: 10px; letter-spacing: 0.06em;
-  }
-  #hamburger { display: flex; margin-left: 14px; }
-  #main-nav { gap: 0; }
+  .nav-right { flex: 0 0 auto; }
+  .nav-lang { display: block; }
+  #hamburger { display: flex; }
+  /* Raise the bar above the menu overlay (z 60) so the logo, language switcher
+     and the morphing hamburger-X stay on top and tappable while it's open. */
+  #main-nav { z-index: 70; gap: 10px; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
 }
 

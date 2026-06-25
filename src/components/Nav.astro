@@ -43,10 +43,15 @@ const homeHref = localizedPath('home', locale);
 </nav>
 
 <div id="mobile-menu" hidden role="dialog" aria-label={t.nav.mobileNav} aria-modal="true">
-  <button id="mobile-close" aria-label={t.nav.closeMenu}>&times;</button>
-  {links.map((p) => (
-    <a href={p.href} class:list={[{ active: p.key === active }]} data-nav-link>{p.label}</a>
-  ))}
-  <a href={reservationUrl('mobile_menu')} class="btn-cta" rel="noopener" target="_blank" data-nav-link style="margin-top:1rem;">{t.nav.reservations}</a>
-  <LocaleSwitcher locale={locale} routeKey={active ?? 'home'} variant="inline" />
+  <div class="mobile-menu-links">
+    {links.map((p) => (
+      <a href={p.href} class:list={[{ active: p.key === active }]} data-nav-link>{p.label}</a>
+    ))}
+    <a href={reservationUrl('mobile_menu')} class="btn-cta mobile-cta" rel="noopener" target="_blank" data-nav-link>{t.nav.reservations}</a>
+  </div>
+  <div class="mobile-social">
+    <a href={CONTACT.instagram} class="social-icon" rel="noopener" target="_blank" aria-label="Instagram"><SocialIcon name="instagram" /></a>
+    <a href={CONTACT.facebook} class="social-icon" rel="noopener" target="_blank" aria-label="Facebook"><SocialIcon name="facebook" /></a>
+    <a href={CONTACT.tripadvisor} class="social-icon" rel="noopener" target="_blank" aria-label="Tripadvisor"><SocialIcon name="tripadvisor" /></a>
+  </div>
 </div>
