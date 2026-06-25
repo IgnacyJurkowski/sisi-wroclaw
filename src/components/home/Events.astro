@@ -35,10 +35,11 @@ const teaser = splitEvents().upcoming.slice(0, 2);
     text-align: center; font-size: clamp(2rem, 4.5vw, 3.2rem);
     text-transform: uppercase; margin: 10px 0 48px;
   }
+  /* Same format as /wydarzenia/: a stacked list of horizontal 16:9 cards. */
   .ev-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
-    max-width: 960px; margin: 0 auto;
+    display: flex; flex-direction: column; gap: 20px;
+    max-width: var(--maxw); margin: 0 auto;
   }
   .ev-more { text-align: center; margin-top: 44px; }
-  @media (max-width: 700px) { .ev-grid { grid-template-columns: 1fr; } .events { padding: 64px 0; } }
+  @media (max-width: 700px) { .events { padding: 64px 0; } }
 </style>
