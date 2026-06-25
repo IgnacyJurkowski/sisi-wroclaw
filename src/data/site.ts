@@ -73,7 +73,7 @@ export const CONTACT = {
   eventsEmail: 'events@r32.com.pl',
   hours: '22:00 - 04:00',
   instagram: 'https://www.instagram.com/sisiwroclaw/',
-  facebook: 'https://www.facebook.com/sisimusicclub',
+  facebook: 'https://www.facebook.com/share/1Eo3dbFY56/',
   tripadvisor:
     'https://www.tripadvisor.com/Attraction_Review-g274812-d34327483-Reviews-SISI_Wroclaw_Music_Club-Wroclaw_Lower_Silesia_Province_Southern_Poland.html',
 };
