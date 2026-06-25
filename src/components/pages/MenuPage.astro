@@ -133,10 +133,20 @@ const piwoButelkowe: Item[] = [
 ];
 
 const stack = [
-  { label: t.menuPage.sections.drinks, items: napoje },
-  { label: t.menuPage.sections.draught, items: piwoLane },
-  { label: t.menuPage.sections.bottled, items: piwoButelkowe, note: t.menuPage.bottledNote },
+  { label: t.menuPage.sections.drinks, items: napoje, icon: 'glass' },
+  { label: t.menuPage.sections.draught, items: piwoLane, icon: 'beer' },
+  { label: t.menuPage.sections.bottled, items: piwoButelkowe, note: t.menuPage.bottledNote, icon: 'beer' },
 ];
+
+// Section-header icons (Lucide, MIT). Stroke glyphs rendered in --gold next to
+// the Cal Sans label; the inner paths are injected with set:html into one <svg>.
+const ICONS: Record<string, string> = {
+  martini: '<path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/>',
+  glass: '<path d="M5.116 4.104A1 1 0 0 1 6.11 3h11.78a1 1 0 0 1 .994 1.105L17.19 18.21A2 2 0 0 1 15.2 20H8.8a2 2 0 0 1-2-1.79z"/><path d="M6 12a5 5 0 0 1 6 0 5 5 0 0 0 6 0"/>',
+  beer: '<path d="M17 11h1a3 3 0 0 1 0 6h-1"/><path d="M9 12v6"/><path d="M13 12v6"/><path d="M14 7.5c-1 0-1.44.5-3 .5s-2-.5-3-.5-1.72.5-2.5.5a2.5 2.5 0 0 1 0-5c.78 0 1.57.5 2.5.5S9.44 3 11 3s2 .5 3 .5 1.72-.5 2.5-.5a2.5 2.5 0 0 1 0 5c-.78 0-1.5-.5-2.5-.5Z"/><path d="M5 8v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8"/>',
+  wine: '<path d="M8 22h8"/><path d="M7 10h10"/><path d="M12 15v7"/><path d="M12 15a5 5 0 0 0 5-5c0-2-.5-4-2-8H9c-1.5 4-2 6-2 8a5 5 0 0 0 5 5Z"/>',
+  utensils: '<path d="M3 2v7c0 1.1.9 2 2 2h.5c1.1 0 2-.9 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/>',
+};
 ---
 
 <Base
@@ -155,7 +165,7 @@ const stack = [
   <div class="menu-wrap">
     <div class="menu-grid" data-reveal-group>
       <section class="sisi-card menu-card menu-card-feature">
-        <h2 class="menu-section-label">{t.menuPage.sections.cocktails}</h2>
+        <h2 class="menu-section-label"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.martini} />{t.menuPage.sections.cocktails}</h2>
         {koktajle.map((item) => (
           <div class="menu-item">
             <div class="menu-item-main">
@@ -173,7 +183,7 @@ const stack = [
       <div class="menu-stack">
         {stack.map((section) => (
           <section class="sisi-card menu-card">
-            <h2 class="menu-section-label">{section.label}</h2>
+            <h2 class="menu-section-label"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS[section.icon]} />{section.label}</h2>
             {section.items.map((item) => (
               <div class="menu-item">
                 <div class="menu-item-main">
@@ -195,9 +205,9 @@ const stack = [
     {/* TODO(ignacy): wines now show by-glass/bottle prices; still need the Night
         Menu items and allergens. Until those land, the home CTA stays "bar menu"
         (seeFullMenu), not "full menu". */}
-    <section class="sisi-card menu-foodwine" data-reveal>
-      <div class="fw-col">
-        <h2 class="menu-section-label">{t.menuPage.sections.wines}</h2>
+    <div class="menu-grid menu-grid-bottom" data-reveal-group>
+      <section class="sisi-card menu-card">
+        <h2 class="menu-section-label"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.wine} />{t.menuPage.sections.wines}</h2>
         <p class="fw-lead">{t.menuPage.wineLead}</p>
         <ul class="fw-wines">
           {wines.map((w) => (
@@ -208,13 +218,14 @@ const stack = [
           ))}
         </ul>
         <p class="fw-price">{WINE_PRICE[locale]}</p>
-      </div>
-      <div class="fw-col">
-        <h2 class="menu-section-label">{t.menuPage.sections.nightMenu}</h2>
+      </section>
+
+      <section class="sisi-card menu-card">
+        <h2 class="menu-section-label"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.utensils} />{t.menuPage.sections.nightMenu}</h2>
         <p class="fw-lead">{t.menuPage.nightLead}</p>
-      </div>
-      <p class="menu-note fw-note">{t.menuPage.foodwineNote}</p>
-    </section>
+        <p class="menu-note">{t.menuPage.foodwineNote}</p>
+      </section>
+    </div>
 
     <div class="menu-cta" data-reveal>
       <p>{t.menuPage.ctaText}</p>
@@ -226,7 +237,15 @@ const stack = [
 <style>
   .menu-wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 32px 80px; }
   .menu-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 24px; align-items: start; }
-  .menu-card { padding: 32px 36px; }
+  .menu-grid-bottom { grid-template-columns: 1fr 1fr; margin-top: 24px; }
+  /* Stronger frosted glass than the base .sisi-card: more transparent + a
+     heavier blur so the drifting circle field reads clearly through the cards. */
+  .menu-card {
+    padding: 32px 36px;
+    background: rgba(40, 12, 22, 0.28);
+    backdrop-filter: blur(18px) saturate(135%);
+    border-color: rgba(237, 219, 194, 0.16);
+  }
   .menu-stack { display: flex; flex-direction: column; gap: 24px; }
   .menu-item-main { min-width: 0; }
   .menu-item-meta {
@@ -238,20 +257,14 @@ const stack = [
     font-size: 12px; color: rgba(237, 219, 194, 0.3);
     margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.06);
   }
-  .menu-foodwine {
-    margin-top: 24px; padding: 32px 36px;
-    display: grid; grid-template-columns: 1fr 1fr; gap: 28px 48px;
-  }
   .fw-lead { font-size: 14px; line-height: 1.7; color: rgba(237, 219, 194, 0.6); }
   .fw-wines { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
   .fw-wine { display: flex; justify-content: space-between; gap: 16px; align-items: baseline; }
   .fw-wine-name { font-size: 14px; color: rgba(237, 219, 194, 0.85); }
   .fw-wine-type { font-size: 12px; color: var(--text-mute); white-space: nowrap; }
   .fw-price { margin-top: 14px; font-size: 13px; color: var(--gold); letter-spacing: 0.01em; }
-  .fw-note { grid-column: 1 / -1; margin-top: 4px; }
   .menu-cta { text-align: center; margin-top: 64px; padding-top: 48px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
   .menu-cta p { color: rgba(237, 219, 194, 0.45); margin: 0 auto 28px; font-size: 14px; line-height: 1.7; max-width: 360px; }
   @media (max-width: 900px) { .menu-grid { grid-template-columns: 1fr; } }
-  @media (max-width: 700px) { .menu-foodwine { grid-template-columns: 1fr; gap: 24px; } }
   @media (max-width: 600px) { .menu-wrap { padding-inline: 20px; } .menu-card { padding: 28px 24px; } }
 </style>
