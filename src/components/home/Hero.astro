@@ -44,10 +44,17 @@ const eventsHref = localizedPath('events', locale);
   .hero-bg {
     position: absolute; left: 0; right: 0; top: -15%; height: 130%;
     background: url('/framerusercontent.com/images/nBW0AVejCOoiy2Rctqcid0SY6Q.webp') center/cover no-repeat;
+    /* Dissolve the photo's bottom edge so the hero hands off to the circle
+       field behind it. Stops account for the -15%/130% parallax overscan, so
+       the fade lands near the visible bottom of the section. mask unprefixed
+       on purpose (Lightning CSS adds -webkit-mask from browserslist). */
+    mask-image: linear-gradient(to bottom, #000 70%, transparent 95%);
   }
   .hero-scrim {
     position: absolute; inset: 0;
-    background: linear-gradient(180deg, rgba(39,6,15,0.55) 0%, rgba(39,6,15,0.35) 45%, rgba(39,6,15,0.96) 100%);
+    /* Darkens the top/middle for title legibility, then fades to nothing at the
+       bottom (was near-opaque wine) so it never covers the sparkle hand-off. */
+    background: linear-gradient(180deg, rgba(39,6,15,0.55) 0%, rgba(39,6,15,0.3) 50%, rgba(39,6,15,0) 100%);
   }
   .hero-content { position: relative; z-index: 2; padding: 0 24px; }
   .hero-title {
