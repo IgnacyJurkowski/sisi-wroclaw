@@ -2,8 +2,8 @@
    All fonts are self-hosted (no third-party origin) so there is no extra
    DNS/TCP/TLS handshake competing for bandwidth on a throttled connection.
 
-   Playfair Display SC (display / LCP heading) is preloaded in Base.astro and
-   uses font-display:swap so the brand hero reliably renders in Playfair (the
+   Cal Sans (display / LCP heading) is preloaded in Base.astro and
+   uses font-display:swap so the brand hero reliably renders in Cal Sans (the
    preload keeps the fallback flash short).
 
    Montserrat (body + nav + buttons) is the most visible running text, so it is
@@ -13,11 +13,11 @@
    system fallback (font-display is moot once the font is already present). Cost:
    the ~22KB woff2 (~30KB base64) rides along in the cached stylesheet. */
 
-/* Playfair Display SC - display font (self-hosted woff2). Two subsets so Polish
-   (latin-ext, e.g. Ł) renders. font-display:swap + the woff2 preloaded in
-   Base.astro so the brand hero reliably shows in Playfair. */
-@font-face { font-family:'Playfair Display SC'; src:url('/fonts/playfair-sc-700-latin.woff2') format('woff2'); font-weight:700; font-display:swap; unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
-@font-face { font-family:'Playfair Display SC'; src:url('/fonts/playfair-sc-700-latext.woff2') format('woff2'); font-weight:700; font-display:swap; unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+/* Cal Sans - display font (self-hosted woff2). Single weight (400). Two subsets
+   so Polish (latin-ext, e.g. Ł) renders. font-display:swap + the woff2 preloaded
+   in Base.astro so the brand hero reliably shows in Cal Sans. */
+@font-face { font-family:'Cal Sans'; src:url('/fonts/cal-sans-400-latin.woff2') format('woff2'); font-weight:400; font-display:swap; unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family:'Cal Sans'; src:url('/fonts/cal-sans-400-latext.woff2') format('woff2'); font-weight:400; font-display:swap; unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
 
 /* Montserrat - body/UI font. One subset variable file (weights 400-700,
    Latin + Polish only) replaces Google Fonts' per-weight subsets. */
@@ -72,7 +72,7 @@ html { scrollbar-width: thin; scrollbar-color: rgba(237, 219, 194, 0.28) transpa
 
 /* === LAYOUT HELPERS === */
 .container { max-width: var(--maxw); margin: 0 auto; padding-inline: 32px; }
-.display { font-family: 'Playfair Display SC', 'Playfair Display', Georgia, serif; font-weight: 700; }
+.display { font-family: 'Cal Sans', 'Trebuchet MS', system-ui, sans-serif; font-weight: 400; }
 
 /* === SKIP LINK === */
 .skip-link {
@@ -218,9 +218,9 @@ html { scrollbar-width: thin; scrollbar-color: rgba(237, 219, 194, 0.28) transpa
 }
 #mobile-menu[hidden] { display: none; }
 .mobile-menu-links { display: flex; flex-direction: column; align-items: center; gap: 1.6rem; }
-/* Menu links use the display face (Playfair Display SC), not body Montserrat. */
+/* Menu links use the display face (Cal Sans), not body Montserrat. */
 #mobile-menu a[data-nav-link]:not(.btn-cta) {
-  font-family: 'Playfair Display SC', 'Playfair Display', Georgia, serif;
+  font-family: 'Cal Sans', 'Trebuchet MS', system-ui, sans-serif;
   font-size: 1.5rem; font-weight: 400; text-transform: uppercase;
   color: var(--text-dim); letter-spacing: 0.01em;
   transition: color 180ms;
@@ -479,7 +479,7 @@ footer::before {
 /* === LEGAL / LONG-FORM CONTENT === */
 .legal { max-width: 760px; margin: 0 auto; padding: 0 32px 96px; color: var(--text-dim); }
 .legal h2 {
-  font-family: 'Playfair Display SC', 'Playfair Display', Georgia, serif; color: var(--cream);
+  font-family: 'Cal Sans', 'Trebuchet MS', system-ui, sans-serif; color: var(--cream);
   font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.01em;
   margin: 44px 0 14px;
 }
