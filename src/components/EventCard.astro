@@ -37,7 +37,12 @@ const href = eventPath(event.slug, locale);
 
 <style>
   .ev-card {
-    background: var(--panel); border: 1px solid rgba(255,255,255,0.08);
+    /* glass — same recipe as the nav/cards; the media column stays opaque, the
+       body frosts the circle field behind it. backdrop-filter unprefixed
+       (Lightning CSS adds -webkit-). */
+    background: rgba(39, 7, 15, 0.42);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(237, 219, 194, 0.18);
     border-radius: 16px; overflow: hidden;
     display: grid; grid-template-columns: minmax(0, 44%) 1fr;
   }

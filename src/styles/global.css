@@ -213,11 +213,14 @@ html { scrollbar-width: thin; scrollbar-color: rgba(237, 219, 194, 0.28) transpa
   font-size: 2.4rem; cursor: pointer; line-height: 1;
 }
 
-/* === FOOTER (flat, dark, premium) === */
+/* === FOOTER (glass, dark, premium) === */
 footer {
   position: relative;
-  background: var(--bg);
-  border-top: 1px solid rgba(237, 219, 194, 0.12);
+  /* glass: a heavier tint than the cards (it anchors the page foot) over a
+     blur of the circle field drifting behind it. */
+  background: rgba(28, 10, 17, 0.55);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(237, 219, 194, 0.18);
   margin-top: 120px;
 }
 /* hairline cream highlight that fades at the edges */
@@ -290,9 +293,14 @@ footer::before {
 
 /* === CARD === */
 .sisi-card {
-  background: var(--panel);
-  border: 1px solid var(--line);
+  /* glass — the floating-nav recipe, tinted a touch heavier so body copy stays
+     legible over the drifting circle field behind it. backdrop-filter is written
+     unprefixed on purpose (Lightning CSS adds -webkit- from browserslist). */
+  background: rgba(39, 7, 15, 0.42);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(237, 219, 194, 0.2);
   border-radius: 14px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
 /* === MENU ITEMS === */
@@ -324,13 +332,16 @@ footer::before {
 
 .btn-outline {
   display: inline-flex; align-items: center; justify-content: center;
-  background: transparent; color: var(--text-dim);
-  border: 1px solid rgba(237,219,194,0.25);
+  /* glass instead of a fully transparent fill, so the no-background buttons
+     frost the circle field behind them like the nav. */
+  background: rgba(39, 7, 15, 0.3); color: var(--text-dim);
+  backdrop-filter: blur(7.5px);
+  border: 1px solid rgba(237,219,194,0.3);
   border-radius: 10px; padding: 13px 30px;
   font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
   cursor: pointer; transition: background 150ms, color 150ms, border-color 150ms;
 }
-.btn-outline:hover { background: rgba(237,219,194,0.07); color: var(--cream); border-color: rgba(237,219,194,0.4); }
+.btn-outline:hover { background: rgba(39, 7, 15, 0.46); color: var(--cream); border-color: rgba(237,219,194,0.45); }
 
 /* === DIVIDER === */
 .page-divider {

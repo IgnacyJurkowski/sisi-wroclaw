@@ -113,6 +113,13 @@ const metaDesc = event.description || t.meta.events.description;
   .evd-desc {
     margin-top: 22px; font-size: 16px; line-height: 1.7; color: var(--text-dim);
     max-width: 62ch; white-space: pre-line;
+    /* glass panel so the event description reads as frosted over the circles
+       (backdrop-filter unprefixed; Lightning CSS adds -webkit-). */
+    background: rgba(39, 7, 15, 0.42);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(237, 219, 194, 0.18);
+    border-radius: 14px;
+    padding: 22px 26px;
   }
   .evd-foot {
     display: flex; align-items: center; flex-wrap: wrap; gap: 20px;
