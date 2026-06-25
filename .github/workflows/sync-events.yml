@@ -1,0 +1,56 @@
+name: Sync events from Drive
+
+# Pulls the staff "Wydarzenia" Google Drive folder into src/data/events.generated.ts
+# + public/events/, builds + tests as a gate, then commits and triggers a Netlify
+# rebuild. Runs unattended so non-technical staff never touch git.
+
+on:
+  schedule:
+    - cron: '*/30 * * * *' # every 30 min
+  workflow_dispatch: {}
+
+# Never let two syncs (cron + manual) race each other or a human push.
+concurrency:
+  group: sync-events
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - run: npm ci
+
+      # Read-only Drive sync. On the bad-row policy (invalid published event /
+      # zero events / >50% drop) the script exits non-zero, so the job stops here
+      # and the last-good committed file stays untouched.
+      - name: Sync events from Drive
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+        run: node scripts/sync-events.mjs
+
+      # Build gate: never push a generated commit that breaks the site build.
+      - name: Build + test
+        run: npm test
+
+      - name: Commit, push, and deploy if changed
+        run: |
+          if [ -z "$(git status --porcelain src/data/events.generated.ts public/events)" ]; then
+            echo "No event changes; nothing to publish."
+            exit 0
+          fi
+          git config user.name "sisi-events-bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/data/events.generated.ts public/events
+          git commit -m "chore(events): sync lineup from Drive"
+          git pull --rebase --autostash origin main
+          git push
+          curl -fsS -X POST "${{ secrets.NETLIFY_DEPLOY_HOOK }}"
