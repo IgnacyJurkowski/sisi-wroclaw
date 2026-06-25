@@ -227,6 +227,7 @@ const de: UI = {
     },
     bottledNote: 'Alle Flaschen 330 ml.',
     wineLead: 'Wir setzen auf polnische Weingüter — eine Auswahl heimischer Weine von aromatischen Weißweinen über charaktervollen Orange- und Roséwein bis zu eleganten Rotweinen. Alle Weine servieren wir glasweise und in der Flasche.',
+    champagneNote: 'Ein Glas (125 ml) gibt es nur für G. H. Mumm Grand Cordon und Perrier-Jouët Grand Brut. Alle anderen Champagner servieren wir ausschließlich in der Flasche.',
     nightLead: 'Elegante Häppchen zum Teilen, zubereitet von The Cork: Kaviar, Austern, Käse- und Charcuterie-Platten.',
     foodwineNote: 'Die vollständige Weinkarte und das Night Menu sind im Club erhältlich - frag unser Team nach der aktuellen Auswahl und den Preisen.',
     ctaText: 'Möchtest du einen Tisch reservieren und vorbestellen? Melde dich bei uns.',

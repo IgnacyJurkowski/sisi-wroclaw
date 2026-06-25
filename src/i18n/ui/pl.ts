@@ -229,6 +229,7 @@ const pl = {
     },
     bottledNote: 'Wszystkie butelki 330 ml.',
     wineLead: 'Stawiamy na polskie winnice — selekcję rodzimych win od aromatycznych bieli, przez charakterne wino pomarańczowe i rosé, po eleganckie czerwienie. Wszystkie wina serwujemy na kieliszki i butelki.',
+    champagneNote: 'Kieliszek (125 ml) dostępny tylko dla G. H. Mumm Grand Cordon i Perrier-Jouët Grand Brut. Pozostałe szampany serwujemy wyłącznie w butelkach.',
     nightLead: 'Eleganckie przekąski do dzielenia, przygotowane przez The Cork: kawior, ostrygi, deski serów i wędlin (charcuterie).',
     foodwineNote: 'Pełna karta win oraz Night Menu dostępne w klubie - zapytaj obsługę o aktualną ofertę i ceny.',
     ctaText: 'Chcesz zarezerwować stolik i zamówić z wyprzedzeniem? Skontaktuj się z nami.',

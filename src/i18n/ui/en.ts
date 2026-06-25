@@ -226,6 +226,7 @@ const en: UI = {
     },
     bottledNote: 'All bottles 330 ml.',
     wineLead: 'We champion Polish vineyards — a selection of homegrown wines from aromatic whites, through characterful orange and rosé, to elegant reds. Every wine is served by the glass and the bottle.',
+    champagneNote: 'A 125 ml glass is available only for G. H. Mumm Grand Cordon and Perrier-Jouët Grand Brut. All other champagnes are served by the bottle only.',
     nightLead: 'Elegant bites for sharing, prepared by The Cork: caviar, oysters, cheese and charcuterie boards.',
     foodwineNote: 'The full wine list and Night Menu are available at the club - ask our staff for the current selection and prices.',
     ctaText: 'Want to book a table and pre-order? Get in touch.',
