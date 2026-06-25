@@ -173,7 +173,7 @@ const cs: UI = {
 
   homeB2B: {
     eyebrow: 'Firemní akce',
-    title: 'Uspořádejte firemní akci v SiSi',
+    title: 'USPOŘÁDEJTE FIREMNÍ AKCI V SiSi',
     body: 'Konference, prezentace, večeře, uvedení produktů a večerní firemní akce. Spojte restauraci The Cork s energií SiSi a uspořádejte vše na jednom místě v centru Vratislavi.',
   },
 

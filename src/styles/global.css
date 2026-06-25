@@ -82,7 +82,8 @@ html { scrollbar-width: thin; scrollbar-color: rgba(237, 219, 194, 0.28) transpa
   .about > .container,
   .r32 > .container,
   .menu-teaser > .container,
-  .events > .container { width: 70%; }
+  .events > .container,
+  .home-b2b > .container { width: 70%; }
 }
 .display { font-family: 'Cal Sans', 'Trebuchet MS', system-ui, sans-serif; font-weight: 400; }
 

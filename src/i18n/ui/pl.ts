@@ -176,7 +176,7 @@ const pl = {
 
   homeB2B: {
     eyebrow: 'Eventy firmowe',
-    title: 'Zorganizuj wydarzenie firmowe w SiSi',
+    title: 'ZORGANIZUJ WYDARZENIE FIRMOWE W SiSi',
     body: 'Konferencje, prezentacje, kolacje, premiery i wieczorne eventy firmowe. Połącz restaurację The Cork z energią SiSi i przygotuj wszystko w jednym miejscu w centrum Wrocławia.',
   },
 

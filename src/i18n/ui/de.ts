@@ -174,7 +174,7 @@ const de: UI = {
 
   homeB2B: {
     eyebrow: 'Firmenevents',
-    title: 'Veranstalte dein Firmenevent im SiSi',
+    title: 'VERANSTALTE DEIN FIRMENEVENT IM SiSi',
     body: 'Konferenzen, Präsentationen, Dinner, Launches und abendliche Firmenevents. Verbinde das Restaurant The Cork mit der Energie von SiSi und organisiere alles an einem Ort im Zentrum von Breslau.',
   },
 

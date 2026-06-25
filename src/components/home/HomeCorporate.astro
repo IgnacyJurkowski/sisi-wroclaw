@@ -19,17 +19,21 @@ const href = localizedPath('corporate', locale);
 </section>
 
 <style>
-  /* Horizontal padding keeps the bordered card off the screen edges once the
-     viewport is narrower than the card's 760px max (it overrides .container's
-     padding-inline with its own shorthand, so the inset has to live here). */
-  .home-b2b { padding: 40px 24px 96px; }
+  /* At >=1024px the shared 70% column rule sizes the card (and provides the
+     gutters), so the section has no horizontal padding and the card matches the
+     other sections' width exactly. Below 1024px the column rule is off and the
+     card runs full width, so it needs side gutters to stay off the edges. */
+  .home-b2b { padding: 40px 0 96px; }
+  @media (max-width: 1023px) { .home-b2b { padding-inline: 24px; } }
   .home-b2b-inner {
-    max-width: 760px; text-align: center;
+    text-align: center;
     border: 1px solid var(--line); border-radius: 20px;
     padding: 48px 32px; background: rgba(255, 255, 255, 0.02);
   }
+  /* Title is uppercased in the i18n strings (not via text-transform) so the
+     "SiSi" brand keeps its mixed case. */
   .home-b2b-title {
-    font-size: clamp(1.7rem, 4vw, 2.6rem); text-transform: uppercase;
+    font-size: clamp(1.7rem, 4vw, 2.6rem);
     line-height: 1.12; margin: 12px 0 18px;
   }
   .home-b2b-body {

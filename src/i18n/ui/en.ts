@@ -173,7 +173,7 @@ const en: UI = {
 
   homeB2B: {
     eyebrow: 'Corporate events',
-    title: 'Host your company event at SiSi',
+    title: 'HOST YOUR COMPANY EVENT AT SiSi',
     body: 'Conferences, presentations, dinners, launches and evening corporate events. Combine the restaurant The Cork with the energy of SiSi and arrange everything in one place in central Wrocław.',
   },
 

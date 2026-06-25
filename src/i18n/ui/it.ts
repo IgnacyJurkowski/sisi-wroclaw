@@ -173,7 +173,7 @@ const it: UI = {
 
   homeB2B: {
     eyebrow: 'Eventi aziendali',
-    title: 'Organizza il tuo evento aziendale al SiSi',
+    title: 'ORGANIZZA IL TUO EVENTO AZIENDALE AL SiSi',
     body: 'Conferenze, presentazioni, cene, lanci ed eventi aziendali serali. Unisci il ristorante The Cork all\'energia di SiSi e organizza tutto in un unico luogo nel centro di Breslavia.',
   },
 
