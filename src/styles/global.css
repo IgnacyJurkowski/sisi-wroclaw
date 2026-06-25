@@ -81,19 +81,17 @@ html { scrollbar-width: thin; scrollbar-color: rgba(237, 219, 194, 0.28) transpa
 
 /* === SCROLL ANIMATIONS ===
    Applied only when JS is available (html.js). scroll-animations.ts adds
-   `.is-in` when an element scrolls into view, which transitions it to rest.
-   Without JS everything stays visible; reduced-motion fades without movement. */
+   `.is-in` when an element scrolls into view, fading it in. Fade only - no
+   movement (no translate). Without JS everything stays visible. */
 .js [data-reveal],
 .js [data-reveal-group] > * {
   opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
-  will-change: opacity, transform;
+  transition: opacity 0.7s ease;
+  will-change: opacity;
 }
 .js [data-reveal].is-in,
 .js [data-reveal-group].is-in > * {
   opacity: 1;
-  transform: none;
 }
 /* stagger a revealed group's children */
 .js [data-reveal-group].is-in > *:nth-child(2) { transition-delay: 0.08s; }
@@ -102,11 +100,9 @@ html { scrollbar-width: thin; scrollbar-color: rgba(237, 219, 194, 0.28) transpa
 .js [data-reveal-group].is-in > *:nth-child(5) { transition-delay: 0.32s; }
 .js [data-reveal-group].is-in > *:nth-child(n + 6) { transition-delay: 0.40s; }
 @media (prefers-reduced-motion: reduce) {
+  /* Reduced motion: skip the reveal entirely - everything is visible at once. */
   .js [data-reveal],
-  .js [data-reveal-group] > * {
-    transform: none !important;          /* no movement under reduced motion */
-    transition: opacity 0.5s ease !important;
-  }
+  .js [data-reveal-group] > * { opacity: 1 !important; transition: none !important; }
 }
 
 /* Hero entrance is CSS-only (no JS dependency) and animates transform only -
