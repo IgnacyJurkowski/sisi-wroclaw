@@ -32,6 +32,7 @@ const INGREDIENTS: Record<string, Partial<Record<Locale, string>>> = {
   'Cytrusy': { en: 'Citrus', de: 'Zitrusfrüchte', it: 'Agrumi', cs: 'Citrusy' },
   'Czerwony wermut': { en: 'Red vermouth', de: 'Roter Wermut', it: 'Vermouth rosso', cs: 'Červený vermut' },
   'Woda mineralna niegazowana': { en: 'Still mineral water', de: 'Stilles Mineralwasser', it: 'Acqua minerale naturale', cs: 'Neperlivá minerální voda' },
+  'Woda mineralna gazowana': { en: 'Sparkling mineral water', de: 'Mineralwasser mit Kohlensäure', it: 'Acqua minerale frizzante', cs: 'Perlivá minerální voda' },
   'Brzoskwinia': { en: 'Peach', de: 'Pfirsich', it: 'Pesca', cs: 'Broskev' },
   'Hibiskus': { en: 'Hibiscus', de: 'Hibiskus', it: 'Ibisco', cs: 'Ibišek' },
   'Multiwitamina': { en: 'Multivitamin', de: 'Multivitamin', it: 'Multivitaminico', cs: 'Multivitamin' },
@@ -62,37 +63,81 @@ function localizeDesc(desc: string, loc: Locale): string {
     .join(' · ');
 }
 
-// Bottled wines currently poured. Producer + wine names are brand-invariant; the
-// wine type and glass/bottle labels are localized; the price is a flat house rate
-// across the list (see WINE_PRICE). Night Menu items and allergens are still TODO.
-const WINE_TYPES: Record<'red' | 'white' | 'rose' | 'semiDryWhite', Record<Locale, string>> = {
-  red: { pl: 'czerwone', en: 'red', de: 'Rotwein', it: 'rosso', cs: 'červené' },
-  white: { pl: 'białe', en: 'white', de: 'Weißwein', it: 'bianco', cs: 'bílé' },
-  rose: { pl: 'różowe', en: 'rosé', de: 'Rosé', it: 'rosato', cs: 'růžové' },
-  semiDryWhite: {
-    pl: 'białe półwytrawne', en: 'semi-dry white', de: 'Weißwein halbtrocken',
-    it: 'bianco semisecco', cs: 'bílé polosuché',
-  },
-};
+// Polish-vineyard wine list, grouped by colour. Wine name, winery, grape names
+// and region are brand/proper-noun invariant; dryness and the colour category
+// are localised (DRYNESS / WINE_CATEGORIES). Prices are per-wine: a 125 ml glass
+// and a 750 ml bottle. `vintage` is only set where a year was given; `featured`
+// flags the one premium pour (a subtle label, never a loud badge).
+type WineCategory = 'white' | 'orange' | 'rose' | 'red';
+type Dryness = 'dry' | 'semiDry';
 
-const wines: { name: string; type: keyof typeof WINE_TYPES }[] = [
-  { name: "L'Opera Triada", type: 'red' },
-  { name: "L'Opera Halka", type: 'semiDryWhite' },
-  { name: 'Turnau Rosé', type: 'rose' },
-  { name: 'Turnau Hibernal', type: 'white' },
-  { name: 'Turnau Pinot Noir', type: 'red' },
-  { name: 'Dom Charbielin Solaris', type: 'white' },
+interface Wine {
+  category: WineCategory;
+  name: string;
+  winery: string;
+  dryness: Dryness;
+  grapes: string[];
+  region: string;
+  glassPrice: string;   // 125 ml
+  bottlePrice: string;  // 750 ml
+  vintage?: string;
+  featured?: boolean;
+}
+
+const WINES: Wine[] = [
+  { category: 'white', name: 'Halka', winery: "Winnica L'Opera", dryness: 'semiDry', grapes: ['Chardonnay', 'Bronner', 'Muscaris'], region: 'Wzgórza Trzebnickie, Dolny Śląsk', glassPrice: '32 zł', bottlePrice: '190 zł' },
+  { category: 'white', name: 'Hibernal', winery: 'Winnica Turnau', dryness: 'semiDry', grapes: ['Hibernal'], region: 'Baniewice, Pomorze Zachodnie', glassPrice: '55 zł', bottlePrice: '330 zł' },
+  { category: 'white', name: 'Solaris', winery: 'Dom Charbielin', dryness: 'semiDry', grapes: ['Solaris'], region: 'Charbielin, Opolskie', glassPrice: '60 zł', bottlePrice: '360 zł' },
+  { category: 'white', name: 'Chardonnay Barrique', winery: 'Winnica Płochockich', dryness: 'dry', grapes: ['Chardonnay'], region: 'Daromin, Świętokrzyskie', glassPrice: '70 zł', bottlePrice: '420 zł', vintage: '2024', featured: true },
+  { category: 'orange', name: 'Yacobus Orange', winery: 'Winnica Jakubów', dryness: 'dry', grapes: ['Hibernal', 'Riesling', 'Solaris', 'Traminer'], region: 'Wzgórza Dalkowskie, Dolny Śląsk', glassPrice: '72 zł', bottlePrice: '430 zł' },
+  { category: 'rose', name: 'Rosé', winery: 'Winnica Turnau', dryness: 'semiDry', grapes: ['Rondo', 'Regent'], region: 'Baniewice, Pomorze Zachodnie', glassPrice: '50 zł', bottlePrice: '300 zł' },
+  { category: 'red', name: 'Triada', winery: "Winnica L'Opera", dryness: 'dry', grapes: ['Baron', 'Cabernet Cantor', 'Cabernet Cortis'], region: 'Wzgórza Trzebnickie, Dolny Śląsk', glassPrice: '32 zł', bottlePrice: '190 zł' },
+  { category: 'red', name: 'Pinot Noir', winery: 'Winnica Turnau', dryness: 'dry', grapes: ['Pinot Noir'], region: 'Baniewice, Pomorze Zachodnie', glassPrice: '70 zł', bottlePrice: '420 zł' },
 ];
 
-// Flat house price across the wine list (owner-confirmed 2026-06-24): a 125 ml
-// glass and a 750 ml bottle. Labels are localized; the ml/zł figures are invariant.
-const WINE_PRICE: Record<Locale, string> = {
-  pl: 'Kieliszek 125 ml - 32 zł · Butelka 750 ml - 190 zł',
-  en: 'Glass 125 ml - 32 zł · Bottle 750 ml - 190 zł',
-  de: 'Glas 125 ml - 32 zł · Flasche 750 ml - 190 zł',
-  it: 'Calice 125 ml - 32 zł · Bottiglia 750 ml - 190 zł',
-  cs: 'Sklenka 125 ml - 32 zł · Láhev 750 ml - 190 zł',
+// Display order of the colour groups + their localised labels.
+const WINE_CATEGORIES: { key: WineCategory; label: Record<Locale, string> }[] = [
+  { key: 'white',  label: { pl: 'Białe', en: 'White', de: 'Weiß', it: 'Bianco', cs: 'Bílé' } },
+  { key: 'orange', label: { pl: 'Pomarańczowe', en: 'Orange', de: 'Orange', it: 'Arancione', cs: 'Oranžové' } },
+  { key: 'rose',   label: { pl: 'Różowe', en: 'Rosé', de: 'Rosé', it: 'Rosato', cs: 'Růžové' } },
+  { key: 'red',    label: { pl: 'Czerwone', en: 'Red', de: 'Rot', it: 'Rosso', cs: 'Červené' } },
+];
+
+const DRYNESS: Record<Dryness, Record<Locale, string>> = {
+  dry: { pl: 'wytrawne', en: 'dry', de: 'trocken', it: 'secco', cs: 'suché' },
+  semiDry: { pl: 'półwytrawne', en: 'semi-dry', de: 'halbtrocken', it: 'semisecco', cs: 'polosuché' },
 };
+
+const FEATURED_LABEL: Record<Locale, string> = {
+  pl: 'Polecamy', en: 'Recommended', de: 'Empfehlung', it: 'Consigliato', cs: 'Doporučujeme',
+};
+
+// Champagne (Maison Mumm + Perrier-Jouët), grouped by house. Each cuvée carries
+// up to four bottle-size prices (125 / 750 / 1500 / 3000 ml); null = not offered
+// in that size. Brand names and prices are invariant - nothing here is localised.
+const CHAMP_VOLS = ['125 ml', '750 ml', '1500 ml', '3000 ml'] as const;
+
+interface Champagne { name: string; prices: (string | null)[] }
+const CHAMPAGNE_HOUSES: { house: string; items: Champagne[] }[] = [
+  {
+    house: 'G. H. Mumm',
+    items: [
+      { name: 'Grand Cordon', prices: ['65 zł', '390 zł', '900 zł', '2300 zł'] },
+      { name: 'Grand Cordon Rosé', prices: [null, '450 zł', '950 zł', null] },
+      { name: 'Demi Sec', prices: [null, '450 zł', null, null] },
+      { name: 'Ice Xtra', prices: [null, '450 zł', null, null] },
+    ],
+  },
+  {
+    house: 'Perrier-Jouët',
+    items: [
+      { name: 'Grand Brut', prices: ['90 zł', '550 zł', '1500 zł', '4500 zł'] },
+      { name: 'Blason Rosé', prices: [null, '650 zł', null, null] },
+      { name: 'Blanc de Blancs', prices: [null, '700 zł', null, null] },
+      { name: 'Belle Époque Brut 2015', prices: [null, '1700 zł', null, null] },
+    ],
+  },
+];
 
 const koktajle: Item[] = [
   { name: 'Hugo Spritz', desc: 'St-Germain / Limonka / Mięta / Martini Prosecco / Woda gazowana', vol: '160 ml', price: '40 zł' },
@@ -110,8 +155,8 @@ const koktajle: Item[] = [
 const napoje: Item[] = [
   { name: 'Coca-Cola Zero / Coca-Cola Original', vol: '250 ml', price: '12 zł' },
   { name: 'Sprite / Fanta', vol: '250 ml', price: '12 zł' },
-  { name: 'Kropla Beskidu', desc: 'Woda mineralna niegazowana', vol: '500 ml', price: '10 zł' },
-  { name: 'Délice by Kropla', desc: 'Woda mineralna niegazowana', vol: '500 ml', price: '10 zł' },
+  { name: 'Kropla Beskidu', desc: 'Woda mineralna niegazowana', vol: '330 ml', price: '10 zł' },
+  { name: 'Délice by Kropla', desc: 'Woda mineralna gazowana', vol: '330 ml', price: '10 zł' },
   { name: 'Fuze Tea', desc: 'Cytryna / Brzoskwinia / Hibiskus', vol: '500 ml', price: '14 zł' },
   { name: 'Cappy', desc: 'Multiwitamina / Grejpfrut', vol: '330 ml', price: '12 zł' },
   { name: 'Red Bull Energy Drink', price: '16 zł' },
@@ -140,6 +185,7 @@ const ICONS: Record<string, string> = {
   glass: '<path d="M5.116 4.104A1 1 0 0 1 6.11 3h11.78a1 1 0 0 1 .994 1.105L17.19 18.21A2 2 0 0 1 15.2 20H8.8a2 2 0 0 1-2-1.79z"/><path d="M6 12a5 5 0 0 1 6 0 5 5 0 0 0 6 0"/>',
   beer: '<path d="M17 11h1a3 3 0 0 1 0 6h-1"/><path d="M9 12v6"/><path d="M13 12v6"/><path d="M14 7.5c-1 0-1.44.5-3 .5s-2-.5-3-.5-1.72.5-2.5.5a2.5 2.5 0 0 1 0-5c.78 0 1.57.5 2.5.5S9.44 3 11 3s2 .5 3 .5 1.72-.5 2.5-.5a2.5 2.5 0 0 1 0 5c-.78 0-1.5-.5-2.5-.5Z"/><path d="M5 8v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8"/>',
   wine: '<path d="M8 22h8"/><path d="M7 10h10"/><path d="M12 15v7"/><path d="M12 15a5 5 0 0 0 5-5c0-2-.5-4-2-8H9c-1.5 4-2 6-2 8a5 5 0 0 0 5 5Z"/>',
+  champagne: '<path d="M9 3h6l-.6 7.6a2.4 2.4 0 0 1-4.8 0z"/><path d="M12 13v6"/><path d="M9 21h6"/>',
   utensils: '<path d="M3 2v7c0 1.1.9 2 2 2h.5c1.1 0 2-.9 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/>',
 };
 ---
@@ -162,7 +208,7 @@ const ICONS: Record<string, string> = {
       (seeFullMenu), not "full menu". */}
   <div class="menu-wrap">
     <div class="menu-grid" data-reveal-group>
-      {/* LEFT: cocktails, wine, night menu */}
+      {/* LEFT: cocktails, champagne, night menu */}
       <div class="menu-stack">
         <section class="sisi-card menu-card">
           <h2 class="menu-section-label"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.martini} />{t.menuPage.sections.cocktails}</h2>
@@ -172,17 +218,28 @@ const ICONS: Record<string, string> = {
         </section>
 
         <section class="sisi-card menu-card">
-          <h2 class="menu-section-label"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.wine} />{t.menuPage.sections.wines}</h2>
-          <p class="fw-lead">{t.menuPage.wineLead}</p>
-          <ul class="fw-wines">
-            {wines.map((w) => (
-              <li class="fw-wine">
-                <span class="fw-wine-name">{w.name}</span>
-                <span class="fw-wine-type">{WINE_TYPES[w.type][locale]}</span>
-              </li>
+          <h2 class="menu-section-label"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.champagne} />{t.menuPage.sections.champagne}</h2>
+          <div class="ptable ptable-4">
+            <div class="ptable-head" aria-hidden="true">
+              <span></span>
+              {CHAMP_VOLS.map((v) => <span class="pcol">{v}</span>)}
+            </div>
+            {CHAMPAGNE_HOUSES.map((h) => (
+              <Fragment>
+                <p class="menu-subsection">{h.house}</p>
+                {h.items.map((c) => (
+                  <div class="prow champ-row">
+                    <p class="champ-name">{c.name}</p>
+                    <div class="prices">
+                      {c.prices.map((p, i) => (
+                        <span class:list={['pcell', { 'pcell-na': !p }]} data-vol={CHAMP_VOLS[i]}>{p ?? '-'}</span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </Fragment>
             ))}
-          </ul>
-          <p class="fw-price">{WINE_PRICE[locale]}</p>
+          </div>
         </section>
 
         <section class="sisi-card menu-card">
@@ -192,8 +249,41 @@ const ICONS: Record<string, string> = {
         </section>
       </div>
 
-      {/* RIGHT: soft drinks, beer (draught + bottled in one card) */}
+      {/* RIGHT: wine, soft drinks, beer */}
       <div class="menu-stack">
+        <section class="sisi-card menu-card">
+          <h2 class="menu-section-label"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.wine} />{t.menuPage.sections.wines}</h2>
+          <p class="fw-lead">{t.menuPage.wineLead}</p>
+          <div class="ptable ptable-2">
+            <div class="ptable-head" aria-hidden="true">
+              <span></span>
+              <span class="pcol">125 ml</span>
+              <span class="pcol">750 ml</span>
+            </div>
+            {WINE_CATEGORIES.map((cat) => {
+              const list = WINES.filter((w) => w.category === cat.key);
+              return list.length === 0 ? null : (
+                <Fragment>
+                  <p class="menu-subsection">{cat.label[locale]}</p>
+                  {list.map((w) => (
+                    <div class="prow wine-row">
+                      <div class="wine-info">
+                        <p class="wine-name">{w.name}{w.vintage ? ` ${w.vintage}` : ''}<span class="wine-winery"> — {w.winery}</span>{w.featured && <span class="wine-featured">{FEATURED_LABEL[locale]}</span>}</p>
+                        <p class="wine-meta">{DRYNESS[w.dryness][locale]} · {w.grapes.join(', ')}</p>
+                        <p class="wine-region">{w.region}</p>
+                      </div>
+                      <div class="prices">
+                        <span class="pcell" data-vol="125 ml">{w.glassPrice}</span>
+                        <span class="pcell" data-vol="750 ml">{w.bottlePrice}</span>
+                      </div>
+                    </div>
+                  ))}
+                </Fragment>
+              );
+            })}
+          </div>
+        </section>
+
         <section class="sisi-card menu-card">
           <h2 class="menu-section-label"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.glass} />{t.menuPage.sections.drinks}</h2>
           {napoje.map((item) => (
@@ -246,14 +336,50 @@ const ICONS: Record<string, string> = {
     font-size: 12px; color: rgba(237, 219, 194, 0.3);
     margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.06);
   }
-  .fw-lead { font-size: 14px; line-height: 1.7; color: rgba(237, 219, 194, 0.6); }
-  .fw-wines { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
-  .fw-wine { display: flex; justify-content: space-between; gap: 16px; align-items: baseline; }
-  .fw-wine-name { font-size: 14px; color: rgba(237, 219, 194, 0.85); }
-  .fw-wine-type { font-size: 12px; color: var(--text-mute); white-space: nowrap; }
-  .fw-price { margin-top: 14px; font-size: 13px; color: var(--gold); letter-spacing: 0.01em; }
+  .fw-lead { font-size: 14px; line-height: 1.7; color: rgba(237, 219, 194, 0.6); margin-bottom: 6px; }
+
+  /* === PRICE TABLES (wine: 2 sizes, champagne: 4 sizes) ===
+     Each row is a grid: an info column (1fr) plus fixed-width price columns.
+     `.prices` is display:contents so the price spans drop straight into the
+     row's columns and line up under the volume header. On phones the header is
+     dropped and the prices reflow under the name, each labelled by data-vol. */
+  .ptable-head { display: grid; align-items: baseline; padding-bottom: 8px; }
+  .ptable-2 .ptable-head, .ptable-2 .prow { grid-template-columns: 1fr 72px 88px; }
+  .ptable-4 .ptable-head, .ptable-4 .prow { grid-template-columns: 1fr repeat(4, 60px); }
+  .pcol { text-align: right; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-mute); }
+  .prow {
+    display: grid; align-items: baseline; column-gap: 12px;
+    padding: 14px 0; border-bottom: 1px solid rgba(237, 219, 194, 0.08);
+  }
+  .prow:last-child { border-bottom: none; }
+  .prices { display: contents; }
+  .pcell { text-align: right; font-size: 13px; font-weight: 600; color: var(--cream); white-space: nowrap; }
+  .pcell-na { color: var(--text-mute); font-weight: 400; }
+  .wine-info { min-width: 0; }
+  .wine-name { font-size: 15px; font-weight: 600; color: var(--text); }
+  .wine-winery { font-weight: 400; color: var(--text-dim); }
+  .wine-featured {
+    margin-left: 8px; font-family: 'Cal Sans', 'Trebuchet MS', system-ui, sans-serif;
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold);
+    white-space: nowrap;
+  }
+  .wine-meta { font-size: 13px; color: var(--text-dim); margin-top: 3px; }
+  .wine-region { font-size: 12px; color: var(--text-mute); margin-top: 2px; }
+  .champ-name { font-size: 15px; font-weight: 600; color: var(--text); }
+
   .menu-cta { text-align: center; margin-top: 64px; padding-top: 48px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
   .menu-cta p { color: rgba(237, 219, 194, 0.45); margin: 0 auto 28px; font-size: 14px; line-height: 1.7; max-width: 360px; }
   @media (max-width: 900px) { .menu-grid { grid-template-columns: 1fr; } }
-  @media (max-width: 600px) { .menu-wrap { padding-inline: 20px; } .menu-card { padding: 28px 24px; } }
+  @media (max-width: 600px) {
+    .menu-wrap { padding-inline: 20px; }
+    .menu-card { padding: 28px 24px; }
+    /* Collapse the price tables: hide the column header and stack the prices
+       under the name, each prefixed with its volume. */
+    .ptable-head { display: none; }
+    .ptable .prow { grid-template-columns: 1fr; row-gap: 6px; }
+    .ptable .prices { display: flex; flex-wrap: wrap; gap: 4px 18px; }
+    .pcell { text-align: left; }
+    .pcell::before { content: attr(data-vol) "\00a0"; color: var(--text-mute); font-weight: 400; }
+    .pcell-na { display: none; }
+  }
 </style>
