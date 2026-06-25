@@ -68,16 +68,16 @@ function localizeDesc(desc: string, loc: Locale): string {
 // are localised (DRYNESS / WINE_CATEGORIES). Prices are per-wine: a 125 ml glass
 // and a 750 ml bottle. `vintage` is only set where a year was given; `featured`
 // flags the one premium pour (a subtle label, never a loud badge).
-type WineCategory = 'white' | 'orange' | 'rose' | 'red';
+type WineCategory = 'white' | 'red' | 'roseOrange';
 type Dryness = 'dry' | 'semiDry';
 
 interface Wine {
   category: WineCategory;
   name: string;
   winery: string;
-  dryness: Dryness;
-  grapes: string[];
-  region: string;
+  dryness?: Dryness;
+  grapes?: string[];
+  region?: string;
   glassPrice: string;   // 125 ml
   bottlePrice: string;  // 750 ml
   vintage?: string;
@@ -85,22 +85,25 @@ interface Wine {
 }
 
 const WINES: Wine[] = [
+  // White
   { category: 'white', name: 'Halka', winery: "Winnica L'Opera", dryness: 'semiDry', grapes: ['Chardonnay', 'Bronner', 'Muscaris'], region: 'Wzgórza Trzebnickie, Dolny Śląsk', glassPrice: '32 zł', bottlePrice: '190 zł' },
   { category: 'white', name: 'Hibernal', winery: 'Winnica Turnau', dryness: 'semiDry', grapes: ['Hibernal'], region: 'Baniewice, Pomorze Zachodnie', glassPrice: '55 zł', bottlePrice: '330 zł' },
   { category: 'white', name: 'Solaris', winery: 'Dom Charbielin', dryness: 'semiDry', grapes: ['Solaris'], region: 'Charbielin, Opolskie', glassPrice: '60 zł', bottlePrice: '360 zł' },
   { category: 'white', name: 'Chardonnay Barrique', winery: 'Winnica Płochockich', dryness: 'dry', grapes: ['Chardonnay'], region: 'Daromin, Świętokrzyskie', glassPrice: '70 zł', bottlePrice: '420 zł', vintage: '2024', featured: true },
-  { category: 'orange', name: 'Yacobus Orange', winery: 'Winnica Jakubów', dryness: 'dry', grapes: ['Hibernal', 'Riesling', 'Solaris', 'Traminer'], region: 'Wzgórza Dalkowskie, Dolny Śląsk', glassPrice: '72 zł', bottlePrice: '430 zł' },
-  { category: 'rose', name: 'Rosé', winery: 'Winnica Turnau', dryness: 'semiDry', grapes: ['Rondo', 'Regent'], region: 'Baniewice, Pomorze Zachodnie', glassPrice: '50 zł', bottlePrice: '300 zł' },
+  // Red
   { category: 'red', name: 'Triada', winery: "Winnica L'Opera", dryness: 'dry', grapes: ['Baron', 'Cabernet Cantor', 'Cabernet Cortis'], region: 'Wzgórza Trzebnickie, Dolny Śląsk', glassPrice: '32 zł', bottlePrice: '190 zł' },
+  { category: 'red', name: 'Rege', winery: 'Winnica Płochockich', glassPrice: '55 zł', bottlePrice: '330 zł' },
   { category: 'red', name: 'Pinot Noir', winery: 'Winnica Turnau', dryness: 'dry', grapes: ['Pinot Noir'], region: 'Baniewice, Pomorze Zachodnie', glassPrice: '70 zł', bottlePrice: '420 zł' },
+  // Rosé / Orange
+  { category: 'roseOrange', name: 'Yacobus Orange', winery: 'Winnica Jakubów', dryness: 'dry', grapes: ['Hibernal', 'Riesling', 'Solaris', 'Traminer'], region: 'Wzgórza Dalkowskie, Dolny Śląsk', glassPrice: '65 zł', bottlePrice: '390 zł' },
+  { category: 'roseOrange', name: 'Rosé', winery: 'Winnica Turnau', dryness: 'semiDry', grapes: ['Rondo', 'Regent'], region: 'Baniewice, Pomorze Zachodnie', glassPrice: '55 zł', bottlePrice: '330 zł' },
 ];
 
 // Display order of the colour groups + their localised labels.
 const WINE_CATEGORIES: { key: WineCategory; label: Record<Locale, string> }[] = [
-  { key: 'white',  label: { pl: 'Białe', en: 'White', de: 'Weiß', it: 'Bianco', cs: 'Bílé' } },
-  { key: 'orange', label: { pl: 'Pomarańczowe', en: 'Orange', de: 'Orange', it: 'Arancione', cs: 'Oranžové' } },
-  { key: 'rose',   label: { pl: 'Różowe', en: 'Rosé', de: 'Rosé', it: 'Rosato', cs: 'Růžové' } },
-  { key: 'red',    label: { pl: 'Czerwone', en: 'Red', de: 'Rot', it: 'Rosso', cs: 'Červené' } },
+  { key: 'white',      label: { pl: 'Białe', en: 'White', de: 'Weiß', it: 'Bianco', cs: 'Bílé' } },
+  { key: 'red',        label: { pl: 'Czerwone', en: 'Red', de: 'Rot', it: 'Rosso', cs: 'Červené' } },
+  { key: 'roseOrange', label: { pl: 'Różowe / Pomarańczowe', en: 'Rosé / Orange', de: 'Rosé / Orange', it: 'Rosato / Arancione', cs: 'Růžové / Oranžové' } },
 ];
 
 const DRYNESS: Record<Dryness, Record<Locale, string>> = {
@@ -113,9 +116,10 @@ const FEATURED_LABEL: Record<Locale, string> = {
 };
 
 // Champagne (Maison Mumm + Perrier-Jouët), grouped by house. Each cuvée carries
-// up to four bottle-size prices (125 / 750 / 1500 / 3000 ml); null = not offered
-// in that size. Brand names and prices are invariant - nothing here is localised.
-const CHAMP_VOLS = ['125 ml', '750 ml', '1500 ml', '3000 ml'] as const;
+// up to four sizes (125 ml glass, 750 ml, 1.5 l magnum, 3 l jeroboam); null =
+// not offered in that size. Only Grand Cordon and Grand Brut are poured by the
+// glass (see champagneNote). Brand names and prices are invariant, not localised.
+const CHAMP_VOLS = ['125 ml', '750 ml', '1,5 l', '3 l'] as const;
 
 interface Champagne { name: string; prices: (string | null)[] }
 const CHAMPAGNE_HOUSES: { house: string; items: Champagne[] }[] = [
@@ -219,27 +223,18 @@ const ICONS: Record<string, string> = {
 
         <section class="sisi-card menu-card">
           <h2 class="menu-section-label"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.champagne} />{t.menuPage.sections.champagne}</h2>
-          <div class="ptable ptable-4">
-            <div class="ptable-head" aria-hidden="true">
-              <span></span>
-              {CHAMP_VOLS.map((v) => <span class="pcol">{v}</span>)}
-            </div>
-            {CHAMPAGNE_HOUSES.map((h) => (
-              <Fragment>
-                <p class="menu-subsection">{h.house}</p>
-                {h.items.map((c) => (
-                  <div class="prow champ-row">
-                    <p class="champ-name">{c.name}</p>
-                    <div class="prices">
-                      {c.prices.map((p, i) => (
-                        <span class:list={['pcell', { 'pcell-na': !p }]} data-vol={CHAMP_VOLS[i]}>{p ?? '-'}</span>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </Fragment>
-            ))}
-          </div>
+          {CHAMPAGNE_HOUSES.map((h) => (
+            <Fragment>
+              <p class="menu-subsection">{h.house}</p>
+              {h.items.map((c) => (
+                <div class="champ-item">
+                  <p class="champ-name">{c.name}</p>
+                  <p class="champ-prices">{c.prices.map((p, i) => (p ? `${CHAMP_VOLS[i]} ${p}` : null)).filter(Boolean).join(' · ')}</p>
+                </div>
+              ))}
+            </Fragment>
+          ))}
+          <p class="menu-note">{t.menuPage.champagneNote}</p>
         </section>
 
         <section class="sisi-card menu-card">
@@ -269,8 +264,8 @@ const ICONS: Record<string, string> = {
                     <div class="prow wine-row">
                       <div class="wine-info">
                         <p class="wine-name">{w.name}{w.vintage ? ` ${w.vintage}` : ''}<span class="wine-winery"> — {w.winery}</span>{w.featured && <span class="wine-featured">{FEATURED_LABEL[locale]}</span>}</p>
-                        <p class="wine-meta">{DRYNESS[w.dryness][locale]} · {w.grapes.join(', ')}</p>
-                        <p class="wine-region">{w.region}</p>
+                        {(w.dryness || w.grapes) && <p class="wine-meta">{[w.dryness && DRYNESS[w.dryness][locale], w.grapes?.join(', ')].filter(Boolean).join(' · ')}</p>}
+                        {w.region && <p class="wine-region">{w.region}</p>}
                       </div>
                       <div class="prices">
                         <span class="pcell" data-vol="125 ml">{w.glassPrice}</span>
@@ -338,14 +333,13 @@ const ICONS: Record<string, string> = {
   }
   .fw-lead { font-size: 14px; line-height: 1.7; color: rgba(237, 219, 194, 0.6); margin-bottom: 6px; }
 
-  /* === PRICE TABLES (wine: 2 sizes, champagne: 4 sizes) ===
-     Each row is a grid: an info column (1fr) plus fixed-width price columns.
+  /* === WINE PRICE TABLE (125 ml glass + 750 ml bottle) ===
+     Each row is a grid: an info column (1fr) plus two fixed price columns.
      `.prices` is display:contents so the price spans drop straight into the
      row's columns and line up under the volume header. On phones the header is
      dropped and the prices reflow under the name, each labelled by data-vol. */
   .ptable-head { display: grid; align-items: baseline; padding-bottom: 8px; }
   .ptable-2 .ptable-head, .ptable-2 .prow { grid-template-columns: 1fr 72px 88px; }
-  .ptable-4 .ptable-head, .ptable-4 .prow { grid-template-columns: 1fr repeat(4, 60px); }
   .pcol { text-align: right; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-mute); }
   .prow {
     display: grid; align-items: baseline; column-gap: 12px;
@@ -354,7 +348,6 @@ const ICONS: Record<string, string> = {
   .prow:last-child { border-bottom: none; }
   .prices { display: contents; }
   .pcell { text-align: right; font-size: 13px; font-weight: 600; color: var(--cream); white-space: nowrap; }
-  .pcell-na { color: var(--text-mute); font-weight: 400; }
   .wine-info { min-width: 0; }
   .wine-name { font-size: 15px; font-weight: 600; color: var(--text); }
   .wine-winery { font-weight: 400; color: var(--text-dim); }
@@ -365,7 +358,11 @@ const ICONS: Record<string, string> = {
   }
   .wine-meta { font-size: 13px; color: var(--text-dim); margin-top: 3px; }
   .wine-region { font-size: 12px; color: var(--text-mute); margin-top: 2px; }
+  /* Champagne: name + a flowing line of available sizes (no table). */
+  .champ-item { padding: 12px 0; border-bottom: 1px solid rgba(237, 219, 194, 0.08); }
+  .champ-item:last-of-type { border-bottom: none; }
   .champ-name { font-size: 15px; font-weight: 600; color: var(--text); }
+  .champ-prices { font-size: 13px; color: var(--text-dim); margin-top: 4px; line-height: 1.6; }
 
   .menu-cta { text-align: center; margin-top: 64px; padding-top: 48px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
   .menu-cta p { color: rgba(237, 219, 194, 0.45); margin: 0 auto 28px; font-size: 14px; line-height: 1.7; max-width: 360px; }
@@ -380,6 +377,5 @@ const ICONS: Record<string, string> = {
     .ptable .prices { display: flex; flex-wrap: wrap; gap: 4px 18px; }
     .pcell { text-align: left; }
     .pcell::before { content: attr(data-vol) "\00a0"; color: var(--text-mute); font-weight: 400; }
-    .pcell-na { display: none; }
   }
 </style>
