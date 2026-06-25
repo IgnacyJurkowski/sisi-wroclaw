@@ -206,6 +206,8 @@ const de: UI = {
   eventCard: {
     reserve: 'Buchen',
     finished: 'Veranstaltung beendet',
+    freeEntry: 'Eintritt frei',
+    entry: 'Eintritt',
   },
 
   menuPage: {

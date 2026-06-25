@@ -208,6 +208,8 @@ const pl = {
   eventCard: {
     reserve: 'Zarezerwuj',
     finished: 'Wydarzenie zakończone',
+    freeEntry: 'Wstęp wolny',
+    entry: 'Wstęp',
   },
 
   menuPage: {

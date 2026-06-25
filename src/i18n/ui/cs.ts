@@ -205,6 +205,8 @@ const cs: UI = {
   eventCard: {
     reserve: 'Rezervovat',
     finished: 'Akce skončila',
+    freeEntry: 'Vstup zdarma',
+    entry: 'Vstupné',
   },
 
   menuPage: {

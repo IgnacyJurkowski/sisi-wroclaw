@@ -15,7 +15,14 @@ const t = useTranslations(locale);
   <div class="ev-body">
     <h3 class="display ev-name">{event.title}</h3>
     {event.note && <p class="ev-note">{event.note}</p>}
+    {event.genres && event.genres.length > 0 && (
+      <ul class="ev-genres">{event.genres.map((g) => <li>{g}</li>)}</ul>
+    )}
     <p class="ev-date"><time datetime={dateTimeAttr(event.start)}>{formatEventDate(event.start, locale)}</time></p>
+    {event.description && <p class="ev-desc">{event.description}</p>}
+    {event.price != null && (
+      <p class="ev-price">{event.price === 0 ? t.eventCard.freeEntry : `${t.eventCard.entry} ${event.price} zł`}</p>
+    )}
     {past
       ? <span class="ev-done">{t.eventCard.finished}</span>
       : <a href={reservationUrl('event_card')} class="btn-cta" rel="noopener" target="_blank">{t.eventCard.reserve}</a>}
@@ -37,7 +44,19 @@ const t = useTranslations(locale);
   .ev-body { padding: 28px 30px 30px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
   .ev-name { font-size: 1.3rem; text-transform: uppercase; }
   .ev-note { font-size: 13px; color: var(--cream); text-transform: uppercase; letter-spacing: 0.08em; }
-  .ev-date { font-size: 14px; color: rgba(237,219,194,0.55); margin-bottom: 18px; }
+  .ev-genres { display: flex; flex-wrap: wrap; gap: 6px; margin: 2px 0 0; padding: 0; list-style: none; }
+  .ev-genres li {
+    font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text-mute); border: 1px solid var(--line);
+    padding: 3px 9px; border-radius: 99px;
+  }
+  .ev-date { font-size: 14px; color: rgba(237,219,194,0.55); margin-bottom: 4px; }
+  .ev-desc {
+    font-size: 13px; line-height: 1.5; color: var(--text-dim); margin: 0;
+    display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3;
+    overflow: hidden;
+  }
+  .ev-price { font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--gold); margin-top: 2px; }
   .ev-body .btn-cta { margin-top: auto; align-self: flex-start; }
 
   /* Archive variant: dimmed, no booking (the event is over). */

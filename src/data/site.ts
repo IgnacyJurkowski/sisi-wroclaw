@@ -6,6 +6,7 @@
 import { type Locale } from '../i18n/config';
 import { localizedPath } from '../i18n/routes';
 import { useTranslations } from '../i18n/t';
+import { GENERATED_EVENTS } from './events.generated';
 
 export const RESERVATION_URL =
   'https://emenago.com/inner/cart/6619/0519b014958d73fb0d5d2d58c360a661/pl';
@@ -20,42 +21,28 @@ export function reservationUrl(content: string): string {
   return `${RESERVATION_URL}?utm_source=website&utm_medium=cta&utm_campaign=reservation&utm_content=${content}`;
 }
 
-// `start` is the complete ISO date-time (Europe/Warsaw, summer offset +02:00);
-// every visible date label is generated from it (see src/i18n/format.ts). Keep
-// the weekday in a title consistent with the real weekday of `start`.
-export type EventItem = { title: string; start: string; note?: string; img: string };
+// `start` is the complete ISO date-time with a DST-aware Europe/Warsaw offset
+// (+02:00 in summer, +01:00 in winter); every visible date label is generated
+// from it (see src/i18n/format.ts).
+// `price` is the entry/cover charge in zł (0 = free entry); `description` is a
+// short blurb (authored in Polish, shown as-is in every locale); `genres` are
+// music-genre tags. The optional fields come from the Opisy doc template and
+// render conditionally, so events without them look exactly as before.
+export type EventItem = {
+  title: string;
+  start: string;
+  note?: string;
+  img: string;
+  price?: number;
+  description?: string;
+  genres?: string[];
+};
 
-// Placeholder line-up - edit titles/dates/images as real events are booked.
-// 2026 opening nights: Fri 5/12/19/26 Jun, 3/10 Jul; Sat 6/13/20/27 Jun, 4/11 Jul.
-export const EVENTS: EventItem[] = [
-  // --- Upcoming ---
-  { title: 'Friday at SiSi', start: '2026-06-26T22:00:00+02:00', note: 'DJ ADB',
-    img: '/framerusercontent.com/images/Vl3kSLbolFditeShXmcLZITH7A8.webp' },
-  { title: 'Saturday at SiSi', start: '2026-06-27T22:00:00+02:00', note: 'Live Act',
-    img: '/framerusercontent.com/images/RMGSDUbOPnta4fZZQKL5BcnP3Pw.webp' },
-  { title: 'Latino Night', start: '2026-07-03T22:00:00+02:00', note: 'DJ Mike Lynx',
-    img: '/framerusercontent.com/images/bHchRJgtNrxKTYRK56SCdUph2g.webp' },
-  { title: 'Saturday at SiSi', start: '2026-07-04T22:00:00+02:00', note: 'Live Act',
-    img: '/framerusercontent.com/images/cDJcCUEanjQSoFpALHKgU3hNpQ.webp' },
-  { title: 'House Sessions', start: '2026-07-10T22:00:00+02:00', note: 'DJ ADB',
-    img: '/framerusercontent.com/images/MHGypGkoM6EkRCjBAVKzMUmwRG4.webp' },
-  { title: 'Saturday at SiSi', start: '2026-07-11T22:00:00+02:00', note: 'Special Guest',
-    img: '/framerusercontent.com/images/u3EOm1VtOnATOkUYHKikl5aBc.webp' },
-
-  // --- Archive ---
-  { title: "Midsummer's Eve", start: '2026-06-20T22:00:00+02:00', note: 'Noc Świętojańska',
-    img: '/framerusercontent.com/images/loXZHRygofAyWJdOaLJm2nba20Y.webp' },
-  { title: 'Friday at SiSi', start: '2026-06-19T22:00:00+02:00', note: 'DJ ADB',
-    img: '/framerusercontent.com/images/Vl3kSLbolFditeShXmcLZITH7A8.webp' },
-  { title: 'Saturday at SiSi', start: '2026-06-13T22:00:00+02:00', note: 'Live Act',
-    img: '/framerusercontent.com/images/RHdmR5s8jXTtyexi8FJLI4WDkig.webp' },
-  { title: 'Friday at SiSi', start: '2026-06-12T22:00:00+02:00', note: 'DJ Mike Lynx',
-    img: '/framerusercontent.com/images/QxXDx4GN74BgGuzaDth23HA.webp' },
-  { title: 'Saturday at SiSi', start: '2026-06-06T22:00:00+02:00', note: 'Live Act',
-    img: '/framerusercontent.com/images/MHGypGkoM6EkRCjBAVKzMUmwRG4.webp' },
-  { title: 'Friday at SiSi', start: '2026-06-05T22:00:00+02:00', note: 'DJ ADB',
-    img: '/framerusercontent.com/images/cDJcCUEanjQSoFpALHKgU3hNpQ.webp' },
-];
+// The lineup is authored by venue staff in the "Wydarzenia" Google Drive folder
+// (Banery + Opisy) and synced into events.generated.ts by scripts/sync-events.mjs.
+// Do NOT hand-edit events - edit them in Drive; the next sync overwrites the
+// generated file.
+export const EVENTS: EventItem[] = GENERATED_EVENTS;
 
 // A club night runs ~6 hours past its listed start, so an event only becomes
 // "past" once it has actually ended - the same +6h end that eventSchema() emits.

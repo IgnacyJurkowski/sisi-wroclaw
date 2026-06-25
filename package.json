@@ -8,7 +8,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "test": "astro build && node scripts/check-build.mjs",
+    "test": "npm run test:unit && astro build && node scripts/check-build.mjs",
+    "test:unit": "node --test scripts/events-sync/*.test.mjs",
     "test:build": "node scripts/check-build.mjs"
   },
   "dependencies": {
@@ -16,6 +17,8 @@
     "gsap": "^3.15.0"
   },
   "devDependencies": {
-    "lightningcss": "^1.32.0"
+    "google-auth-library": "^10.9.0",
+    "lightningcss": "^1.32.0",
+    "sharp": "^0.35.2"
   }
 }
