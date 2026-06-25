@@ -123,8 +123,8 @@ const de: UI = {
   },
 
   hero: {
-    titleLine1: 'Das Herz Breslaus',
-    titleLine2: 'schlägt im SiSi',
+    titleLine1: 'DAS HERZ BRESLAUS',
+    titleLine2: 'SCHLÄGT IM SiSi',
     discover: 'ENTDECKEN',
   },
 

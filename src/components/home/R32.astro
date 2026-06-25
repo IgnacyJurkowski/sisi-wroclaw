@@ -73,12 +73,14 @@ const gallery: { src: string; alt: Record<Locale, string> }[] = [
 
 <style>
   .r32 { padding: 96px 0; }
-  .r32-top { max-width: 720px; }
   .r32-title {
     font-size: clamp(2rem, 4.5vw, 3.2rem);
     text-transform: uppercase; line-height: 1.1; margin: 12px 0 22px;
   }
-  .r32-body { color: rgba(237,219,194,0.6); font-size: 16px; line-height: 1.8; margin-bottom: 32px; }
+  /* Body keeps a readable line length but stays left-aligned, so it starts at
+     the same left edge as the gallery below (the top block itself now fills the
+     shared 70% column). */
+  .r32-body { color: rgba(237,219,194,0.6); font-size: 16px; line-height: 1.8; margin-bottom: 32px; max-width: 640px; }
   .r32-gallery {
     margin-top: 24px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
   }

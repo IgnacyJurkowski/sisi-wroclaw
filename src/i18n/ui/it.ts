@@ -122,8 +122,8 @@ const it: UI = {
   },
 
   hero: {
-    titleLine1: 'Il cuore di Breslavia',
-    titleLine2: 'batte al SiSi',
+    titleLine1: 'IL CUORE DI BRESLAVIA',
+    titleLine2: 'BATTE AL SiSi',
     discover: 'SCOPRI',
   },
 

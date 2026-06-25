@@ -122,8 +122,8 @@ const cs: UI = {
   },
 
   hero: {
-    titleLine1: 'Srdce Vratislavi',
-    titleLine2: 'bije v SiSi',
+    titleLine1: 'SRDCE VRATISLAVI',
+    titleLine2: 'BIJE V SiSi',
     discover: 'OBJEVTE',
   },
 

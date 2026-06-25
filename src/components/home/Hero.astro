@@ -58,9 +58,10 @@ const eventsHref = localizedPath('events', locale);
   }
   .hero-content { position: relative; z-index: 2; padding: 0 24px; }
   .hero-title {
-    font-size: clamp(2.6rem, 8vw, 6rem);
-    line-height: 1.05;
-    /* Title text is set lowercase on purpose; Cal Sans is the display face. */
+    font-size: clamp(3.2rem, 9.5vw, 7.5rem);
+    line-height: 1.04;
+    /* Title is set all-caps in the i18n strings (not via text-transform, so the
+       "SiSi" brand keeps its mixed case). Cal Sans is the display face. */
     letter-spacing: 0;
     color: var(--cream);
     text-shadow: 0 2px 40px rgba(0,0,0,0.5);

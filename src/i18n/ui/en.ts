@@ -122,8 +122,8 @@ const en: UI = {
   },
 
   hero: {
-    titleLine1: 'The heart of Wrocław',
-    titleLine2: 'beats at SiSi',
+    titleLine1: 'THE HEART OF WROCŁAW',
+    titleLine2: 'BEATS AT SiSi',
     discover: 'DISCOVER',
   },
 

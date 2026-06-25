@@ -125,8 +125,8 @@ const pl = {
   },
 
   hero: {
-    titleLine1: 'Serce Wrocławia',
-    titleLine2: 'bije w SiSi',
+    titleLine1: 'SERCE WROCŁAWIA',
+    titleLine2: 'BIJE W SiSi',
     discover: 'ODKRYJ',
   },
 
