@@ -1,0 +1,110 @@
+---
+/*
+ * Particles — the site's living backdrop: a field of soft cream/gold circles
+ * drifting up through the wine, like light motes or champagne bubbles in a dark
+ * club. Pure CSS, no JS, no library (the classic box-shadow starfield, adapted
+ * to SiSi's palette). It sits fixed behind everything (z-index:-1) and shows
+ * through every transparent section below the hero, so the page never reads as
+ * flat wine.
+ *
+ * The Sass `random()` loop from the reference is replaced by build-time
+ * generation here: a seeded RNG scatters each layer's circles into one
+ * box-shadow value, so the field is identical on every page and reproducible
+ * build-to-build. Only a transform animates each rasterized layer (the shadow
+ * is painted once), so the compositor carries the motion with no main-thread
+ * work and no repaint on scroll. A duplicate ::after offset by the tile height
+ * makes the upward drift loop seamlessly.
+ *
+ * Reduced motion freezes the drift (a still starfield is still lovely).
+ */
+type Rand = () => number;
+function rng(seed: number): Rand {
+  return function () {
+    seed |= 0; seed = (seed + 0x6d2b79f5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function field(rand: Rand, n: number, W: number, H: number, colors: string[], blur = 0, spread = 0): string {
+  const parts: string[] = [];
+  for (let i = 0; i < n; i++) {
+    const x = Math.floor(rand() * W);
+    const y = Math.floor(rand() * H);
+    const c = colors[Math.floor(rand() * colors.length)];
+    parts.push(blur || spread ? `${x}px ${y}px ${blur}px ${spread}px ${c}` : `${x}px ${y}px ${c}`);
+  }
+  return parts.join(', ');
+}
+
+// Tile is 2000px tall; the ::after copy + keyframe both use this height to loop.
+const W = 2560, H = 2000;
+const r = rng(20260625);
+
+const cream = ['rgba(237,219,194,0.85)', 'rgba(245,232,213,0.7)'];
+const gold = ['rgba(251,210,149,0.7)', 'rgba(245,232,213,0.6)'];
+const orb = ['rgba(251,210,149,0.18)', 'rgba(237,219,194,0.16)'];
+const big = ['rgba(245,232,213,0.12)', 'rgba(251,210,149,0.10)'];
+
+const sm = field(r, 220, W, H, cream);        // fine dust
+const md = field(r, 90, W, H, gold);          // mid motes
+const bgDots = field(r, 40, W, H, cream);     // larger sparse points
+const orbs = field(r, 26, W, H, orb, 4, 1);   // soft glowing circles
+const lg = field(r, 14, W, H, big, 8, 2);     // big soft bokeh
+
+const vars = `--sm:${sm}; --md:${md}; --bg2:${bgDots}; --orb:${orbs}; --lg:${lg}`;
+---
+
+<div class="circles" aria-hidden="true" style={vars}>
+  <div class="cir sm"></div>
+  <div class="cir md"></div>
+  <div class="cir bg"></div>
+  <div class="cir orb"></div>
+  <div class="cir lg"></div>
+</div>
+
+<style>
+  .circles {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    /* a touch of depth: warm glow up top, pooled shadow at the floor */
+    background:
+      radial-gradient(ellipse 120% 80% at 50% 120%, rgba(61, 19, 32, 0.55) 0%, rgba(0, 0, 0, 0) 60%),
+      radial-gradient(ellipse at 50% -10%, rgba(140, 36, 52, 0.18) 0%, rgba(0, 0, 0, 0) 45%),
+      var(--bg);
+  }
+  /* Each layer is a 1px anchor carrying its circles in a single box-shadow;
+     the ::after is the same field shifted one tile down for a seamless loop. */
+  .cir {
+    position: absolute; top: 0; left: 0;
+    border-radius: 50%; background: transparent;
+    animation: floatUp linear infinite;
+    will-change: transform;
+  }
+  .cir::after {
+    content: ""; position: absolute; top: 2000px; left: 0;
+    border-radius: 50%;
+  }
+  .cir.sm { width: 1px; height: 1px; box-shadow: var(--sm); animation-duration: 90s; }
+  .cir.sm::after { width: 1px; height: 1px; box-shadow: var(--sm); }
+  .cir.md { width: 2px; height: 2px; box-shadow: var(--md); animation-duration: 140s; }
+  .cir.md::after { width: 2px; height: 2px; box-shadow: var(--md); }
+  .cir.bg { width: 3px; height: 3px; box-shadow: var(--bg2); animation-duration: 200s; }
+  .cir.bg::after { width: 3px; height: 3px; box-shadow: var(--bg2); }
+  .cir.orb { width: 7px; height: 7px; box-shadow: var(--orb); filter: blur(0.5px); animation-duration: 240s; }
+  .cir.orb::after { width: 7px; height: 7px; box-shadow: var(--orb); }
+  .cir.lg { width: 11px; height: 11px; box-shadow: var(--lg); filter: blur(1px); animation-duration: 320s; }
+  .cir.lg::after { width: 11px; height: 11px; box-shadow: var(--lg); }
+
+  @keyframes floatUp {
+    from { transform: translateY(0); }
+    to   { transform: translateY(-2000px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cir { animation: none; }
+  }
+</style>
