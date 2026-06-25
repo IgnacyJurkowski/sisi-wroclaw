@@ -54,8 +54,19 @@ const gallery: { src: string; alt: Record<Locale, string> }[] = [
   </div>
 
   <div class="container r32-gallery" data-reveal-group>
-    {gallery.map((shot) => (
-      <div class="r32-shot"><img src={shot.src} alt={shot.alt[locale]} loading="lazy" /></div>
+    {gallery.map((shot, i) => (
+      i === 1 ? (
+        <div class="r32-shot r32-shot-video">
+          <video
+            class="r32-vid"
+            src="/video/relacja-z-otwarcia.mp4"
+            muted loop playsinline preload="none"
+            poster="/video/relacja-z-otwarcia-poster.webp"
+          ></video>
+        </div>
+      ) : (
+        <div class="r32-shot"><img src={shot.src} alt={shot.alt[locale]} loading="lazy" /></div>
+      )
     ))}
   </div>
 </section>
@@ -75,9 +86,32 @@ const gallery: { src: string; alt: Record<Locale, string> }[] = [
     border-radius: 16px; overflow: hidden; aspect-ratio: 4 / 3;
     border: 1px solid rgba(255,255,255,0.08);
   }
-  .r32-shot img { width: 100%; height: 100%; object-fit: cover; }
+  .r32-shot img, .r32-shot video { width: 100%; height: 100%; object-fit: cover; display: block; }
   @media (max-width: 900px) {
     .r32-gallery { grid-template-columns: 1fr 1fr; }
   }
-  @media (max-width: 600px) { .r32 { padding: 64px 0; } .r32-gallery { grid-template-columns: 1fr; } }
+  @media (max-width: 600px) {
+    .r32 { padding: 64px 0; }
+    /* On phones, show only the middle tile (the video); hide the side photos. */
+    .r32-gallery { grid-template-columns: 1fr; }
+    .r32-shot:not(.r32-shot-video) { display: none; }
+  }
 </style>
+
+<script>
+  // The recap clip is below the fold, so don't download it on load (preload
+  // none). Start playback only when the section is about to enter view -
+  // keeps the ~5MB video out of the initial/critical load path.
+  const vid = document.querySelector<HTMLVideoElement>('video.r32-vid');
+  if (vid) {
+    const io = new IntersectionObserver((entries, obs) => {
+      for (const e of entries) {
+        if (e.isIntersecting) {
+          vid.play().catch(() => {});
+          obs.disconnect();
+        }
+      }
+    }, { rootMargin: '300px 0px' });
+    io.observe(vid);
+  }
+</script>
