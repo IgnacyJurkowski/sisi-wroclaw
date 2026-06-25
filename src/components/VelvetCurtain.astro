@@ -1,0 +1,136 @@
+---
+/*
+ * Velvet curtain — the site's living backdrop.
+ *
+ * A fixed, full-viewport layer that sits behind everything (z-index:-1) and
+ * shows through every transparent section below the hero, so the page never
+ * reads as flat wine. It is built entirely from shapes (CSS gradients + an SVG
+ * turbulence/displacement filter), so there is no image to download.
+ *
+ * The "flow" is deliberately cheap: the expensive part (displacing the pleat
+ * gradients into organic, irregular folds) is rasterized once by the filter;
+ * only transforms and opacity animate, which the compositor handles without
+ * touching the main thread or repainting on scroll. Two fold layers sway in
+ * counter-phase and cross-fade, so the drape appears to breathe and morph.
+ *
+ * "Static like parallax": position:fixed pins it to the viewport, so content
+ * scrolls over a curtain that stays put — depth without a scroll handler.
+ *
+ * Reduced motion freezes every animation (the still frame stands on its own).
+ * Narrow screens drop the second layer and the displacement filter, falling
+ * back to plain gradient pleats — still a velvet drape, a fraction of the cost.
+ */
+---
+
+<div class="velvet" aria-hidden="true">
+  <div class="velvet__base"></div>
+  <div class="velvet__folds fold-paint"></div>
+  <div class="velvet__folds2 fold-paint"></div>
+  <div class="velvet__sheen"></div>
+  <div class="velvet__vignette"></div>
+</div>
+
+<svg width="0" height="0" class="velvet-defs" aria-hidden="true" focusable="false">
+  <filter id="vfold1" x="-12%" y="-12%" width="124%" height="124%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.005 0.011" numOctaves="2" seed="11" stitchTiles="stitch" result="n" />
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="34" xChannelSelector="R" yChannelSelector="G" />
+  </filter>
+  <filter id="vfold2" x="-12%" y="-12%" width="124%" height="124%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.006 0.013" numOctaves="2" seed="4" stitchTiles="stitch" result="n" />
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="40" xChannelSelector="R" yChannelSelector="G" />
+  </filter>
+</svg>
+
+<style>
+  /* Fixed behind all content; isolate so the layers' blend modes stay internal
+     and never composite against the page. The wine fill is the safety net under
+     every layer so a swaying edge can never reveal a gap. */
+  .velvet {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    isolation: isolate;
+    background: var(--bg);
+  }
+  /* A little bleed so translate/scale on the fold layers never exposes an edge. */
+  .velvet > div { position: absolute; inset: -4% -2%; }
+
+  /* Base wash: warm stage light pooling from top-center + a floor shadow. */
+  .velvet__base {
+    background:
+      radial-gradient(120% 82% at 50% -10%,
+        rgba(251, 210, 149, 0.16) 0%, rgba(140, 36, 52, 0.11) 24%, rgba(0, 0, 0, 0) 58%),
+      radial-gradient(100% 100% at 50% 120%, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0) 55%),
+      var(--bg);
+  }
+
+  /* The pleat field: a thin warm sheen riding each ridge over deep wine folds.
+     Both gradients share a 150px period so the sheen sits on the ridge. */
+  .fold-paint {
+    background:
+      repeating-linear-gradient(90deg,
+        transparent 0px, transparent 60px,
+        rgba(245, 232, 213, 0.09) 73px, rgba(251, 210, 149, 0.06) 77px,
+        transparent 90px, transparent 150px),
+      repeating-linear-gradient(90deg,
+        #0e0207 0px, #260a12 44px, #4d1a26 75px, #260a12 106px, #0e0207 150px);
+    background-blend-mode: screen, normal;
+  }
+
+  .velvet__folds {
+    filter: url(#vfold1);
+    will-change: transform, opacity;
+    animation: vsway1 19s ease-in-out infinite alternate, vbreathe1 23s ease-in-out infinite;
+  }
+  .velvet__folds2 {
+    filter: url(#vfold2);
+    opacity: 0.55;
+    mix-blend-mode: soft-light;
+    will-change: transform, opacity;
+    animation: vsway2 27s ease-in-out infinite alternate, vbreathe2 23s ease-in-out infinite;
+  }
+
+  /* A soft vertical light band drifting across the folds (light on fabric). */
+  .velvet__sheen {
+    inset: -4% 0;
+    left: -70%;
+    width: 240%;
+    background: linear-gradient(90deg,
+      transparent 0%, rgba(245, 232, 213, 0.085) 7%, rgba(251, 210, 149, 0.05) 11%, transparent 20%);
+    filter: blur(7px);
+    mix-blend-mode: screen;
+    will-change: transform;
+    animation: vsheen 31s linear infinite;
+  }
+
+  /* Edge vignette + bottom seat so content always reads. */
+  .velvet__vignette {
+    background: radial-gradient(135% 125% at 50% 24%, transparent 48%, rgba(7, 1, 4, 0.92) 100%);
+  }
+
+  @keyframes vsway1 {
+    from { transform: translate3d(-1.2%, 0, 0) scaleX(1.015); }
+    to   { transform: translate3d(1.2%, 0, 0) scaleX(1); }
+  }
+  @keyframes vsway2 {
+    from { transform: translate3d(1.4%, 0, 0) scaleX(1); }
+    to   { transform: translate3d(-1.4%, 0, 0) scaleX(1.02); }
+  }
+  @keyframes vbreathe1 { 0%, 100% { opacity: 1; } 50% { opacity: 0.82; } }
+  @keyframes vbreathe2 { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.7; } }
+  @keyframes vsheen { 0% { transform: translateX(-12%); } 100% { transform: translateX(60%); } }
+
+  /* Narrow screens: one cheap gradient layer, no displacement filter, no blends.
+     Still a draped velvet, a fraction of the GPU cost on mobile. */
+  @media (max-width: 700px) {
+    .velvet__folds { filter: none; }
+    .velvet__folds2, .velvet__sheen { display: none; }
+  }
+
+  /* Honor reduced motion: a beautiful still curtain, nothing moving. */
+  @media (prefers-reduced-motion: reduce) {
+    .velvet__folds, .velvet__folds2, .velvet__sheen { animation: none; }
+  }
+</style>
