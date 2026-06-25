@@ -16,5 +16,19 @@ export const GENERATED_EVENTS: EventItem[] = [
       "Pop",
       "Funk"
     ]
+  },
+  {
+    "title": "Saturday at SiSi",
+    "slug": "2026-06-27-saturday-at-sisi",
+    "start": "2026-06-27T22:00:00+02:00",
+    "note": "DJ ABC",
+    "img": "/events/2026-06-27-saturday-at-sisi.webp",
+    "price": 50,
+    "description": "Krótki opis wydarzenia",
+    "genres": [
+      "Funk",
+      "Groove",
+      "JungleW"
+    ]
   }
 ];
