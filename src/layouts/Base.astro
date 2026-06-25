@@ -3,7 +3,6 @@ import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import CookieBanner from '../components/CookieBanner.astro';
-import VelvetCurtain from '../components/VelvetCurtain.astro';
 import { nightClubSchema, websiteSchema } from '../data/site';
 import { DEFAULT_LOCALE, LOCALE_LANG, LOCALE_OG, type Locale } from '../i18n/config';
 import { alternates, localizedPath, type RouteKey } from '../i18n/routes';
@@ -131,7 +130,6 @@ const robotsContent = !isProductionHost
     ))}
   </head>
   <body>
-    <VelvetCurtain />
     <Nav locale={locale} active={routeKey} />
     <main id="main">
       <slot />
