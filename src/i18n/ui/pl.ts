@@ -219,6 +219,7 @@ const pl = {
     subtitle: 'Autorskie koktajle, polskie wina, piwa belgijskie i Night Menu by The Cork. Ceny w złotych.',
     sections: {
       cocktails: 'Koktajle',
+      champagne: 'Szampan',
       drinks: 'Napoje',
       beer: 'Piwo',
       draught: 'Lane',
@@ -227,7 +228,7 @@ const pl = {
       nightMenu: 'Night Menu by The Cork',
     },
     bottledNote: 'Wszystkie butelki 330 ml.',
-    wineLead: 'Stawiamy na polskie winnice - selekcja rodzimych win, od wytrawnych bieli po pełne czerwienie, podawanych kieliszkiem i butelką.',
+    wineLead: 'Stawiamy na polskie winnice — selekcję rodzimych win od aromatycznych bieli, przez charakterne wino pomarańczowe i rosé, po eleganckie czerwienie. Wszystkie wina serwujemy na kieliszki i butelki.',
     nightLead: 'Eleganckie przekąski do dzielenia, przygotowane przez The Cork: kawior, ostrygi, deski serów i wędlin (charcuterie).',
     foodwineNote: 'Pełna karta win oraz Night Menu dostępne w klubie - zapytaj obsługę o aktualną ofertę i ceny.',
     ctaText: 'Chcesz zarezerwować stolik i zamówić z wyprzedzeniem? Skontaktuj się z nami.',

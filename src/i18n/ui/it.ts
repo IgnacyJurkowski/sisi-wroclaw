@@ -216,6 +216,7 @@ const it: UI = {
     subtitle: 'Cocktail d\'autore, vini polacchi, birre belghe e un Night Menu by The Cork. Prezzi in PLN.',
     sections: {
       cocktails: 'Cocktail',
+      champagne: 'Champagne',
       drinks: 'Bibite',
       beer: 'Birra',
       draught: 'Alla spina',
@@ -224,7 +225,7 @@ const it: UI = {
       nightMenu: 'Night Menu by The Cork',
     },
     bottledNote: 'Tutte le bottiglie 330 ml.',
-    wineLead: 'Puntiamo sulle cantine polacche - una selezione di vini locali, dai bianchi secchi ai rossi strutturati, serviti al calice e in bottiglia.',
+    wineLead: 'Puntiamo sulle cantine polacche — una selezione di vini autoctoni, dai bianchi aromatici, passando per arancione e rosé di carattere, fino agli eleganti rossi. Serviamo tutti i vini al calice e in bottiglia.',
     nightLead: 'Stuzzichini eleganti da condividere, preparati da The Cork: caviale, ostriche, taglieri di formaggi e salumi (charcuterie).',
     foodwineNote: 'La carta dei vini completa e il Night Menu sono disponibili nel club - chiedi al personale la selezione e i prezzi attuali.',
     ctaText: 'Vuoi prenotare un tavolo e ordinare in anticipo? Contattaci.',

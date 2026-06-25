@@ -217,6 +217,7 @@ const de: UI = {
     subtitle: 'Signature-Cocktails, polnische Weine, belgische Biere und ein Night Menu by The Cork. Preise in PLN.',
     sections: {
       cocktails: 'Cocktails',
+      champagne: 'Champagner',
       drinks: 'Alkoholfreie Getränke',
       beer: 'Bier',
       draught: 'Vom Fass',
@@ -225,7 +226,7 @@ const de: UI = {
       nightMenu: 'Night Menu by The Cork',
     },
     bottledNote: 'Alle Flaschen 330 ml.',
-    wineLead: 'Wir setzen auf polnische Weingüter - eine Auswahl heimischer Weine, von trockenen Weißweinen bis zu kräftigen Rotweinen, glasweise und in der Flasche.',
+    wineLead: 'Wir setzen auf polnische Weingüter — eine Auswahl heimischer Weine von aromatischen Weißweinen über charaktervollen Orange- und Roséwein bis zu eleganten Rotweinen. Alle Weine servieren wir glasweise und in der Flasche.',
     nightLead: 'Elegante Häppchen zum Teilen, zubereitet von The Cork: Kaviar, Austern, Käse- und Charcuterie-Platten.',
     foodwineNote: 'Die vollständige Weinkarte und das Night Menu sind im Club erhältlich - frag unser Team nach der aktuellen Auswahl und den Preisen.',
     ctaText: 'Möchtest du einen Tisch reservieren und vorbestellen? Melde dich bei uns.',

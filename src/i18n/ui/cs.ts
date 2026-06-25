@@ -216,6 +216,7 @@ const cs: UI = {
     subtitle: 'Autorské koktejly, polská vína, belgická piva a Night Menu by The Cork. Ceny v PLN.',
     sections: {
       cocktails: 'Koktejly',
+      champagne: 'Šampaňské',
       drinks: 'Nealko nápoje',
       beer: 'Pivo',
       draught: 'Točené',
@@ -224,7 +225,7 @@ const cs: UI = {
       nightMenu: 'Night Menu by The Cork',
     },
     bottledNote: 'Všechny lahve 330 ml.',
-    wineLead: 'Sázíme na polská vinařství - výběr domácích vín, od suchých bílých po plná červená, podávaných po sklenici i v lahvi.',
+    wineLead: 'Sázíme na polská vinařství — výběr domácích vín od aromatických bílých, přes výrazné oranžové a rosé, až po elegantní červená. Všechna vína podáváme po sklenici i v lahvi.',
     nightLead: 'Elegantní pochoutky ke sdílení, připravené The Cork: kaviár, ústřice, sýrová a uzeninová prkénka (charcuterie).',
     foodwineNote: 'Kompletní vinný lístek a Night Menu jsou k dispozici v klubu - zeptejte se obsluhy na aktuální nabídku a ceny.',
     ctaText: 'Chcete rezervovat stůl a objednat předem? Ozvěte se nám.',
