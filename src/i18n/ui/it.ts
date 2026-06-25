@@ -182,6 +182,7 @@ const it: UI = {
     title: 'Prenota un tavolo',
     body: 'Pianifica una serata speciale e assicurati un posto comodo nel cuore del nostro club. Prenotare online richiede un attimo - al resto pensiamo noi.',
     reassure: 'Conferma immediata · i tavoli migliori vanno per primi',
+    terms: 'Solo over 21. La prenotazione di un tavolo è di 50 zł a persona, utilizzabili al tavolo; il sabato si applica un ingresso aggiuntivo di 30 zł a persona.',
     info: {
       hours: 'Orari',
       address: 'Indirizzo',

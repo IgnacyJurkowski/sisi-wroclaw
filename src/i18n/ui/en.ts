@@ -182,6 +182,7 @@ const en: UI = {
     title: 'Book a table',
     body: 'Plan a special evening and secure a comfortable spot in the heart of our club. Booking online takes a moment - leave the rest to us.',
     reassure: 'Instant confirmation · the best tables go first',
+    terms: 'Over-21s only. A table reservation is 50 zł per person, credited at your table; on Saturdays a 30 zł per-person entry applies.',
     info: {
       hours: 'Hours',
       address: 'Address',

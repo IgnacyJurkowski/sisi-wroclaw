@@ -62,8 +62,8 @@ function localizeDesc(desc: string, loc: Locale): string {
 }
 
 // Bottled wines currently poured. Producer + wine names are brand-invariant; the
-// wine type is localized. Prices, by-the-glass options, Night Menu items and
-// allergens are still TODO (see below).
+// wine type and glass/bottle labels are localized; the price is a flat house rate
+// across the list (see WINE_PRICE). Night Menu items and allergens are still TODO.
 const WINE_TYPES: Record<'red' | 'white' | 'rose' | 'semiDryWhite', Record<Locale, string>> = {
   red: { pl: 'czerwone', en: 'red', de: 'Rotwein', it: 'rosso', cs: 'červené' },
   white: { pl: 'białe', en: 'white', de: 'Weißwein', it: 'bianco', cs: 'bílé' },
@@ -82,6 +82,16 @@ const wines: { name: string; type: keyof typeof WINE_TYPES }[] = [
   { name: 'Turnau Pinot Noir', type: 'red' },
   { name: 'Dom Charbielin Solaris', type: 'white' },
 ];
+
+// Flat house price across the wine list (owner-confirmed 2026-06-24): a 125 ml
+// glass and a 750 ml bottle. Labels are localized; the ml/zł figures are invariant.
+const WINE_PRICE: Record<Locale, string> = {
+  pl: 'Kieliszek 125 ml - 32 zł · Butelka 750 ml - 190 zł',
+  en: 'Glass 125 ml - 32 zł · Bottle 750 ml - 190 zł',
+  de: 'Glas 125 ml - 32 zł · Flasche 750 ml - 190 zł',
+  it: 'Calice 125 ml - 32 zł · Bottiglia 750 ml - 190 zł',
+  cs: 'Sklenka 125 ml - 32 zł · Láhev 750 ml - 190 zł',
+};
 
 const koktajle: Item[] = [
   { name: 'Hugo Spritz', desc: 'St-Germain / Limonka / Mięta / Martini Prosecco / Woda gazowana', vol: '160 ml', price: '40 zł' },
@@ -182,9 +192,9 @@ const stack = [
       </div>
     </div>
 
-    {/* TODO(ignacy): bottled wines are now listed by name; still need prices and
-        by-the-glass options, the Night Menu items, and allergens. Until prices
-        land, the home CTA stays "bar menu" (seeFullMenu), not "full menu". */}
+    {/* TODO(ignacy): wines now show by-glass/bottle prices; still need the Night
+        Menu items and allergens. Until those land, the home CTA stays "bar menu"
+        (seeFullMenu), not "full menu". */}
     <section class="sisi-card menu-foodwine" data-reveal>
       <div class="fw-col">
         <h2 class="menu-section-label">{t.menuPage.sections.wines}</h2>
@@ -197,6 +207,7 @@ const stack = [
             </li>
           ))}
         </ul>
+        <p class="fw-price">{WINE_PRICE[locale]}</p>
       </div>
       <div class="fw-col">
         <h2 class="menu-section-label">{t.menuPage.sections.nightMenu}</h2>
@@ -236,6 +247,7 @@ const stack = [
   .fw-wine { display: flex; justify-content: space-between; gap: 16px; align-items: baseline; }
   .fw-wine-name { font-size: 14px; color: rgba(237, 219, 194, 0.85); }
   .fw-wine-type { font-size: 12px; color: var(--text-mute); white-space: nowrap; }
+  .fw-price { margin-top: 14px; font-size: 13px; color: var(--gold); letter-spacing: 0.01em; }
   .fw-note { grid-column: 1 / -1; margin-top: 4px; }
   .menu-cta { text-align: center; margin-top: 64px; padding-top: 48px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
   .menu-cta p { color: rgba(237, 219, 194, 0.45); margin: 0 auto 28px; font-size: 14px; line-height: 1.7; max-width: 360px; }

@@ -183,6 +183,7 @@ const de: UI = {
     title: 'Tisch reservieren',
     body: 'Plane einen besonderen Abend und sichere dir einen komfortablen Platz im Herzen unseres Clubs. Die Online-Reservierung dauert nur einen Moment - den Rest überlass uns.',
     reassure: 'Sofortige Bestätigung · die besten Tische sind zuerst weg',
+    terms: 'Einlass ab 21 Jahren. Eine Tischreservierung kostet 50 zł pro Person, am Tisch anrechenbar; samstags gilt ein zusätzlicher Eintritt von 30 zł pro Person.',
     info: {
       hours: 'Zeiten',
       address: 'Adresse',

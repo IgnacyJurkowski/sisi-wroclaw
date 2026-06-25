@@ -182,6 +182,7 @@ const cs: UI = {
     title: 'Rezervovat stůl',
     body: 'Naplánujte si výjimečný večer a zajistěte si pohodlné místo v srdci našeho klubu. Online rezervace zabere chvíli - o zbytek se postaráme my.',
     reassure: 'Okamžité potvrzení · nejlepší stoly mizí první',
+    terms: 'Vstup od 21 let. Rezervace stolu je 50 zł za osobu k útratě u stolu; v sobotu se účtuje vstupné navíc 30 zł za osobu.',
     info: {
       hours: 'Otevírací doba',
       address: 'Adresa',

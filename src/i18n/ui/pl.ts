@@ -185,6 +185,7 @@ const pl = {
     title: 'Zarezerwuj stolik',
     body: 'Zaplanuj wyjątkowy wieczór i zapewnij sobie komfortowe miejsce w sercu naszego klubu. Rezerwacja online zajmuje chwilę - resztę zostaw nam.',
     reassure: 'Potwierdzenie od ręki · najlepsze stoliki znikają pierwsze',
+    terms: 'Klub 21+. Rezerwacja stolika to 50 zł od osoby do wykorzystania przy stoliku; w soboty obowiązuje dodatkowy wstęp 30 zł od osoby.',
     info: {
       hours: 'Godziny',
       address: 'Adres',
