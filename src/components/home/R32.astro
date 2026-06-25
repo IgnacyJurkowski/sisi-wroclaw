@@ -51,14 +51,6 @@ const gallery: { src: string; alt: Record<Locale, string> }[] = [
       <p class="r32-body">{t.r32.body}</p>
       <a href="https://www.r32.com.pl" class="btn-outline" rel="noopener" target="_blank">{t.buttons.discoverR32}</a>
     </div>
-    <div class="r32-video" data-reveal>
-      <video
-        class="r32-vid"
-        src="/video/relacja-z-otwarcia.mp4"
-        muted loop playsinline preload="none"
-        poster="/video/relacja-z-otwarcia-poster.webp"
-      ></video>
-    </div>
   </div>
 
   <div class="container r32-gallery" data-reveal-group>
@@ -70,19 +62,12 @@ const gallery: { src: string; alt: Record<Locale, string> }[] = [
 
 <style>
   .r32 { padding: 96px 0; }
-  .r32-top {
-    display: grid; grid-template-columns: 1fr 1.1fr; gap: 48px; align-items: center;
-  }
+  .r32-top { max-width: 720px; }
   .r32-title {
     font-size: clamp(2rem, 4.5vw, 3.2rem);
     text-transform: uppercase; line-height: 1.1; margin: 12px 0 22px;
   }
   .r32-body { color: rgba(237,219,194,0.6); font-size: 16px; line-height: 1.8; margin-bottom: 32px; }
-  .r32-video {
-    border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08);
-    aspect-ratio: 16 / 10; background: var(--panel);
-  }
-  .r32-video video { width: 100%; height: 100%; object-fit: cover; }
   .r32-gallery {
     margin-top: 24px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
   }
@@ -92,26 +77,7 @@ const gallery: { src: string; alt: Record<Locale, string> }[] = [
   }
   .r32-shot img { width: 100%; height: 100%; object-fit: cover; }
   @media (max-width: 900px) {
-    .r32-top { grid-template-columns: 1fr; }
     .r32-gallery { grid-template-columns: 1fr 1fr; }
   }
   @media (max-width: 600px) { .r32 { padding: 64px 0; } .r32-gallery { grid-template-columns: 1fr; } }
 </style>
-
-<script>
-  // The recap clip is below the fold, so don't download it on load (preload
-  // none). Start playback only when the section is about to enter view -
-  // keeps the ~5MB video out of the initial/critical load path.
-  const vid = document.querySelector<HTMLVideoElement>('video.r32-vid');
-  if (vid) {
-    const io = new IntersectionObserver((entries, obs) => {
-      for (const e of entries) {
-        if (e.isIntersecting) {
-          vid.play().catch(() => {});
-          obs.disconnect();
-        }
-      }
-    }, { rootMargin: '300px 0px' });
-    io.observe(vid);
-  }
-</script>
