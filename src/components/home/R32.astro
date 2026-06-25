@@ -6,10 +6,40 @@ interface Props { locale: Locale }
 const { locale } = Astro.props;
 const t = useTranslations(locale);
 
-const gallery = [
-  '/framerusercontent.com/images/u3EOm1VtOnATOkUYHKikl5aBc.webp',
-  '/framerusercontent.com/images/MHGypGkoM6EkRCjBAVKzMUmwRG4.webp',
-  '/framerusercontent.com/images/cDJcCUEanjQSoFpALHKgU3hNpQ.webp',
+// Venue gallery (opening-night photos). These show the live music and the
+// crowd, so they carry content, not decoration - real, localized alt text per
+// image (describes what is visible; no invented detail).
+const gallery: { src: string; alt: Record<Locale, string> }[] = [
+  {
+    src: '/framerusercontent.com/images/u3EOm1VtOnATOkUYHKikl5aBc.webp',
+    alt: {
+      pl: 'Wokalistka podczas występu na żywo w SiSi',
+      en: 'A vocalist performing live at SiSi',
+      de: 'Sängerin bei einem Live-Auftritt im SiSi',
+      it: "Una cantante durante un'esibizione dal vivo al SiSi",
+      cs: 'Zpěvačka při živém vystoupení v SiSi',
+    },
+  },
+  {
+    src: '/framerusercontent.com/images/MHGypGkoM6EkRCjBAVKzMUmwRG4.webp',
+    alt: {
+      pl: 'Goście na parkiecie podczas imprezy w SiSi',
+      en: 'Guests on the dance floor during a night at SiSi',
+      de: 'Gäste auf der Tanzfläche während einer Nacht im SiSi',
+      it: 'Ospiti in pista durante una serata al SiSi',
+      cs: 'Hosté na tanečním parketu během večera v SiSi',
+    },
+  },
+  {
+    src: '/framerusercontent.com/images/cDJcCUEanjQSoFpALHKgU3hNpQ.webp',
+    alt: {
+      pl: 'Zespół grający na żywo na scenie SiSi',
+      en: 'A band playing live on the SiSi stage',
+      de: 'Eine Band spielt live auf der Bühne im SiSi',
+      it: 'Una band suona dal vivo sul palco del SiSi',
+      cs: 'Kapela hraje živě na pódiu v SiSi',
+    },
+  },
 ];
 ---
 
@@ -32,8 +62,8 @@ const gallery = [
   </div>
 
   <div class="container r32-gallery" data-reveal-group>
-    {gallery.map((src) => (
-      <div class="r32-shot"><img src={src} alt="" loading="lazy" /></div>
+    {gallery.map((shot) => (
+      <div class="r32-shot"><img src={shot.src} alt={shot.alt[locale]} loading="lazy" /></div>
     ))}
   </div>
 </section>
