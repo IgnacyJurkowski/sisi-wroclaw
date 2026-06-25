@@ -31,7 +31,7 @@ const homeHref = localizedPath('home', locale);
       <div>
         <p class="footer-col-heading">{t.footer.contactHeading}</p>
         <a href={`mailto:${CONTACT.email}`} class="footer-link">{CONTACT.email}</a>
-        <span class="footer-text">{CONTACT.address}</span>
+        <a href={CONTACT.mapsUrl} class="footer-link" rel="noopener" target="_blank">{CONTACT.address}</a>
         <a href={CONTACT.phoneHref} class="footer-link">{CONTACT.phone}</a>
       </div>
 

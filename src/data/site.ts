@@ -66,6 +66,7 @@ export function splitEvents(list: EventItem[] = EVENTS, now: number = Date.now()
 export const CONTACT = {
   email: 'biuro@r32.com.pl',
   address: 'Rzeźnicza 32-33, 50-130 Wrocław',
+  mapsUrl: 'https://www.google.com/maps/dir//SISI%20%7C%20Music%20Club%20Wroc%C5%82aw',
   phone: '+48 515 126 260',
   phoneHref: 'tel:+48515126260',
   eventsPhone: '+48 514 032 930',
