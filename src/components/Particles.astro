@@ -55,8 +55,9 @@ const orbs = field(r, 26, W, H, orbCol, 5, 1); // soft glowing circles
 const lg = field(r, 14, W, H, bigCol, 10, 2);  // big soft bokeh
 const spA = field(r, 26, W, H, bright);        // bright sparkles (fast twinkle)
 const spB = field(r, 22, W, H, brightG);       // bright sparkles (offset phase)
+const dn = field(r, 34, W, H, cream);          // sparse dots drifting downward
 
-const vars = `--sm:${sm}; --md:${md}; --bg2:${bgDots}; --orb:${orbs}; --lg:${lg}; --spA:${spA}; --spB:${spB}`;
+const vars = `--sm:${sm}; --md:${md}; --bg2:${bgDots}; --orb:${orbs}; --lg:${lg}; --spA:${spA}; --spB:${spB}; --dn:${dn}`;
 ---
 
 <div class="circles" aria-hidden="true" style={vars}>
@@ -67,6 +68,7 @@ const vars = `--sm:${sm}; --md:${md}; --bg2:${bgDots}; --orb:${orbs}; --lg:${lg}
   <div class="cir sm"></div>
   <div class="cir spA"></div>
   <div class="cir spB"></div>
+  <div class="cir dn"></div>
 </div>
 
 <style>
@@ -109,10 +111,18 @@ const vars = `--sm:${sm}; --md:${md}; --bg2:${bgDots}; --orb:${orbs}; --lg:${lg}
   .cir.spA::after { width: 2px;  height: 2px;  box-shadow: var(--spA); }
   .cir.spB { width: 2px;  height: 2px;  box-shadow: var(--spB); --lo: 0.12; animation: floatUp 82s linear infinite, tw 4.6s ease-in-out infinite -1.6s; }
   .cir.spB::after { width: 2px;  height: 2px;  box-shadow: var(--spB); }
+  /* A few dots drifting the other way (downward), for a little cross-current.
+     The ::after copy sits one tile ABOVE so the downward loop is seamless. */
+  .cir.dn  { width: 2px;  height: 2px;  box-shadow: var(--dn);  --lo: 0.3;  animation: floatDown 130s linear infinite, tw 8s ease-in-out infinite -2s; }
+  .cir.dn::after  { top: -2000px; width: 2px;  height: 2px;  box-shadow: var(--dn); }
 
   @keyframes floatUp {
     from { transform: translateY(0); }
     to   { transform: translateY(-2000px); }
+  }
+  @keyframes floatDown {
+    from { transform: translateY(0); }
+    to   { transform: translateY(2000px); }
   }
   @keyframes tw {
     0%, 100% { opacity: var(--lo, 0.3); }
