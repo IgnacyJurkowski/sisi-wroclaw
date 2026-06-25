@@ -87,7 +87,7 @@ async function run() {
     await writeIfChanged(path.join(IMG_DIR, fileName), optimized);
     usedImages.add(fileName);
 
-    events.push(toEvent(dateKey, fields, `${IMG_URL_PREFIX}/${fileName}`));
+    events.push(toEvent(dateKey, fields, `${IMG_URL_PREFIX}/${fileName}`, slug));
   }
 
   // --- bad-row policy: never silently unpublish a real event ---
@@ -122,8 +122,8 @@ function indexByDate(files) {
   return map;
 }
 
-function toEvent(dateKey, f, img) {
-  const e = { title: f.title, start: warsawIso(dateKey, f.startTime) };
+function toEvent(dateKey, f, img, slug) {
+  const e = { title: f.title, slug, start: warsawIso(dateKey, f.startTime) };
   if (f.dj) e.note = `DJ ${f.dj}`;
   e.img = img;
   if (f.price != null) e.price = f.price;

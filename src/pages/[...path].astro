@@ -9,25 +9,38 @@ import ReservationsPage from '../components/pages/ReservationsPage.astro';
 import ContactPage from '../components/pages/ContactPage.astro';
 import CorporatePage from '../components/pages/CorporatePage.astro';
 import LegalPage from '../components/pages/LegalPage.astro';
+import EventDetailPage from '../components/pages/EventDetailPage.astro';
+import { EVENTS, type EventItem } from '../data/site';
 
-// One static page per (locale, route) from the central route map.
+// One static page per (locale, route) from the central route map, plus one
+// detail page per (locale, event) nested under the localized events slug.
 export function getStaticPaths() {
-  const paths: { params: { path: string }; props: { locale: Locale; routeKey: RouteKey } }[] = [];
+  const paths: {
+    params: { path: string };
+    props: { locale: Locale; routeKey: RouteKey; event?: EventItem };
+  }[] = [];
   for (const locale of LOCALES) {
     for (const key of ROUTE_KEYS) {
       const slug = SLUGS[key][locale];
       const path = slug ? `${locale}/${slug}` : `${locale}`;
       paths.push({ params: { path }, props: { locale, routeKey: key } });
     }
+    for (const event of EVENTS) {
+      paths.push({
+        params: { path: `${locale}/${SLUGS.events[locale]}/${event.slug}` },
+        props: { locale, routeKey: 'events', event },
+      });
+    }
   }
   return paths;
 }
 
-const { locale, routeKey } = Astro.props;
+const { locale, routeKey, event } = Astro.props;
 ---
 
+{event && <EventDetailPage locale={locale} event={event} />}
 {routeKey === 'home' && <HomePage locale={locale} />}
-{routeKey === 'events' && <EventsPage locale={locale} />}
+{!event && routeKey === 'events' && <EventsPage locale={locale} />}
 {routeKey === 'menu' && <MenuPage locale={locale} />}
 {routeKey === 'careers' && <CareersPage locale={locale} />}
 {routeKey === 'reservations' && <ReservationsPage locale={locale} />}

@@ -75,8 +75,15 @@ assert('root redirect / -> /pl/', toml.includes('from = "/"') && toml.includes('
 assert('legacy /menu redirect', toml.includes('from = "/menu"'));
 
 // --- sitemap + no token leakage ---
+// Event detail pages are dynamic (one per event x locale), so derive their count
+// from the build instead of hardcoding it - otherwise adding an event in Drive
+// would fail CI and block the sync from publishing.
+const eventsDir = join(DIST, 'pl/wydarzenia');
+const eventCount = existsSync(eventsDir)
+  ? readdirSync(eventsDir).filter((e) => statSync(join(eventsDir, e)).isDirectory()).length
+  : 0;
 assert('sitemap.xml built', exists('sitemap.xml'));
-assert('sitemap has 50 urls', (read('sitemap.xml').match(/<loc>/g) || []).length === 50);
+assert(`sitemap urls = 50 base + ${eventCount} events x5`, (read('sitemap.xml').match(/<loc>/g) || []).length === 50 + eventCount * 5);
 
 function walk(dir) {
   let out = [];
@@ -90,7 +97,7 @@ function walk(dir) {
 const htmls = walk(DIST);
 const leaked = htmls.filter((f) => /\{(privacy|cookies|email|example|legalName|nip|regon)\}/.test(readFileSync(f, 'utf8')));
 assert('no leaked {tokens} in html', leaked.length === 0);
-assert('52 html pages built', htmls.length === 52);
+assert(`html pages = 52 base + ${eventCount} events x5`, htmls.length === 52 + eventCount * 5);
 
 // --- report ---
 let failed = 0;

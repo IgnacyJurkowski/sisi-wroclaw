@@ -5,6 +5,7 @@ import type { EventItem } from './site';
 export const GENERATED_EVENTS: EventItem[] = [
   {
     "title": "Friday at SiSi",
+    "slug": "2026-06-26-friday-at-sisi",
     "start": "2026-06-26T22:00:00+02:00",
     "note": "DJ ADB",
     "img": "/events/2026-06-26-friday-at-sisi.webp",

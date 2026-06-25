@@ -202,6 +202,7 @@ const pl = {
     upcoming: 'Nadchodzące',
     archive: 'Archiwum',
     scrollHint: 'przewiń →',
+    back: 'Wszystkie wydarzenia',
     empty: 'Wkrótce ogłosimy kolejne wydarzenia - śledź nas na Instagramie.',
   },
 

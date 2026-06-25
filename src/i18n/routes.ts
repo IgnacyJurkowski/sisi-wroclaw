@@ -49,6 +49,17 @@ export function alternates(key: RouteKey): { locale: Locale; path: string }[] {
   return LOCALES.map((locale) => ({ locale, path: localizedPath(key, locale) }));
 }
 
+/** Localized, trailing-slashed URL for one event's detail page, nested under the
+    localized events slug, e.g. /pl/wydarzenia/2026-06-26-friday-at-sisi/. */
+export function eventPath(slug: string, locale: Locale): string {
+  return `/${locale}/${SLUGS.events[locale]}/${slug}/`;
+}
+
+/** Every locale alternate for one event detail page (hreflang + canonical). */
+export function eventAlternates(slug: string): { locale: Locale; path: string }[] {
+  return LOCALES.map((locale) => ({ locale, path: eventPath(slug, locale) }));
+}
+
 /** Legacy pre-i18n Polish paths → route key, used to emit 301 redirects. */
 export const LEGACY_REDIRECTS: Record<string, RouteKey> = {
   '/wydarzenia': 'events',

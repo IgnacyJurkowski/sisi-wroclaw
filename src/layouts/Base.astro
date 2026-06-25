@@ -12,6 +12,11 @@ interface Props {
   /** route identity - drives canonical, hreflang and the active nav item.
       Omitted for utility pages (404), which are noindexed. */
   routeKey?: RouteKey;
+  /** explicit canonical/og:url path, overriding the routeKey-derived one
+      (used by dynamic pages like event details). */
+  path?: string;
+  /** explicit hreflang alternates, overriding alternates(routeKey). */
+  altPaths?: { locale: Locale; path: string }[];
   title: string;
   description: string;
   ogTitle?: string;
@@ -29,6 +34,8 @@ interface Props {
 const {
   locale,
   routeKey,
+  path,
+  altPaths,
   title,
   description,
   ogTitle,
@@ -45,12 +52,17 @@ const {
   schema = [],
 } = Astro.props;
 
-const canonical = routeKey ? new URL(localizedPath(routeKey, locale), Astro.site).href : undefined;
+const canonicalPath = path ?? (routeKey ? localizedPath(routeKey, locale) : undefined);
+const canonical = canonicalPath ? new URL(canonicalPath, Astro.site).href : undefined;
 const ogImageUrl = new URL(ogImage, Astro.site).href;
-const hreflangs = routeKey
-  ? alternates(routeKey).map((a) => ({ locale: a.locale, href: new URL(a.path, Astro.site).href }))
-  : [];
-const xDefault = routeKey ? new URL(localizedPath(routeKey, DEFAULT_LOCALE), Astro.site).href : undefined;
+const altList = altPaths ?? (routeKey ? alternates(routeKey) : []);
+const hreflangs = altList.map((a) => ({ locale: a.locale, href: new URL(a.path, Astro.site).href }));
+const xDefaultPath = altPaths
+  ? altPaths.find((a) => a.locale === DEFAULT_LOCALE)?.path
+  : routeKey
+    ? localizedPath(routeKey, DEFAULT_LOCALE)
+    : undefined;
+const xDefault = xDefaultPath ? new URL(xDefaultPath, Astro.site).href : undefined;
 const jsonLd = [nightClubSchema(locale), websiteSchema(locale), ...schema];
 
 // Index only the canonical production domain. Netlify deploy previews, branch

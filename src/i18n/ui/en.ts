@@ -199,6 +199,7 @@ const en: UI = {
     upcoming: 'Upcoming',
     archive: 'Archive',
     scrollHint: 'scroll →',
+    back: 'All events',
     empty: 'More events coming soon - follow us on Instagram.',
   },
 

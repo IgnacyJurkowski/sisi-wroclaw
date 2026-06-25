@@ -4,7 +4,7 @@
    dates) plus locale-aware JSON-LD builders. */
 
 import { type Locale } from '../i18n/config';
-import { localizedPath } from '../i18n/routes';
+import { localizedPath, eventPath } from '../i18n/routes';
 import { useTranslations } from '../i18n/t';
 import { GENERATED_EVENTS } from './events.generated';
 
@@ -30,6 +30,9 @@ export function reservationUrl(content: string): string {
 // render conditionally, so events without them look exactly as before.
 export type EventItem = {
   title: string;
+  /** url-safe id (date + title), e.g. "2026-06-26-friday-at-sisi"; the per-event
+      page lives at eventPath(slug, locale) and the banner at /events/<slug>.webp. */
+  slug: string;
   start: string;
   note?: string;
   img: string;
@@ -196,7 +199,6 @@ export function websiteSchema(locale: Locale = 'pl') {
 
 /** One Event object per night, with locale-aware event-page url. */
 export function eventSchema(list: EventItem[], locale: Locale = 'pl') {
-  const eventsUrl = absolute(localizedPath('events', locale));
   return list.map((e) => {
     const end = new Date(new Date(e.start).getTime() + EVENT_DURATION_MS).toISOString();
     const ev: Record<string, unknown> = {
@@ -208,7 +210,7 @@ export function eventSchema(list: EventItem[], locale: Locale = 'pl') {
       eventStatus: 'https://schema.org/EventScheduled',
       eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
       image: [absolute(e.img)],
-      url: eventsUrl,
+      url: absolute(eventPath(e.slug, locale)),
       location: { '@type': 'Place', name: BUSINESS.name, address: addressLd() },
       organizer: { '@type': 'Organization', name: BUSINESS.name, url: BUSINESS.url },
       offers: { '@type': 'Offer', url: RESERVATION_URL, availability: 'https://schema.org/InStock' },

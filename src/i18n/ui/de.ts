@@ -200,6 +200,7 @@ const de: UI = {
     upcoming: 'Kommende',
     archive: 'Archiv',
     scrollHint: 'scrollen →',
+    back: 'Alle Veranstaltungen',
     empty: 'Weitere Veranstaltungen folgen bald - folge uns auf Instagram.',
   },
 

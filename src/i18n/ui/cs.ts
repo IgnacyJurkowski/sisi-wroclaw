@@ -199,6 +199,7 @@ const cs: UI = {
     upcoming: 'Nadcházející',
     archive: 'Archiv',
     scrollHint: 'posunout →',
+    back: 'Všechny akce',
     empty: 'Brzy ohlásíme další akce - sledujte nás na Instagramu.',
   },
 

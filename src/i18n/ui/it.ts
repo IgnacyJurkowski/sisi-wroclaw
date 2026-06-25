@@ -199,6 +199,7 @@ const it: UI = {
     upcoming: 'In arrivo',
     archive: 'Archivio',
     scrollHint: 'scorri →',
+    back: 'Tutti gli eventi',
     empty: 'Presto annunceremo nuovi eventi - seguici su Instagram.',
   },
 
