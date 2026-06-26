@@ -121,16 +121,6 @@ html { scrollbar-width: thin; scrollbar-color: rgba(237, 219, 194, 0.28) transpa
   .js [data-reveal-group] > * { opacity: 1 !important; transition: none !important; }
 }
 
-/* Hero entrance is CSS-only (no JS dependency) and animates transform only -
-   the hero text paints immediately at full opacity, so it can be the LCP
-   element without waiting for GSAP. Transform never affects layout (no CLS).
-   Kept short and small so the above-the-fold view reaches visual completeness
-   fast (a long entrance inflates Speed Index). */
-@media (prefers-reduced-motion: no-preference) {
-  [data-hero] { animation: hero-in 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
-  .hero-actions[data-hero] { animation-delay: 0.08s; }
-}
-@keyframes hero-in { from { transform: translateY(14px); } to { transform: none; } }
 
 /* === FLOATING NAV === */
 #main-nav {
@@ -192,12 +182,10 @@ html { scrollbar-width: thin; scrollbar-color: rgba(237, 219, 194, 0.28) transpa
 .social-icon {
   display: inline-flex; align-items: center; justify-content: center;
   color: var(--text-dim);
-  transition: color 180ms ease, transform 180ms ease;
+  transition: color 180ms ease;
 }
-.social-icon:hover { color: var(--cream); transform: translateY(-1px); }
+.social-icon:hover { color: var(--cream); }
 .nav-social .social-icon svg { width: 18px; height: 18px; }
-/* No lift on the nav social icons (cleaner against the floating bar). */
-.nav-social .social-icon:hover { transform: none; }
 
 /* === HAMBURGER (3 lines that morph into an X when the menu is open) === */
 #hamburger {
@@ -302,8 +290,6 @@ footer::before {
 .footer-text-strong { color: var(--text); font-weight: 600; }
 
 .footer-social { display: flex; gap: 20px; margin-top: 16px; }
-/* Footer social icons: colour shift on hover only, no vertical lift. */
-.footer-social .social-icon:hover { transform: none; }
 
 .footer-bottom p {
   font-size: 12px; letter-spacing: 0.02em; color: rgba(237, 219, 194, 0.62);
@@ -463,9 +449,9 @@ footer::before {
 }
 .nav-links a:hover::after, .nav-links a[aria-current="page"]::after { transform: scaleX(1); }
 
-/* Cards lift on hover; archived event cards stay put (they're done). */
-.sisi-card, .ev-card { transition: transform 300ms ease, border-color 300ms ease, box-shadow 300ms ease; }
-.sisi-card:hover, .ev-card:hover { transform: translateY(-4px); border-color: rgba(237, 219, 194, 0.26); box-shadow: 0 18px 40px rgba(0, 0, 0, 0.38); }
+/* Cards brighten border and deepen shadow on hover. */
+.sisi-card, .ev-card { transition: border-color 300ms ease, box-shadow 300ms ease; }
+.sisi-card:hover, .ev-card:hover { border-color: rgba(237, 219, 194, 0.26); box-shadow: 0 18px 40px rgba(0, 0, 0, 0.38); }
 .ev-card.past:hover { transform: none; box-shadow: none; border-color: rgba(255, 255, 255, 0.08); }
 
 /* Visible, on-brand focus ring for keyboard users (trust + a11y). */
