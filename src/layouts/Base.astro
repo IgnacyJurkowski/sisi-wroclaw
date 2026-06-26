@@ -70,7 +70,7 @@ const jsonLd = [nightClubSchema(locale), websiteSchema(locale), ...schema];
 // deploys, and the *.netlify.app production deploy all stay out of the index
 // until sisiwroclaw.pl points at this build. Detected from Netlify's build env
 // (CONTEXT + URL), so no per-deploy host is hardcoded beyond the canonical one.
-const PRODUCTION_URL = 'https://sisiwroclaw.pl';
+const PRODUCTION_URL = 'https://sisi-wroclaw.netlify.app';
 const isProductionHost =
   process.env.CONTEXT === 'production' && process.env.URL === PRODUCTION_URL;
 const robotsContent = !isProductionHost
