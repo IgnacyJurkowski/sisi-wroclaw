@@ -19,12 +19,10 @@ const href = localizedPath('corporate', locale);
 </section>
 
 <style>
-  /* At >=1024px the shared 70% column rule sizes the card (and provides the
-     gutters), so the section has no horizontal padding and the card matches the
-     other sections' width exactly. Below 1024px the column rule is off and the
-     card runs full width, so it needs side gutters to stay off the edges. */
+  /* At >=1024px the shared 70% column rule sizes the card. Below 1024px the
+     column rule is off; the section goes full-width like every other section,
+     with internal gutters provided by the .container padding-inline: 32px. */
   .home-b2b { padding: 40px 0 96px; }
-  @media (max-width: 1023px) { .home-b2b { padding-inline: 24px; } }
   .home-b2b-inner {
     text-align: center;
     border: 1px solid var(--line); border-radius: 20px;
@@ -40,5 +38,5 @@ const href = localizedPath('corporate', locale);
     color: rgba(237, 219, 194, 0.62); font-size: 16px; line-height: 1.8;
     max-width: 540px; margin: 0 auto 28px;
   }
-  @media (max-width: 600px) { .home-b2b { padding: 24px 20px 72px; } .home-b2b-inner { padding: 36px 22px; } }
+  @media (max-width: 600px) { .home-b2b { padding: 24px 0 72px; } .home-b2b-inner { padding: 36px 22px; } }
 </style>
