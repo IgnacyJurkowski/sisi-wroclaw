@@ -10,11 +10,13 @@ const href = localizedPath('corporate', locale);
 ---
 
 <section class="home-b2b">
-  <div class="container home-b2b-inner" data-reveal>
-    <span class="page-label">{t.homeB2B.eyebrow}</span>
-    <h2 class="display home-b2b-title">{t.homeB2B.title}</h2>
-    <p class="home-b2b-body">{t.homeB2B.body}</p>
-    <a href={href} class="btn-cta">{t.nav.corporate}</a>
+  <div class="container">
+    <div class="home-b2b-inner" data-reveal>
+      <span class="page-label">{t.homeB2B.eyebrow}</span>
+      <h2 class="display home-b2b-title">{t.homeB2B.title}</h2>
+      <p class="home-b2b-body">{t.homeB2B.body}</p>
+      <a href={href} class="btn-cta">{t.nav.corporate}</a>
+    </div>
   </div>
 </section>
 
@@ -26,7 +28,7 @@ const href = localizedPath('corporate', locale);
   .home-b2b-inner {
     text-align: center;
     border: 1px solid var(--line); border-radius: 20px;
-    padding: 48px 32px; background: rgba(255, 255, 255, 0.02);
+    padding: 48px 24px; background: rgba(255, 255, 255, 0.02);
   }
   /* Title is uppercased in the i18n strings (not via text-transform) so the
      "SiSi" brand keeps its mixed case. */
