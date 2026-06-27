@@ -5,16 +5,23 @@ import { type Locale } from '../i18n/config';
 import { eventPath } from '../i18n/routes';
 import { formatEventDate, dateTimeAttr } from '../i18n/format';
 import { useTranslations } from '../i18n/t';
+import { variants, BANNER_WIDTHS } from '../lib/img';
 
 interface Props { event: EventItem; locale: Locale; past?: boolean }
 const { event, locale, past = false } = Astro.props;
 const t = useTranslations(locale);
 const href = eventPath(event.slug, locale);
+const v = variants(event.img, BANNER_WIDTHS);
+const imgSizes = '(max-width: 640px) 92vw, 30vw';
 ---
 
 <article class:list={['ev-card', { past }]}>
   <a class="ev-media" href={href} aria-label={event.title}>
-    <img src={event.img} alt={event.title} loading="lazy" />
+    <picture>
+      <source type="image/avif" srcset={v.avif} sizes={imgSizes} />
+      <source type="image/webp" srcset={v.webp} sizes={imgSizes} />
+      <img src={event.img} alt={event.title} loading="lazy" />
+    </picture>
   </a>
   <div class="ev-body">
     <h3 class="display ev-name"><a href={href}>{event.title}</a></h3>
@@ -49,6 +56,7 @@ const href = eventPath(event.slug, locale);
   /* 16:9 media that fills the column; padding-hack keeps the ratio even when the
      body column is taller. */
   .ev-media { position: relative; display: block; overflow: hidden; }
+  .ev-media picture { display: contents; }
   .ev-media::before { content: ''; display: block; padding-top: 56.25%; }
   .ev-media img {
     position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;

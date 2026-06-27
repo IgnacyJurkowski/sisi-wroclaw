@@ -1,6 +1,7 @@
 ---
 import { type Locale } from '../../i18n/config';
 import { useTranslations } from '../../i18n/t';
+import { variants, CARD_WIDTHS } from '../../lib/img';
 
 interface Props { locale: Locale }
 const { locale } = Astro.props;
@@ -11,7 +12,8 @@ const imgs = [
   '/framerusercontent.com/images/RHdmR5s8jXTtyexi8FJLI4WDkig.webp',
   '/framerusercontent.com/images/RMGSDUbOPnta4fZZQKL5BcnP3Pw.webp',
 ];
-const cards = imgs.map((img, i) => ({ img, title: t.about.cards[i] }));
+const cards = imgs.map((img, i) => ({ img, title: t.about.cards[i], v: variants(img, CARD_WIDTHS) }));
+const imgSizes = '(max-width: 600px) 90vw, (max-width: 900px) 45vw, 24vw';
 ---
 
 <section id="ewolucja-onas" class="about">
@@ -24,7 +26,11 @@ const cards = imgs.map((img, i) => ({ img, title: t.about.cards[i] }));
   <div class="container about-grid" data-reveal-group>
     {cards.map((c) => (
       <figure class="about-card">
-        <img src={c.img} alt={c.title} loading="lazy" />
+        <picture>
+          <source type="image/avif" srcset={c.v.avif} sizes={imgSizes} />
+          <source type="image/webp" srcset={c.v.webp} sizes={imgSizes} />
+          <img src={c.img} alt={c.title} loading="lazy" />
+        </picture>
         <figcaption class="display">{c.title}</figcaption>
       </figure>
     ))}
@@ -52,6 +58,7 @@ const cards = imgs.map((img, i) => ({ img, title: t.about.cards[i] }));
     aspect-ratio: 3 / 4;
     border: 1px solid rgba(255,255,255,0.08);
   }
+  .about-card picture { display: contents; }
   .about-card img {
     width: 100%; height: 100%; object-fit: cover;
     transition: transform 500ms ease;
