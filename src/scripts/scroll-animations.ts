@@ -42,28 +42,41 @@ function init() {
     ? []
     : Array.from(document.querySelectorAll<HTMLElement>('[data-parallax]'));
   if (parallaxEls.length) {
+    // Measure each element's document-relative top + height ONCE (and on resize),
+    // never inside the scroll handler. getBoundingClientRect() forces a synchronous
+    // layout, so calling it every frame made Lighthouse flag a "Forced reflow."
+    // The transforms we set are visual only and don't change these offsets, so the
+    // cached values stay valid; the scroll handler then reads only window.scrollY
+    // (free, no layout) and writes transforms.
+    let vh = window.innerHeight;
+    let bases: { top: number; height: number; amount: number }[] = [];
+    const measure = () => {
+      vh = window.innerHeight;
+      const y = window.scrollY;
+      bases = parallaxEls.map((el) => {
+        const rect = el.getBoundingClientRect();
+        return {
+          top: rect.top + y, // document-relative top, independent of scroll
+          height: rect.height,
+          amount: parseFloat(el.dataset.parallax || '') || 12,
+        };
+      });
+    };
     let ticking = false;
     const update = () => {
       ticking = false;
-      const vh = window.innerHeight;
-      // Two passes so we never interleave reads and writes: writing a transform
-      // invalidates layout, so a getBoundingClientRect() right after another
-      // element's write would force a synchronous reflow (Lighthouse flags it).
-      // Read every rect first, then write every transform.
-      const offsets = parallaxEls.map((el) => {
-        const amount = parseFloat(el.dataset.parallax || '') || 12;
-        const rect = el.getBoundingClientRect();
+      const y = window.scrollY;
+      parallaxEls.forEach((el, i) => {
+        const b = bases[i];
+        const top = b.top - y; // reconstruct viewport-relative top without a read
         // Progress is 0 when the element's top is at the viewport bottom and 1
         // when its bottom reaches the viewport top. Centering on 0.5 means the
-        // offset is 0 while the element fills/centers the viewport - which is
-        // the case for the hero at load, so the parallax never shifts the
-        // above-the-fold view *after* first paint (that would inflate Speed
-        // Index). The drift range is unchanged, just recentered on rest.
-        const progress = (vh - rect.top) / (vh + rect.height);
-        return (progress - 0.5) * amount;
-      });
-      parallaxEls.forEach((el, i) => {
-        el.style.transform = `translate3d(0, ${offsets[i].toFixed(2)}%, 0)`;
+        // offset is 0 while the element fills/centers the viewport - the case for
+        // the hero at load - so the parallax never shifts the above-the-fold view
+        // after first paint (that would inflate Speed Index).
+        const progress = (vh - top) / (vh + b.height);
+        const offset = (progress - 0.5) * b.amount;
+        el.style.transform = `translate3d(0, ${offset.toFixed(2)}%, 0)`;
       });
     };
     const onScroll = () => {
@@ -73,10 +86,10 @@ function init() {
       }
     };
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
-    // Defer the first pass to the next frame so the initial layout read doesn't
-    // force a reflow during the load/hydration burst.
-    requestAnimationFrame(update);
+    window.addEventListener('resize', () => { measure(); update(); }, { passive: true });
+    // Defer the one-time measurement to the next frame so it reads a settled
+    // layout rather than forcing one during the load/hydration burst.
+    requestAnimationFrame(() => { measure(); update(); });
   }
 
   document.documentElement.dataset.anim = 'ready';
