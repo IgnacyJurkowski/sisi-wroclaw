@@ -131,6 +131,10 @@ const robotsContent = !isProductionHost
     ))}
   </head>
   <body>
+    {/* Sits at 40px down the page; an IntersectionObserver toggles the nav's
+        scrolled state when it leaves the viewport — no scroll listener reading
+        window.scrollY (that read forces a layout flush -> "Forced reflow"). */}
+    <div id="nav-sentinel" aria-hidden="true"></div>
     <Particles />
     <Nav locale={locale} active={routeKey} />
     <main id="main">

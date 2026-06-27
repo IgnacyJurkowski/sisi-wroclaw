@@ -95,6 +95,11 @@ html { scrollbar-width: thin; scrollbar-color: rgba(237, 219, 194, 0.28) transpa
 }
 .skip-link:focus { top: 1rem; }
 
+/* Invisible marker the nav's IntersectionObserver watches (see nav.ts). At 40px
+   down the page; when it scrolls out of view the floating nav gets its scrolled
+   state — no scroll listener, no layout-forcing scrollY read. */
+#nav-sentinel { position: absolute; top: 40px; left: 0; width: 1px; height: 1px; pointer-events: none; }
+
 /* === SCROLL ANIMATIONS ===
    Applied only when JS is available (html.js). scroll-animations.ts adds
    `.is-in` when an element scrolls into view, fading it in. Fade only - no

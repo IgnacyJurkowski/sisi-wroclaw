@@ -3,10 +3,17 @@
 
 function initNavScroll() {
   const nav = document.getElementById('main-nav');
-  if (!nav) return;
-  const update = () => nav.classList.toggle('nav-scrolled', window.scrollY > 40);
-  window.addEventListener('scroll', update, { passive: true });
-  update();
+  const sentinel = document.getElementById('nav-sentinel');
+  if (!nav || !sentinel) return;
+  // Watch a sentinel 40px down the page instead of listening to scroll and
+  // reading window.scrollY. A scrollY read after the page mutates styles forces
+  // a synchronous layout flush (Lighthouse "Forced reflow"); IntersectionObserver
+  // computes visibility off the main thread, so the nav state costs no layout.
+  const io = new IntersectionObserver(
+    ([entry]) => nav.classList.toggle('nav-scrolled', !entry.isIntersecting),
+    { rootMargin: '0px' },
+  );
+  io.observe(sentinel);
 }
 
 function initHamburger() {
