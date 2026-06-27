@@ -46,7 +46,11 @@ function init() {
     const update = () => {
       ticking = false;
       const vh = window.innerHeight;
-      for (const el of parallaxEls) {
+      // Two passes so we never interleave reads and writes: writing a transform
+      // invalidates layout, so a getBoundingClientRect() right after another
+      // element's write would force a synchronous reflow (Lighthouse flags it).
+      // Read every rect first, then write every transform.
+      const offsets = parallaxEls.map((el) => {
         const amount = parseFloat(el.dataset.parallax || '') || 12;
         const rect = el.getBoundingClientRect();
         // Progress is 0 when the element's top is at the viewport bottom and 1
@@ -56,9 +60,11 @@ function init() {
         // above-the-fold view *after* first paint (that would inflate Speed
         // Index). The drift range is unchanged, just recentered on rest.
         const progress = (vh - rect.top) / (vh + rect.height);
-        const offset = (progress - 0.5) * amount;
-        el.style.transform = `translate3d(0, ${offset.toFixed(2)}%, 0)`;
-      }
+        return (progress - 0.5) * amount;
+      });
+      parallaxEls.forEach((el, i) => {
+        el.style.transform = `translate3d(0, ${offsets[i].toFixed(2)}%, 0)`;
+      });
     };
     const onScroll = () => {
       if (!ticking) {
@@ -68,7 +74,9 @@ function init() {
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll, { passive: true });
-    update();
+    // Defer the first pass to the next frame so the initial layout read doesn't
+    // force a reflow during the load/hydration burst.
+    requestAnimationFrame(update);
   }
 
   document.documentElement.dataset.anim = 'ready';

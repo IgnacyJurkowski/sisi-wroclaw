@@ -91,7 +91,12 @@ const vars = `--sm:${sm}; --md:${md}; --bg2:${bgDots}; --orb:${orbs}; --lg:${lg}
   .cir {
     position: absolute; top: 0; left: 0;
     border-radius: 50%; background: transparent;
-    will-change: transform, opacity;
+    /* Field is frozen (static) on purpose. The continuous drift + twinkle kept
+       the viewport pixels changing all through load, so the page never read as
+       "visually complete" and mobile Speed Index ballooned (~4.2s → a 97 cap).
+       A still field is still lovely — this is the same state reduced-motion got.
+       Re-enabling motion means re-introducing that Speed Index cost. */
+    animation: none !important;
   }
   .cir::after {
     content: ""; position: absolute; top: 2000px; left: 0;
@@ -127,9 +132,5 @@ const vars = `--sm:${sm}; --md:${md}; --bg2:${bgDots}; --orb:${orbs}; --lg:${lg}
   @keyframes tw {
     0%, 100% { opacity: var(--lo, 0.3); }
     50%      { opacity: 1; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .cir { animation: none; }
   }
 </style>
