@@ -144,5 +144,21 @@ const robotsContent = !isProductionHost
     <CookieBanner locale={locale} />
     <script>import '../scripts/nav.ts';</script>
     <script>import '../scripts/scroll-animations.ts';</script>
+    {/* Wake the frozen Particles backdrop only after the page is visually
+        complete (load + idle), so its continuous drift/twinkle never inflates
+        mobile Speed Index. Honours prefers-reduced-motion (the field stays
+        still); the CSS in Particles.astro guards this too. */}
+    <script is:inline>
+      (function () {
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        var live = function () { document.documentElement.classList.add('bg-live'); };
+        var idle = function () {
+          if ('requestIdleCallback' in window) requestIdleCallback(live, { timeout: 2000 });
+          else setTimeout(live, 200);
+        };
+        if (document.readyState === 'complete') idle();
+        else window.addEventListener('load', idle, { once: true });
+      })();
+    </script>
   </body>
 </html>

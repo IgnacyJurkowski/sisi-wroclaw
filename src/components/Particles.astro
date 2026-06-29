@@ -15,7 +15,9 @@
  * that makes the field sparkle). A duplicate ::after offset by the tile height
  * loops the drift seamlessly.
  *
- * Reduced motion freezes both drift and sparkle (a still field is still lovely).
+ * The field starts frozen and only begins to drift/twinkle once the page has
+ * finished loading (Base.astro adds html.bg-live after load + idle), so the
+ * motion never inflates mobile Speed Index. Reduced motion keeps it frozen.
  */
 type Rand = () => number;
 function rng(seed: number): Rand {
@@ -91,35 +93,54 @@ const vars = `--sm:${sm}; --md:${md}; --bg2:${bgDots}; --orb:${orbs}; --lg:${lg}
   .cir {
     position: absolute; top: 0; left: 0;
     border-radius: 50%; background: transparent;
-    /* Field is frozen (static) on purpose. The continuous drift + twinkle kept
-       the viewport pixels changing all through load, so the page never read as
-       "visually complete" and mobile Speed Index ballooned (~4.2s → a 97 cap).
-       A still field is still lovely — this is the same state reduced-motion got.
-       Re-enabling motion means re-introducing that Speed Index cost. */
-    animation: none !important;
+    /* The field starts frozen so it costs nothing during load: a continuously
+       animating backdrop kept repainting the viewport all through load, so the
+       page never read as "visually complete" and mobile Speed Index ballooned
+       (~4.2s → a 97 cap). A tiny script in Base.astro adds html.bg-live once the
+       page has finished loading (load + idle), and only then do the per-layer
+       drift/twinkle rules below switch on — motion returns without the Speed
+       Index cost. prefers-reduced-motion never animates (guard at the bottom). */
   }
+  html.bg-live .cir { will-change: transform, opacity; }
   .cir::after {
     content: ""; position: absolute; top: 2000px; left: 0;
     border-radius: 50%;
   }
-  .cir.sm  { width: 2px;  height: 2px;  box-shadow: var(--sm);  --lo: 0.35; animation: floatUp 90s linear infinite, tw 7s ease-in-out infinite; }
+  .cir.sm  { width: 2px;  height: 2px;  box-shadow: var(--sm);  --lo: 0.35; }
   .cir.sm::after  { width: 2px;  height: 2px;  box-shadow: var(--sm); }
-  .cir.md  { width: 3px;  height: 3px;  box-shadow: var(--md);  --lo: 0.4;  animation: floatUp 140s linear infinite, tw 9s ease-in-out infinite -3s; }
+  .cir.md  { width: 3px;  height: 3px;  box-shadow: var(--md);  --lo: 0.4;  }
   .cir.md::after  { width: 3px;  height: 3px;  box-shadow: var(--md); }
-  .cir.bg  { width: 4px;  height: 4px;  box-shadow: var(--bg2); --lo: 0.5;  animation: floatUp 200s linear infinite, tw 11s ease-in-out infinite -5s; }
+  .cir.bg  { width: 4px;  height: 4px;  box-shadow: var(--bg2); --lo: 0.5;  }
   .cir.bg::after  { width: 4px;  height: 4px;  box-shadow: var(--bg2); }
-  .cir.orb { width: 12px; height: 12px; box-shadow: var(--orb); filter: blur(0.5px); --lo: 0.6;  animation: floatUp 240s linear infinite, tw 15s ease-in-out infinite; }
+  .cir.orb { width: 12px; height: 12px; box-shadow: var(--orb); filter: blur(0.5px); --lo: 0.6;  }
   .cir.orb::after { width: 12px; height: 12px; box-shadow: var(--orb); }
-  .cir.lg  { width: 20px; height: 20px; box-shadow: var(--lg); filter: blur(1px);  --lo: 0.65; animation: floatUp 320s linear infinite, tw 19s ease-in-out infinite -4s; }
+  .cir.lg  { width: 20px; height: 20px; box-shadow: var(--lg); filter: blur(1px);  --lo: 0.65; }
   .cir.lg::after  { width: 20px; height: 20px; box-shadow: var(--lg); }
-  .cir.spA { width: 2px;  height: 2px;  box-shadow: var(--spA); --lo: 0.1;  animation: floatUp 70s linear infinite, tw 3.2s ease-in-out infinite; }
+  .cir.spA { width: 2px;  height: 2px;  box-shadow: var(--spA); --lo: 0.1;  }
   .cir.spA::after { width: 2px;  height: 2px;  box-shadow: var(--spA); }
-  .cir.spB { width: 2px;  height: 2px;  box-shadow: var(--spB); --lo: 0.12; animation: floatUp 82s linear infinite, tw 4.6s ease-in-out infinite -1.6s; }
+  .cir.spB { width: 2px;  height: 2px;  box-shadow: var(--spB); --lo: 0.12; }
   .cir.spB::after { width: 2px;  height: 2px;  box-shadow: var(--spB); }
   /* A few dots drifting the other way (downward), for a little cross-current.
      The ::after copy sits one tile ABOVE so the downward loop is seamless. */
-  .cir.dn  { width: 2px;  height: 2px;  box-shadow: var(--dn);  --lo: 0.3;  animation: floatDown 130s linear infinite, tw 8s ease-in-out infinite -2s; }
+  .cir.dn  { width: 2px;  height: 2px;  box-shadow: var(--dn);  --lo: 0.3;  }
   .cir.dn::after  { top: -2000px; width: 2px;  height: 2px;  box-shadow: var(--dn); }
+
+  /* Motion lives here: switched on only once html.bg-live is set (post-load,
+     see Base.astro). floatUp/floatDown drift (transform), tw twinkles (opacity)
+     — both compositor-only. Each layer's --lo (set above) is its dim point, so
+     big orbs pulse gently while sparks flicker hard. */
+  html.bg-live .cir.sm  { animation: floatUp 90s  linear infinite, tw 7s   ease-in-out infinite; }
+  html.bg-live .cir.md  { animation: floatUp 140s linear infinite, tw 9s   ease-in-out infinite -3s; }
+  html.bg-live .cir.bg  { animation: floatUp 200s linear infinite, tw 11s  ease-in-out infinite -5s; }
+  html.bg-live .cir.orb { animation: floatUp 240s linear infinite, tw 15s  ease-in-out infinite; }
+  html.bg-live .cir.lg  { animation: floatUp 320s linear infinite, tw 19s  ease-in-out infinite -4s; }
+  html.bg-live .cir.spA { animation: floatUp 70s  linear infinite, tw 3.2s ease-in-out infinite; }
+  html.bg-live .cir.spB { animation: floatUp 82s  linear infinite, tw 4.6s ease-in-out infinite -1.6s; }
+  html.bg-live .cir.dn  { animation: floatDown 130s linear infinite, tw 8s ease-in-out infinite -2s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html.bg-live .cir { animation: none; }
+  }
 
   @keyframes floatUp {
     from { transform: translateY(0); }
