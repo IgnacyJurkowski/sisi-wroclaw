@@ -13,8 +13,7 @@
     "test:build": "node scripts/check-build.mjs"
   },
   "dependencies": {
-    "astro": "^7.0.1",
-    "gsap": "^3.15.0"
+    "astro": "^7.0.1"
   },
   "devDependencies": {
     "google-auth-library": "^10.9.0",
