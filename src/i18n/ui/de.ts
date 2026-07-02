@@ -7,8 +7,8 @@ const de: UI = {
     home: {
       title: 'SiSi Wrocław - Music Club & Bar',
       description:
-        'SiSi ist das Herz des Breslauer Nachtlebens - Live-Musik, Top-DJs, Signature-Cocktails und eine einzigartige Atmosphäre im R32-Komplex.',
-      ogDescription: 'Live-Musik, DJs und Signature-Cocktails. Das Herz des Breslauer Nachtlebens.',
+        'SiSi - Music Club und Bar im R32-Komplex an der Rzeźnicza in Breslau. Live-Musik, DJs und Signature-Cocktails, freitags und samstags von 22 bis 4 Uhr.',
+      ogDescription: 'Live-Musik, DJs und Signature-Cocktails. Ein Music Club im Zentrum von Breslau.',
     },
     events: {
       title: 'Veranstaltungen - SiSi Wrocław',
@@ -28,8 +28,8 @@ const de: UI = {
     },
     reservations: {
       title: 'Reservierungen - SiSi Wrocław',
-      description: 'Reserviere einen Tisch im SiSi - dem Herz des Breslauer Nachtlebens. Reservierungsbedingungen und Kontakt für Firmenevents.',
-      ogDescription: 'Plane einen besonderen Abend und sichere dir deinen Platz im Herzen des Clubs.',
+      description: 'Reserviere einen Tisch im SiSi Wrocław. Reservierungsbedingungen und Kontakt für Firmenevents.',
+      ogDescription: 'Ein Tisch im SiSi: Der volle Reservierungsbetrag wird am Tisch angerechnet. Freitags und samstags ab 22 Uhr.',
     },
     corporate: {
       title: 'Firmenevents - SiSi & The Cork Wrocław',
@@ -91,7 +91,7 @@ const de: UI = {
   },
 
   footer: {
-    tagline: 'Das Herz des Breslauer Nachtlebens. Musik, Cocktails, Atmosphäre.',
+    tagline: 'Live-Musik, DJs und Cocktails im Zentrum von Breslau.',
     pagesHeading: 'Seiten',
     contactHeading: 'Kontakt',
     hoursHeading: 'Öffnungszeiten',
@@ -115,7 +115,7 @@ const de: UI = {
     calendar: 'Veranstaltungskalender',
     seeAllEvents: 'Alle Veranstaltungen',
     seeFullMenu: 'Barkarte ansehen',
-    discoverR32: 'R32 entdecken',
+    discoverR32: 'Mehr über R32',
     enquire: 'Termin anfragen',
     planEvent: 'Event planen',
     learnSpaces: 'Räume entdecken',
@@ -125,25 +125,25 @@ const de: UI = {
   hero: {
     titleLine1: 'DAS HERZ BRESLAUS',
     titleLine2: 'SCHLÄGT IM SiSi',
-    discover: 'ENTDECKEN',
+    discover: 'MEHR SEHEN',
   },
 
   about: {
     eyebrow: 'Über uns',
     title: 'Die musikalische Evolution des Abends',
     intro:
-      'SISI ist ein Ort, an dem der Abend seinen eigenen Rhythmus findet. Wir beginnen mit stimmungsvoller Live-Musik - der perfekte Rahmen zum Entspannen und für Gespräche. Dann geht es nahtlos über zu energiegeladenen Sets der besten DJs, die den Floor bis zum Morgengrauen in Bewegung halten. Wir schaffen einen Ort für Gäste, die höchste Qualität und eine unvergessliche, einzigartige Atmosphäre schätzen.',
+      'Im SISI beginnt die Nacht mit Live-Musik - an der Bar, bei einem Drink und einem Gespräch. Dann übernehmen die DJs, und der Floor läuft bis 4 Uhr. Freitags und samstags, im R32-Komplex an der Rzeźnicza.',
     cards: [
-      'Ein moderner Musikraum',
+      'Bar und Tanzfläche in einem Raum',
       'Friday Session',
-      'Live Acts: der musikalische Auftakt zu einer außergewöhnlichen Nacht',
+      'Live Acts: Live-Musik zum Auftakt der Nacht',
     ],
   },
 
   r32: {
     eyebrow: 'R32',
-    title: 'Eine Nacht ohne Kompromisse',
-    body: 'Beginne den Abend mit einem Dinner in unserem Restaurant The Cork und gleite nahtlos in die Welt von SISI - das pulsierende Herz des R32-Komplexes und ein Ort, an dem du länger bleiben willst.',
+    title: 'Dinner und Club an einer Adresse',
+    body: 'Beginne den Abend mit einem Dinner im The Cork und geh direkt weiter ins SISI - Restaurant und Club teilen sich denselben R32-Komplex an der Rzeźnicza 32-33.',
   },
 
   menuTeaser: {
@@ -152,15 +152,15 @@ const de: UI = {
     tabs: [
       {
         title: 'Cocktails',
-        body: 'Die Signature-Cocktails des SISI sind die Essenz moderner Mixology: Unsere erfahrenen Barkeeper verbinden mit künstlerischer Präzision beste Zutaten. Jede Kreation ist ein einzigartiges Erlebnis, das mit Geschmackstiefe und einer raffinierten "Wow"-Präsentation begeistert.',
+        body: 'Unsere Signature-Cocktails mixen wir selbst, nach eigenen Rezepten - von neu interpretierten Klassikern bis zu saisonalen Specials. Die vollständige Liste mit Preisen steht in der Barkarte.',
       },
       {
         title: 'Getränkekarte',
-        body: 'Wir setzen auf polnische Weingüter - unsere Karte ist eine Auswahl heimischer Weine, von trockenen Weißweinen bis zu kräftigen Rotweinen, glasweise und in der Flasche. Ergänzt wird sie durch sorgfältig ausgewählte Spirituosen und Biere, darunter belgische Klassiker - für jeden Geschmack.',
+        body: 'Wir setzen auf polnische Weingüter - unsere Karte ist eine Auswahl heimischer Weine, von trockenen Weißweinen bis zu kräftigen Rotweinen, glasweise und in der Flasche. Ergänzt wird sie durch sorgfältig ausgewählte Spirituosen und Biere, darunter belgische Klassiker.',
       },
       {
         title: 'Snacks',
-        body: 'Unser Night Menu wird von The Cork zubereitet - gemacht zum Teilen am Tisch: Kaviar, Austern, Käse- und Charcuterie-Platten. Elegante Häppchen, die den Abend bei einem Cocktail oder einem Glas Wein abrunden.',
+        body: 'Unser Night Menu wird von The Cork zubereitet - gemacht zum Teilen am Tisch: Kaviar, Austern, Käse- und Charcuterie-Platten. Häppchen, die zu einem Cocktail oder einem Glas Wein passen.',
       },
     ],
   },
@@ -181,8 +181,8 @@ const de: UI = {
   reservationsHome: {
     eyebrow: 'Reservierungen',
     title: 'Tisch reservieren',
-    body: 'Plane einen besonderen Abend und sichere dir einen komfortablen Platz im Herzen unseres Clubs. Die Online-Reservierung dauert nur einen Moment - den Rest überlass uns.',
-    reassure: 'Sofortige Bestätigung · die besten Tische sind zuerst weg',
+    body: 'Die Online-Buchung dauert nur einen Moment, und der volle Reservierungsbetrag wird am Tisch angerechnet. Freitags ist der Eintritt mit Reservierung frei.',
+    reassure: 'Wir bestätigen deine Reservierung und senden dir die Details, sobald sie angenommen ist',
     terms: 'Einlass ab 21 Jahren. Eine Tischreservierung kostet 50 zł pro Person, am Tisch anrechenbar; samstags gilt ein zusätzlicher Eintritt von 30 zł pro Person.',
     info: {
       hours: 'Zeiten',
@@ -321,7 +321,7 @@ const de: UI = {
   b2b: {
     hero: {
       eyebrow: 'Firmenevents im Zentrum von Breslau',
-      title: 'Ein Raum für Events, die in Erinnerung bleiben',
+      title: 'Tagsüber Konferenz, nachts Club',
       body: 'Von Konferenzen, Panels und Präsentationen bis zu Dinnern, Launches, Networking und abendlichen Firmenevents. Verbinde das Restaurant The Cork mit der Energie von SiSi und veranstalte das ganze Event an einem Ort.',
       ctaPrimary: 'Termin anfragen',
       ctaSecondary: 'Räume entdecken',
@@ -342,7 +342,7 @@ const de: UI = {
         { title: 'Konferenzen', body: 'Sessions mit Präsentationen und Programm, mit zwei Bildschirmen.' },
         { title: 'Panel-Diskussionen', body: 'Gespräche und Debatten mit Speakern und Publikum.' },
         { title: 'Präsentationen', body: 'Produktshows, Firmen-Updates und Vorträge.' },
-        { title: 'Produkt-Launches', body: 'Launch eines neuen Produkts oder einer Marke in eindrucksvollem Rahmen.' },
+        { title: 'Produkt-Launches', body: 'Launche ein Produkt oder eine Marke - Bar, Catering und Musik übernehmen wir vor Ort.' },
         { title: 'Firmen-Dinner', body: 'Sitzdinner im Restaurant The Cork.' },
         { title: 'Networking', body: 'Branchentreffen und entspannte Abende.' },
         { title: 'Firmenfeiern', body: 'Team-Feiern mit der Energie von SiSi.' },
@@ -365,7 +365,7 @@ const de: UI = {
       heading: 'Räume',
       theCork: {
         title: 'The Cork',
-        body: 'Ein Restaurant im Herzen von R32 - eine natürliche Kulisse für den offiziellen Teil und den Abend.',
+        body: 'Ein Restaurant im R32-Komplex - eine natürliche Kulisse für den offiziellen Teil und den Abend.',
         points: [
           'Sitzdinner, Präsentationen und Meetings am Tag',
           'Bis zu 150 Sitzplätze',
@@ -389,7 +389,7 @@ const de: UI = {
       heading: 'Warum diese Location',
       items: [
         { title: 'Offizieller Teil und Abend an einem Ort', body: 'Konferenz oder Dinner gehen direkt ins Abendprogramm über.' },
-        { title: 'Zentrum von Breslau', body: 'Günstige Lage im Herzen der Stadt.' },
+        { title: 'Zentrum von Breslau', body: 'Günstige Lage im Stadtzentrum.' },
         { title: 'Restaurant und Club', body: 'The Cork und SiSi in einem R32-Komplex.' },
         { title: 'Flexibles Format', body: 'Wir gestalten das Eventkonzept nach deinen Wünschen.' },
         { title: 'Zwei Bildschirme', body: 'Bereite Unterstützung für Präsentationen und Panels.' },
@@ -408,8 +408,8 @@ const de: UI = {
     },
     projects: {
       heading: 'Ausgewählte Veranstaltungen',
-      emptyTitle: 'Wir haben Erfahrung mit der Umsetzung großer Events.',
-      emptyBody: 'Ausgewählte Projekte folgen in Kürze.',
+      emptyTitle: 'Die Beschreibungen unserer ersten Projekte sind in Arbeit.',
+      emptyBody: 'Du brauchst Referenzen? Melde dich bei uns - wir erzählen dir von unseren bisherigen Events.',
     },
     faq: {
       heading: 'Häufige Fragen',

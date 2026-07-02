@@ -6,8 +6,8 @@ const it: UI = {
     home: {
       title: 'SiSi Wrocław - Music Club & Bar',
       description:
-        'SiSi è il cuore della vita notturna di Breslavia - musica dal vivo, i migliori DJ, cocktail d\'autore e un\'atmosfera unica nel complesso R32.',
-      ogDescription: 'Musica dal vivo, DJ e cocktail d\'autore. Il cuore della notte di Breslavia.',
+        'SiSi - music club e bar nel complesso R32 in via Rzeźnicza, a Breslavia. Musica dal vivo, DJ e cocktail d\'autore, venerdì e sabato dalle 22:00 alle 04:00.',
+      ogDescription: 'Musica dal vivo, DJ e cocktail d\'autore. Un music club nel centro di Breslavia.',
     },
     events: {
       title: 'Eventi - SiSi Wrocław',
@@ -27,8 +27,8 @@ const it: UI = {
     },
     reservations: {
       title: 'Prenotazioni - SiSi Wrocław',
-      description: 'Prenota un tavolo al SiSi - il cuore della notte di Breslavia. Condizioni di prenotazione e contatto per eventi aziendali.',
-      ogDescription: 'Pianifica una serata speciale e assicurati il tuo posto nel cuore del club.',
+      description: 'Prenota un tavolo al SiSi Wrocław. Condizioni di prenotazione e contatto per eventi aziendali.',
+      ogDescription: 'Un tavolo al SiSi: l\'intero importo della prenotazione è accreditato al tavolo. Venerdì e sabato dalle 22:00.',
     },
     corporate: {
       title: 'Eventi aziendali - SiSi & The Cork Wrocław',
@@ -90,7 +90,7 @@ const it: UI = {
   },
 
   footer: {
-    tagline: 'Il cuore della notte di Breslavia. Musica, cocktail, atmosfera.',
+    tagline: 'Musica dal vivo, DJ e cocktail nel centro di Breslavia.',
     pagesHeading: 'Pagine',
     contactHeading: 'Contatti',
     hoursHeading: 'Orari di apertura',
@@ -114,7 +114,7 @@ const it: UI = {
     calendar: 'Calendario eventi',
     seeAllEvents: 'Vedi tutti gli eventi',
     seeFullMenu: 'Vedi la carta del bar',
-    discoverR32: 'Scopri R32',
+    discoverR32: 'Di più su R32',
     enquire: 'Richiedi una data',
     planEvent: 'Pianifica il tuo evento',
     learnSpaces: 'Scopri gli spazi',
@@ -124,25 +124,25 @@ const it: UI = {
   hero: {
     titleLine1: 'IL CUORE DI BRESLAVIA',
     titleLine2: 'BATTE AL SiSi',
-    discover: 'SCOPRI',
+    discover: 'VEDI DI PIÙ',
   },
 
   about: {
     eyebrow: 'Chi siamo',
     title: 'L\'evoluzione musicale della serata',
     intro:
-      'SISI è uno spazio in cui la serata trova il suo ritmo. Iniziamo con musica dal vivo d\'atmosfera - lo sfondo perfetto per rilassarsi e conversare. Poi passiamo senza soluzione di continuità ai set energici dei migliori DJ, che fanno ballare fino all\'alba. Creiamo un luogo per gli ospiti che amano la massima qualità e un\'atmosfera unica e indimenticabile.',
+      'Al SISI la serata comincia con la musica dal vivo - al bancone, davanti a un drink e una chiacchierata. Poi la consolle passa ai DJ e la pista va avanti fino alle 4. Venerdì e sabato, nel complesso R32 in via Rzeźnicza.',
     cards: [
-      'Uno spazio musicale moderno',
+      'Bar e pista da ballo in un unico spazio',
       'Friday Session',
-      'Live Act: il preludio musicale a una notte straordinaria',
+      'Live Act: musica dal vivo per aprire la serata',
     ],
   },
 
   r32: {
     eyebrow: 'R32',
-    title: 'Una notte senza compromessi',
-    body: 'Inizia la serata con una cena al nostro ristorante The Cork, per scivolare poi nel mondo di SISI - il cuore pulsante del complesso R32 e un luogo in cui vorrai restare a lungo.',
+    title: 'Cena e club allo stesso indirizzo',
+    body: 'Inizia la serata con una cena da The Cork e passa direttamente al SISI - il ristorante e il club condividono lo stesso complesso R32, in via Rzeźnicza 32-33.',
   },
 
   menuTeaser: {
@@ -151,15 +151,15 @@ const it: UI = {
     tabs: [
       {
         title: 'Cocktail',
-        body: 'I cocktail d\'autore di SISI sono l\'essenza della mixology moderna: i nostri barman esperti uniscono con precisione artistica ingredienti di altissima qualità. Ogni creazione è un\'esperienza unica, che conquista per profondità di gusto e una presentazione raffinata con effetto "wow".',
+        body: 'I nostri cocktail d\'autore nascono al bancone, da ricette nostre - dai classici rivisitati alle proposte stagionali. La lista completa con i prezzi è nel menu del bar.',
       },
       {
         title: 'Carta degli alcolici',
-        body: 'Puntiamo sulle cantine polacche - la nostra carta è una selezione di vini locali, dai bianchi secchi ai rossi strutturati, serviti al calice e in bottiglia. La completano una scelta accurata di distillati e birre, tra cui i classici belgi - per tutti i gusti.',
+        body: 'Puntiamo sulle cantine polacche - la nostra carta è una selezione di vini locali, dai bianchi secchi ai rossi strutturati, serviti al calice e in bottiglia. La completa una scelta accurata di distillati e birre, tra cui i classici belgi.',
       },
       {
         title: 'Stuzzichini',
-        body: 'Il nostro Night Menu è preparato da The Cork - pensato per la condivisione al tavolo: caviale, ostriche, taglieri di formaggi e salumi (charcuterie). Stuzzichini eleganti che completano la serata davanti a un cocktail o a un calice di vino.',
+        body: 'Il nostro Night Menu è preparato da The Cork - pensato per la condivisione al tavolo: caviale, ostriche, taglieri di formaggi e salumi (charcuterie). Stuzzichini da accompagnare a un cocktail o a un calice di vino.',
       },
     ],
   },
@@ -180,8 +180,8 @@ const it: UI = {
   reservationsHome: {
     eyebrow: 'Prenotazioni',
     title: 'Prenota un tavolo',
-    body: 'Pianifica una serata speciale e assicurati un posto comodo nel cuore del nostro club. Prenotare online richiede un attimo - al resto pensiamo noi.',
-    reassure: 'Conferma immediata · i tavoli migliori vanno per primi',
+    body: 'Prenotare online richiede un attimo e l\'intero importo della prenotazione è accreditato al tavolo. Il venerdì, con la prenotazione, l\'ingresso è gratuito.',
+    reassure: 'Confermiamo la prenotazione e inviamo i dettagli dopo l\'accettazione',
     terms: 'Solo over 21. La prenotazione di un tavolo è di 50 zł a persona, utilizzabili al tavolo; il sabato si applica un ingresso aggiuntivo di 30 zł a persona.',
     info: {
       hours: 'Orari',
@@ -320,7 +320,7 @@ const it: UI = {
   b2b: {
     hero: {
       eyebrow: 'Eventi aziendali nel centro di Breslavia',
-      title: 'Uno spazio per eventi che restano impressi',
+      title: 'Conferenza di giorno, club di sera',
       body: 'Da conferenze, panel e presentazioni a cene, lanci, networking ed eventi aziendali serali. Unisci il ristorante The Cork all\'energia di SiSi e organizza l\'intero evento in un solo luogo.',
       ctaPrimary: 'Richiedi una data',
       ctaSecondary: 'Scopri gli spazi',
@@ -341,7 +341,7 @@ const it: UI = {
         { title: 'Conferenze', body: 'Sessioni con presentazioni e programma, con due schermi.' },
         { title: 'Panel di discussione', body: 'Talk e dibattiti con relatori e pubblico.' },
         { title: 'Presentazioni', body: 'Demo di prodotto, aggiornamenti aziendali e interventi.' },
-        { title: 'Lanci di prodotto', body: 'Lancia un nuovo prodotto o brand in una cornice d\'effetto.' },
+        { title: 'Lanci di prodotto', body: 'Lancia un prodotto o un brand - bar, catering e musica sul posto.' },
         { title: 'Cene aziendali', body: 'Cene a sedere nel ristorante The Cork.' },
         { title: 'Networking', body: 'Incontri di settore e serate informali.' },
         { title: 'Feste aziendali', body: 'Feste di team con l\'energia di SiSi.' },
@@ -364,7 +364,7 @@ const it: UI = {
       heading: 'Spazi',
       theCork: {
         title: 'The Cork',
-        body: 'Un ristorante nel cuore di R32 - una cornice naturale per la parte ufficiale e la serata.',
+        body: 'Un ristorante all\'interno del complesso R32 - una cornice naturale per la parte ufficiale e la serata.',
         points: [
           'Cene a sedere, presentazioni e riunioni diurne',
           'Fino a 150 posti a sedere',
@@ -388,7 +388,7 @@ const it: UI = {
       heading: 'Perché questa location',
       items: [
         { title: 'Parte ufficiale e serata in un solo luogo', body: 'Una conferenza o una cena scorre direttamente nel programma serale.' },
-        { title: 'Centro di Breslavia', body: 'Posizione comoda nel cuore della città.' },
+        { title: 'Centro di Breslavia', body: 'Posizione comoda in pieno centro città.' },
         { title: 'Ristorante e club', body: 'The Cork e SiSi nello stesso complesso R32.' },
         { title: 'Formato flessibile', body: 'Costruiamo il concept dell\'evento sulle tue esigenze.' },
         { title: 'Due schermi', body: 'Supporto pronto per presentazioni e panel.' },
@@ -407,8 +407,8 @@ const it: UI = {
     },
     projects: {
       heading: 'Eventi selezionati',
-      emptyTitle: 'Abbiamo esperienza nella realizzazione di grandi eventi.',
-      emptyBody: 'A breve mostreremo alcuni progetti selezionati.',
+      emptyTitle: 'Stiamo preparando le schede dei primi progetti.',
+      emptyBody: 'Ti servono referenze? Scrivici - ti raccontiamo gli eventi già realizzati.',
     },
     faq: {
       heading: 'Domande frequenti',

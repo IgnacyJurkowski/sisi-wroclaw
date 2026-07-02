@@ -53,7 +53,7 @@ assert('form section id present', enB2B.includes('id="b2b-enquiry"'));
 assert('FAQ rendered (FAQPage matches visible Q&A)', enB2B.includes('"@type":"FAQPage"') && enB2B.includes('How many seated guests'));
 
 // --- case studies: no published project -> neutral empty state, no fake client ---
-assert('empty projects state shown', enB2B.includes('Selected projects will be added soon'));
+assert('empty projects state shown', enB2B.includes('Write-ups of our first projects are in the works'));
 assert('no dev example client leaked', !enB2B.includes('example-conference') && !enB2B.includes('TODO: nazwa'));
 
 // --- form: required markers, hidden locale, honeypot, consent required ---

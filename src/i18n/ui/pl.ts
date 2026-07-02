@@ -8,13 +8,13 @@ const pl = {
     home: {
       title: 'SiSi Wrocław - Music Club & Bar',
       description:
-        'SiSi to serce nocnego Wrocławia - muzyka na żywo, najlepsi DJ-e, autorskie koktajle i wyjątkowa atmosfera w sercu kompleksu R32.',
-      ogDescription: 'Muzyka na żywo, DJ-e, autorskie koktajle. Serce nocnego Wrocławia.',
+        'SiSi - klub muzyczny i bar w kompleksie R32 przy Rzeźniczej we Wrocławiu. Muzyka na żywo, DJ-e i autorskie koktajle w piątki i soboty, 22:00-04:00.',
+      ogDescription: 'Muzyka na żywo, DJ-e i autorskie koktajle. Klub muzyczny w centrum Wrocławia.',
     },
     events: {
       title: 'Wydarzenia - SiSi Wrocław',
       description:
-        'Nadchodzące wydarzenia w SiSi Wrocław - koncerty, DJ-e i imprezy tematyczne w sercu kompleksu R32. Zobacz też archiwum minionych nocy.',
+        'Nadchodzące wydarzenia w SiSi Wrocław - koncerty, DJ-e i imprezy tematyczne w kompleksie R32. Zobacz też archiwum minionych nocy.',
       ogDescription: 'Koncerty, DJ-e i imprezy tematyczne. Nadchodzące wydarzenia i archiwum SiSi Wrocław.',
     },
     menu: {
@@ -29,14 +29,14 @@ const pl = {
     },
     reservations: {
       title: 'Rezerwacje - SiSi Wrocław',
-      description: 'Zarezerwuj stolik w SiSi - serce nocnego Wrocławia. Warunki rezerwacji i kontakt do eventów firmowych.',
-      ogDescription: 'Zaplanuj wyjątkowy wieczór i zarezerwuj miejsce w sercu naszego klubu.',
+      description: 'Zarezerwuj stolik w SiSi Wrocław. Warunki rezerwacji i kontakt do eventów firmowych.',
+      ogDescription: 'Stolik w SiSi: cała kwota rezerwacji do wykorzystania przy stoliku. Piątki i soboty od 22:00.',
     },
     corporate: {
       title: 'Eventy firmowe - SiSi & The Cork Wrocław',
       description:
         'Przestrzeń na eventy firmowe w centrum Wrocławia: konferencje, panele, prezentacje, kolacje, premiery i networking. 663 m², do 150 miejsc siedzących w The Cork, 2 ekrany.',
-      ogDescription: 'Konferencje, prezentacje, kolacje i wieczorne eventy firmowe w sercu Wrocławia. SiSi & The Cork.',
+      ogDescription: 'Konferencje, prezentacje, kolacje i wieczorne eventy firmowe w centrum Wrocławia. SiSi & The Cork.',
     },
     contact: {
       title: 'Kontakt - SiSi Wrocław',
@@ -92,7 +92,7 @@ const pl = {
   },
 
   footer: {
-    tagline: 'Serce nocnego Wrocławia. Muzyka, koktajle, atmosfera.',
+    tagline: 'Muzyka na żywo, DJ-e i koktajle w centrum Wrocławia.',
     pagesHeading: 'Strony',
     contactHeading: 'Kontakt',
     hoursHeading: 'Godziny otwarcia',
@@ -117,7 +117,7 @@ const pl = {
     calendar: 'Kalendarz imprez',
     seeAllEvents: 'Zobacz wszystkie wydarzenia',
     seeFullMenu: 'Zobacz kartę baru',
-    discoverR32: 'Odkryj R32',
+    discoverR32: 'Poznaj R32',
     enquire: 'Zapytaj o termin',
     planEvent: 'Zaplanuj wydarzenie',
     learnSpaces: 'Poznaj przestrzenie',
@@ -127,25 +127,25 @@ const pl = {
   hero: {
     titleLine1: 'SERCE WROCŁAWIA',
     titleLine2: 'BIJE W SiSi',
-    discover: 'ODKRYJ',
+    discover: 'ZOBACZ WIĘCEJ',
   },
 
   about: {
     eyebrow: 'O nas',
     title: 'Muzyczna ewolucja wieczoru',
     intro:
-      'SISI to przestrzeń, w której wieczór ma swój wyjątkowy rytm. Rozpoczynamy od klimatycznej muzyki na żywo, która tworzy idealne tło dla relaksu i rozmów. Następnie płynnie przechodzimy do dynamicznych setów najlepszych DJ-ów, gwarantujących energię i taniec do samego rana. Tworzymy miejsce dla gości ceniących najwyższą jakość i niezapomnianą, wyjątkową atmosferę.',
+      'W SISI wieczór zaczyna się od muzyki na żywo - przy barze, przy rozmowie. Później za konsoletę wchodzą DJ-e, a parkiet działa do 4 rano. Piątki i soboty, w kompleksie R32 przy Rzeźniczej.',
     cards: [
-      'Nowoczesna przestrzeń muzyczna',
+      'Bar i parkiet w jednej przestrzeni',
       'Friday Session',
-      'Live Acty: muzyczny wstęp do wyjątkowej nocy',
+      'Live Acty: muzyka na żywo na start nocy',
     ],
   },
 
   r32: {
     eyebrow: 'R32',
-    title: 'Noc bez kompromisów',
-    body: 'Zacznij wieczór od kolacji w naszej restauracji The Cork, by płynnie przenieść się do świata SISI - pulsującego serca kompleksu R32 i miejsca, w którym zechcesz zostać na dłużej.',
+    title: 'Kolacja i klub pod jednym adresem',
+    body: 'Zacznij wieczór od kolacji w The Cork i przejdź prosto do SISI - restauracja i klub działają w tym samym kompleksie R32 przy Rzeźniczej 32-33.',
   },
 
   menuTeaser: {
@@ -154,15 +154,15 @@ const pl = {
     tabs: [
       {
         title: 'Koktajle',
-        body: 'Autorskie koktajle SISI to esencja nowoczesnej miksologii, w której nasi doświadczeni barmani z artystyczną precyzją łączą najwyższej jakości składniki. Każda kompozycja stanowi unikalne doznanie, zachwycające zarówno głębią smaku, jak i wyszukaną formą prezentacji z efektem "wow".',
+        body: 'Koktajle autorskie mieszamy na miejscu, według własnych receptur - od klasyki w nowej odsłonie po pozycje sezonowe. Pełna lista z cenami czeka w karcie baru.',
       },
       {
         title: 'Karta alkoholi',
-        body: 'Stawiamy na polskie winnice - nasza karta to selekcja rodzimych win, od wytrawnych bieli po pełne czerwienie, podawanych kieliszkiem i butelką. Uzupełnia ją starannie wybrany wachlarz alkoholi oraz piw, w tym belgijskich klasyków - tak, by każdy znalazł coś dla siebie.',
+        body: 'Stawiamy na polskie winnice - nasza karta to selekcja rodzimych win, od wytrawnych bieli po pełne czerwienie, podawanych kieliszkiem i butelką. Uzupełniają ją starannie wybrane alkohole i piwa, w tym belgijskie klasyki.',
       },
       {
         title: 'Przekąski',
-        body: 'Nasze Night Menu przygotowuje The Cork - to propozycja stworzona do dzielenia się przy stoliku: kawior, ostrygi, deski serów i wędlin (charcuterie). Eleganckie przekąski, które idealnie dopełniają wieczór przy koktajlu lub kieliszku wina.',
+        body: 'Nasze Night Menu przygotowuje The Cork - to propozycja stworzona do dzielenia się przy stoliku: kawior, ostrygi, deski serów i wędlin (charcuterie). Przekąski do koktajlu lub kieliszka wina.',
       },
     ],
   },
@@ -183,8 +183,8 @@ const pl = {
   reservationsHome: {
     eyebrow: 'Rezerwacje',
     title: 'Zarezerwuj stolik',
-    body: 'Zaplanuj wyjątkowy wieczór i zapewnij sobie komfortowe miejsce w sercu naszego klubu. Rezerwacja online zajmuje chwilę - resztę zostaw nam.',
-    reassure: 'Potwierdzenie od ręki · najlepsze stoliki znikają pierwsze',
+    body: 'Rezerwacja online zajmuje chwilę, a cała kwota rezerwacji jest do wykorzystania przy stoliku. W piątki wstęp z rezerwacją jest bezpłatny.',
+    reassure: 'Potwierdzenie i szczegóły wysyłamy po akceptacji rezerwacji',
     terms: 'Klub 21+. Rezerwacja stolika to 50 zł od osoby do wykorzystania przy stoliku; w soboty obowiązuje dodatkowy wstęp 30 zł od osoby.',
     info: {
       hours: 'Godziny',
@@ -328,7 +328,7 @@ const pl = {
   b2b: {
     hero: {
       eyebrow: 'Eventy firmowe w centrum Wrocławia',
-      title: 'Przestrzeń na wydarzenia, które zostają w pamięci',
+      title: 'Konferencja w dzień, klub wieczorem',
       body: 'Od konferencji, paneli i prezentacji po kolacje, premiery, networking i wieczorne wydarzenia firmowe. Połącz restaurację The Cork z energią SiSi i zorganizuj cały event w jednym miejscu.',
       ctaPrimary: 'Zapytaj o termin',
       ctaSecondary: 'Poznaj przestrzenie',
@@ -349,7 +349,7 @@ const pl = {
         { title: 'Konferencje', body: 'Spotkania z prezentacjami i częścią merytoryczną, z wykorzystaniem dwóch ekranów.' },
         { title: 'Panele dyskusyjne', body: 'Rozmowy i debaty z udziałem prelegentów oraz publiczności.' },
         { title: 'Prezentacje', body: 'Pokazy produktów, podsumowania i wystąpienia firmowe.' },
-        { title: 'Premiery produktów', body: 'Premiera nowego produktu lub marki w efektownej oprawie.' },
+        { title: 'Premiery produktów', body: 'Premiera produktu lub marki - z barem, cateringiem i muzyką na miejscu.' },
         { title: 'Kolacje firmowe', body: 'Zasiadane kolacje w restauracji The Cork.' },
         { title: 'Networking', body: 'Spotkania branżowe i wieczory w swobodnej atmosferze.' },
         { title: 'Imprezy firmowe', body: 'Wieczory integracyjne i świętowanie z energią klubu SiSi.' },
@@ -372,7 +372,7 @@ const pl = {
       heading: 'Przestrzenie',
       theCork: {
         title: 'The Cork',
-        body: 'Restauracja w sercu R32 - naturalna sceneria na część oficjalną i wieczór.',
+        body: 'Restauracja w kompleksie R32 - naturalna sceneria na część oficjalną i wieczór.',
         points: [
           'Zasiadane kolacje, prezentacje i spotkania w ciągu dnia',
           'Do 150 miejsc siedzących',
@@ -396,7 +396,7 @@ const pl = {
       heading: 'Dlaczego to miejsce',
       items: [
         { title: 'Część oficjalna i wieczór w jednym miejscu', body: 'Konferencja lub kolacja płynnie przechodzą w wieczorny program.' },
-        { title: 'Centrum Wrocławia', body: 'Dogodna lokalizacja w sercu miasta.' },
+        { title: 'Centrum Wrocławia', body: 'Dogodna lokalizacja w centrum miasta.' },
         { title: 'Restauracja i klub', body: 'The Cork i SiSi w ramach jednego kompleksu R32.' },
         { title: 'Elastyczny format', body: 'Koncepcję wydarzenia dopasowujemy do Twoich potrzeb.' },
         { title: 'Dwa ekrany', body: 'Gotowe zaplecze do prezentacji i paneli.' },
@@ -415,8 +415,8 @@ const pl = {
     },
     projects: {
       heading: 'Wybrane realizacje',
-      emptyTitle: 'Mamy doświadczenie w realizacji dużych wydarzeń.',
-      emptyBody: 'Wkrótce pokażemy wybrane projekty.',
+      emptyTitle: 'Pracujemy nad opisami pierwszych realizacji.',
+      emptyBody: 'Chcesz referencje? Napisz do nas - opowiemy o zrealizowanych wydarzeniach.',
     },
     faq: {
       heading: 'Najczęstsze pytania',

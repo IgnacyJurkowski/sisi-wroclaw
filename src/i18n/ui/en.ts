@@ -6,8 +6,8 @@ const en: UI = {
     home: {
       title: 'SiSi Wrocław - Music Club & Bar',
       description:
-        'SiSi is the heart of nightlife in Wrocław - live music, top DJs, signature cocktails and a one-of-a-kind atmosphere inside the R32 complex.',
-      ogDescription: 'Live music, DJs and signature cocktails. The heart of nightlife in Wrocław.',
+        'SiSi - music club and bar in the R32 complex on Rzeźnicza, Wrocław. Live music, DJs and signature cocktails, Fridays and Saturdays, 22:00-04:00.',
+      ogDescription: 'Live music, DJs and signature cocktails. A music club in central Wrocław.',
     },
     events: {
       title: 'Events - SiSi Wrocław',
@@ -27,8 +27,8 @@ const en: UI = {
     },
     reservations: {
       title: 'Reservations - SiSi Wrocław',
-      description: 'Book a table at SiSi - the heart of nightlife in Wrocław. Reservation terms and a contact for corporate events.',
-      ogDescription: 'Plan a memorable night and book your spot in the heart of the club.',
+      description: 'Book a table at SiSi Wrocław. Reservation terms and a contact for corporate events.',
+      ogDescription: 'A table at SiSi: the full reservation amount is credited at your table. Fridays and Saturdays from 22:00.',
     },
     corporate: {
       title: 'Corporate Events - SiSi & The Cork Wrocław',
@@ -90,7 +90,7 @@ const en: UI = {
   },
 
   footer: {
-    tagline: 'The heart of nightlife in Wrocław. Music, cocktails, atmosphere.',
+    tagline: 'Live music, DJs and cocktails in central Wrocław.',
     pagesHeading: 'Pages',
     contactHeading: 'Contact',
     hoursHeading: 'Opening hours',
@@ -114,7 +114,7 @@ const en: UI = {
     calendar: 'Event calendar',
     seeAllEvents: 'See all events',
     seeFullMenu: 'View the bar menu',
-    discoverR32: 'Discover R32',
+    discoverR32: 'More about R32',
     enquire: 'Request a date',
     planEvent: 'Plan your event',
     learnSpaces: 'Explore the spaces',
@@ -124,25 +124,25 @@ const en: UI = {
   hero: {
     titleLine1: 'THE HEART OF WROCŁAW',
     titleLine2: 'BEATS AT SiSi',
-    discover: 'DISCOVER',
+    discover: 'SEE MORE',
   },
 
   about: {
     eyebrow: 'About us',
     title: 'The musical evolution of the night',
     intro:
-      'SISI is a space where the evening finds its own rhythm. We open with atmospheric live music - the perfect backdrop for unwinding and conversation. Then we move seamlessly into high-energy sets from the best DJs, keeping the floor going until dawn. We create a place for guests who value the highest quality and an unforgettable, singular atmosphere.',
+      'At SISI the night starts with live music - at the bar, over a drink and a conversation. Then the DJs take over and the floor runs until 4 am. Fridays and Saturdays, inside the R32 complex on Rzeźnicza.',
     cards: [
-      'A modern music space',
+      'Bar and dance floor in one room',
       'Friday Session',
-      'Live Acts: the musical prelude to an extraordinary night',
+      'Live Acts: live music to open the night',
     ],
   },
 
   r32: {
     eyebrow: 'R32',
-    title: 'A night without compromise',
-    body: 'Start the evening with dinner at our restaurant The Cork, then drift seamlessly into the world of SISI - the pulsing heart of the R32 complex and a place you will want to stay.',
+    title: 'Dinner and the club at one address',
+    body: 'Start the evening with dinner at The Cork and walk straight into SISI - the restaurant and the club share the same R32 complex at Rzeźnicza 32-33.',
   },
 
   menuTeaser: {
@@ -151,15 +151,15 @@ const en: UI = {
     tabs: [
       {
         title: 'Cocktails',
-        body: 'SISI signature cocktails are the essence of modern mixology, where our experienced bartenders combine top-quality ingredients with artistic precision. Each creation is a unique experience that delights with both depth of flavour and a refined, "wow" presentation.',
+        body: 'We mix our signature cocktails in-house, to our own recipes - from reworked classics to seasonal specials. The full list with prices is on the bar menu.',
       },
       {
         title: 'Drinks list',
-        body: 'We champion Polish vineyards - our list is a selection of homegrown wines, from dry whites to full-bodied reds, served by the glass and the bottle. It is rounded out by a carefully chosen range of spirits and beers, including Belgian classics - so everyone finds their thing.',
+        body: 'We champion Polish vineyards - our list is a selection of homegrown wines, from dry whites to full-bodied reds, served by the glass and the bottle. A curated range of spirits and beers rounds it out, including Belgian classics.',
       },
       {
         title: 'Bites',
-        body: 'Our Night Menu is prepared by The Cork - made for sharing at the table: caviar, oysters, cheese and charcuterie boards. Elegant bites that round off an evening over a cocktail or a glass of wine.',
+        body: 'Our Night Menu is prepared by The Cork - made for sharing at the table: caviar, oysters, cheese and charcuterie boards. Bites to go with a cocktail or a glass of wine.',
       },
     ],
   },
@@ -180,8 +180,8 @@ const en: UI = {
   reservationsHome: {
     eyebrow: 'Reservations',
     title: 'Book a table',
-    body: 'Plan a special evening and secure a comfortable spot in the heart of our club. Booking online takes a moment - leave the rest to us.',
-    reassure: 'Instant confirmation · the best tables go first',
+    body: 'Booking online takes a moment, and the full reservation amount is credited at your table. On Fridays entry is free with a reservation.',
+    reassure: 'We confirm your booking and send the details once it is accepted',
     terms: 'Over-21s only. A table reservation is 50 zł per person, credited at your table; on Saturdays a 30 zł per-person entry applies.',
     info: {
       hours: 'Hours',
@@ -320,7 +320,7 @@ const en: UI = {
   b2b: {
     hero: {
       eyebrow: 'Corporate events in central Wrocław',
-      title: 'A space for events that stay with people',
+      title: 'A conference by day, a club by night',
       body: 'From conferences, panels and presentations to dinners, launches, networking and evening corporate events. Combine the restaurant The Cork with the energy of SiSi and host the whole event in one place.',
       ctaPrimary: 'Request a date',
       ctaSecondary: 'Explore the spaces',
@@ -341,7 +341,7 @@ const en: UI = {
         { title: 'Conferences', body: 'Sessions with presentations and a content programme, using two screens.' },
         { title: 'Panel discussions', body: 'Talks and debates with speakers and an audience.' },
         { title: 'Presentations', body: 'Product showcases, company updates and talks.' },
-        { title: 'Product launches', body: 'Launch a new product or brand with a striking setting.' },
+        { title: 'Product launches', body: 'Launch a product or brand - bar, catering and music handled on site.' },
         { title: 'Corporate dinners', body: 'Seated dinners in the restaurant The Cork.' },
         { title: 'Networking', body: 'Industry meetups and relaxed evenings.' },
         { title: 'Company parties', body: 'Team celebrations with the energy of SiSi.' },
@@ -364,7 +364,7 @@ const en: UI = {
       heading: 'Spaces',
       theCork: {
         title: 'The Cork',
-        body: 'A restaurant in the heart of R32 - a natural setting for the formal part and the evening.',
+        body: 'A restaurant inside the R32 complex - a natural setting for the formal part and the evening.',
         points: [
           'Seated dinners, presentations and daytime meetings',
           'Up to 150 seated guests',
@@ -388,7 +388,7 @@ const en: UI = {
       heading: 'Why this venue',
       items: [
         { title: 'Formal part and evening in one place', body: 'A conference or dinner flows straight into the evening programme.' },
-        { title: 'Central Wrocław', body: 'A convenient location in the heart of the city.' },
+        { title: 'Central Wrocław', body: 'A convenient location in the city centre.' },
         { title: 'Restaurant and club', body: 'The Cork and SiSi within a single R32 destination.' },
         { title: 'A flexible format', body: 'We shape the event concept around your needs.' },
         { title: 'Two screens', body: 'Ready support for presentations and panels.' },
@@ -407,8 +407,8 @@ const en: UI = {
     },
     projects: {
       heading: 'Selected projects',
-      emptyTitle: 'We have experience delivering large-scale events.',
-      emptyBody: 'Selected projects will be added soon.',
+      emptyTitle: 'Write-ups of our first projects are in the works.',
+      emptyBody: 'Need references? Get in touch - we will walk you through past events.',
     },
     faq: {
       heading: 'Frequently asked questions',

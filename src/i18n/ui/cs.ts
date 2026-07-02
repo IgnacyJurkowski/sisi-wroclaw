@@ -6,8 +6,8 @@ const cs: UI = {
     home: {
       title: 'SiSi Wrocław - Music Club & Bar',
       description:
-        'SiSi je srdcem nočního života ve Vratislavi - živá hudba, špičkoví DJ, autorské koktejly a jedinečná atmosféra v komplexu R32.',
-      ogDescription: 'Živá hudba, DJ a autorské koktejly. Srdce noční Vratislavi.',
+        'SiSi - hudební klub a bar v komplexu R32 na ulici Rzeźnicza ve Vratislavi. Živá hudba, DJ a autorské koktejly, pátky a soboty 22:00-04:00.',
+      ogDescription: 'Živá hudba, DJ a autorské koktejly. Hudební klub v centru Vratislavi.',
     },
     events: {
       title: 'Akce - SiSi Wrocław',
@@ -27,8 +27,8 @@ const cs: UI = {
     },
     reservations: {
       title: 'Rezervace - SiSi Wrocław',
-      description: 'Rezervujte si stůl v SiSi - srdci noční Vratislavi. Podmínky rezervace a kontakt pro firemní akce.',
-      ogDescription: 'Naplánujte si výjimečný večer a zajistěte si místo v srdci klubu.',
+      description: 'Rezervujte si stůl v SiSi Wrocław. Podmínky rezervace a kontakt pro firemní akce.',
+      ogDescription: 'Stůl v SiSi: celá částka rezervace k útratě u stolu. Pátky a soboty od 22:00.',
     },
     corporate: {
       title: 'Firemní akce - SiSi & The Cork Wrocław',
@@ -90,7 +90,7 @@ const cs: UI = {
   },
 
   footer: {
-    tagline: 'Srdce noční Vratislavi. Hudba, koktejly, atmosféra.',
+    tagline: 'Živá hudba, DJ a koktejly v centru Vratislavi.',
     pagesHeading: 'Stránky',
     contactHeading: 'Kontakt',
     hoursHeading: 'Otevírací doba',
@@ -114,7 +114,7 @@ const cs: UI = {
     calendar: 'Kalendář akcí',
     seeAllEvents: 'Zobrazit všechny akce',
     seeFullMenu: 'Zobrazit barový lístek',
-    discoverR32: 'Objevte R32',
+    discoverR32: 'Více o R32',
     enquire: 'Zeptat se na termín',
     planEvent: 'Naplánovat akci',
     learnSpaces: 'Poznat prostory',
@@ -124,25 +124,25 @@ const cs: UI = {
   hero: {
     titleLine1: 'SRDCE VRATISLAVI',
     titleLine2: 'BIJE V SiSi',
-    discover: 'OBJEVTE',
+    discover: 'ZOBRAZIT VÍCE',
   },
 
   about: {
     eyebrow: 'O nás',
     title: 'Hudební evoluce večera',
     intro:
-      'SISI je prostor, kde má večer svůj vlastní rytmus. Začínáme atmosférickou živou hudbou - ideální kulisou pro odpočinek a rozhovor. Poté plynule přecházíme k energickým setům nejlepších DJ, kteří roztančí parket až do rána. Vytváříme místo pro hosty, kteří oceňují nejvyšší kvalitu a nezapomenutelnou, jedinečnou atmosféru.',
+      'V SISI večer začíná živou hudbou - u baru, u drinku a rozhovoru. Pak se za pult postaví DJ a parket jede až do 4 do rána. Pátky a soboty, v komplexu R32 na ulici Rzeźnicza.',
     cards: [
-      'Moderní hudební prostor',
+      'Bar a parket v jednom prostoru',
       'Friday Session',
-      'Live Acty: hudební předehra k výjimečné noci',
+      'Live Acty: živá hudba na začátek noci',
     ],
   },
 
   r32: {
     eyebrow: 'R32',
-    title: 'Noc bez kompromisů',
-    body: 'Začněte večer večeří v naší restauraci The Cork a plynule se přesuňte do světa SISI - pulzujícího srdce komplexu R32 a místa, kde budete chtít zůstat déle.',
+    title: 'Večeře a klub na jedné adrese',
+    body: 'Začněte večer večeří v The Cork a přejděte rovnou do SISI - restaurace i klub sídlí ve stejném komplexu R32 na adrese Rzeźnicza 32-33.',
   },
 
   menuTeaser: {
@@ -151,15 +151,15 @@ const cs: UI = {
     tabs: [
       {
         title: 'Koktejly',
-        body: 'Autorské koktejly SISI jsou esencí moderní mixologie - naši zkušení barmani s uměleckou precizností spojují suroviny nejvyšší kvality. Každý drink je jedinečným zážitkem, který okouzlí hloubkou chuti i propracovanou prezentací s efektem "wow".',
+        body: 'Autorské koktejly mícháme na místě podle vlastních receptur - od klasiky v novém podání po sezonní speciály. Kompletní nabídku s cenami najdete v barovém menu.',
       },
       {
         title: 'Nápojový lístek',
-        body: 'Sázíme na polská vinařství - náš lístek je výběrem domácích vín, od suchých bílých po plná červená, podávaných po sklenici i v lahvi. Doplňuje jej pečlivě vybraná nabídka destilátů a piv, včetně belgických klasik - aby si vybral každý.',
+        body: 'Sázíme na polská vinařství - náš lístek je výběrem domácích vín, od suchých bílých po plná červená, podávaných po sklenici i v lahvi. Doplňuje jej pečlivě vybraná nabídka destilátů a piv, včetně belgických klasik.',
       },
       {
         title: 'Něco k zakousnutí',
-        body: 'Naše Night Menu připravuje The Cork - je stvořené ke sdílení u stolu: kaviár, ústřice, sýrová a uzeninová prkénka (charcuterie). Elegantní pochoutky, které dokonale doplní večer u koktejlu nebo sklenice vína.',
+        body: 'Naše Night Menu připravuje The Cork - je stvořené ke sdílení u stolu: kaviár, ústřice, sýrová a uzeninová prkénka (charcuterie). Pochoutky ke koktejlu nebo sklenici vína.',
       },
     ],
   },
@@ -180,8 +180,8 @@ const cs: UI = {
   reservationsHome: {
     eyebrow: 'Rezervace',
     title: 'Rezervovat stůl',
-    body: 'Naplánujte si výjimečný večer a zajistěte si pohodlné místo v srdci našeho klubu. Online rezervace zabere chvíli - o zbytek se postaráme my.',
-    reassure: 'Okamžité potvrzení · nejlepší stoly mizí první',
+    body: 'Online rezervace zabere chvíli a celá částka rezervace je k útratě u stolu. V pátek je vstup s rezervací zdarma.',
+    reassure: 'Potvrzení a podrobnosti posíláme po schválení rezervace',
     terms: 'Vstup od 21 let. Rezervace stolu je 50 zł za osobu k útratě u stolu; v sobotu se účtuje vstupné navíc 30 zł za osobu.',
     info: {
       hours: 'Otevírací doba',
@@ -320,7 +320,7 @@ const cs: UI = {
   b2b: {
     hero: {
       eyebrow: 'Firemní akce v centru Vratislavi',
-      title: 'Prostor pro akce, které zůstanou v paměti',
+      title: 'Ve dne konference, večer klub',
       body: 'Od konferencí, panelů a prezentací po večeře, uvedení produktů, networking a večerní firemní akce. Spojte restauraci The Cork s energií SiSi a uspořádejte celou akci na jednom místě.',
       ctaPrimary: 'Zeptat se na termín',
       ctaSecondary: 'Poznat prostory',
@@ -341,7 +341,7 @@ const cs: UI = {
         { title: 'Konference', body: 'Setkání s prezentacemi a programem, se dvěma obrazovkami.' },
         { title: 'Panelové diskuse', body: 'Rozhovory a debaty s řečníky a publikem.' },
         { title: 'Prezentace', body: 'Představení produktů, firemní shrnutí a vystoupení.' },
-        { title: 'Uvedení produktů', body: 'Uveďte nový produkt nebo značku v efektním prostředí.' },
+        { title: 'Uvedení produktů', body: 'Uveďte produkt nebo značku - bar, catering i hudba na místě.' },
         { title: 'Firemní večeře', body: 'Večeře vsedě v restauraci The Cork.' },
         { title: 'Networking', body: 'Oborová setkání a večery v uvolněné atmosféře.' },
         { title: 'Firemní večírky', body: 'Týmové oslavy s energií SiSi.' },
@@ -364,7 +364,7 @@ const cs: UI = {
       heading: 'Prostory',
       theCork: {
         title: 'The Cork',
-        body: 'Restaurace v srdci R32 - přirozená kulisa pro oficiální část i večer.',
+        body: 'Restaurace v komplexu R32 - přirozená kulisa pro oficiální část i večer.',
         points: [
           'Večeře vsedě, prezentace a denní jednání',
           'Až 150 míst k sezení',
@@ -388,7 +388,7 @@ const cs: UI = {
       heading: 'Proč právě toto místo',
       items: [
         { title: 'Oficiální část i večer na jednom místě', body: 'Konference nebo večeře plynule přejde do večerního programu.' },
-        { title: 'Centrum Vratislavi', body: 'Výhodná poloha v srdci města.' },
+        { title: 'Centrum Vratislavi', body: 'Výhodná poloha v centru města.' },
         { title: 'Restaurace a klub', body: 'The Cork a SiSi v rámci jednoho komplexu R32.' },
         { title: 'Flexibilní formát', body: 'Koncept akce přizpůsobíme vašim potřebám.' },
         { title: 'Dvě obrazovky', body: 'Připravené zázemí pro prezentace a panely.' },
@@ -407,8 +407,8 @@ const cs: UI = {
     },
     projects: {
       heading: 'Vybrané realizace',
-      emptyTitle: 'Máme zkušenosti s realizací velkých akcí.',
-      emptyBody: 'Brzy představíme vybrané projekty.',
+      emptyTitle: 'Připravujeme popisy prvních realizací.',
+      emptyBody: 'Potřebujete reference? Napište nám - rádi vám povíme o uskutečněných akcích.',
     },
     faq: {
       heading: 'Časté dotazy',
