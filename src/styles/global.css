@@ -41,11 +41,12 @@
   --line: rgba(237, 219, 194, 0.1);
   --nav-height: 84px;
   --maxw: 1280px;
+  --font-display: 'Cal Sans', 'Trebuchet MS', system-ui, sans-serif;
 }
 
 /* === BASE === */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 body {
   background: var(--bg);
   color: var(--text);
@@ -85,7 +86,7 @@ html { scrollbar-width: thin; scrollbar-color: rgba(237, 219, 194, 0.28) transpa
   .events > .container,
   .home-b2b > .container { width: 70%; }
 }
-.display { font-family: 'Cal Sans', 'Trebuchet MS', system-ui, sans-serif; font-weight: 400; }
+.display { font-family: var(--font-display); font-weight: 400; }
 
 /* === SKIP LINK === */
 .skip-link {
@@ -102,17 +103,20 @@ html { scrollbar-width: thin; scrollbar-color: rgba(237, 219, 194, 0.28) transpa
 
 /* === SCROLL ANIMATIONS ===
    Applied only when JS is available (html.js). scroll-animations.ts adds
-   `.is-in` when an element scrolls into view, fading it in. Fade only - no
-   movement (no translate). Without JS everything stays visible. */
+   `.is-in` when an element scrolls into view. The reveal is a fade with a
+   slight scale-settle (0.985 -> 1) - deliberately no vertical translate
+   (no slide-up reveals). Without JS everything stays visible. */
 .js [data-reveal],
 .js [data-reveal-group] > * {
   opacity: 0;
-  transition: opacity 0.7s ease;
-  will-change: opacity;
+  transform: scale(0.985);
+  transition: opacity 0.7s ease, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
 }
 .js [data-reveal].is-in,
 .js [data-reveal-group].is-in > * {
   opacity: 1;
+  transform: none;
 }
 /* stagger a revealed group's children */
 .js [data-reveal-group].is-in > *:nth-child(2) { transition-delay: 0.08s; }
@@ -123,7 +127,7 @@ html { scrollbar-width: thin; scrollbar-color: rgba(237, 219, 194, 0.28) transpa
 @media (prefers-reduced-motion: reduce) {
   /* Reduced motion: skip the reveal entirely - everything is visible at once. */
   .js [data-reveal],
-  .js [data-reveal-group] > * { opacity: 1 !important; transition: none !important; }
+  .js [data-reveal-group] > * { opacity: 1 !important; transform: none !important; transition: none !important; }
 }
 
 
@@ -226,7 +230,7 @@ html { scrollbar-width: thin; scrollbar-color: rgba(237, 219, 194, 0.28) transpa
 .mobile-menu-links { display: flex; flex-direction: column; align-items: center; gap: 1.6rem; }
 /* Menu links use the display face (Cal Sans), not body Montserrat. */
 #mobile-menu a[data-nav-link]:not(.btn-cta) {
-  font-family: 'Cal Sans', 'Trebuchet MS', system-ui, sans-serif;
+  font-family: var(--font-display);
   font-size: 1.5rem; font-weight: 400; text-transform: uppercase;
   color: var(--text-dim); letter-spacing: 0.01em;
   transition: color 180ms;
@@ -339,7 +343,7 @@ footer::before {
 /* === MENU ITEMS === */
 .menu-section-label {
   display: flex; align-items: center; gap: 11px;
-  font-family: 'Cal Sans', 'Trebuchet MS', system-ui, sans-serif;
+  font-family: var(--font-display);
   font-size: 1.25rem; font-weight: 400;
   text-transform: uppercase; letter-spacing: 0.04em;
   color: var(--gold); margin-bottom: 24px;
@@ -379,16 +383,15 @@ footer::before {
 
 .btn-outline {
   display: inline-flex; align-items: center; justify-content: center;
-  /* glass instead of a fully transparent fill, so the no-background buttons
-     frost the circle field behind them like the nav. */
-  background: rgba(39, 7, 15, 0.3); color: var(--text-dim);
-  backdrop-filter: blur(7.5px);
+  /* solid tint instead of glass: at button size the blur read the same as a
+     slightly heavier fill, and skipping it saves a compositing layer. */
+  background: rgba(39, 7, 15, 0.55); color: var(--text-dim);
   border: 1px solid rgba(237,219,194,0.3);
   border-radius: 10px; padding: 13px 30px;
   font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
   cursor: pointer; transition: background 150ms, color 150ms, border-color 150ms;
 }
-.btn-outline:hover { background: rgba(39, 7, 15, 0.46); color: var(--cream); border-color: rgba(237,219,194,0.45); }
+.btn-outline:hover { background: rgba(39, 7, 15, 0.7); color: var(--cream); border-color: rgba(237,219,194,0.45); }
 
 /* === DIVIDER === */
 .page-divider {
@@ -402,7 +405,7 @@ footer::before {
 
 /* Convenience-translation banner shown on non-Polish legal pages. */
 .legal-convenience {
-  border: 1px solid var(--line); border-left: 3px solid var(--gold);
+  border: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.03);
   padding: 12px 16px; border-radius: 8px;
   font-size: 13px; line-height: 1.6; color: var(--text-dim);
@@ -454,16 +457,18 @@ footer::before {
 }
 .nav-links a:hover::after, .nav-links a[aria-current="page"]::after { transform: scaleX(1); }
 
-/* Cards brighten border and deepen shadow on hover. */
-.sisi-card, .ev-card { transition: border-color 300ms ease, box-shadow 300ms ease; }
-.sisi-card:hover, .ev-card:hover { border-color: rgba(237, 219, 194, 0.26); box-shadow: 0 18px 40px rgba(0, 0, 0, 0.38); }
-.ev-card.past:hover { transform: none; box-shadow: none; border-color: rgba(255, 255, 255, 0.08); }
+/* Event cards (links) brighten border and deepen shadow on hover. Static info
+   cards (.sisi-card) get none - they aren't clickable, and a hover glow would
+   falsely signal that they are. */
+.ev-card { transition: border-color 300ms ease, box-shadow 300ms ease; }
+.ev-card:hover { border-color: rgba(237, 219, 194, 0.26); box-shadow: 0 18px 40px rgba(0, 0, 0, 0.38); }
+.ev-card.past:hover { box-shadow: none; border-color: rgba(255, 255, 255, 0.08); }
 
 /* Visible, on-brand focus ring for keyboard users (trust + a11y). */
 :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
 @media (prefers-reduced-motion: reduce) {
-  .sisi-card:hover, .ev-card:hover { transform: none; box-shadow: none; }
+  .ev-card:hover { box-shadow: none; }
   .btn-cta::after, .nav-cta::after { display: none; }
   .nav-links a::after { transition: none; }
 }
@@ -499,7 +504,7 @@ footer::before {
 /* === LEGAL / LONG-FORM CONTENT === */
 .legal { max-width: 760px; margin: 0 auto; padding: 0 32px 96px; color: var(--text-dim); }
 .legal h2 {
-  font-family: 'Cal Sans', 'Trebuchet MS', system-ui, sans-serif; color: var(--cream);
+  font-family: var(--font-display); color: var(--cream);
   font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.01em;
   margin: 44px 0 14px;
 }

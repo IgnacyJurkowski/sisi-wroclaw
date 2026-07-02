@@ -16,7 +16,7 @@ const teaser = splitEvents().upcoming.slice(0, 2);
 
 <section id="wydarzenia" class="events">
   <div class="container">
-    <span class="page-label" style="text-align:center;display:block;" data-reveal>{t.homeEvents.eyebrow}</span>
+    <span class="page-label ev-label" data-reveal>{t.homeEvents.eyebrow}</span>
     <h2 class="display ev-title" data-reveal>{t.homeEvents.title}</h2>
 
     <div class="ev-grid" data-reveal-group>
@@ -31,6 +31,7 @@ const teaser = splitEvents().upcoming.slice(0, 2);
 
 <style>
   .events { padding: 96px 0; }
+  .ev-label { text-align: center; }
   .ev-title {
     text-align: center; font-size: clamp(2rem, 4.5vw, 3.2rem);
     text-transform: uppercase; margin: 10px 0 48px;

@@ -33,7 +33,7 @@ const icons = {
 
 <section id="menu" class="menu-teaser">
   <div class="container">
-    <span class="page-label" style="text-align:center;display:block;" data-reveal>{t.menuTeaser.eyebrow}</span>
+    <span class="page-label mt-label" data-reveal>{t.menuTeaser.eyebrow}</span>
     <h2 class="display mt-title" data-reveal>{t.menuTeaser.title}</h2>
 
     <div class="mt-tabs" role="tablist" aria-label={t.menuTeaser.eyebrow} data-reveal>
@@ -115,6 +115,7 @@ const icons = {
 
 <style>
   .menu-teaser { padding: 96px 0; }
+  .mt-label { text-align: center; }
   .mt-title {
     text-align: center; font-size: clamp(2rem, 5vw, 3.4rem);
     text-transform: uppercase; margin: 10px 0 44px;
@@ -151,8 +152,12 @@ const icons = {
   .mt-panel {
     text-align: center; color: rgba(237, 219, 194, 0.6);
     font-size: 15px; line-height: 1.8; margin: 0;
+    /* crossfade on tab switch - opacity only, replays each time `hidden` clears */
+    animation: mt-fade 320ms ease;
   }
   .mt-panel[hidden] { display: none; }
+  @keyframes mt-fade { from { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .mt-panel { animation: none; } }
 
   .mt-cta { text-align: center; margin-top: 40px; }
 
