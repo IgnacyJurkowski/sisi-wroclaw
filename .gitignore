@@ -3,6 +3,7 @@ __pycache__/
 .DS_Store
 .gstack/
 .worktrees/
+.superpowers/
 
 # Local Netlify folder
 .netlify
