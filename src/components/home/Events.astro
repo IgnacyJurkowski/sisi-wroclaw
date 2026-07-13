@@ -11,7 +11,8 @@ const t = useTranslations(locale);
 const eventsHref = localizedPath('events', locale);
 
 // Homepage teaser - preview the soonest upcoming events, link out to the full page.
-const teaser = splitEvents().upcoming.slice(0, 2);
+const upcoming = splitEvents().upcoming;
+const teaser = upcoming.slice(0, 2);
 ---
 
 <section id="wydarzenia" class="events">
@@ -20,7 +21,11 @@ const teaser = splitEvents().upcoming.slice(0, 2);
     <h2 class="display ev-title" data-reveal>{t.homeEvents.title}</h2>
 
     <div class="ev-grid" data-reveal-group>
-      {teaser.map((e) => <EventCard event={e} locale={locale} />)}
+      {upcoming.length === 0 ? (
+        <p class="ev-empty">{t.eventsPage.empty}</p>
+      ) : (
+        teaser.map((e) => <EventCard event={e} locale={locale} />)
+      )}
     </div>
 
     <div class="ev-more" data-reveal>
@@ -41,6 +46,7 @@ const teaser = splitEvents().upcoming.slice(0, 2);
     display: flex; flex-direction: column; gap: 20px;
     max-width: var(--maxw); margin: 0 auto;
   }
+  .ev-empty { color: var(--text-dim); font-size: 16px; text-align: center; }
   .ev-more { text-align: center; margin-top: 44px; }
   @media (max-width: 700px) { .events { padding: 64px 0; } }
 </style>

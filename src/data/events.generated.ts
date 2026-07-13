@@ -2,33 +2,4 @@
 // folder (Banery + Opisy). Do not edit by hand - the next sync overwrites it.
 import type { EventItem } from './site';
 
-export const GENERATED_EVENTS: EventItem[] = [
-  {
-    "title": "Friday at SiSi",
-    "slug": "2026-06-26-friday-at-sisi",
-    "start": "2026-06-26T22:00:00+02:00",
-    "note": "DJ ADB",
-    "img": "/events/2026-06-26-friday-at-sisi.webp",
-    "price": 0,
-    "description": "Krótki opis wydarzenia",
-    "genres": [
-      "House",
-      "Pop",
-      "Funk"
-    ]
-  },
-  {
-    "title": "Saturday at SiSi",
-    "slug": "2026-06-27-saturday-at-sisi",
-    "start": "2026-06-27T22:00:00+02:00",
-    "note": "DJ ABC",
-    "img": "/events/2026-06-27-saturday-at-sisi.webp",
-    "price": 50,
-    "description": "Krótki opis wydarzenia",
-    "genres": [
-      "Funk",
-      "Groove",
-      "JungleW"
-    ]
-  }
-];
+export const GENERATED_EVENTS: EventItem[] = [];

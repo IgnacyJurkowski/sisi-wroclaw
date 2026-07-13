@@ -29,9 +29,6 @@ const targets = [
   // R32 — gallery shots (slot 1 is the video, so only these two are <img>)
   { file: 'framerusercontent.com/images/u3EOm1VtOnATOkUYHKikl5aBc.webp', widths: CARD },
   { file: 'framerusercontent.com/images/cDJcCUEanjQSoFpALHKgU3hNpQ.webp', widths: CARD },
-  // Event banners (cards + detail hero)
-  { file: 'events/2026-06-26-friday-at-sisi.webp', widths: BANNER },
-  { file: 'events/2026-06-27-saturday-at-sisi.webp', widths: BANNER },
 ];
 
 let made = 0;

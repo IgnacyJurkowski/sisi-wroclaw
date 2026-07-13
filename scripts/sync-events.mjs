@@ -11,12 +11,14 @@
 // Bad-row policy (no status field in the template, so it maps to file state):
 //   - incomplete pair (banner XOR doc)          -> skip + report  ("draft")
 //   - complete pair, doc missing Title/Start     -> FAIL, keep last-good
-//   - zero valid events, or count drops > 50%    -> FAIL, keep last-good
+//   - count drops > 50% from populated last-good -> FAIL, keep last-good
 // FAIL = non-zero exit, no write; CI leaves the last-good file in place.
 
+import { createHash } from 'node:crypto';
 import { writeFile, mkdir, readFile, readdir, rm } from 'node:fs/promises';
 import path from 'node:path';
 import sharp from 'sharp';
+import { duplicateBannerErrors } from '../src/lib/event-quality.mjs';
 import { getAccessToken, listFolder, exportDocText, downloadFile } from './events-sync/drive.mjs';
 import {
   parseOpisy,
@@ -59,6 +61,8 @@ async function run() {
   const failed = [];
   const events = [];
   const usedImages = new Set();
+  const pendingImages = [];
+  const bannerRecords = [];
 
   for (const dateKey of dates) {
     const banner = bannerByDate.get(dateKey);
@@ -78,25 +82,23 @@ async function run() {
 
     const slug = eventSlug(dateKey, fields.title);
     const fileName = `${slug}.webp`;
-    await mkdir(IMG_DIR, { recursive: true });
     const optimized = await sharp(await downloadFile(token, banner.id))
       .rotate()
       .resize({ width: BANNER_WIDTH, withoutEnlargement: true })
       .webp({ quality: 82 })
       .toBuffer();
-    await writeIfChanged(path.join(IMG_DIR, fileName), optimized);
+    const digest = createHash('sha256').update(optimized).digest('hex');
+    bannerRecords.push({ dateKey, digest });
+    pendingImages.push({ fileName, optimized });
     usedImages.add(fileName);
 
     events.push(toEvent(dateKey, fields, `${IMG_URL_PREFIX}/${fileName}`, slug));
   }
 
   // --- bad-row policy: never silently unpublish a real event ---
+  failed.push(...duplicateBannerErrors(bannerRecords));
   if (failed.length) {
-    fail('Published events have invalid descriptions', failed, skipped);
-    return;
-  }
-  if (events.length === 0) {
-    fail('Produced 0 valid events; refusing to overwrite last-good', [], skipped);
+    fail('Published events failed quality checks', failed, skipped);
     return;
   }
   const prev = await prevEventCount();
@@ -106,6 +108,10 @@ async function run() {
   }
 
   events.sort((a, b) => a.start.localeCompare(b.start));
+  if (pendingImages.length) await mkdir(IMG_DIR, { recursive: true });
+  for (const { fileName, optimized } of pendingImages) {
+    await writeIfChanged(path.join(IMG_DIR, fileName), optimized);
+  }
   await pruneImages(usedImages);
   await writeIfChanged(OUT_DATA, Buffer.from(renderModule(events)));
 

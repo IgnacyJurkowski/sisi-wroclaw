@@ -20,6 +20,13 @@ const results = [];
 const assert = (label, cond) => results.push([label, !!cond]);
 
 const LOCALES = ['pl', 'en', 'de', 'it', 'cs'];
+const emptyEventCopy = {
+  pl: 'Wkrótce ogłosimy kolejne wydarzenia - śledź nas na Instagramie.',
+  en: 'More events coming soon - follow us on Instagram.',
+  de: 'Weitere Veranstaltungen folgen bald - folge uns auf Instagram.',
+  it: 'Presto annunceremo nuovi eventi - seguici su Instagram.',
+  cs: 'Brzy ohlásíme další akce - sledujte nás na Instagramu.',
+};
 
 // --- i18n: every locale homepage + B2B route builds ---
 for (const l of LOCALES) assert(`home builds: /${l}/`, exists(`${l}/index.html`));
@@ -35,12 +42,6 @@ assert('hreflang has 5 locales', (plHome.match(/rel="alternate" hreflang="(pl|en
 assert('hreflang x-default present', plHome.includes('hreflang="x-default"'));
 assert('pl canonical is /pl/', plHome.includes('href="https://sisiwroclaw.pl/pl/"'));
 assert('en canonical is locale-specific (not pl)', read('en/index.html').includes('rel="canonical" href="https://sisiwroclaw.pl/en/"'));
-
-// --- localized dates from Europe/Warsaw (same ISO -> localized month) ---
-assert('pl date label "czerwca"', read('pl/wydarzenia/index.html').includes('czerwca'));
-assert('en date label "June"', read('en/events/index.html').includes('June'));
-assert('de date label "Juni"', read('de/veranstaltungen/index.html').includes('Juni'));
-assert('event <time datetime +02:00>', read('pl/wydarzenia/index.html').includes('datetime="2026-06-26T22:00:00+02:00"'));
 
 // --- B2B verified facts shown exactly; 150 scoped to The Cork ---
 const enB2B = read('en/corporate-events/index.html');
@@ -95,7 +96,13 @@ function walk(dir) {
   return out;
 }
 const htmls = walk(DIST);
+const allHtml = htmls.map((file) => readFileSync(file, 'utf8')).join('\n');
 const leaked = htmls.filter((f) => /\{(privacy|cookies|email|example|legalName|nip|regon)\}/.test(readFileSync(f, 'utf8')));
+assert('no sample event copy', !allHtml.includes('Krótki opis wydarzenia') && !allHtml.includes('JungleW'));
+assert('no stale June event routes', !existsSync(join(DIST, 'pl/wydarzenia/2026-06-26-friday-at-sisi/index.html')));
+for (const locale of ['pl', 'en', 'de', 'it', 'cs']) {
+  assert(`${locale} home has empty event state`, read(`${locale}/index.html`).includes(emptyEventCopy[locale]));
+}
 assert('no leaked {tokens} in html', leaked.length === 0);
 assert(`html pages = 52 base + ${eventCount} events x5`, htmls.length === 52 + eventCount * 5);
 

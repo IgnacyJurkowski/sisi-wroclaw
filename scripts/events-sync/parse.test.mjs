@@ -93,11 +93,31 @@ test('eventSlug is stable, sort-friendly, ascii', () => {
 });
 
 test('validateEvent - valid', () => {
-  assert.deepEqual(validateEvent({ title: 'X', startTime: '22:00' }, '26-06-2026'), []);
+  assert.deepEqual(
+    validateEvent(
+      {
+        title: 'SiSi Friday',
+        dj: 'Marta',
+        startTime: '22:00',
+        description: 'Autorski wieczór klubowy.',
+        genres: ['house'],
+      },
+      '26-06-2026',
+    ),
+    [],
+  );
 });
 
 test('validateEvent - flags missing title and bad time', () => {
   const errs = validateEvent({ title: '', startTime: 'late' }, '26-06-2026');
   assert.ok(errs.some((e) => /Title/.test(e)));
   assert.ok(errs.some((e) => /Start/.test(e)));
+});
+
+test('validateEvent - applies public sample-quality policy', () => {
+  const errs = validateEvent(
+    { title: 'SiSi Friday', dj: 'ADB', startTime: '22:00', description: 'Autorski wieczór.', genres: ['house'] },
+    '26-06-2026',
+  );
+  assert.ok(errs.some((e) => /sample-quality/.test(e)));
 });

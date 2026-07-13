@@ -13,6 +13,10 @@
 //       Music Genre: <comma list>
 // Banner and doc are paired by the DD-MM-YYYY date in the filename.
 
+import { validatePublicEvent } from '../../src/lib/event-quality.mjs';
+
+export { validatePublicEvent as validateEvent };
+
 /** Parse an exported Opisy doc into raw fields. Tolerant of both
     "Label: value" and "Label:\nvalue" layouts and multi-line descriptions:
     each field's value is everything between its label and the next known label. */
@@ -110,14 +114,4 @@ export function eventSlug(dateStr, title) {
     .slice(0, 40)
     .replace(/-+$/g, '');
   return `${yyyy}-${mm}-${dd}${t ? '-' + t : ''}`;
-}
-
-/** Validation for the asymmetric bad-row policy. Returns a list of problems
-    (empty = valid). Caller decides skip (draft) vs fail (published). */
-export function validateEvent(fields, dateStr) {
-  const errors = [];
-  if (!fields.title) errors.push('missing Title');
-  if (!/^\d{1,2}:\d{2}$/.test(fields.startTime || '')) errors.push('missing or invalid Start time');
-  if (!/^\d{2}-\d{2}-\d{4}$/.test(dateStr || '')) errors.push('invalid date in filename');
-  return errors;
 }
