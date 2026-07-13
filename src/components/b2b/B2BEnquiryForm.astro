@@ -138,22 +138,7 @@ const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
 
         <div class="b2b-field">
           <label for="b2b-duration">{f.duration} <span class="opt">{f.optional}</span></label>
-          <input id="b2b-duration" name="duration" type="text" />
-        </div>
-
-        <div class="b2b-field b2b-field-wide">
-          <label for="b2b-presentation">{f.presentation} <span class="opt">{f.optional}</span></label>
-          <input id="b2b-presentation" name="presentation" type="text" />
-        </div>
-
-        <div class="b2b-field">
-          <label for="b2b-catering">{f.catering} <span class="opt">{f.optional}</span></label>
-          <input id="b2b-catering" name="catering" type="text" />
-        </div>
-
-        <div class="b2b-field">
-          <label for="b2b-technical">{f.technical} <span class="opt">{f.optional}</span></label>
-          <input id="b2b-technical" name="technical" type="text" />
+          <input id="b2b-duration" name="duration" type="text" placeholder={f.durationPlaceholder} />
         </div>
 
         <div class="b2b-field b2b-field-wide">

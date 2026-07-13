@@ -342,7 +342,8 @@ const en: UI = {
       heading: 'The space in numbers',
       items: [
         { value: '663 m²', label: 'of event space' },
-        { value: 'up to 150', label: 'seated guests at The Cork' },
+        { value: 'up to 150', label: 'seated guests' },
+        { value: 'up to 500', label: 'standing guests (buffet)' },
         { value: '2 screens', label: 'for presentations' },
         { value: 'central', label: 'Wrocław location' },
       ],
@@ -365,10 +366,12 @@ const en: UI = {
       heading: 'What we provide',
       intro: 'We take care of the event - from the bar and catering to live music.',
       items: [
-        { title: 'Bar & bartenders', body: 'A full bar with professional service and an optional open bar with cocktails.' },
+        { title: 'Bar, open bar & open tab', body: 'A full bar with professional bartenders. Choose an open bar on us - cocktails, spirits and soft drinks included for your guests - or an open tab capped at an amount you set, with drinks served until the limit is reached and everything settled transparently afterwards. We tailor the drink list and format to your event.' },
         { title: 'Catering', body: 'Menu and catering tailored to your event.' },
         { title: 'Music', body: 'DJ and live music - scope agreed with you.' },
         { title: 'Cloakroom', body: 'Cloakroom service for your guests.' },
+        { title: 'Zone separation', body: 'We can section off dedicated zones within the space, so different parts of your event each have their own area.' },
+        { title: 'Decor & cake', body: 'Decorative elements or a celebration cake - arranged in advance.' },
         { title: 'Cleaning service', body: 'Ongoing cleaning throughout the event.' },
         { title: 'Coordination', body: 'Technical and organisational support at every stage.' },
       ],
@@ -381,7 +384,6 @@ const en: UI = {
         points: [
           'Seated dinners, presentations and daytime meetings',
           'Up to 150 seated guests',
-          '2 presentation screens',
         ],
       },
       sisi: {
@@ -390,6 +392,8 @@ const en: UI = {
         points: [
           'Evening programmes, networking and celebrations',
           'Live music and DJs',
+          'Up to 500 standing guests (buffet)',
+          '2 presentation screens',
         ],
       },
       combined: {
@@ -485,9 +489,7 @@ const en: UI = {
         unsure: 'Not sure yet',
       },
       duration: 'Event duration',
-      presentation: 'Presentation or panel requirements',
-      catering: 'Catering requirements',
-      technical: 'Additional technical requirements',
+      durationPlaceholder: 'e.g. 6 hours',
       message: 'Message',
       messagePlaceholder: 'Briefly describe your event.',
       consent: 'I agree to be contacted about my enquiry and confirm I have read the {privacy}.',

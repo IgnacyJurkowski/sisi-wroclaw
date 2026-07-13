@@ -342,7 +342,8 @@ const it: UI = {
       heading: 'Lo spazio in numeri',
       items: [
         { value: '663 m²', label: 'di spazio eventi' },
-        { value: 'fino a 150', label: 'posti a sedere al The Cork' },
+        { value: 'fino a 150', label: 'posti a sedere' },
+        { value: 'fino a 500', label: 'ospiti in piedi (buffet)' },
         { value: '2 schermi', label: 'per presentazioni' },
         { value: 'centro', label: 'di Breslavia' },
       ],
@@ -365,10 +366,12 @@ const it: UI = {
       heading: 'Cosa offriamo',
       intro: 'Ci occupiamo noi dell\'evento - dal bar al catering fino alla musica.',
       items: [
-        { title: 'Bar e barman', body: 'Bar completo con servizio professionale e open bar con cocktail su richiesta.' },
+        { title: 'Bar, open bar e open tab', body: 'Bar completo con barman professionisti. A scelta: un open bar offerto da noi - cocktail, distillati e analcolici inclusi per i tuoi ospiti - oppure un open tab con un tetto di spesa a tua scelta: le consumazioni vengono servite fino al raggiungimento del limite e il conto è trasparente. Carta dei drink e formato su misura per il tuo evento.' },
         { title: 'Catering', body: 'Menù e catering su misura per il tuo evento.' },
         { title: 'Musica', body: 'DJ e musica dal vivo - modalità da concordare.' },
         { title: 'Guardaroba', body: 'Servizio di guardaroba per i tuoi ospiti.' },
+        { title: 'Separazione delle zone', body: 'Possiamo delimitare zone dedicate nello spazio, così le diverse parti del tuo evento hanno ciascuna la propria area.' },
+        { title: 'Decorazioni e torta', body: 'Elementi decorativi o una torta per l\'occasione - da concordare in anticipo.' },
         { title: 'Servizio di pulizia', body: 'Pulizia continua per tutta la durata dell\'evento.' },
         { title: 'Coordinamento', body: 'Supporto tecnico e organizzativo in ogni fase.' },
       ],
@@ -381,7 +384,6 @@ const it: UI = {
         points: [
           'Cene a sedere, presentazioni e riunioni diurne',
           'Fino a 150 posti a sedere',
-          '2 schermi per presentazioni',
         ],
       },
       sisi: {
@@ -390,6 +392,8 @@ const it: UI = {
         points: [
           'Programmi serali, networking e feste',
           'Musica dal vivo e DJ',
+          'Fino a 500 ospiti in piedi (buffet)',
+          '2 schermi per presentazioni',
         ],
       },
       combined: {
@@ -485,9 +489,7 @@ const it: UI = {
         unsure: 'Non ancora deciso',
       },
       duration: 'Durata dell\'evento',
-      presentation: 'Esigenze per presentazione o panel',
-      catering: 'Esigenze di catering',
-      technical: 'Ulteriori esigenze tecniche',
+      durationPlaceholder: 'es. 6 ore',
       message: 'Messaggio',
       messagePlaceholder: 'Descrivi brevemente il tuo evento.',
       consent: 'Acconsento a essere contattato in merito alla mia richiesta e confermo di aver letto la {privacy}.',

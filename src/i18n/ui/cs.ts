@@ -342,7 +342,8 @@ const cs: UI = {
       heading: 'Prostor v číslech',
       items: [
         { value: '663 m²', label: 'prostoru pro akce' },
-        { value: 'až 150', label: 'míst k sezení v The Cork' },
+        { value: 'až 150', label: 'míst k sezení' },
+        { value: 'až 500', label: 'hostů ve stoje (bufet)' },
         { value: '2 obrazovky', label: 'pro prezentace' },
         { value: 'centrum', label: 'Vratislavi' },
       ],
@@ -365,10 +366,12 @@ const cs: UI = {
       heading: 'Co zajišťujeme',
       intro: 'Obsluhu akce bereme na sebe - od baru a cateringu po hudební doprovod.',
       items: [
-        { title: 'Bar a barmani', body: 'Plně vybavený bar s profesionální obsluhou a volitelným open barem s koktejly.' },
+        { title: 'Bar, open bar a open tab', body: 'Plně vybavený bar s profesionálními barmany. Na výběr open bar na náš účet - koktejly, lihoviny i nealko nápoje v ceně pro vaše hosty - nebo open tab s limitem do vámi určené částky: nápoje podáváme do vyčerpání limitu a vyúčtování je transparentní. Nápojový lístek i formát přizpůsobíme vaší akci.' },
         { title: 'Catering', body: 'Menu a catering na míru vaší akci.' },
         { title: 'Hudba', body: 'DJ a živá hudba - rozsah po domluvě.' },
         { title: 'Šatna', body: 'Šatnová služba pro vaše hosty.' },
+        { title: 'Vydělení zón', body: 'Můžeme vyčlenit samostatné zóny v prostoru, aby jednotlivé části akce měly své vlastní místo.' },
+        { title: 'Dekorace a dort', body: 'Dekorační prvky nebo příležitostný dort - po předchozí domluvě.' },
         { title: 'Úklidový servis', body: 'Průběžný úklid po celou dobu akce.' },
         { title: 'Koordinace', body: 'Technická a organizační podpora v každé fázi.' },
       ],
@@ -381,7 +384,6 @@ const cs: UI = {
         points: [
           'Večeře vsedě, prezentace a denní jednání',
           'Až 150 míst k sezení',
-          '2 obrazovky pro prezentace',
         ],
       },
       sisi: {
@@ -390,6 +392,8 @@ const cs: UI = {
         points: [
           'Večerní programy, networking a oslavy',
           'Živá hudba a DJ',
+          'Až 500 hostů ve stoje (bufet)',
+          '2 obrazovky pro prezentace',
         ],
       },
       combined: {
@@ -485,9 +489,7 @@ const cs: UI = {
         unsure: 'Zatím nevím',
       },
       duration: 'Délka akce',
-      presentation: 'Požadavky na prezentaci nebo panel',
-      catering: 'Požadavky na catering',
-      technical: 'Další technické požadavky',
+      durationPlaceholder: 'např. 6 hodin',
       message: 'Zpráva',
       messagePlaceholder: 'Stručně popište svou akci.',
       consent: 'Souhlasím s kontaktováním ohledně své poptávky a potvrzuji, že jsem se seznámil(a) se {privacy}.',

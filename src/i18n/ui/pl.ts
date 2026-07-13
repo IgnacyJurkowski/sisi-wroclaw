@@ -350,7 +350,8 @@ const pl = {
       heading: 'Przestrzeń w liczbach',
       items: [
         { value: '663 m²', label: 'przestrzeni eventowej' },
-        { value: 'do 150', label: 'miejsc siedzących w The Cork' },
+        { value: 'do 150', label: 'miejsc siedzących' },
+        { value: 'do 500', label: 'gości na stojąco (bufet)' },
         { value: '2 ekrany', label: 'do prezentacji' },
         { value: 'centrum', label: 'Wrocławia' },
       ],
@@ -373,10 +374,12 @@ const pl = {
       heading: 'Co zapewniamy',
       intro: 'Obsługę wydarzenia bierzemy na siebie - od baru i cateringu po oprawę muzyczną.',
       items: [
-        { title: 'Bar i barmani', body: 'Profesjonalny bar z obsługą barmańską oraz opcją open baru z koktajlami.' },
+        { title: 'Bar, open bar i open tab', body: 'Profesjonalny bar z obsługą barmańską. Do wyboru open bar na nasz koszt - koktajle, alkohole i napoje bezalkoholowe wliczone dla Twoich gości - albo open tab z limitem do ustalonej kwoty: napoje serwujemy do wyczerpania limitu, a rozliczenie jest przejrzyste. Kartę drinków i format dopasowujemy do wydarzenia.' },
         { title: 'Catering', body: 'Menu i catering dopasowane do charakteru wydarzenia.' },
         { title: 'Oprawa muzyczna', body: 'DJ oraz muzyka na żywo - zakres do uzgodnienia.' },
         { title: 'Szatnia', body: 'Obsługa szatni dla Twoich gości.' },
+        { title: 'Wydzielenie stref', body: 'Możliwość wydzielenia osobnych stref w przestrzeni, tak aby różne części wydarzenia miały swoje miejsce.' },
+        { title: 'Dekoracje i tort', body: 'Elementy dekoracyjne lub tort okolicznościowy - po wcześniejszym uzgodnieniu.' },
         { title: 'Serwis sprzątający', body: 'Bieżący serwis czystości przez cały czas trwania wydarzenia.' },
         { title: 'Koordynacja', body: 'Wsparcie techniczne i organizacyjne na każdym etapie.' },
       ],
@@ -389,7 +392,6 @@ const pl = {
         points: [
           'Zasiadane kolacje, prezentacje i spotkania w ciągu dnia',
           'Do 150 miejsc siedzących',
-          '2 ekrany do prezentacji',
         ],
       },
       sisi: {
@@ -398,6 +400,8 @@ const pl = {
         points: [
           'Wieczorne programy, networking i świętowanie',
           'Muzyka na żywo i DJ-e',
+          'Do 500 gości na stojąco (bufet)',
+          '2 ekrany do prezentacji',
         ],
       },
       combined: {
@@ -493,9 +497,7 @@ const pl = {
         unsure: 'Nie wiem jeszcze',
       },
       duration: 'Czas trwania wydarzenia',
-      presentation: 'Wymagania dot. prezentacji lub panelu',
-      catering: 'Wymagania cateringowe',
-      technical: 'Dodatkowe wymagania techniczne',
+      durationPlaceholder: 'np. 6 godzin',
       message: 'Wiadomość',
       messagePlaceholder: 'Opisz krótko swoje wydarzenie.',
       consent: 'Wyrażam zgodę na kontakt w sprawie mojego zapytania i potwierdzam zapoznanie się z {privacy}.',

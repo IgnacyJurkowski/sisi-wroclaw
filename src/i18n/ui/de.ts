@@ -343,7 +343,8 @@ const de: UI = {
       heading: 'Der Raum in Zahlen',
       items: [
         { value: '663 m²', label: 'Eventfläche' },
-        { value: 'bis zu 150', label: 'Sitzplätze im The Cork' },
+        { value: 'bis zu 150', label: 'Sitzplätze' },
+        { value: 'bis zu 500', label: 'Gäste im Stehen (Buffet)' },
         { value: '2 Bildschirme', label: 'für Präsentationen' },
         { value: 'Zentrum', label: 'von Breslau' },
       ],
@@ -366,10 +367,12 @@ const de: UI = {
       heading: 'Was wir bereitstellen',
       intro: 'Die Eventbetreuung übernehmen wir - von Bar und Catering bis zur musikalischen Begleitung.',
       items: [
-        { title: 'Bar & Barpersonal', body: 'Vollständige Bar mit professionellem Service und optionaler Open Bar mit Cocktails.' },
+        { title: 'Bar, Open Bar & Open Tab', body: 'Vollständige Bar mit professionellem Barpersonal. Zur Wahl: eine Open Bar auf unsere Kosten - Cocktails, Spirituosen und alkoholfreie Getränke für deine Gäste inklusive - oder ein Open Tab bis zu einem von dir festgelegten Betrag: Getränke werden bis zum Limit serviert und anschließend transparent abgerechnet. Getränkekarte und Format stimmen wir auf dein Event ab.' },
         { title: 'Catering', body: 'Menü und Catering, abgestimmt auf dein Event.' },
         { title: 'Musik', body: 'DJ und Live-Musik - Umfang nach Absprache.' },
         { title: 'Garderobe', body: 'Garderobenservice für deine Gäste.' },
+        { title: 'Zonenaufteilung', body: 'Wir können eigene Zonen im Raum abtrennen, sodass verschiedene Teile deines Events jeweils ihren eigenen Bereich haben.' },
+        { title: 'Deko & Torte', body: 'Dekorative Elemente oder eine Anlasstorte - nach vorheriger Absprache.' },
         { title: 'Reinigungsservice', body: 'Laufende Reinigung während des gesamten Events.' },
         { title: 'Koordination', body: 'Technische und organisatorische Unterstützung in jeder Phase.' },
       ],
@@ -382,7 +385,6 @@ const de: UI = {
         points: [
           'Sitzdinner, Präsentationen und Meetings am Tag',
           'Bis zu 150 Sitzplätze',
-          '2 Präsentationsbildschirme',
         ],
       },
       sisi: {
@@ -391,6 +393,8 @@ const de: UI = {
         points: [
           'Abendprogramme, Networking und Feiern',
           'Live-Musik und DJs',
+          'Bis zu 500 Gäste im Stehen (Buffet)',
+          '2 Präsentationsbildschirme',
         ],
       },
       combined: {
@@ -486,9 +490,7 @@ const de: UI = {
         unsure: 'Noch unklar',
       },
       duration: 'Dauer der Veranstaltung',
-      presentation: 'Anforderungen an Präsentation oder Panel',
-      catering: 'Catering-Anforderungen',
-      technical: 'Zusätzliche technische Anforderungen',
+      durationPlaceholder: 'z. B. 6 Stunden',
       message: 'Nachricht',
       messagePlaceholder: 'Beschreibe dein Event kurz.',
       consent: 'Ich willige ein, zu meiner Anfrage kontaktiert zu werden, und bestätige, die {privacy} gelesen zu haben.',
