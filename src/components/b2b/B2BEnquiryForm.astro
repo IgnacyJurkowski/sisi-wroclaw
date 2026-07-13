@@ -146,7 +146,7 @@ const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
 
         <div class="b2b-field">
           <label for="b2b-duration">{f.duration} <span class="opt">{f.optional}</span></label>
-          <input id="b2b-duration" name="duration" type="text" />
+          <input id="b2b-duration" name="duration" type="text" placeholder={f.durationPlaceholder} />
         </div>
 
         <div class="b2b-field b2b-field-wide">

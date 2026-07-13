@@ -1,0 +1,365 @@
+---
+// The Cork kitchen menu — a full-bleed cream band at the very bottom of the menu
+// page, colour-inverted from the dark bar cards above (burgundy ink on cream) to
+// signal "this is the restaurant, not the bar". Fully localised in all 5 langs;
+// dish data lives here (like WINES in MenuPage) rather than in the UI dictionaries,
+// since it's a self-contained block of prose.
+import { type Locale } from '../i18n/config';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+
+type L = Record<Locale, string>;
+type Diet = 'vegetarian' | 'vegan';
+interface Tier { qty?: L; price: string }
+interface Dish { icon: string; name: L; desc?: L; tiers: Tier[]; diet?: Diet; spicy?: boolean }
+interface FoodSection { title: L; icon: string; dishes: Dish[] }
+
+// Section-header glyphs (Lucide, MIT), stroked in burgundy on the cream band —
+// the inverse of the bar cards' gold icons. Injected with set:html into one <svg>.
+const ICONS = {
+  shell: '<path d="M14 11a2 2 0 1 1-4 0 4 4 0 0 1 8 0 6 6 0 0 1-12 0 8 8 0 0 1 16 0 10 10 0 1 1-20 0 11.93 11.93 0 0 1 2.42-7.22 2 2 0 0 1 2.75-.4"/>',
+  flame: '<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>',
+  bread: '<path d="M12 4c-3.9 0-8 1.4-8 5 0 1.3.9 2 2 2v7a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-7c1.1 0 2-.7 2-2 0-3.6-4.1-5-8-5Z"/>',
+  beef: '<circle cx="12.5" cy="8.5" r="2.5"/><path d="M12.5 2a6.5 6.5 0 0 0-6.22 4.6c-1.1 3.13-.78 3.9-3.18 6.08A3 3 0 0 0 5 18c4 0 8.4-1.8 11.4-4.3A6.5 6.5 0 0 0 12.5 2Z"/><path d="m18.5 6 2.19 4.5a6.48 6.48 0 0 1 .31 2 6.49 6.49 0 0 1-2.6 5.2C15.4 20.2 11 22 7 22a3 3 0 0 1-2.68-1.66L2.4 16.5"/>',
+  fish: '<path d="M6.5 12c.94-3.46 4.94-6 8.5-6 3.56 0 6.06 2.54 7 6-.94 3.47-3.44 6-7 6s-7.56-2.53-8.5-6Z"/><path d="M18 12v.5"/><path d="M16 17.93a9.77 9.77 0 0 1 0-11.86"/><path d="M7 10.67C7 8 5.58 5.97 2.73 5.5c-1 1.5-1 5 .23 6.5-1.24 1.5-1.24 5-.23 6.5C5.58 18.03 7 16 7 13.33"/>',
+  platter: '<path d="M12 3v3"/><path d="M5 9h14"/><path d="M6 9a6 6 0 0 0 12 0"/><path d="M12 15v3"/><path d="M4 21h16"/><path d="M7 21a5 5 0 0 1 10 0"/>',
+  cheese: '<path d="M4 13v5a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-6"/><path d="M3.5 12.5 13 4c4 0 7.5 3.4 7.5 8.5Z"/><circle cx="9" cy="15.5" r=".9"/><circle cx="14" cy="16" r=".9"/>',
+  drumstick: '<path d="M15.4 15.63a7.87 6 135 1 1 6.23-6.23 4.5 3.43 0 0 0-6.23 6.23Z"/><path d="m8.29 12.71-2.6 2.6a2.5 2.5 0 1 0-1.65 4.65A2.5 2.5 0 1 0 8.7 18.3l2.59-2.59"/>',
+  utensils: '<path d="M3 2v7c0 1.1.9 2 2 2h.5c1.1 0 2-.9 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/>',
+  knife: '<path d="M15 3v12h-5c-.023 -3.681 .184 -7.406 5 -12m0 12v6h-1v-3"/>',
+  // Badge glyphs (real library icons) — a leaf (Lucide) shown in a CSS circle
+  // for veg, a chili pepper (Tabler) for spicy.
+  leafCircle: '<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>',
+  chili: '<path d="M13 11c0 2.21-2.239 4-5 4s-5-1.79-5-4a8 8 0 1 0 16 0a3 3 0 0 0-6 0"/><path d="M16 8c0-2 2-4 4-4"/>',
+  shrimp: '<path d="M11 12h.01"/><path d="M13 22c.5-.5 1.12-1 2.5-1-1.38 0-2-.5-2.5-1"/><path d="M14 2a3.28 3.28 0 0 1-3.227 1.798l-6.17-.561A2.387 2.387 0 1 0 4.387 8H15.5a1 1 0 0 1 0 13 1 1 0 0 0 0-5H12a7 7 0 0 1-7-7V8"/><path d="M14 8a8.5 8.5 0 0 1 0 8"/><path d="M16 16c2 0 4.5-4 4-6"/>',
+};
+
+// Diet badge labels (shown as the badge's tooltip / a11y label). Only the
+// clearly-vegetarian cheese board is marked; the rest await the kitchen's list.
+const DIET: Record<Diet, L> = {
+  vegetarian: { pl: 'wegetariańskie', en: 'vegetarian', de: 'vegetarisch', it: 'vegetariano', cs: 'vegetariánské' },
+  vegan: { pl: 'wegańskie', en: 'vegan', de: 'vegan', it: 'vegano', cs: 'veganské' },
+};
+const SPICY: L = { pl: 'ostre', en: 'spicy', de: 'scharf', it: 'piccante', cs: 'pálivé' };
+
+// Portion labels reused across dishes.
+const QTY: Record<string, L> = {
+  p3: { pl: '3 szt', en: '3 pcs', de: '3 Stk.', it: '3 pz', cs: '3 ks' },
+  p5: { pl: '5 szt', en: '5 pcs', de: '5 Stk.', it: '5 pz', cs: '5 ks' },
+  p6: { pl: '6 szt', en: '6 pcs', de: '6 Stk.', it: '6 pz', cs: '6 ks' },
+  p9: { pl: '9 szt', en: '9 pcs', de: '9 Stk.', it: '9 pz', cs: '9 ks' },
+  d2: { pl: 'dla 2 os.', en: 'for 2', de: 'für 2', it: 'per 2', cs: 'pro 2' },
+  d4: { pl: 'dla 4 os.', en: 'for 4', de: 'für 4', it: 'per 4', cs: 'pro 4' },
+  d6: { pl: 'dla 6 os.', en: 'for 6', de: 'für 6', it: 'per 6', cs: 'pro 6' },
+};
+
+const TAGLINE = {
+  eyebrow: 'The Cork · Wrocław',
+  heading: {
+    pl: 'Odkrywaj z nami pasję do jedzenia',
+    en: 'Discover our passion for food',
+    de: 'Entdecke mit uns die Leidenschaft fürs Essen',
+    it: 'Scopri con noi la passione per il cibo',
+    cs: 'Objevujte s námi vášeň pro jídlo',
+  } as L,
+  sub: {
+    pl: 'Bogactwo ulubionych smaków – prosto, świeżo, autentycznie.',
+    en: 'A wealth of beloved flavours – simple, fresh, authentic.',
+    de: 'Eine Fülle liebster Aromen – schlicht, frisch, authentisch.',
+    it: 'Una ricchezza di sapori amati – semplice, fresco, autentico.',
+    cs: 'Bohatství oblíbených chutí – jednoduše, čerstvě, autenticky.',
+  } as L,
+};
+
+const SECTIONS: FoodSection[] = [
+  {
+    title: { pl: 'Na początek', en: 'To start', de: 'Zum Anfang', it: 'Per iniziare', cs: 'Na začátek' },
+    icon: ICONS.utensils,
+    dishes: [
+      {
+        icon: ICONS.shell,
+        name: { pl: 'Ostrygi', en: 'Oysters', de: 'Austern', it: 'Ostriche', cs: 'Ústřice' },
+        desc: {
+          pl: 'Szkocja · Irlandia · Francja, na lodzie\nSosy do wyboru: klasyczna cytryna, mignonette, spicy mango',
+          en: 'Scotland · Ireland · France, on ice\nSauces to choose: classic lemon, mignonette, spicy mango',
+          de: 'Schottland · Irland · Frankreich, auf Eis\nSaucen zur Wahl: klassisch Zitrone, Mignonette, Spicy Mango',
+          it: 'Scozia · Irlanda · Francia, su ghiaccio\nSalse a scelta: limone classico, mignonette, mango piccante',
+          cs: 'Skotsko · Irsko · Francie, na ledu\nOmáčky na výběr: klasický citron, mignonette, pikantní mango',
+        },
+        tiers: [{ qty: QTY.p3, price: '49 zł' }, { qty: QTY.p6, price: '85 zł' }, { qty: QTY.p9, price: '120 zł' }],
+      },
+      {
+        icon: ICONS.bread,
+        name: { pl: 'Crostini', en: 'Crostini', de: 'Crostini', it: 'Crostini', cs: 'Crostini' },
+        desc: {
+          pl: 'Dedykowany chleb Sisi',
+          en: 'Signature Sisi bread',
+          de: 'Sisi-Signature-Brot',
+          it: 'Pane Sisi della casa',
+          cs: 'Signature chléb Sisi',
+        },
+        tiers: [],
+      },
+      {
+        icon: ICONS.knife,
+        name: {
+          pl: 'Klasyczny tatar wołowy The Cork',
+          en: 'The Cork classic beef tartare',
+          de: 'Klassisches Rindertatar The Cork',
+          it: 'Tartare di manzo classica The Cork',
+          cs: 'Klasický hovězí tatarák The Cork',
+        },
+        desc: {
+          pl: 'Ogórki / szalotka / musztarda / lubczyk / żółtko / chili / kapelusze borowika / domowa focaccia aglio e olio peperoncino',
+          en: 'Cucumber / shallot / mustard / lovage / egg yolk / chili / porcini caps / house focaccia aglio e olio peperoncino',
+          de: 'Gurke / Schalotte / Senf / Liebstöckel / Eigelb / Chili / Steinpilzköpfe / hausgemachte Focaccia aglio e olio peperoncino',
+          it: 'Cetriolo / scalogno / senape / levistico / tuorlo / peperoncino / cappelle di porcini / focaccia della casa aglio e olio peperoncino',
+          cs: 'Okurka / šalotka / hořčice / libeček / žloutek / chili / hlavičky hřibů / domácí focaccia aglio e olio peperoncino',
+        },
+        tiers: [{ qty: QTY.p3, price: '49 zł' }],
+      },
+      {
+        icon: ICONS.beef,
+        name: {
+          pl: 'Pieczona polędwica Rubia Gallega',
+          en: 'Roasted Rubia Gallega beef',
+          de: 'Gebratenes Rubia-Gallega-Rind',
+          it: 'Controfiletto di Rubia Gallega arrosto',
+          cs: 'Pečená svíčková Rubia Gallega',
+        },
+        desc: {
+          pl: 'Sos pepe verde / śmietana truflowa / ser Emilgrana',
+          en: 'Pepe verde sauce / truffle cream / Emilgrana cheese',
+          de: 'Pepe-Verde-Sauce / Trüffelcreme / Emilgrana-Käse',
+          it: 'Salsa al pepe verde / crema al tartufo / formaggio Emilgrana',
+          cs: 'Omáčka pepe verde / lanýžová smetana / sýr Emilgrana',
+        },
+        tiers: [{ qty: QTY.p3, price: '49 zł' }],
+      },
+      {
+        icon: ICONS.fish,
+        spicy: true,
+        name: {
+          pl: 'Tuńczyk Blue Fin à la chinoise',
+          en: 'Blue Fin tuna à la chinoise',
+          de: 'Blue-Fin-Thunfisch à la chinoise',
+          it: 'Tonno Blue Fin à la chinoise',
+          cs: 'Tuňák Blue Fin à la chinoise',
+        },
+        desc: {
+          pl: 'Palony por / cytrusy / chili / sos sojowy / sezam',
+          en: 'Charred leek / citrus / chili / soy sauce / sesame',
+          de: 'Gebrannter Lauch / Zitrus / Chili / Sojasauce / Sesam',
+          it: 'Porro bruciato / agrumi / peperoncino / salsa di soia / sesamo',
+          cs: 'Opálený pórek / citrusy / chili / sójová omáčka / sezam',
+        },
+        tiers: [{ qty: QTY.p3, price: '49 zł' }],
+      },
+      {
+        icon: ICONS.platter,
+        name: {
+          pl: 'Etażera Sisi',
+          en: 'Sisi tiered platter',
+          de: 'Sisi Etagere',
+          it: 'Alzata Sisi',
+          cs: 'Etažér Sisi',
+        },
+        desc: {
+          pl: 'Miks crostini i ostryg',
+          en: 'A mix of crostini and oysters',
+          de: 'Mix aus Crostini und Austern',
+          it: 'Mix di crostini e ostriche',
+          cs: 'Mix crostini a ústřic',
+        },
+        tiers: [{ qty: QTY.d2, price: '139 zł' }, { qty: QTY.d4, price: '259 zł' }, { qty: QTY.d6, price: '379 zł' }],
+      },
+      {
+        icon: ICONS.cheese,
+        name: {
+          pl: 'Sery Corka',
+          en: 'The Cork cheese board',
+          de: 'Käseauswahl The Cork',
+          it: 'Selezione di formaggi The Cork',
+          cs: 'Sýrové prkénko The Cork',
+        },
+        desc: {
+          pl: 'Kozi / owczy / krowi / oliwki / musztarda pomarańczowa',
+          en: 'Goat / sheep / cow / olives / orange mustard',
+          de: 'Ziege / Schaf / Kuh / Oliven / Orangensenf',
+          it: "Capra / pecora / mucca / olive / senape all'arancia",
+          cs: 'Kozí / ovčí / kravský / olivy / pomerančová hořčice',
+        },
+        tiers: [{ price: '65 zł' }],
+        diet: 'vegetarian',
+      },
+    ],
+  },
+  {
+    title: { pl: 'Na ciepło', en: 'Hot', de: 'Warme Gerichte', it: 'Piatti caldi', cs: 'Teplá jídla' },
+    icon: ICONS.flame,
+    dishes: [
+      {
+        icon: ICONS.shrimp,
+        name: { pl: 'Seafood basket', en: 'Seafood basket', de: 'Seafood-Korb', it: 'Cestino di mare', cs: 'Seafood basket' },
+        desc: {
+          pl: 'Krewetki / dorsz / kalmar / dip czosnkowo-ziołowy / cytryna / chipsy warzywne',
+          en: 'Shrimp / cod / squid / garlic-herb dip / lemon / vegetable chips',
+          de: 'Garnelen / Kabeljau / Tintenfisch / Knoblauch-Kräuter-Dip / Zitrone / Gemüsechips',
+          it: 'Gamberi / merluzzo / calamaro / dip aglio ed erbe / limone / chips di verdure',
+          cs: 'Krevety / treska / kalamáry / česnekovo-bylinkový dip / citron / zeleninové chipsy',
+        },
+        tiers: [{ price: '65 zł' }],
+      },
+      {
+        icon: ICONS.drumstick,
+        spicy: true,
+        name: {
+          pl: 'Buffalo – chrupiący kurczak',
+          en: 'Buffalo crispy chicken',
+          de: 'Buffalo Crispy Chicken',
+          it: 'Pollo croccante Buffalo',
+          cs: 'Buffalo křupavé kuře',
+        },
+        desc: {
+          pl: 'Miodowy czosnek / majonez piniowy / domowy sos Buffalo / nori / bonito',
+          en: 'Honey garlic / pine-nut mayo / house Buffalo sauce / nori / bonito',
+          de: 'Honig-Knoblauch / Pinienkern-Mayo / hausgemachte Buffalo-Sauce / Nori / Bonito',
+          it: 'Aglio e miele / maionese ai pinoli / salsa Buffalo della casa / nori / bonito',
+          cs: 'Medový česnek / piniová majonéza / domácí omáčka Buffalo / nori / bonito',
+        },
+        tiers: [{ price: '65 zł' }],
+      },
+    ],
+  },
+];
+---
+
+<section class="food-menu" data-reveal-group>
+  <div class="food-inner">
+    <header class="food-head" data-reveal>
+      <span class="food-eyebrow">{TAGLINE.eyebrow}</span>
+      <h2 class="food-title display">{TAGLINE.heading[locale]}</h2>
+      <p class="food-sub">{TAGLINE.sub[locale]}</p>
+    </header>
+
+    <div class="food-grid">
+      {SECTIONS.map((sec) => (
+        <div class="food-col" data-reveal>
+          <h3 class="food-section-label"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={sec.icon} />{sec.title[locale]}</h3>
+          {sec.dishes.map((d) => (
+            <article class="food-item">
+              <svg class="food-item-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={d.icon} />
+              <div class="food-item-body">
+                <div class="food-item-text">
+                  <h4 class="food-name">
+                    {d.name[locale]}
+                    {(d.diet || d.spicy) && (
+                      <span class="food-badges">
+                        {d.diet && (
+                          <span class="food-badge food-badge-veg" role="img" title={DIET[d.diet][locale]} aria-label={DIET[d.diet][locale]}>
+                            <svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.leafCircle} />
+                          </span>
+                        )}
+                        {d.spicy && (
+                          <span class="food-badge food-badge-spicy" role="img" title={SPICY[locale]} aria-label={SPICY[locale]}>
+                            <svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.chili} />
+                          </span>
+                        )}
+                      </span>
+                    )}
+                  </h4>
+                  {d.desc && <p class="food-desc">{d.desc[locale]}</p>}
+                </div>
+                {d.tiers.length > 0 && (
+                  <div class="food-prices">
+                    {d.tiers.map((tr) => (
+                      <span class="food-price">
+                        {tr.qty && <span class="food-qty">{tr.qty[locale]}</span>}{tr.price}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Full-bleed cream band, colour-inverted from the dark bar cards. Sits above
+     the fixed particle backdrop (opaque cream covers it in this band). */
+  .food-menu {
+    position: relative; z-index: 1;
+    background: var(--cream);
+    color: #27060f;
+    margin-top: 96px;
+    padding: 96px 32px 104px;
+  }
+  .food-inner { max-width: var(--maxw); margin: 0 auto; }
+
+  .food-head { text-align: center; max-width: 640px; margin: 0 auto 64px; }
+  .food-eyebrow {
+    display: inline-block; font-size: 12px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.18em;
+    color: rgba(39, 7, 15, 0.72); margin-bottom: 18px;
+  }
+  .food-title {
+    font-size: clamp(2rem, 4.5vw, 3.2rem); line-height: 1.05;
+    text-transform: uppercase; letter-spacing: -0.01em;
+    color: #27060f; margin: 0 0 18px;
+  }
+  .food-sub { font-size: 15px; line-height: 1.7; color: rgba(39, 7, 15, 0.62); margin: 0; }
+
+  .food-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px 56px;
+    max-width: 980px; margin: 0 auto; align-items: start;
+  }
+  .food-section-label {
+    display: flex; align-items: center; gap: 11px;
+    font-family: var(--font-display); font-size: 1.35rem; font-weight: 400;
+    text-transform: uppercase; letter-spacing: 0.05em; color: #27060f;
+    margin: 0 0 6px; padding-bottom: 14px;
+    border-bottom: 1px solid rgba(39, 7, 15, 0.18);
+  }
+  .food-section-label svg {
+    width: 22px; height: 22px; flex-shrink: 0;
+    fill: none; stroke: #27060f; stroke-width: 1.7;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+  .food-item { display: flex; gap: 14px; padding: 18px 0; border-bottom: 1px solid rgba(39, 7, 15, 0.1); }
+  .food-item:last-child { border-bottom: none; }
+  .food-item-icon {
+    width: 22px; height: 22px; flex-shrink: 0; margin-top: 1px;
+    fill: none; stroke: #27060f; stroke-width: 1.6;
+    stroke-linecap: round; stroke-linejoin: round; opacity: 0.85;
+  }
+  .food-item-body { flex: 1; min-width: 0; display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+  .food-item-text { flex: 1; min-width: 0; }
+  .food-name { font-size: 16px; font-weight: 700; letter-spacing: 0.01em; color: #27060f; margin: 0; }
+  .food-badges { display: inline-flex; gap: 5px; margin-left: 8px; vertical-align: middle; }
+  .food-badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 21px; height: 21px; border-radius: 50%; border: 1px solid;
+  }
+  .food-badge svg {
+    width: 12px; height: 12px; fill: none; stroke-width: 1.9;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+  .food-badge-veg { border-color: rgba(61, 90, 46, 0.4); background: rgba(61, 90, 46, 0.09); }
+  .food-badge-veg svg { stroke: #3d5a2e; }
+  .food-badge-spicy { border-color: rgba(180, 68, 47, 0.42); background: rgba(180, 68, 47, 0.09); }
+  .food-badge-spicy svg { stroke: #b4442f; }
+  .food-prices { flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 2px; text-align: right; }
+  .food-price { font-size: 14px; font-weight: 600; color: #27060f; white-space: nowrap; }
+  .food-qty { font-size: 11px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: rgba(39, 7, 15, 0.72); margin-right: 8px; }
+  .food-desc { font-size: 13px; line-height: 1.6; color: rgba(39, 7, 15, 0.62); margin: 4px 0 0; max-width: 46ch; white-space: pre-line; }
+
+  @media (max-width: 760px) {
+    .food-menu { margin-top: 72px; padding: 72px 20px 80px; }
+    .food-grid { grid-template-columns: 1fr; gap: 8px; }
+    .food-head { margin-bottom: 48px; }
+  }
+</style>

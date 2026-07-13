@@ -6,6 +6,14 @@ interface Props { locale: Locale }
 const { locale } = Astro.props;
 const t = useTranslations(locale);
 const f = t.b2b.facts;
+
+// Decorative icons are keyed in the localized fact records so reordering or
+// removing facts cannot silently attach the wrong visual meaning.
+const ICONS = {
+  seated: '<path d="M19 9V6a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v3"/><path d="M3 11v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v2H7v-2a2 2 0 0 0-4 0Z"/><path d="M5 18v2"/><path d="M19 18v2"/>',
+  screens: '<path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/>',
+  location: '<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
+} as const;
 ---
 
 <section class="b2b-facts" aria-label={f.heading}>
@@ -14,6 +22,7 @@ const f = t.b2b.facts;
     <ul class="b2b-facts-grid" data-reveal-group>
       {f.items.map((item) => (
         <li class="b2b-fact sisi-card">
+          <svg class="b2b-fact-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS[item.icon]} />
           <span class="b2b-fact-value display">{item.value}</span>
           <span class="b2b-fact-label">{item.label}</span>
         </li>
@@ -35,7 +44,12 @@ const f = t.b2b.facts;
   .b2b-fact {
     min-width: 0;
     text-align: center; padding: 30px 18px;
-    display: flex; flex-direction: column; gap: 10px;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+  }
+  .b2b-fact-icon {
+    width: 26px; height: 26px; margin-bottom: 2px;
+    fill: none; stroke: var(--gold); stroke-width: 1.5;
+    stroke-linecap: round; stroke-linejoin: round; opacity: 0.9;
   }
   .b2b-fact-value { min-width: 0; font-size: clamp(1.6rem, 3.4vw, 2.4rem); color: var(--gold); line-height: 1; overflow-wrap: anywhere; }
   .b2b-fact-label { font-size: 13px; color: var(--text-mute); line-height: 1.5; overflow-wrap: anywhere; }

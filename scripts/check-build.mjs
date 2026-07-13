@@ -388,6 +388,7 @@ const searchableHtml = allHtml.replace(/data:[^;]+;base64,[A-Za-z0-9+/=]+/g, '')
 const leaked = htmls.filter((f) => /\{(privacy|cookies|email|example|legalName|nip|regon)\}/.test(readFileSync(f, 'utf8')));
 const unverifiedRenderedClaims = [
   ['663 m area claim', /663\s*m/i],
+  ['500-person capacity claim', /(?:up to|do|bis zu|fino a|až)\s+500\b/i],
   ['over-21 claim', /over[-\s]?21/i],
   ['21+ claim', /21\+/i],
   ['Polish over-21 claim', /powyżej 21/i],
