@@ -26,9 +26,17 @@ function assertFailClosedHook(source) {
   assert.doesNotMatch(source, /run:[^\n]*secrets\.NETLIFY_DEPLOY_HOOK/);
 }
 
-test('npm test is the complete launch gate', async () => {
+test('package scripts expose the complete launch and exploit gates', async () => {
   const pkg = JSON.parse(await readFile('package.json', 'utf8'));
   assert.equal(pkg.scripts.test, REQUIRED_TEST);
+  assert.equal(pkg.scripts['test:security'], 'node scripts/security-browser.mjs');
+  assert.equal(pkg.scripts['verify:release'], 'npm test && npm run test:security');
+});
+
+test('Netlify production builds use the exact audited Node runtime', async () => {
+  const source = await readFile('netlify.toml', 'utf8');
+  assert.match(source, /^\s*NODE_VERSION\s*=\s*"22\.12\.0"\s*$/m);
+  assert.doesNotMatch(source, /^\s*NODE_VERSION\s*=\s*"22"\s*$/m);
 });
 
 test('CI publishes the exact Launch gate / test status on pushes and pull requests', async () => {
