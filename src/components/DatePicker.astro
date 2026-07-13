@@ -51,7 +51,10 @@ const {
       required={required}
       placeholder={placeholder}
       aria-describedby={describedby}
+      role="combobox"
+      aria-autocomplete="none"
       aria-haspopup="dialog"
+      aria-controls={`${id}-dialog`}
       aria-expanded="false"
       autocomplete="off"
       data-field-date
@@ -68,7 +71,7 @@ const {
       <path d="M2 6h12M5.5 1.5v3M10.5 1.5v3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
     </svg>
 
-    <div class="b2b-dp-pop" data-dp-pop hidden role="dialog" aria-label={placeholder} aria-modal="false">
+    <div id={`${id}-dialog`} class="b2b-dp-pop" data-dp-pop hidden role="dialog" aria-label={placeholder} aria-modal="false">
       <div class="b2b-dp-nav">
         <button type="button" class="b2b-dp-navbtn" data-dp-prev aria-label={prevMonth}>
           <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3l-5 5 5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -88,7 +91,7 @@ const {
   .b2b-dp { display: flex; flex-direction: column; gap: 8px; }
   .b2b-dp-modes { display: inline-flex; gap: 4px; padding: 3px; border-radius: 9px; background: rgba(255,255,255,0.03); border: 1px solid var(--line); align-self: flex-start; }
   .b2b-dp-mode {
-    border: none; background: transparent; color: rgba(237,219,194,0.6);
+    border: none; background: transparent; color: var(--text-mute);
     font: inherit; font-size: 12px; padding: 6px 12px; border-radius: 6px; cursor: pointer;
     transition: background 150ms ease, color 150ms ease;
   }
@@ -104,7 +107,7 @@ const {
   .b2b-dp-input::placeholder { color: var(--text-faint); }
   .b2b-dp-input:focus { outline: 2px solid rgba(237,219,194,0.5); outline-offset: 1px; border-color: transparent; }
   .b2b-dp-input[aria-invalid='true'] { border-color: #c25c74; }
-  .b2b-dp-icon { position: absolute; right: 13px; top: 50%; transform: translateY(-50%); color: rgba(237,219,194,0.6); pointer-events: none; }
+  .b2b-dp-icon { position: absolute; right: 13px; top: 50%; transform: translateY(-50%); color: var(--text-mute); pointer-events: none; }
   .b2b-dp-clear {
     position: absolute; right: 38px; top: 50%; transform: translateY(-50%);
     width: 22px; height: 22px; display: flex; align-items: center; justify-content: center;
@@ -134,7 +137,7 @@ const {
     border-radius: 8px; cursor: pointer;
   }
   .b2b-dp-day:hover:not(:disabled) { background: rgba(237,219,194,0.12); }
-  .b2b-dp-day.is-other { color: rgba(237,219,194,0.28); }
+  .b2b-dp-day.is-other { color: var(--text-mute); }
   .b2b-dp-day:disabled { color: rgba(237,219,194,0.18); cursor: default; }
   .b2b-dp-day.is-range { background: rgba(251,210,149,0.14); border-radius: 0; }
   .b2b-dp-day.is-edge { background: var(--cream); color: #1a120b; font-weight: 700; }
@@ -284,6 +287,7 @@ const {
       setView(focus);
       render();
       document.addEventListener('click', onDocClick, true);
+      document.addEventListener('keydown', onDocKeydown, true);
       window.setTimeout(focusDay, 0);
     }
     function closePop(focusInput: boolean): void {
@@ -292,10 +296,16 @@ const {
       pop!.hidden = true;
       input!.setAttribute('aria-expanded', 'false');
       document.removeEventListener('click', onDocClick, true);
+      document.removeEventListener('keydown', onDocKeydown, true);
       if (focusInput) input!.focus();
     }
     function onDocClick(e: MouseEvent): void {
       if (!root.contains(e.target as Node)) closePop(false);
+    }
+    function onDocKeydown(e: KeyboardEvent): void {
+      if (e.key !== 'Escape') return;
+      e.preventDefault();
+      closePop(true);
     }
 
     function pick(d: Date): void {
@@ -309,10 +319,12 @@ const {
           start = d; end = null;
           showValue();
           render();
+          focusDay();
         } else if (d < start) {
           start = d; end = null;
           showValue();
           render();
+          focusDay();
         } else {
           end = d;
           showValue();
@@ -359,7 +371,6 @@ const {
         case 'PageUp': e.preventDefault(); moveFocus(new Date(focus.getFullYear(), focus.getMonth() - 1, focus.getDate())); break;
         case 'PageDown': e.preventDefault(); moveFocus(new Date(focus.getFullYear(), focus.getMonth() + 1, focus.getDate())); break;
         case 'Enter': case ' ': e.preventDefault(); pick(new Date(focus)); break;
-        case 'Escape': e.preventDefault(); closePop(true); break;
       }
     });
 

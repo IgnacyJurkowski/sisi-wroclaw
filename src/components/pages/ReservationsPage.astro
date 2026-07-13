@@ -18,7 +18,7 @@ const t = useTranslations(locale);
   ogDescription={t.meta.reservations.ogDescription}
 >
   <div class="res-page">
-    <Reservations locale={locale} />
+    <Reservations locale={locale} headingLevel="h1" />
 
     <section class="res-terms" data-reveal>
       <div class="sisi-card res-terms-card">
@@ -35,14 +35,15 @@ const t = useTranslations(locale);
 <style>
   .res-page { padding-top: calc(var(--nav-height) - 12px); }
   .res-terms { max-width: 820px; margin: 0 auto 96px; padding: 0 32px; }
-  .res-terms-card { padding: 32px 36px; }
+  .res-terms-card { min-width: 0; padding: 32px 36px; }
+  .res-terms-card .menu-section-label { min-width: 0; overflow-wrap: anywhere; }
   .res-terms-list {
     margin: 18px 0 0; padding: 0; list-style: none;
     display: flex; flex-direction: column; gap: 12px;
   }
   .res-terms-list li {
     position: relative; padding-left: 22px;
-    font-size: 14px; line-height: 1.7; color: rgba(237, 219, 194, 0.7);
+    font-size: 14px; line-height: 1.7; color: var(--text-dim);
   }
   .res-terms-list li::before {
     content: ''; position: absolute; left: 4px; top: 10px;

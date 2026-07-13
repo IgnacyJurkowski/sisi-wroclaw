@@ -199,53 +199,55 @@ const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
   import { campaignAttribution } from '../../lib/attribution.mjs';
 
   (function () {
-    const form = document.querySelector('[data-b2b-form]');
-    if (!form) return;
-    const messages = JSON.parse(form.getAttribute('data-messages') || '{}');
+    const formElement = document.querySelector('[data-b2b-form]');
+    if (!(formElement instanceof HTMLFormElement)) return;
+    const form: HTMLFormElement = formElement;
+    const messages = JSON.parse(form.getAttribute('data-messages') || '{}') as Record<string, string>;
 
     // Fill page context and bounded campaign-attribution fields from the URL.
     // Unrelated query parameters are never submitted.
     try {
-      const pageEl = form.querySelector('[data-field-page]');
-      const utmEl = form.querySelector('[data-field-utm]');
+      const pageEl = form.querySelector<HTMLInputElement>('[data-field-page]');
+      const utmEl = form.querySelector<HTMLInputElement>('[data-field-utm]');
       if (pageEl) pageEl.value = location.pathname;
       if (utmEl) utmEl.value = campaignAttribution(location.search);
-    } catch (_) {}
+    } catch {}
 
-    const errBox = form.querySelector('[data-form-errors]');
-    const okBox = form.querySelector('[data-status-success]');
-    const failBox = form.querySelector('[data-status-error]');
-    const submit = form.querySelector('[data-submit]');
+    const errBox = form.querySelector<HTMLElement>('[data-form-errors]');
+    const okBox = form.querySelector<HTMLElement>('[data-status-success]');
+    const failBox = form.querySelector<HTMLElement>('[data-status-error]');
+    const submit = form.querySelector<HTMLButtonElement>('[data-submit]');
+    if (!submit) return;
 
-    function setError(name, msg) {
-      const field = form.querySelector('[name="' + name + '"]');
+    function setError(name: string, msg: string): void {
+      const field = form.querySelector<HTMLElement>('[name="' + name + '"]');
       const errEl = document.getElementById('err-' + name);
       if (field) field.setAttribute('aria-invalid', 'true');
       if (errEl) { errEl.textContent = msg; errEl.hidden = false; }
     }
-    function clearErrors() {
-      form.querySelectorAll('[data-error]').forEach(function (e) { e.hidden = true; e.textContent = ''; });
+    function clearErrors(): void {
+      form.querySelectorAll<HTMLElement>('[data-error]').forEach(function (e) { e.hidden = true; e.textContent = ''; });
       form.querySelectorAll('[aria-invalid]').forEach(function (e) { e.removeAttribute('aria-invalid'); });
       if (errBox) errBox.hidden = true;
     }
-    function validate() {
+    function validate(): boolean {
       clearErrors();
-      let firstBad = null;
+      let firstBad: HTMLElement | null = null;
       const required = ['company', 'contact_person', 'email', 'event_type', 'guests', 'message'];
       required.forEach(function (n) {
-        const el = form.querySelector('[name="' + n + '"]');
+        const el = form.querySelector<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>('[name="' + n + '"]');
         if (el && !String(el.value).trim()) { setError(n, messages.required); firstBad = firstBad || el; }
       });
-      const email = form.querySelector('[name="email"]');
+      const email = form.querySelector<HTMLInputElement>('[name="email"]');
       if (email && email.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) {
         setError('email', messages.email); firstBad = firstBad || email;
       }
-      const flexible = form.querySelector('[data-field-flexible]');
-      const date = form.querySelector('[data-field-date]');
+      const flexible = form.querySelector<HTMLInputElement>('[data-field-flexible]');
+      const date = form.querySelector<HTMLInputElement>('[data-field-date]');
       if (date && !date.value.trim() && !(flexible && flexible.checked)) {
         setError('preferred_date', messages.required); firstBad = firstBad || date;
       }
-      const consent = form.querySelector('[data-field-consent]');
+      const consent = form.querySelector<HTMLInputElement>('[data-field-consent]');
       if (consent && !consent.checked) { setError('consent', messages.consent); firstBad = firstBad || consent; }
       if (firstBad) {
         if (errBox) errBox.hidden = false;
@@ -262,14 +264,15 @@ const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
 
       submit.disabled = true;
       submit.textContent = messages.sending;
-      const data = new URLSearchParams(new FormData(form));
+      const data = new URLSearchParams();
+      for (const [key, value] of new FormData(form)) data.append(key, String(value));
       // POST to the current page (Netlify intercepts form POSTs by form-name);
       // avoids the forced "/" -> "/pl/" redirect swallowing the submission.
       fetch(location.pathname, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: data.toString() })
         .then(function (res) {
           if (!res.ok) throw new Error('bad status');
           form.reset();
-          if (okBox) { okBox.hidden = false; okBox.focus && okBox.focus(); }
+          if (okBox) { okBox.hidden = false; okBox.focus(); }
         })
         .catch(function () { if (failBox) failBox.hidden = false; })
         .finally(function () { submit.disabled = false; submit.textContent = messages.submit; });
@@ -281,7 +284,7 @@ const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
   .b2b-enquiry { padding: 32px 0 96px; }
   .b2b-enquiry-head { text-align: center; max-width: 620px; margin: 0 auto 40px; }
   .b2b-section-title { font-size: clamp(1.6rem, 3.6vw, 2.4rem); text-transform: uppercase; }
-  .b2b-enquiry-intro { color: rgba(237,219,194,0.62); font-size: 16px; line-height: 1.8; margin-top: 14px; }
+  .b2b-enquiry-intro { color: var(--text-dim); font-size: 16px; line-height: 1.8; margin-top: 14px; }
   .b2b-form { max-width: 820px; margin: 0 auto; padding: 36px 36px 32px; }
   .b2b-hp { position: absolute; left: -9999px; }
   .b2b-form-hint { font-size: 12px; color: var(--text-faint); margin-bottom: 18px; }
@@ -290,9 +293,10 @@ const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
     border: 1px solid #a8475f; background: rgba(168,71,95,0.15); color: var(--cream); font-size: 14px;
   }
   .b2b-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 22px; }
+  .b2b-fields > *, .b2b-field { min-width: 0; }
   .b2b-field { display: flex; flex-direction: column; gap: 7px; }
   .b2b-field-wide { grid-column: 1 / -1; }
-  .b2b-field label { font-size: 13px; color: rgba(237,219,194,0.8); }
+  .b2b-field label { font-size: 13px; color: var(--text-dim); }
   .req { color: var(--gold); }
   .opt { color: var(--text-faint); font-size: 11px; }
   .b2b-field input, .b2b-field select, .b2b-field textarea {
@@ -305,7 +309,7 @@ const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
     outline: 2px solid rgba(237,219,194,0.5); outline-offset: 1px; border-color: transparent;
   }
   .b2b-field [aria-invalid='true'] { border-color: #c25c74; }
-  .b2b-check { flex-direction: row !important; align-items: center; gap: 11px; font-size: 13px; line-height: 1.5; color: rgba(237,219,194,0.7); cursor: pointer; }
+  .b2b-check { flex-direction: row !important; align-items: center; gap: 11px; font-size: 13px; line-height: 1.5; color: var(--text-faint); cursor: pointer; }
   /* Consent text wraps, so keep its tick aligned to the first line, not centred. */
   .b2b-consent { align-items: flex-start; }
   /* Custom tick: hide the native box and draw our own. */
@@ -331,7 +335,7 @@ const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
   .b2b-form-actions { margin-top: 26px; }
   .b2b-form-status { margin-top: 22px; padding: 16px 18px; border-radius: 12px; border: 1px solid var(--line); }
   .b2b-form-status .b2b-status-title { color: var(--cream); font-size: 15px; margin-bottom: 4px; }
-  .b2b-form-status .b2b-status-body { color: rgba(237,219,194,0.65); font-size: 14px; line-height: 1.6; }
+  .b2b-form-status .b2b-status-body { color: var(--text-dim); font-size: 14px; line-height: 1.6; }
   .b2b-status-error { border-color: #a8475f; }
   .b2b-status-error a { color: var(--cream); }
   @media (max-width: 640px) { .b2b-fields { grid-template-columns: 1fr; } .b2b-form { padding: 28px 22px; } }

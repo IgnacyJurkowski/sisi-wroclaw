@@ -3,9 +3,10 @@ import { reservationUrl, CONTACT } from '../../data/site';
 import { type Locale } from '../../i18n/config';
 import { useTranslations } from '../../i18n/t';
 
-interface Props { locale: Locale }
-const { locale } = Astro.props;
+interface Props { locale: Locale; headingLevel?: 'h1' | 'h2' }
+const { locale, headingLevel = 'h2' } = Astro.props;
 const t = useTranslations(locale);
+const Heading = headingLevel;
 
 const mapHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(CONTACT.address)}`;
 ---
@@ -14,7 +15,7 @@ const mapHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComp
   <div class="container res-grid">
     <div class="res-pitch" data-reveal>
       <span class="page-label">{t.reservationsHome.eyebrow}</span>
-      <h2 class="display res-title">{t.reservationsHome.title}</h2>
+      <Heading class="display res-title">{t.reservationsHome.title}</Heading>
       <p class="res-body">{t.reservationsHome.body}</p>
       <p class="res-terms-line">{t.reservationsHome.terms}</p>
       <a href={reservationUrl('reservations_section')} class="btn-cta res-cta" rel="noopener" target="_blank">{t.buttons.reserveOnline}</a>
@@ -59,11 +60,11 @@ const mapHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComp
     margin: 12px 0 20px; line-height: 1.05;
   }
   .res-body {
-    color: rgba(237, 219, 194, 0.62); font-size: 16px; line-height: 1.8;
+    color: var(--text-dim); font-size: 16px; line-height: 1.8;
     margin-bottom: 28px; max-width: 460px;
   }
   .res-terms-line {
-    font-size: 13px; line-height: 1.6; color: rgba(237, 219, 194, 0.72);
+    font-size: 13px; line-height: 1.6; color: var(--text-dim);
     max-width: 460px; margin-bottom: 24px;
     padding: 13px 16px; border: 1px solid var(--line); border-radius: 10px;
     background: rgba(255, 255, 255, 0.02);
@@ -71,12 +72,13 @@ const mapHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComp
   .res-cta { padding: 15px 34px; font-size: 13px; }
   .res-reassure {
     margin-top: 18px; font-size: 12px; letter-spacing: 0.03em;
-    color: rgba(237, 219, 194, 0.42);
+    color: var(--text-mute);
   }
 
   .res-info { padding: 22px 30px; }
   .res-row {
     display: flex; justify-content: space-between; gap: 24px;
+    flex-wrap: wrap;
     padding: 16px 0; border-bottom: 1px solid var(--line);
   }
   .res-row:last-child { border-bottom: none; }
@@ -87,6 +89,7 @@ const mapHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComp
   .res-v {
     font-size: 14px; color: var(--cream); text-align: right;
     line-height: 1.6; display: flex; flex-direction: column; gap: 2px;
+    overflow-wrap: anywhere;
   }
   .res-v a { color: var(--cream); }
   .res-v a:hover { color: var(--cream-hover); }
@@ -95,4 +98,10 @@ const mapHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComp
     .res-grid { grid-template-columns: 1fr; gap: 30px; max-width: 520px; }
   }
   @media (max-width: 600px) { .reservations { padding: 32px 0 72px; } }
+  .res-grid > *, .res-row, .res-v { min-width: 0; }
+  @media (max-width: 360px) {
+    .res-info { padding-inline: 20px; }
+    .res-row { gap: 8px 16px; }
+    .res-v { text-align: left; width: 100%; }
+  }
 </style>

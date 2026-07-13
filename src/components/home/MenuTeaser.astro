@@ -130,10 +130,10 @@ const icons = {
   .mt-tab {
     background: none; border: none; cursor: pointer; padding: 6px 4px;
     display: flex; flex-direction: column; align-items: center; gap: 14px;
-    color: rgba(237, 219, 194, 0.4);
+    color: var(--text-mute);
     transition: color 200ms ease;
   }
-  .mt-tab:hover { color: rgba(237, 219, 194, 0.75); }
+  .mt-tab:hover { color: var(--text-dim); }
   .mt-tab.is-active { color: var(--cream); }
   .mt-tab:focus-visible {
     outline: 2px solid rgba(237, 219, 194, 0.6);
@@ -150,7 +150,7 @@ const icons = {
     max-width: 640px; margin: 40px auto 0; min-height: 132px;
   }
   .mt-panel {
-    text-align: center; color: rgba(237, 219, 194, 0.6);
+    text-align: center; color: var(--text-dim);
     font-size: 15px; line-height: 1.8; margin: 0;
     /* crossfade on tab switch - opacity only, replays each time `hidden` clears */
     animation: mt-fade 320ms ease;

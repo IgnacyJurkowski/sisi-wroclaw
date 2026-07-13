@@ -328,10 +328,10 @@ const ICONS: Record<string, string> = {
   }
   .menu-section-label + .menu-subsection { margin-top: 4px; }
   .menu-note {
-    font-size: 12px; color: rgba(237, 219, 194, 0.3);
+    font-size: 12px; color: var(--text-faint);
     margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.06);
   }
-  .fw-lead { font-size: 14px; line-height: 1.7; color: rgba(237, 219, 194, 0.6); margin-bottom: 6px; }
+  .fw-lead { font-size: 14px; line-height: 1.7; color: var(--text-dim); margin-bottom: 6px; }
 
   /* === WINE PRICE TABLE (125 ml glass + 750 ml bottle) ===
      Each row is a grid: an info column (1fr) plus two fixed price columns.
@@ -365,7 +365,7 @@ const ICONS: Record<string, string> = {
   .champ-prices { font-size: 13px; color: var(--text-dim); margin-top: 4px; line-height: 1.6; }
 
   .menu-cta { text-align: center; margin-top: 64px; padding-top: 48px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
-  .menu-cta p { color: rgba(237, 219, 194, 0.45); margin: 0 auto 28px; font-size: 14px; line-height: 1.7; max-width: 360px; }
+  .menu-cta p { color: var(--text-dim); margin: 0 auto 28px; font-size: 14px; line-height: 1.7; max-width: 360px; }
   @media (max-width: 900px) { .menu-grid { grid-template-columns: 1fr; } }
   @media (max-width: 600px) {
     .menu-wrap { padding-inline: 20px; }
