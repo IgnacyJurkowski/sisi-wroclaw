@@ -5,6 +5,8 @@ import { chromium } from 'playwright-core';
 const DEFAULT_BASE_URL = 'http://127.0.0.1:4321';
 const CHROME_PATH = '/usr/bin/google-chrome';
 const VIEWPORT_WIDTHS = [320, 390, 1440];
+const MAX_INTERNAL_REDIRECTS = 10;
+const REDIRECT_STATUSES = new Set([301, 302, 303, 307, 308]);
 const ASSET_RESOURCE_TYPES = new Set([
   'font',
   'image',
@@ -29,11 +31,18 @@ const summary = {
   route2xxChecks: 0,
   axeRuns: 0,
   overflowChecks: 0,
+  assetPageChecks: 0,
+  assetCoveredPageChecks: 0,
   sameOriginAssetRequests: 0,
   sameOriginAssetResponses: 0,
+  sameOriginAssetTerminalOutcomes: 0,
+  sameOriginAssetMediaReadyResponses: 0,
+  sameOriginAssetPending: 0,
   sameOriginAssetFailures: 0,
+  assetCorrelationFailures: 0,
   internalLinkOccurrences: 0,
   internalLinksChecked: 0,
+  internalFragmentsChecked: 0,
   brokenInternalLinks: 0,
   pageErrors: 0,
   consoleErrors: 0,
@@ -90,6 +99,19 @@ function isAuditedOrigin(value, canonicalOrigins) {
   }
 }
 
+function mappedAuditedUrl(value, canonicalOrigins) {
+  const url = value instanceof URL ? new URL(value) : new URL(value);
+  if (!isAuditedOrigin(url, canonicalOrigins)) return null;
+  const mapped = mapOntoBase(url, canonicalOrigins);
+  mapped.hash = '';
+  return mapped;
+}
+
+function visibleLinkResult(result) {
+  const { body: _body, contentType: _contentType, fragmentOverride: _fragmentOverride, ...visible } = result;
+  return visible;
+}
+
 function axeEvidence(violations) {
   return violations.map((violation) => ({
     id: violation.id,
@@ -109,13 +131,17 @@ async function settleRenderedPage(page) {
     for (const image of document.images) image.loading = 'eager';
 
     const scrollRoot = document.scrollingElement || document.documentElement;
-    const maxScroll = Math.max(0, scrollRoot.scrollHeight - window.innerHeight);
     const step = Math.max(320, Math.floor(window.innerHeight * 0.8));
-    for (let y = 0; y <= maxScroll; y += step) {
-      window.scrollTo(0, y);
+    const sweepPage = async () => {
+      const maxScroll = Math.max(0, scrollRoot.scrollHeight - window.innerHeight);
+      for (let y = 0; y <= maxScroll; y += step) {
+        window.scrollTo(0, y);
+        await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+      }
+      window.scrollTo(0, maxScroll);
       await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
-    }
-    window.scrollTo(0, maxScroll);
+    };
+    await sweepPage();
 
     const imagesReady = await Promise.race([
       Promise.all(
@@ -132,20 +158,185 @@ async function settleRenderedPage(page) {
     ]);
 
     if (document.fonts) await document.fonts.ready;
+    await sweepPage();
     window.scrollTo(0, 0);
-    const finiteAnimations = document
+    await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+
+    const activeFiniteAnimations = () => document
       .getAnimations()
       .filter((animation) => {
         const { endTime } = animation.effect?.getComputedTiming() || {};
-        return animation.playState !== 'idle' && Number.isFinite(endTime);
+        return !['finished', 'idle'].includes(animation.playState) && Number.isFinite(endTime);
       });
-    await Promise.race([
-      Promise.all(finiteAnimations.map((animation) => animation.finished.catch(() => {}))),
-      new Promise((resolve) => setTimeout(resolve, 3_000)),
-    ]);
+    const animationDeadline = performance.now() + 5_000;
+    const quietWindow = 150;
+    let quietSince = null;
+    while (performance.now() < animationDeadline) {
+      await new Promise((resolve) => requestAnimationFrame(resolve));
+      const active = activeFiniteAnimations();
+      if (active.length === 0) {
+        if (quietSince === null) quietSince = performance.now();
+        if (performance.now() - quietSince >= quietWindow) break;
+        continue;
+      }
+      quietSince = null;
+      await Promise.race([
+        Promise.all(active.map((animation) => animation.finished.catch(() => {}))),
+        new Promise((resolve) => setTimeout(resolve, 50)),
+      ]);
+    }
+    const animationsReady = activeFiniteAnimations().length === 0 &&
+      quietSince !== null && performance.now() - quietSince >= quietWindow;
     await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
-    return { imagesReady };
+    return { imagesReady, animationsReady };
   });
+}
+
+async function captureMediaEvidence(page) {
+  if (page.isClosed()) return [];
+  return page.locator('video[src], audio[src]').evaluateAll((elements) =>
+    elements.map((element) => ({
+      currentSrc: element.currentSrc || element.src,
+      readyState: element.readyState,
+      networkState: element.networkState,
+      error: element.error ? { code: element.error.code, message: element.error.message } : null,
+    })),
+  );
+}
+
+function addReadyMediaTerminals(records, mediaEvidence, canonicalOrigins) {
+  const evidenceByUrl = new Map();
+  for (const evidence of mediaEvidence) {
+    const mapped = mappedAuditedUrl(evidence.currentSrc, canonicalOrigins);
+    if (mapped) evidenceByUrl.set(mapped.href, evidence);
+  }
+
+  for (const record of records.values()) {
+    if (record.resourceType !== 'media' || record.terminalEvents.length !== 0) continue;
+    if (record.responseStatuses.length !== 1) continue;
+    const [status] = record.responseStatuses;
+    if (status < 200 || status >= 400) continue;
+    const mapped = mappedAuditedUrl(record.assetUrl, canonicalOrigins);
+    const evidence = mapped ? evidenceByUrl.get(mapped.href) : null;
+    if (!evidence || evidence.error || evidence.readyState < 2) continue;
+    record.terminalEvents.push({
+      type: 'media-ready-response',
+      currentSrc: evidence.currentSrc,
+      readyState: evidence.readyState,
+      networkState: evidence.networkState,
+      responseStatus: status,
+    });
+  }
+}
+
+function finalizePageAssets(records, eventFailures, url, width) {
+  summary.assetPageChecks += 1;
+  if (records.size > 0) {
+    summary.assetCoveredPageChecks += 1;
+  } else {
+    addFailure('asset-coverage', {
+      url,
+      width,
+      message: `${url} ${width}px observed no audited same-origin asset requests`,
+    });
+  }
+
+  let terminalOutcomes = 0;
+  let pending = 0;
+  for (const record of records.values()) {
+    summary.sameOriginAssetRequests += 1;
+    summary.sameOriginAssetResponses += record.responseStatuses.length;
+    terminalOutcomes += record.terminalEvents.length;
+    if (record.terminalEvents.length === 0) pending += 1;
+
+    let failed = false;
+    if (record.terminalEvents.length !== 1) {
+      failed = true;
+      summary.assetCorrelationFailures += 1;
+      addFailure('asset-correlation', {
+        url,
+        width,
+        assetUrl: record.assetUrl,
+        resourceType: record.resourceType,
+        reason: record.terminalEvents.length === 0 ? 'missing-terminal-outcome' : 'multiple-terminal-outcomes',
+        terminalOutcomes: record.terminalEvents.length,
+      });
+    }
+
+    if (record.responseStatuses.length > 1) {
+      failed = true;
+      summary.assetCorrelationFailures += 1;
+      addFailure('asset-correlation', {
+        url,
+        width,
+        assetUrl: record.assetUrl,
+        resourceType: record.resourceType,
+        reason: 'multiple-responses-for-request',
+        responseStatuses: record.responseStatuses,
+      });
+    }
+
+    const terminal = record.terminalEvents[0];
+    if (terminal?.type === 'media-ready-response') {
+      summary.sameOriginAssetMediaReadyResponses += 1;
+    }
+    if (terminal?.type === 'finished' && record.responseStatuses.length !== 1) {
+      failed = true;
+      summary.assetCorrelationFailures += 1;
+      addFailure('asset-correlation', {
+        url,
+        width,
+        assetUrl: record.assetUrl,
+        resourceType: record.resourceType,
+        reason: 'finished-request-without-one-response',
+        responseStatuses: record.responseStatuses,
+      });
+    }
+
+    if (terminal?.type === 'failed') {
+      failed = true;
+      addFailure('asset-request', {
+        url,
+        width,
+        assetUrl: record.assetUrl,
+        resourceType: record.resourceType,
+        terminal: 'failed',
+        error: terminal.error,
+      });
+    }
+
+    const failedStatuses = record.responseStatuses.filter((status) => status < 200 || status >= 400);
+    if (failedStatuses.length > 0) {
+      failed = true;
+      addFailure('asset-response', {
+        url,
+        width,
+        assetUrl: record.assetUrl,
+        resourceType: record.resourceType,
+        statuses: failedStatuses,
+      });
+    }
+
+    if (failed) summary.sameOriginAssetFailures += 1;
+  }
+
+  summary.sameOriginAssetTerminalOutcomes += terminalOutcomes;
+  summary.sameOriginAssetPending += pending;
+  for (const failure of eventFailures) {
+    summary.assetCorrelationFailures += 1;
+    addFailure('asset-correlation', { url, width, ...failure });
+  }
+
+  if (terminalOutcomes !== records.size || pending !== 0) {
+    addFailure('asset-correlation', {
+      url,
+      width,
+      reason: 'page-terminal-accounting-mismatch',
+      requests: records.size,
+      terminalOutcomes,
+      pending,
+    });
+  }
 }
 
 async function audit() {
@@ -166,33 +357,177 @@ async function audit() {
   summary.sitemapRoutes = locations.length;
   summary.expectedPageChecks = locations.length * VIEWPORT_WIDTHS.length;
 
-  const linkCache = new Map();
-  const checkInternalLink = (url) => {
-    const mapped = mapOntoBase(url, canonicalOrigins);
-    mapped.hash = '';
-    const key = mapped.href;
-    if (!linkCache.has(key)) {
-      linkCache.set(
+  const documentCache = new Map();
+  const fragmentCache = new Map();
+
+  const fetchInternalDocument = (url) => {
+    const requested = url instanceof URL ? new URL(url) : new URL(url);
+    const mappedStart = mappedAuditedUrl(requested, canonicalOrigins);
+    const key = mappedStart?.href || requested.href;
+    if (!documentCache.has(key)) {
+      documentCache.set(
         key,
         (async () => {
-          try {
-            const response = await fetch(mapped, {
-              headers: { accept: 'text/html,application/xhtml+xml;q=0.9,*/*;q=0.1' },
-              redirect: 'follow',
-            });
-            if (response.body) await response.body.cancel();
+          if (!mappedStart) {
+            return {
+              ok: false,
+              status: null,
+              finalUrl: null,
+              reason: 'unaudited-link-origin',
+              target: requested.href,
+              redirects: [],
+            };
+          }
+
+          let logicalUrl = new URL(requested);
+          logicalUrl.hash = '';
+          let fragmentOverride = null;
+          const redirects = [];
+
+          for (let redirectCount = 0; redirectCount <= MAX_INTERNAL_REDIRECTS; redirectCount += 1) {
+            const mapped = mappedAuditedUrl(logicalUrl, canonicalOrigins);
+            if (!mapped) {
+              return {
+                ok: false,
+                status: null,
+                finalUrl: null,
+                reason: 'unaudited-link-origin',
+                target: logicalUrl.href,
+                redirects,
+              };
+            }
+
+            let response;
+            try {
+              response = await fetch(mapped, {
+                headers: { accept: 'text/html,application/xhtml+xml;q=0.9,*/*;q=0.1' },
+                redirect: 'manual',
+                signal: AbortSignal.timeout(10_000),
+              });
+            } catch (error) {
+              return {
+                ok: false,
+                status: null,
+                finalUrl: mapped.href,
+                reason: 'fetch-error',
+                error: errorMessage(error),
+                redirects,
+              };
+            }
+
+            if (REDIRECT_STATUSES.has(response.status)) {
+              const location = response.headers.get('location');
+              if (!location) {
+                if (response.body) await response.body.cancel();
+                return {
+                  ok: false,
+                  status: response.status,
+                  finalUrl: mapped.href,
+                  reason: 'redirect-without-location',
+                  redirects,
+                };
+              }
+
+              const redirectTarget = new URL(location, logicalUrl);
+              if (location.includes('#')) fragmentOverride = redirectTarget.hash;
+              redirectTarget.hash = '';
+              if (!isAuditedOrigin(redirectTarget, canonicalOrigins)) {
+                if (response.body) await response.body.cancel();
+                return {
+                  ok: false,
+                  status: response.status,
+                  finalUrl: mapped.href,
+                  reason: 'unaudited-redirect-origin',
+                  redirectTarget: redirectTarget.href,
+                  redirects,
+                };
+              }
+
+              const mappedTarget = mappedAuditedUrl(redirectTarget, canonicalOrigins);
+              redirects.push({
+                status: response.status,
+                from: mapped.href,
+                location,
+                target: mappedTarget.href,
+              });
+              if (response.body) await response.body.cancel();
+              if (redirectCount === MAX_INTERNAL_REDIRECTS) {
+                return {
+                  ok: false,
+                  status: response.status,
+                  finalUrl: mapped.href,
+                  reason: 'redirect-limit',
+                  redirectTarget: redirectTarget.href,
+                  redirects,
+                };
+              }
+              logicalUrl = redirectTarget;
+              continue;
+            }
+
+            const body = await response.text();
             return {
               ok: response.status >= 200 && response.status < 300,
               status: response.status,
-              finalUrl: response.url,
+              finalUrl: mapped.href,
+              reason: response.status >= 200 && response.status < 300 ? null : 'http-status',
+              redirects,
+              body,
+              contentType: response.headers.get('content-type') || '',
+              fragmentOverride,
             };
-          } catch (error) {
-            return { ok: false, status: null, error: errorMessage(error) };
           }
+
+          throw new Error('internal redirect loop escaped its bound');
         })(),
       );
     }
-    return linkCache.get(key);
+    return documentCache.get(key);
+  };
+
+  const checkInternalLink = async (url, page) => {
+    const requested = url instanceof URL ? new URL(url) : new URL(url);
+    const documentResult = await fetchInternalDocument(requested);
+    if (!documentResult.ok) return visibleLinkResult(documentResult);
+
+    const fragment = documentResult.fragmentOverride ?? requested.hash;
+    if (!fragment || fragment === '#') return visibleLinkResult(documentResult);
+
+    const fragmentKey = `${documentResult.finalUrl}\n${fragment}`;
+    if (!fragmentCache.has(fragmentKey)) {
+      fragmentCache.set(
+        fragmentKey,
+        (async () => {
+          let identifier;
+          try {
+            identifier = decodeURIComponent(fragment.slice(1));
+          } catch {
+            return { ok: false, reason: 'invalid-fragment-encoding', fragment };
+          }
+          const exists = await page.evaluate(
+            ({ html, identifier: id }) => {
+              const parsed = new DOMParser().parseFromString(html, 'text/html');
+              return Boolean(
+                parsed.getElementById(id) ||
+                [...parsed.querySelectorAll('a[name]')].some((anchor) => anchor.getAttribute('name') === id),
+              );
+            },
+            { html: documentResult.body, identifier },
+          );
+          return {
+            ok: exists,
+            reason: exists ? null : 'missing-fragment',
+            fragment,
+          };
+        })(),
+      );
+    }
+
+    const fragmentResult = await fragmentCache.get(fragmentKey);
+    return {
+      ...visibleLinkResult(documentResult),
+      ...fragmentResult,
+    };
   };
 
   const browser = await chromium.launch({
@@ -229,6 +564,12 @@ async function audit() {
           const page = await context.newPage();
           summary.pageChecksStarted += 1;
           let collecting = true;
+          const assetRecords = new Map();
+          const assetEventFailures = [];
+
+          const isAuditedAsset = (request) =>
+            ASSET_RESOURCE_TYPES.has(request.resourceType()) &&
+            isAuditedOrigin(request.url(), canonicalOrigins);
 
           await page.addInitScript(() => {
             globalThis.__browserAuditCspViolations = [];
@@ -264,49 +605,57 @@ async function audit() {
             addFailure('page-error', { url, width, message: errorMessage(error) });
           });
           page.on('request', (request) => {
-            if (
-              collecting &&
-              ASSET_RESOURCE_TYPES.has(request.resourceType()) &&
-              isAuditedOrigin(request.url(), canonicalOrigins)
-            ) {
-              summary.sameOriginAssetRequests += 1;
-            }
-          });
-          page.on('response', (response) => {
-            if (!collecting) return;
-            const request = response.request();
-            if (
-              !ASSET_RESOURCE_TYPES.has(request.resourceType()) ||
-              !isAuditedOrigin(request.url(), canonicalOrigins)
-            ) {
-              return;
-            }
-            summary.sameOriginAssetResponses += 1;
-            if (response.status() >= 400 || response.status() < 200) {
-              summary.sameOriginAssetFailures += 1;
-              addFailure('asset-response', {
-                url,
-                width,
+            if (!isAuditedAsset(request)) return;
+            if (assetRecords.has(request)) {
+              assetEventFailures.push({
                 assetUrl: request.url(),
                 resourceType: request.resourceType(),
-                status: response.status(),
+                reason: 'duplicate-request-event',
               });
-            }
-          });
-          page.on('requestfailed', (request) => {
-            if (
-              !collecting ||
-              !ASSET_RESOURCE_TYPES.has(request.resourceType()) ||
-              !isAuditedOrigin(request.url(), canonicalOrigins)
-            ) {
               return;
             }
-            summary.sameOriginAssetFailures += 1;
-            addFailure('asset-request', {
-              url,
-              width,
+            assetRecords.set(request, {
               assetUrl: request.url(),
               resourceType: request.resourceType(),
+              responseStatuses: [],
+              terminalEvents: [],
+            });
+          });
+          page.on('response', (response) => {
+            const request = response.request();
+            if (!isAuditedAsset(request)) return;
+            const record = assetRecords.get(request);
+            if (!record) {
+              assetEventFailures.push({
+                assetUrl: request.url(),
+                resourceType: request.resourceType(),
+                reason: 'response-without-request-event',
+                responseStatus: response.status(),
+              });
+              return;
+            }
+            record.responseStatuses.push(response.status());
+          });
+          const recordTerminal = (request, terminal) => {
+            if (!isAuditedAsset(request)) return;
+            const record = assetRecords.get(request);
+            if (!record) {
+              assetEventFailures.push({
+                assetUrl: request.url(),
+                resourceType: request.resourceType(),
+                reason: 'terminal-without-request-event',
+                terminal: terminal.type,
+              });
+              return;
+            }
+            record.terminalEvents.push(terminal);
+          };
+          page.on('requestfinished', (request) => {
+            recordTerminal(request, { type: 'finished' });
+          });
+          page.on('requestfailed', (request) => {
+            recordTerminal(request, {
+              type: 'failed',
               error: request.failure()?.errorText || 'request failed',
             });
           });
@@ -322,6 +671,7 @@ async function audit() {
 
             const settled = await settleRenderedPage(page);
             assert.ok(settled.imagesReady, `${url} ${width}px images did not settle within 10s`);
+            assert.ok(settled.animationsReady, `${url} ${width}px finite animations did not settle within 5s`);
 
             const links = await page.locator('a[href]').evaluateAll((anchors) =>
               anchors.map((anchor) => ({
@@ -339,37 +689,13 @@ async function audit() {
               if (!isAuditedOrigin(target, canonicalOrigins)) continue;
               summary.internalLinkOccurrences += 1;
 
-              const mappedTarget = mapOntoBase(target, canonicalOrigins);
-              const current = new URL(page.url());
-              if (
-                target.hash.length > 1 &&
-                mappedTarget.pathname === current.pathname &&
-                mappedTarget.search === current.search
-              ) {
-                const fragmentExists = await page.evaluate((hash) => {
-                  let id;
-                  try {
-                    id = decodeURIComponent(hash.slice(1));
-                  } catch {
-                    return false;
-                  }
-                  return Boolean(document.getElementById(id) || document.getElementsByName(id).length);
-                }, target.hash);
-                if (!fragmentExists) {
-                  summary.brokenInternalLinks += 1;
-                  addFailure('broken-internal-fragment', {
-                    url,
-                    width,
-                    href: link.rawHref,
-                    target: target.href,
-                  });
-                }
-              }
-
-              const result = await checkInternalLink(target);
+              const result = await checkInternalLink(target, page);
               if (!result.ok) {
                 summary.brokenInternalLinks += 1;
-                addFailure('broken-internal-link', {
+                const failureType = ['missing-fragment', 'invalid-fragment-encoding'].includes(result.reason)
+                  ? 'broken-internal-fragment'
+                  : 'broken-internal-link';
+                addFailure(failureType, {
                   url,
                   width,
                   href: link.rawHref,
@@ -423,8 +749,21 @@ async function audit() {
           } catch (error) {
             addFailure('page-check', { url, width, message: errorMessage(error) });
           } finally {
-            collecting = false;
-            await page.close();
+            let mediaEvidence = [];
+            try {
+              mediaEvidence = await captureMediaEvidence(page);
+            } catch {
+              // Pending media remains a correlation failure unless usable DOM evidence was captured.
+            }
+            try {
+              await page.close();
+            } catch (error) {
+              addFailure('page-close', { url, width, message: errorMessage(error) });
+            } finally {
+              collecting = false;
+              addReadyMediaTerminals(assetRecords, mediaEvidence, canonicalOrigins);
+              finalizePageAssets(assetRecords, assetEventFailures, url, width);
+            }
           }
         }
       } finally {
@@ -435,7 +774,8 @@ async function audit() {
     await browser.close();
   }
 
-  summary.internalLinksChecked = linkCache.size;
+  summary.internalLinksChecked = documentCache.size;
+  summary.internalFragmentsChecked = fragmentCache.size;
   assert.ok(summary.sameOriginAssetRequests > 0, 'audit observed no same-origin asset requests');
   assert.ok(summary.internalLinkOccurrences > 0, 'audit observed no same-origin internal links');
   assert.equal(
@@ -446,6 +786,14 @@ async function audit() {
   assert.equal(summary.route2xxChecks, summary.expectedPageChecks, 'not every route returned 2xx');
   assert.equal(summary.axeRuns, summary.expectedPageChecks, 'not every route completed an axe run');
   assert.equal(summary.overflowChecks, summary.expectedPageChecks, 'not every route completed an overflow check');
+  assert.equal(summary.assetPageChecks, summary.expectedPageChecks, 'not every route completed an asset check');
+  assert.equal(summary.assetCoveredPageChecks, summary.expectedPageChecks, 'one or more page checks observed no assets');
+  assert.equal(
+    summary.sameOriginAssetRequests,
+    summary.sameOriginAssetTerminalOutcomes,
+    'audited asset requests did not have exactly one terminal outcome',
+  );
+  assert.equal(summary.sameOriginAssetPending, 0, 'audited asset requests remained pending after page teardown');
 }
 
 try {

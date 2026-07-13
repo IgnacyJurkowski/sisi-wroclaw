@@ -316,21 +316,25 @@ const {
         closePop(true);
       } else {
         if (!start || (start && end)) {
-          start = d; end = null;
-          showValue();
-          render();
-          focusDay();
+          beginRange(d);
         } else if (d < start) {
-          start = d; end = null;
-          showValue();
-          render();
-          focusDay();
+          beginRange(d);
         } else {
           end = d;
           showValue();
           closePop(true);
         }
       }
+    }
+
+    function beginRange(d: Date): void {
+      start = new Date(d);
+      end = null;
+      focus = new Date(d);
+      if (focus.getMonth() !== view.getMonth() || focus.getFullYear() !== view.getFullYear()) setView(focus);
+      showValue();
+      render();
+      focusDay();
     }
 
     function moveFocus(d: Date): void {
