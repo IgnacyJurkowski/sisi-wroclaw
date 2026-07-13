@@ -560,15 +560,19 @@ const ICONS: Record<string, string> = {
       </div>
     </div>
 
+  </div>
+
+  {/* The Cork kitchen menu — full-bleed cream band, colour-inverted from the bar
+      cards above. Lives outside .menu-wrap so it spans edge to edge. Sits above
+      the reservation CTA, which closes the page. */}
+  <FoodMenu locale={locale} />
+
+  <div class="menu-wrap">
     <div class="menu-cta" data-reveal>
       <p>{t.menuPage.ctaText}</p>
       <a href={reservationUrl('menu')} class="btn-cta" rel="noopener" target="_blank">{t.buttons.bookTable}</a>
     </div>
   </div>
-
-  {/* The Cork kitchen menu — full-bleed cream band, colour-inverted from the bar
-      cards above. Lives outside .menu-wrap so it spans edge to edge. */}
-  <FoodMenu locale={locale} />
 </Base>
 
 <style>
@@ -627,7 +631,9 @@ const ICONS: Record<string, string> = {
   .champ-name { font-size: 15px; font-weight: 600; color: var(--text); }
   .champ-prices { font-size: 13px; color: var(--text-dim); margin-top: 4px; line-height: 1.6; }
 
-  .menu-cta { text-align: center; margin-top: 64px; padding-top: 48px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
+  /* CTA now follows the cream food band, which is the section divider — so no
+     top rule/margin, just breathing room above the "book a table" prompt. */
+  .menu-cta { text-align: center; padding-top: 72px; }
   .menu-cta p { color: rgba(237, 219, 194, 0.45); margin: 0 auto 28px; font-size: 14px; line-height: 1.7; max-width: 360px; }
   @media (max-width: 900px) { .menu-grid { grid-template-columns: 1fr; } }
   @media (max-width: 600px) {
