@@ -357,7 +357,7 @@ const en: UI = {
         { title: 'Corporate dinners', body: 'Seated dinners in the restaurant The Cork.' },
         { title: 'Networking', body: 'Industry meetups and relaxed evenings.' },
         { title: 'Company parties', body: 'Team celebrations with the energy of SiSi.' },
-        { title: 'Private brand events', body: 'Closed events tailored to the brand.' },
+        { title: 'Closed brand events', body: 'Invite-only events tailored to the brand.' },
       ],
     },
     included: {
@@ -428,7 +428,7 @@ const en: UI = {
     faq: {
       heading: 'Frequently asked questions',
       items: [
-        { q: 'What types of corporate events can you host?', a: 'Conferences, panels, presentations, product launches, corporate dinners, networking, company parties and private brand events.' },
+        { q: 'What types of corporate events can you host?', a: 'Conferences, panels, presentations, product launches, corporate dinners, networking, company parties and closed brand events.' },
         { q: 'How many seated guests can The Cork accommodate?', a: 'The restaurant The Cork seats up to 150 guests.' },
         { q: 'Can you host a presentation or a panel discussion?', a: 'Yes. The space suits presentations and panels, and 2 screens are available.' },
         { q: 'Are screens available?', a: 'Yes, 2 presentation screens are available.' },
@@ -464,7 +464,7 @@ const en: UI = {
         dinner: 'Corporate dinner',
         networking: 'Networking',
         party: 'Company party',
-        private: 'Private brand event',
+        private: 'Closed brand event',
         other: 'Other',
       },
       guests: 'Estimated number of guests',

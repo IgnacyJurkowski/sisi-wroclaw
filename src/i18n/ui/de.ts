@@ -358,7 +358,7 @@ const de: UI = {
         { title: 'Firmen-Dinner', body: 'Sitzdinner im Restaurant The Cork.' },
         { title: 'Networking', body: 'Branchentreffen und entspannte Abende.' },
         { title: 'Firmenfeiern', body: 'Team-Feiern mit der Energie von SiSi.' },
-        { title: 'Private Markenevents', body: 'Geschlossene Events, auf die Marke zugeschnitten.' },
+        { title: 'Geschlossene Markenevents', body: 'Events nur für geladene Gäste, auf die Marke zugeschnitten.' },
       ],
     },
     included: {
@@ -429,7 +429,7 @@ const de: UI = {
     faq: {
       heading: 'Häufige Fragen',
       items: [
-        { q: 'Welche Firmenevents könnt ihr ausrichten?', a: 'Konferenzen, Panels, Präsentationen, Produkt-Launches, Firmen-Dinner, Networking, Firmenfeiern und private Markenevents.' },
+        { q: 'Welche Firmenevents könnt ihr ausrichten?', a: 'Konferenzen, Panels, Präsentationen, Produkt-Launches, Firmen-Dinner, Networking, Firmenfeiern und geschlossene Markenevents.' },
         { q: 'Wie viele Sitzplätze bietet The Cork?', a: 'Das Restaurant The Cork bietet bis zu 150 Sitzplätze.' },
         { q: 'Können eine Präsentation oder ein Panel stattfinden?', a: 'Ja. Der Raum eignet sich für Präsentationen und Panels, und es stehen 2 Bildschirme zur Verfügung.' },
         { q: 'Sind Bildschirme vorhanden?', a: 'Ja, es stehen 2 Präsentationsbildschirme zur Verfügung.' },
@@ -465,7 +465,7 @@ const de: UI = {
         dinner: 'Firmen-Dinner',
         networking: 'Networking',
         party: 'Firmenfeier',
-        private: 'Privates Markenevent',
+        private: 'Geschlossenes Markenevent',
         other: 'Sonstiges',
       },
       guests: 'Geschätzte Gästezahl',

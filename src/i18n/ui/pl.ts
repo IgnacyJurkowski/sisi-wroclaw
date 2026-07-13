@@ -365,7 +365,7 @@ const pl = {
         { title: 'Kolacje firmowe', body: 'Zasiadane kolacje w restauracji The Cork.' },
         { title: 'Networking', body: 'Spotkania branżowe i wieczory w swobodnej atmosferze.' },
         { title: 'Imprezy firmowe', body: 'Wieczory integracyjne i świętowanie z energią klubu SiSi.' },
-        { title: 'Prywatne eventy marek', body: 'Zamknięte wydarzenia dopasowane do charakteru marki.' },
+        { title: 'Zamknięte eventy marek', body: 'Wydarzenia dla zaproszonych gości, dopasowane do charakteru marki.' },
       ],
     },
     included: {
@@ -425,7 +425,7 @@ const pl = {
         { title: 'Omawiamy szczegóły', body: 'Ustalamy format wydarzenia i Twoje wymagania.' },
         { title: 'Otrzymujesz propozycję', body: 'Przygotowujemy ofertę dopasowaną do potrzeb.' },
         { title: 'Potwierdzasz termin', body: 'Ustalamy datę i wszystkie szczegóły.' },
-        { title: 'Realizujemy event', body: 'Zajmujemy się przebiegiem wydarzenia.' },
+        { title: 'Realizujemy wydarzenie', body: 'Zajmujemy się przebiegiem wydarzenia.' },
       ],
     },
     projects: {
@@ -436,7 +436,7 @@ const pl = {
     faq: {
       heading: 'Najczęstsze pytania',
       items: [
-        { q: 'Jakie wydarzenia firmowe można u was zorganizować?', a: 'Konferencje, panele, prezentacje, premiery produktów, kolacje firmowe, networking, imprezy firmowe i prywatne eventy marek.' },
+        { q: 'Jakie wydarzenia firmowe można u was zorganizować?', a: 'Konferencje, panele, prezentacje, premiery produktów, kolacje firmowe, networking, imprezy firmowe i zamknięte eventy marek.' },
         { q: 'Ile osób pomieści The Cork na miejscach siedzących?', a: 'Restauracja The Cork pomieści do 150 gości na miejscach siedzących.' },
         { q: 'Czy można zorganizować prezentację lub panel dyskusyjny?', a: 'Tak. Przestrzeń nadaje się do prezentacji i paneli, a do dyspozycji są 2 ekrany.' },
         { q: 'Czy dostępne są ekrany?', a: 'Tak, dostępne są 2 ekrany do prezentacji.' },
@@ -445,7 +445,7 @@ const pl = {
         { q: 'Jak zapytać o dostępność terminu?', a: 'Wyślij zapytanie przez formularz na tej stronie albo zadzwoń lub napisz do nas.' },
         { q: 'Jakie informacje warto podać w zapytaniu?', a: 'Planowany termin, liczbę gości i format wydarzenia. Wymagania dotyczące cateringu, techniki czy dostępności prosimy zaznaczyć w zapytaniu, aby zespół potwierdził dostępne opcje.' },
         { q: 'Czy zapewniacie catering i bar?', a: 'Tak. Catering i obsługę barmańską zapewniamy na miejscu. Elementy tradycyjne, jak tort, można przynieść po wcześniejszym uzgodnieniu.' },
-        { q: 'Czy możemy przyjść z własnym fotografem?', a: 'Tak. Dokumentację fotograficzną może realizować fotograf wybrany przez Organizatora.' },
+        { q: 'Czy możemy przyjść z własnym fotografem?', a: 'Tak. Dokumentację fotograficzną może realizować fotograf wybrany przez organizatora.' },
         { q: 'Jak zarezerwować termin?', a: 'Termin potwierdzamy umową i zaliczką, a pozostała część jest płatna przed wydarzeniem. Szczegóły ustalamy indywidualnie.' },
       ],
     },
@@ -472,7 +472,7 @@ const pl = {
         dinner: 'Kolacja firmowa',
         networking: 'Networking',
         party: 'Impreza firmowa',
-        private: 'Prywatny event marki',
+        private: 'Zamknięty event marki',
         other: 'Inne',
       },
       guests: 'Szacowana liczba gości',

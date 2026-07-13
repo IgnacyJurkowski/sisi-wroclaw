@@ -357,7 +357,7 @@ const cs: UI = {
         { title: 'Firemní večeře', body: 'Večeře vsedě v restauraci The Cork.' },
         { title: 'Networking', body: 'Oborová setkání a večery v uvolněné atmosféře.' },
         { title: 'Firemní večírky', body: 'Týmové oslavy s energií SiSi.' },
-        { title: 'Soukromé akce značek', body: 'Uzavřené akce na míru značce.' },
+        { title: 'Uzavřené akce značek', body: 'Akce jen pro zvané, na míru značce.' },
       ],
     },
     included: {
@@ -428,7 +428,7 @@ const cs: UI = {
     faq: {
       heading: 'Časté dotazy',
       items: [
-        { q: 'Jaké firemní akce u vás lze uspořádat?', a: 'Konference, panely, prezentace, uvedení produktů, firemní večeře, networking, firemní večírky a soukromé akce značek.' },
+        { q: 'Jaké firemní akce u vás lze uspořádat?', a: 'Konference, panely, prezentace, uvedení produktů, firemní večeře, networking, firemní večírky a uzavřené akce značek.' },
         { q: 'Kolik míst k sezení má The Cork?', a: 'Restaurace The Cork pojme až 150 hostů k sezení.' },
         { q: 'Lze uspořádat prezentaci nebo panelovou diskusi?', a: 'Ano. Prostor je vhodný pro prezentace a panely a k dispozici jsou 2 obrazovky.' },
         { q: 'Jsou k dispozici obrazovky?', a: 'Ano, k dispozici jsou 2 obrazovky pro prezentace.' },
@@ -464,7 +464,7 @@ const cs: UI = {
         dinner: 'Firemní večeře',
         networking: 'Networking',
         party: 'Firemní večírek',
-        private: 'Soukromá akce značky',
+        private: 'Uzavřená akce značky',
         other: 'Jiné',
       },
       guests: 'Odhadovaný počet hostů',

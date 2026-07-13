@@ -357,7 +357,7 @@ const it: UI = {
         { title: 'Cene aziendali', body: 'Cene a sedere nel ristorante The Cork.' },
         { title: 'Networking', body: 'Incontri di settore e serate informali.' },
         { title: 'Feste aziendali', body: 'Feste di team con l\'energia di SiSi.' },
-        { title: 'Eventi privati di brand', body: 'Eventi a porte chiuse su misura per il brand.' },
+        { title: 'Eventi di brand a porte chiuse', body: 'Eventi su invito su misura per il brand.' },
       ],
     },
     included: {
@@ -428,7 +428,7 @@ const it: UI = {
     faq: {
       heading: 'Domande frequenti',
       items: [
-        { q: 'Che tipi di eventi aziendali si possono organizzare?', a: 'Conferenze, panel, presentazioni, lanci di prodotto, cene aziendali, networking, feste aziendali ed eventi privati di brand.' },
+        { q: 'Che tipi di eventi aziendali si possono organizzare?', a: 'Conferenze, panel, presentazioni, lanci di prodotto, cene aziendali, networking, feste aziendali ed eventi di brand a porte chiuse.' },
         { q: 'Quanti posti a sedere ha The Cork?', a: 'Il ristorante The Cork offre fino a 150 posti a sedere.' },
         { q: 'Si può organizzare una presentazione o un panel?', a: 'Sì. Lo spazio è adatto a presentazioni e panel, e sono disponibili 2 schermi.' },
         { q: 'Sono disponibili degli schermi?', a: 'Sì, sono disponibili 2 schermi per presentazioni.' },
@@ -464,7 +464,7 @@ const it: UI = {
         dinner: 'Cena aziendale',
         networking: 'Networking',
         party: 'Festa aziendale',
-        private: 'Evento privato di brand',
+        private: 'Evento di brand a porte chiuse',
         other: 'Altro',
       },
       guests: 'Numero stimato di ospiti',
