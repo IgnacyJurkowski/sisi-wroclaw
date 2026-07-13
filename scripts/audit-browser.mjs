@@ -25,10 +25,15 @@ const summary = {
   chromePath: CHROME_PATH,
   viewportWidths: VIEWPORT_WIDTHS,
   sitemapRoutes: 0,
+  sitemapRedirectsFollowed: 0,
   expectedPageChecks: 0,
   pageChecksStarted: 0,
   pageChecksCompleted: 0,
+  routeInitial2xxChecks: 0,
+  routeFinal2xxChecks: 0,
   route2xxChecks: 0,
+  browserRedirectsFollowed: 0,
+  browserRedirectsRejected: 0,
   axeRuns: 0,
   overflowChecks: 0,
   assetPageChecks: 0,
@@ -58,6 +63,11 @@ function errorMessage(error) {
 
 function addFailure(type, details = {}) {
   summary.failures.push({ type, ...details });
+}
+
+function failAudit(type, details, message) {
+  addFailure(type, details);
+  throw new Error(message);
 }
 
 function decodeXmlText(value) {
@@ -105,6 +115,112 @@ function mappedAuditedUrl(value, canonicalOrigins) {
   const mapped = mapOntoBase(url, canonicalOrigins);
   mapped.hash = '';
   return mapped;
+}
+
+function requestRedirectChain(request) {
+  const chain = [];
+  let current = request;
+  while (current) {
+    chain.unshift(current);
+    current = current.redirectedFrom();
+  }
+  return chain;
+}
+
+function visibleRequestChain(request) {
+  return requestRedirectChain(request).map((entry) => ({
+    url: entry.url(),
+    resourceType: entry.resourceType(),
+  }));
+}
+
+async function fetchSitemapXml() {
+  let current = new URL(sitemapUrl);
+  const redirects = [];
+
+  for (let redirectCount = 0; redirectCount <= MAX_INTERNAL_REDIRECTS; redirectCount += 1) {
+    let response;
+    try {
+      response = await fetch(current, {
+        headers: { accept: 'application/xml,text/xml;q=0.9,*/*;q=0.1' },
+        redirect: 'manual',
+        signal: AbortSignal.timeout(10_000),
+      });
+    } catch (error) {
+      failAudit(
+        'sitemap-fetch',
+        { url: current.href, reason: 'fetch-error', error: errorMessage(error), redirects },
+        `${current.href} sitemap fetch failed: ${errorMessage(error)}`,
+      );
+    }
+
+    if (REDIRECT_STATUSES.has(response.status)) {
+      const location = response.headers.get('location');
+      if (!location) {
+        if (response.body) await response.body.cancel();
+        failAudit(
+          'sitemap-redirect',
+          { status: response.status, fromUrl: current.href, reason: 'redirect-without-location', redirects },
+          `${current.href} returned ${response.status} without Location`,
+        );
+      }
+
+      const redirectTarget = new URL(location, current);
+      if (redirectTarget.origin !== baseUrl.origin) {
+        if (response.body) await response.body.cancel();
+        failAudit(
+          'sitemap-redirect',
+          {
+            status: response.status,
+            fromUrl: current.href,
+            location,
+            redirectTarget: redirectTarget.href,
+            reason: 'unaudited-redirect-origin',
+            redirects,
+          },
+          `${current.href} redirected sitemap outside BASE_URL to ${redirectTarget.href}`,
+        );
+      }
+
+      const redirect = {
+        status: response.status,
+        from: current.href,
+        location,
+        target: redirectTarget.href,
+      };
+      if (response.body) await response.body.cancel();
+      if (redirectCount === MAX_INTERNAL_REDIRECTS) {
+        failAudit(
+          'sitemap-redirect',
+          {
+            status: response.status,
+            fromUrl: current.href,
+            location,
+            redirectTarget: redirectTarget.href,
+            reason: 'redirect-limit',
+            redirects: [...redirects, redirect],
+          },
+          `${sitemapUrl.href} exceeded ${MAX_INTERNAL_REDIRECTS} redirects`,
+        );
+      }
+      redirects.push(redirect);
+      summary.sitemapRedirectsFollowed += 1;
+      current = redirectTarget;
+      continue;
+    }
+
+    if (!response.ok) {
+      if (response.body) await response.body.cancel();
+      failAudit(
+        'sitemap-response',
+        { url: current.href, status: response.status, reason: 'http-status', redirects },
+        `${current.href} returned ${response.status}`,
+      );
+    }
+    return response.text();
+  }
+
+  throw new Error('sitemap redirect loop escaped its bound');
 }
 
 function visibleLinkResult(result) {
@@ -342,12 +458,7 @@ function finalizePageAssets(records, eventFailures, url, width) {
 async function audit() {
   assert.match(baseUrl.protocol, /^https?:$/, 'BASE_URL must use http or https');
 
-  const sitemapResponse = await fetch(sitemapUrl, {
-    headers: { accept: 'application/xml,text/xml;q=0.9,*/*;q=0.1' },
-  });
-  assert.ok(sitemapResponse.ok, `${sitemapUrl.href} returned ${sitemapResponse.status}`);
-
-  const locations = sitemapLocations(await sitemapResponse.text());
+  const locations = sitemapLocations(await fetchSitemapXml());
   assert.ok(locations.length > 0, `${sitemapUrl.href} contains no <loc> entries`);
   assert.equal(new Set(locations).size, locations.length, 'sitemap contains duplicate <loc> entries');
 
@@ -542,20 +653,139 @@ async function audit() {
         viewport: { width, height: 900 },
         reducedMotion: 'no-preference',
       });
+      const auditedRequestChains = new Map();
 
       await context.route('**/*', async (route) => {
-        const requestUrl = new URL(route.request().url());
-        if (canonicalOrigins.has(requestUrl.origin) && requestUrl.origin !== baseUrl.origin) {
-          const mapped = mapOntoBase(requestUrl, canonicalOrigins);
-          try {
-            const response = await route.fetch({ url: mapped.href });
-            await route.fulfill({ response });
-          } catch {
-            await route.abort('failed');
+        const request = route.request();
+        const requestUrl = new URL(request.url());
+        const redirectChain = requestRedirectChain(request);
+        const firstAuditedIndex = redirectChain.findIndex((entry) =>
+          isAuditedOrigin(entry.url(), canonicalOrigins),
+        );
+        const isAuditedRequest = isAuditedOrigin(requestUrl, canonicalOrigins);
+        const rejectRedirect = async (response, details, chain = visibleRequestChain(request)) => {
+          summary.browserRedirectsRejected += 1;
+          addFailure('browser-redirect', {
+            fromUrl: requestUrl.href,
+            resourceType: request.resourceType(),
+            redirectDepth: Math.max(0, chain.length - 1),
+            chain,
+            ...details,
+          });
+          auditedRequestChains.set(request, chain);
+          if (response) await response.dispose();
+          await route.abort('blockedbyclient');
+        };
+
+        if (!isAuditedRequest) {
+          if (firstAuditedIndex !== -1) {
+            await rejectRedirect(null, {
+              redirectTarget: requestUrl.href,
+              reason: 'unaudited-redirect-origin',
+            });
+            return;
           }
+          await route.continue();
           return;
         }
-        await route.continue();
+
+        const browserRedirectDepth = firstAuditedIndex === -1
+          ? 0
+          : redirectChain.length - firstAuditedIndex - 1;
+        if (browserRedirectDepth > MAX_INTERNAL_REDIRECTS) {
+          await rejectRedirect(null, {
+            redirectTarget: requestUrl.href,
+            reason: 'redirect-limit',
+          });
+          return;
+        }
+
+        let logicalUrl = new URL(requestUrl);
+        const fetchedChain = [];
+        for (let redirectCount = 0; redirectCount <= MAX_INTERNAL_REDIRECTS; redirectCount += 1) {
+          const mapped = mapOntoBase(logicalUrl, canonicalOrigins);
+          let response;
+          try {
+            response = await route.fetch({
+              url: mapped.href,
+              maxRedirects: 0,
+              timeout: 10_000,
+            });
+          } catch (error) {
+            auditedRequestChains.set(request, fetchedChain);
+            addFailure('browser-request', {
+              url: logicalUrl.href,
+              mappedUrl: mapped.href,
+              resourceType: request.resourceType(),
+              reason: 'fetch-error',
+              error: errorMessage(error),
+              chain: fetchedChain,
+            });
+            await route.abort('failed');
+            return;
+          }
+
+          const location = response.headers().location || null;
+          const chainEntry = {
+            url: mapped.href,
+            logicalUrl: logicalUrl.href,
+            status: response.status(),
+            location,
+          };
+          fetchedChain.push(chainEntry);
+
+          if (!REDIRECT_STATUSES.has(response.status())) {
+            auditedRequestChains.set(request, fetchedChain);
+            await route.fulfill({ response });
+            return;
+          }
+
+          if (!location) {
+            await rejectRedirect(response, {
+              status: response.status(),
+              reason: 'redirect-without-location',
+            }, fetchedChain);
+            return;
+          }
+
+          let redirectTarget;
+          try {
+            redirectTarget = new URL(location, logicalUrl);
+          } catch (error) {
+            await rejectRedirect(response, {
+              status: response.status(),
+              location,
+              reason: 'invalid-redirect-location',
+              error: errorMessage(error),
+            }, fetchedChain);
+            return;
+          }
+          chainEntry.redirectTarget = redirectTarget.href;
+
+          if (!isAuditedOrigin(redirectTarget, canonicalOrigins)) {
+            await rejectRedirect(response, {
+              status: response.status(),
+              location,
+              redirectTarget: redirectTarget.href,
+              reason: 'unaudited-redirect-origin',
+            }, fetchedChain);
+            return;
+          }
+
+          if (redirectCount === MAX_INTERNAL_REDIRECTS) {
+            await rejectRedirect(response, {
+              status: response.status(),
+              location,
+              redirectTarget: redirectTarget.href,
+              reason: 'redirect-limit',
+            }, fetchedChain);
+            return;
+          }
+
+          summary.browserRedirectsFollowed += 1;
+          await response.dispose();
+          logicalUrl = redirectTarget;
+        }
       });
 
       try {
@@ -566,6 +796,8 @@ async function audit() {
           let collecting = true;
           const assetRecords = new Map();
           const assetEventFailures = [];
+          const navigationResponses = [];
+          let mainNavigationRequest = null;
 
           const isAuditedAsset = (request) =>
             ASSET_RESOURCE_TYPES.has(request.resourceType()) &&
@@ -605,6 +837,9 @@ async function audit() {
             addFailure('page-error', { url, width, message: errorMessage(error) });
           });
           page.on('request', (request) => {
+            if (request.isNavigationRequest() && request.frame() === page.mainFrame()) {
+              mainNavigationRequest = request;
+            }
             if (!isAuditedAsset(request)) return;
             if (assetRecords.has(request)) {
               assetEventFailures.push({
@@ -623,6 +858,13 @@ async function audit() {
           });
           page.on('response', (response) => {
             const request = response.request();
+            if (request.isNavigationRequest() && response.frame() === page.mainFrame()) {
+              navigationResponses.push({
+                url: response.url(),
+                status: response.status(),
+                redirectedFrom: request.redirectedFrom()?.url() || null,
+              });
+            }
             if (!isAuditedAsset(request)) return;
             const record = assetRecords.get(request);
             if (!record) {
@@ -663,10 +905,45 @@ async function audit() {
           try {
             const response = await page.goto(url, { waitUntil: 'load', timeout: 30_000 });
             assert.ok(response, `${url} ${width}px returned no navigation response`);
-            assert.ok(
-              response.status() >= 200 && response.status() < 300,
-              `${url} ${width}px returned ${response.status()}`,
+            const auditedNavigationChain = auditedRequestChains.get(response.request());
+            if (auditedNavigationChain?.length) {
+              navigationResponses.splice(0, navigationResponses.length, ...auditedNavigationChain);
+            }
+            const initialResponse = navigationResponses[0] || null;
+            const terminalAuditedResponse = navigationResponses.at(-1) || null;
+            const initial2xx = Boolean(
+              initialResponse && initialResponse.status >= 200 && initialResponse.status < 300,
             );
+            const final2xx = Boolean(
+              terminalAuditedResponse &&
+              terminalAuditedResponse.status >= 200 &&
+              terminalAuditedResponse.status < 300 &&
+              response.status() >= 200 &&
+              response.status() < 300,
+            );
+            if (initial2xx) {
+              summary.routeInitial2xxChecks += 1;
+            } else {
+              addFailure('route-initial-response', {
+                url,
+                width,
+                status: initialResponse?.status ?? null,
+                chain: navigationResponses,
+              });
+            }
+            if (final2xx) {
+              summary.routeFinal2xxChecks += 1;
+            } else {
+              addFailure('route-final-response', {
+                url,
+                width,
+                status: terminalAuditedResponse?.status ?? response.status(),
+                finalUrl: terminalAuditedResponse?.url ?? response.url(),
+                chain: navigationResponses,
+              });
+            }
+            assert.ok(initial2xx, `${url} ${width}px initial response was ${initialResponse?.status ?? 'missing'}`);
+            assert.ok(final2xx, `${url} ${width}px final response was ${response.status()}`);
             summary.route2xxChecks += 1;
 
             const settled = await settleRenderedPage(page);
@@ -747,7 +1024,18 @@ async function audit() {
 
             summary.pageChecksCompleted += 1;
           } catch (error) {
-            addFailure('page-check', { url, width, message: errorMessage(error) });
+            const auditedNavigationChain = mainNavigationRequest
+              ? auditedRequestChains.get(mainNavigationRequest)
+              : null;
+            if (auditedNavigationChain?.length) {
+              navigationResponses.splice(0, navigationResponses.length, ...auditedNavigationChain);
+            }
+            addFailure('page-check', {
+              url,
+              width,
+              message: errorMessage(error),
+              navigationChain: navigationResponses,
+            });
           } finally {
             let mediaEvidence = [];
             try {
@@ -783,7 +1071,9 @@ async function audit() {
     summary.expectedPageChecks,
     'not every sitemap route completed at every viewport',
   );
-  assert.equal(summary.route2xxChecks, summary.expectedPageChecks, 'not every route returned 2xx');
+  assert.equal(summary.routeInitial2xxChecks, summary.expectedPageChecks, 'not every initial route returned 2xx');
+  assert.equal(summary.routeFinal2xxChecks, summary.expectedPageChecks, 'not every final route returned 2xx');
+  assert.equal(summary.route2xxChecks, summary.expectedPageChecks, 'not every route remained 2xx');
   assert.equal(summary.axeRuns, summary.expectedPageChecks, 'not every route completed an axe run');
   assert.equal(summary.overflowChecks, summary.expectedPageChecks, 'not every route completed an overflow check');
   assert.equal(summary.assetPageChecks, summary.expectedPageChecks, 'not every route completed an asset check');

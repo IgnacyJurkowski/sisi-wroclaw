@@ -16,7 +16,7 @@ function send(response, status, body, contentType = 'text/html; charset=utf-8', 
   response.end(body);
 }
 
-function page({ title, body, asset = true }) {
+function page({ title, body, asset = true, head = '' }) {
   return `<!doctype html>
 <html lang="en">
   <head>
@@ -24,6 +24,7 @@ function page({ title, body, asset = true }) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>${title}</title>
     ${asset ? '<link rel="stylesheet" href="/fixture.css">' : ''}
+    ${head}
   </head>
   <body><main><h1>${title}</h1>${body}</main></body>
 </html>`;
@@ -244,10 +245,11 @@ test('accepts only a ready successful streaming media response as an explicit me
     if (url.pathname === '/stream.mp4') {
       response.writeHead(206, {
         'accept-ranges': 'bytes',
+        'content-length': video.length,
         'content-range': `bytes 0-${video.length - 1}/${video.length}`,
         'content-type': 'video/mp4',
       });
-      response.write(video);
+      response.end(video);
       return;
     }
     if (url.pathname === '/source/') {
@@ -340,6 +342,301 @@ test('waits for asynchronously started reveal transitions before running Axe', {
     assert.equal(exitCode, 0, JSON.stringify(summary.failures));
     assert.equal(summary.ok, true);
     assert.equal(summary.seriousCriticalViolations, 0);
+  } finally {
+    await fixture.close();
+  }
+});
+
+test('redirect containment: rejects an external sitemap redirect before contact', { timeout: 60_000 }, async () => {
+  let trapHits = 0;
+  const trap = await startFixture(({ response }) => {
+    trapHits += 1;
+    return send(response, 200, sitemap(['/source/']), 'application/xml');
+  });
+  const fixture = await startFixture(({ response, url }) => {
+    if (url.pathname === '/sitemap.xml') {
+      return send(response, 302, '', 'text/plain', { location: `${trap.origin}/escaped-sitemap.xml` });
+    }
+    if (url.pathname === '/fixture.css') return send(response, 200, 'body { margin: 0; }', 'text/css');
+    if (url.pathname === '/source/') {
+      return send(response, 200, page({
+        title: 'Sitemap escape source',
+        body: `<a href="${CANONICAL_ORIGIN}/source/">Self link</a>`,
+      }));
+    }
+    return send(response, 404, 'not found', 'text/plain');
+  });
+
+  try {
+    const { exitCode, summary } = await runAudit(fixture.origin);
+    assert.notEqual(exitCode, 0);
+    assert.equal(summary.ok, false);
+    assert.equal(trapHits, 0);
+    assert.ok(summary.failures.some((failure) =>
+      failure.type === 'sitemap-redirect' &&
+      failure.reason === 'unaudited-redirect-origin' &&
+      failure.redirectTarget === `${trap.origin}/escaped-sitemap.xml`,
+    ));
+  } finally {
+    await fixture.close();
+    await trap.close();
+  }
+});
+
+test('redirect containment: follows a bounded relative sitemap redirect locally', { timeout: 60_000 }, async () => {
+  let redirectedSitemapHits = 0;
+  let redirectedSitemapQuery = '';
+  const fixture = await startFixture(({ response, url }) => {
+    if (url.pathname === '/sitemap.xml') {
+      return send(response, 302, '', 'text/plain', { location: 'maps/site.xml?via=relative' });
+    }
+    if (url.pathname === '/maps/site.xml') {
+      redirectedSitemapHits += 1;
+      redirectedSitemapQuery = url.search;
+      return send(response, 200, sitemap(['/source/']), 'application/xml');
+    }
+    if (url.pathname === '/fixture.css') return send(response, 200, 'body { margin: 0; }', 'text/css');
+    if (url.pathname === '/source/') {
+      return send(response, 200, page({
+        title: 'Local sitemap redirect',
+        body: `<a href="${CANONICAL_ORIGIN}/source/">Self link</a>`,
+      }));
+    }
+    return send(response, 404, 'not found', 'text/plain');
+  });
+
+  try {
+    const { exitCode, summary } = await runAudit(fixture.origin);
+    assert.equal(exitCode, 0, JSON.stringify(summary.failures));
+    assert.equal(summary.ok, true);
+    assert.equal(redirectedSitemapHits, 1);
+    assert.equal(redirectedSitemapQuery, '?via=relative');
+  } finally {
+    await fixture.close();
+  }
+});
+
+test('redirect containment: bounds a local sitemap redirect loop', { timeout: 60_000 }, async () => {
+  let sitemapHits = 0;
+  const fixture = await startFixture(({ response, url }) => {
+    if (url.pathname === '/sitemap.xml') {
+      sitemapHits += 1;
+      return send(response, 302, '', 'text/plain', { location: '/maps/loop.xml' });
+    }
+    if (url.pathname === '/maps/loop.xml') {
+      sitemapHits += 1;
+      return send(response, 302, '', 'text/plain', { location: '../sitemap.xml' });
+    }
+    return send(response, 404, 'not found', 'text/plain');
+  });
+
+  try {
+    const { exitCode, summary } = await runAudit(fixture.origin);
+    assert.notEqual(exitCode, 0);
+    assert.equal(summary.ok, false);
+    assert.ok(sitemapHits <= 11, `sitemap redirect bound was exceeded: ${sitemapHits} requests`);
+    assert.ok(summary.failures.some((failure) =>
+      failure.type === 'sitemap-redirect' && failure.reason === 'redirect-limit',
+    ));
+  } finally {
+    await fixture.close();
+  }
+});
+
+test('redirect containment: rejects an initial local route redirect despite a terminal 200', { timeout: 60_000 }, async () => {
+  let finalHits = 0;
+  const fixture = await startFixture(({ response, url }) => {
+    if (url.pathname === '/sitemap.xml') return send(response, 200, sitemap(['/source/']), 'application/xml');
+    if (url.pathname === '/fixture.css') return send(response, 200, 'body { margin: 0; }', 'text/css');
+    if (url.pathname === '/source/') {
+      return send(response, 302, '', 'text/plain', { location: '/final/?via=route' });
+    }
+    if (url.pathname === '/final/') {
+      finalHits += 1;
+      return send(response, 200, page({
+        title: 'Local route final',
+        body: `<a href="${CANONICAL_ORIGIN}/final/?via=route">Final self link</a>`,
+      }));
+    }
+    return send(response, 404, 'not found', 'text/plain');
+  });
+
+  try {
+    const { exitCode, summary } = await runAudit(fixture.origin);
+    assert.notEqual(exitCode, 0);
+    assert.equal(summary.ok, false);
+    assert.equal(finalHits, 3);
+    assert.ok(summary.failures.some((failure) =>
+      failure.type === 'route-initial-response' &&
+      failure.status === 302 &&
+      failure.chain?.[0]?.url === `${fixture.origin}/source/` &&
+      failure.chain?.[1]?.url === `${fixture.origin}/final/?via=route`,
+    ));
+  } finally {
+    await fixture.close();
+  }
+});
+
+test('redirect containment: rejects an external sitemap route redirect before contact', { timeout: 60_000 }, async () => {
+  let trapHits = 0;
+  const trap = await startFixture(({ response }) => {
+    trapHits += 1;
+    return send(response, 200, page({
+      title: 'External route trap',
+      body: `<a href="${CANONICAL_ORIGIN}/source/">Audited link</a>`,
+    }));
+  });
+  const fixture = await startFixture(({ response, url }) => {
+    if (url.pathname === '/sitemap.xml') return send(response, 200, sitemap(['/source/']), 'application/xml');
+    if (url.pathname === '/source/') {
+      return send(response, 302, '', 'text/plain', { location: `${trap.origin}/escaped-page/` });
+    }
+    return send(response, 404, 'not found', 'text/plain');
+  });
+
+  try {
+    const { exitCode, summary } = await runAudit(fixture.origin);
+    assert.notEqual(exitCode, 0);
+    assert.equal(summary.ok, false);
+    assert.equal(trapHits, 0);
+    assert.ok(summary.failures.some((failure) =>
+      failure.type === 'browser-redirect' &&
+      failure.reason === 'unaudited-redirect-origin' &&
+      failure.resourceType === 'document' &&
+      failure.redirectTarget === `${trap.origin}/escaped-page/`,
+    ));
+  } finally {
+    await fixture.close();
+    await trap.close();
+  }
+});
+
+test('redirect containment: rejects an external audited asset redirect before contact', { timeout: 60_000 }, async () => {
+  let trapHits = 0;
+  const trap = await startFixture(({ response }) => {
+    trapHits += 1;
+    return send(response, 200, 'body { color: white; background: black; }', 'text/css');
+  });
+  const fixture = await startFixture(({ response, url }) => {
+    if (url.pathname === '/sitemap.xml') return send(response, 200, sitemap(['/source/']), 'application/xml');
+    if (url.pathname === '/escape.css') {
+      return send(response, 302, '', 'text/plain', { location: `${trap.origin}/payload.css` });
+    }
+    if (url.pathname === '/source/') {
+      return send(response, 200, page({
+        title: 'External asset redirect',
+        asset: false,
+        head: '<link rel="stylesheet" href="/escape.css">',
+        body: `<a href="${CANONICAL_ORIGIN}/source/">Self link</a>`,
+      }));
+    }
+    return send(response, 404, 'not found', 'text/plain');
+  });
+
+  try {
+    const { exitCode, summary } = await runAudit(fixture.origin);
+    assert.notEqual(exitCode, 0);
+    assert.equal(summary.ok, false);
+    assert.equal(trapHits, 0);
+    assert.ok(summary.sameOriginAssetFailures > 0);
+    assert.ok(summary.failures.some((failure) =>
+      failure.type === 'browser-redirect' &&
+      failure.reason === 'unaudited-redirect-origin' &&
+      failure.resourceType === 'stylesheet' &&
+      failure.redirectTarget === `${trap.origin}/payload.css`,
+    ));
+  } finally {
+    await fixture.close();
+    await trap.close();
+  }
+});
+
+test('redirect containment: permits a canonical asset redirect only through the local base', { timeout: 60_000 }, async () => {
+  let redirectHits = 0;
+  let finalHits = 0;
+  let finalHost = '';
+  let finalQuery = '';
+  const fixture = await startFixture(({ request, response, url }) => {
+    if (url.pathname === '/sitemap.xml') return send(response, 200, sitemap(['/source/']), 'application/xml');
+    if (url.pathname === '/redirect.css') {
+      redirectHits += 1;
+      return send(response, 302, '', 'text/plain', {
+        location: `${CANONICAL_ORIGIN}/final.css?via=asset`,
+      });
+    }
+    if (url.pathname === '/final.css') {
+      finalHits += 1;
+      finalHost = request.headers.host || '';
+      finalQuery = url.search;
+      return send(response, 200, 'body { margin: 0; }', 'text/css');
+    }
+    if (url.pathname === '/source/') {
+      return send(response, 200, page({
+        title: 'Local canonical asset redirect',
+        asset: false,
+        head: '<link rel="stylesheet" href="/redirect.css">',
+        body: `<a href="${CANONICAL_ORIGIN}/source/">Self link</a>`,
+      }));
+    }
+    return send(response, 404, 'not found', 'text/plain');
+  });
+
+  try {
+    const { exitCode, summary } = await runAudit(fixture.origin);
+    assert.equal(exitCode, 0, JSON.stringify(summary.failures));
+    assert.equal(summary.ok, true);
+    assert.equal(redirectHits, 3);
+    assert.equal(finalHits, 3);
+    assert.equal(finalHost, new URL(fixture.origin).host);
+    assert.equal(finalQuery, '?via=asset');
+    assert.equal(summary.sameOriginAssetRequests, summary.sameOriginAssetTerminalOutcomes);
+    assert.equal(summary.sameOriginAssetFailures, 0);
+  } finally {
+    await fixture.close();
+  }
+});
+
+test('redirect containment: bounds an audited browser redirect loop', { timeout: 60_000 }, async () => {
+  let loopHits = 0;
+  const fixture = await startFixture(({ response, url }) => {
+    if (url.pathname === '/sitemap.xml') return send(response, 200, sitemap(['/source/']), 'application/xml');
+    if (url.pathname === '/loop-a.css') {
+      loopHits += 1;
+      const hop = Number(url.searchParams.get('hop') || 0);
+      return send(response, 302, '', 'text/plain', {
+        location: `${CANONICAL_ORIGIN}/loop-b.css?hop=${hop + 1}`,
+      });
+    }
+    if (url.pathname === '/loop-b.css') {
+      loopHits += 1;
+      const hop = Number(url.searchParams.get('hop') || 0);
+      return send(response, 302, '', 'text/plain', {
+        location: `${CANONICAL_ORIGIN}/loop-a.css?hop=${hop + 1}`,
+      });
+    }
+    if (url.pathname === '/source/') {
+      return send(response, 200, page({
+        title: 'Audited redirect loop',
+        asset: false,
+        head: '<link rel="stylesheet" href="/loop-a.css?hop=0">',
+        body: `<a href="${CANONICAL_ORIGIN}/source/">Self link</a>`,
+      }));
+    }
+    return send(response, 404, 'not found', 'text/plain');
+  });
+
+  try {
+    const { exitCode, summary } = await runAudit(fixture.origin);
+    assert.notEqual(exitCode, 0);
+    assert.equal(summary.ok, false);
+    assert.ok(loopHits <= 66, `browser redirect bound was exceeded: ${loopHits} requests`);
+    const limitFailures = summary.failures.filter((failure) =>
+      failure.type === 'browser-redirect' &&
+      failure.reason === 'redirect-limit' &&
+      failure.resourceType === 'stylesheet');
+    assert.ok(limitFailures.length > 0, JSON.stringify({ loopHits, failures: summary.failures }, null, 2));
+    assert.ok(limitFailures.every((failure) =>
+      failure.redirectDepth === 10 && failure.chain.length === 11));
   } finally {
     await fixture.close();
   }
