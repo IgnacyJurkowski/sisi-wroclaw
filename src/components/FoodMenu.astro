@@ -9,8 +9,9 @@ interface Props { locale: Locale }
 const { locale } = Astro.props;
 
 type L = Record<Locale, string>;
+type Diet = 'vegetarian' | 'vegan';
 interface Tier { qty?: L; price: string }
-interface Dish { name: L; desc?: L; tiers: Tier[] }
+interface Dish { icon: string; name: L; desc?: L; tiers: Tier[]; diet?: Diet }
 interface FoodSection { title: L; icon: string; dishes: Dish[] }
 
 // Section-header glyphs (Lucide, MIT), stroked in burgundy on the cream band —
@@ -18,6 +19,19 @@ interface FoodSection { title: L; icon: string; dishes: Dish[] }
 const ICONS = {
   shell: '<path d="M14 11a2 2 0 1 1-4 0 4 4 0 0 1 8 0 6 6 0 0 1-12 0 8 8 0 0 1 16 0 10 10 0 1 1-20 0 11.93 11.93 0 0 1 2.42-7.22 2 2 0 0 1 2.75-.4"/>',
   flame: '<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>',
+  bread: '<path d="M12 4c-3.9 0-8 1.4-8 5 0 1.3.9 2 2 2v7a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-7c1.1 0 2-.7 2-2 0-3.6-4.1-5-8-5Z"/>',
+  beef: '<circle cx="12.5" cy="8.5" r="2.5"/><path d="M12.5 2a6.5 6.5 0 0 0-6.22 4.6c-1.1 3.13-.78 3.9-3.18 6.08A3 3 0 0 0 5 18c4 0 8.4-1.8 11.4-4.3A6.5 6.5 0 0 0 12.5 2Z"/><path d="m18.5 6 2.19 4.5a6.48 6.48 0 0 1 .31 2 6.49 6.49 0 0 1-2.6 5.2C15.4 20.2 11 22 7 22a3 3 0 0 1-2.68-1.66L2.4 16.5"/>',
+  fish: '<path d="M6.5 12c.94-3.46 4.94-6 8.5-6 3.56 0 6.06 2.54 7 6-.94 3.47-3.44 6-7 6s-7.56-2.53-8.5-6Z"/><path d="M18 12v.5"/><path d="M16 17.93a9.77 9.77 0 0 1 0-11.86"/><path d="M7 10.67C7 8 5.58 5.97 2.73 5.5c-1 1.5-1 5 .23 6.5-1.24 1.5-1.24 5-.23 6.5C5.58 18.03 7 16 7 13.33"/>',
+  platter: '<path d="M12 3v3"/><path d="M5 9h14"/><path d="M6 9a6 6 0 0 0 12 0"/><path d="M12 15v3"/><path d="M4 21h16"/><path d="M7 21a5 5 0 0 1 10 0"/>',
+  cheese: '<path d="M4 13v5a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-6"/><path d="M3.5 12.5 13 4c4 0 7.5 3.4 7.5 8.5Z"/><circle cx="9" cy="15.5" r=".9"/><circle cx="14" cy="16" r=".9"/>',
+  drumstick: '<path d="M15.4 15.63a7.87 6 135 1 1 6.23-6.23 4.5 3.43 0 0 0-6.23 6.23Z"/><path d="m8.29 12.71-2.6 2.6a2.5 2.5 0 1 0-1.65 4.65A2.5 2.5 0 1 0 8.7 18.3l2.59-2.59"/>',
+};
+
+// Diet badge labels. Only the clearly-vegetarian cheese board is marked for now;
+// the rest await the kitchen's confirmed vegan/vegetarian list.
+const DIET: Record<Diet, L> = {
+  vegetarian: { pl: 'wege', en: 'veggie', de: 'veggie', it: 'veggie', cs: 'veggie' },
+  vegan: { pl: 'vegan', en: 'vegan', de: 'vegan', it: 'vegan', cs: 'vegan' },
 };
 
 // Portion labels reused across dishes.
@@ -41,11 +55,11 @@ const TAGLINE = {
     cs: 'Objevujte s námi vášeň pro jídlo',
   } as L,
   sub: {
-    pl: 'Bogactwo ulubionych smaków — prosto, świeżo, autentycznie.',
-    en: 'A wealth of beloved flavours — simple, fresh, authentic.',
-    de: 'Eine Fülle liebster Aromen — schlicht, frisch, authentisch.',
-    it: 'Una ricchezza di sapori amati — semplice, fresco, autentico.',
-    cs: 'Bohatství oblíbených chutí — jednoduše, čerstvě, autenticky.',
+    pl: 'Bogactwo ulubionych smaków – prosto, świeżo, autentycznie.',
+    en: 'A wealth of beloved flavours – simple, fresh, authentic.',
+    de: 'Eine Fülle liebster Aromen – schlicht, frisch, authentisch.',
+    it: 'Una ricchezza di sapori amati – semplice, fresco, autentico.',
+    cs: 'Bohatství oblíbených chutí – jednoduše, čerstvě, autenticky.',
   } as L,
 };
 
@@ -55,6 +69,7 @@ const SECTIONS: FoodSection[] = [
     icon: ICONS.shell,
     dishes: [
       {
+        icon: ICONS.shell,
         name: { pl: 'Ostrygi', en: 'Oysters', de: 'Austern', it: 'Ostriche', cs: 'Ústřice' },
         desc: {
           pl: 'Szkocja / Irlandia / Francja, na lodzie · do wyboru: klasyczna cytryna / sos mignonette / spicy mango',
@@ -66,6 +81,7 @@ const SECTIONS: FoodSection[] = [
         tiers: [{ qty: QTY.p3, price: '49 zł' }, { qty: QTY.p6, price: '85 zł' }, { qty: QTY.p9, price: '120 zł' }],
       },
       {
+        icon: ICONS.bread,
         name: { pl: 'Crostini', en: 'Crostini', de: 'Crostini', it: 'Crostini', cs: 'Crostini' },
         desc: {
           pl: 'Dedykowany chleb Sisi',
@@ -74,9 +90,10 @@ const SECTIONS: FoodSection[] = [
           it: 'Pane Sisi della casa',
           cs: 'Signature chléb Sisi',
         },
-        tiers: [{ qty: QTY.p3, price: '49 zł' }],
+        tiers: [],
       },
       {
+        icon: ICONS.beef,
         name: {
           pl: 'Klasyczny tatar wołowy The Cork',
           en: 'The Cork classic beef tartare',
@@ -94,6 +111,7 @@ const SECTIONS: FoodSection[] = [
         tiers: [{ qty: QTY.p3, price: '49 zł' }],
       },
       {
+        icon: ICONS.beef,
         name: {
           pl: 'Pieczona polędwica Rubia Gallega',
           en: 'Roasted Rubia Gallega beef',
@@ -102,15 +120,16 @@ const SECTIONS: FoodSection[] = [
           cs: 'Pečená svíčková Rubia Gallega',
         },
         desc: {
-          pl: 'Sos peper verde / śmietana truflowa / ser Emilgrana',
-          en: 'Peper verde sauce / truffle cream / Emilgrana cheese',
-          de: 'Peper-Verde-Sauce / Trüffelcreme / Emilgrana-Käse',
-          it: 'Salsa peper verde / crema al tartufo / formaggio Emilgrana',
-          cs: 'Omáčka peper verde / lanýžová smetana / sýr Emilgrana',
+          pl: 'Sos pepe verde / śmietana truflowa / ser Emilgrana',
+          en: 'Pepe verde sauce / truffle cream / Emilgrana cheese',
+          de: 'Pepe-Verde-Sauce / Trüffelcreme / Emilgrana-Käse',
+          it: 'Salsa al pepe verde / crema al tartufo / formaggio Emilgrana',
+          cs: 'Omáčka pepe verde / lanýžová smetana / sýr Emilgrana',
         },
         tiers: [{ qty: QTY.p3, price: '49 zł' }],
       },
       {
+        icon: ICONS.fish,
         name: {
           pl: 'Tuńczyk Blue Fin à la chinoise',
           en: 'Blue Fin tuna à la chinoise',
@@ -128,6 +147,7 @@ const SECTIONS: FoodSection[] = [
         tiers: [{ qty: QTY.p3, price: '49 zł' }],
       },
       {
+        icon: ICONS.platter,
         name: {
           pl: 'Etażera Sisi',
           en: 'Sisi tiered platter',
@@ -145,6 +165,7 @@ const SECTIONS: FoodSection[] = [
         tiers: [{ qty: QTY.d2, price: '139 zł' }, { qty: QTY.d4, price: '259 zł' }, { qty: QTY.d6, price: '379 zł' }],
       },
       {
+        icon: ICONS.cheese,
         name: {
           pl: 'Sery Corka',
           en: 'The Cork cheese board',
@@ -159,7 +180,8 @@ const SECTIONS: FoodSection[] = [
           it: "Capra / pecora / mucca / olive / senape all'arancia",
           cs: 'Kozí / ovčí / kravský / olivy / pomerančová hořčice',
         },
-        tiers: [{ qty: QTY.p5, price: '65 zł' }],
+        tiers: [{ price: '65 zł' }],
+        diet: 'vegetarian',
       },
     ],
   },
@@ -168,6 +190,7 @@ const SECTIONS: FoodSection[] = [
     icon: ICONS.flame,
     dishes: [
       {
+        icon: ICONS.fish,
         name: { pl: 'Seafood basket', en: 'Seafood basket', de: 'Seafood-Korb', it: 'Cestino di mare', cs: 'Seafood basket' },
         desc: {
           pl: 'Krewetki / dorsz / kalmar / dip czosnkowo-ziołowy / cytryna / chipsy warzywne',
@@ -179,8 +202,9 @@ const SECTIONS: FoodSection[] = [
         tiers: [{ price: '65 zł' }],
       },
       {
+        icon: ICONS.drumstick,
         name: {
-          pl: 'Buffalo — chrupiący kurczak',
+          pl: 'Buffalo – chrupiący kurczak',
           en: 'Buffalo crispy chicken',
           de: 'Buffalo Crispy Chicken',
           it: 'Pollo croccante Buffalo',
@@ -214,17 +238,22 @@ const SECTIONS: FoodSection[] = [
           <h3 class="food-section-label"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={sec.icon} />{sec.title[locale]}</h3>
           {sec.dishes.map((d) => (
             <article class="food-item">
-              <div class="food-item-head">
-                <h4 class="food-name">{d.name[locale]}</h4>
-                <div class="food-prices">
-                  {d.tiers.map((tr) => (
-                    <span class="food-price">
-                      {tr.qty && <span class="food-qty">{tr.qty[locale]}</span>}{tr.price}
-                    </span>
-                  ))}
+              <svg class="food-item-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={d.icon} />
+              <div class="food-item-body">
+                <div class="food-item-head">
+                  <h4 class="food-name">{d.name[locale]}{d.diet && <span class="food-badge">{DIET[d.diet][locale]}</span>}</h4>
+                  {d.tiers.length > 0 && (
+                    <div class="food-prices">
+                      {d.tiers.map((tr) => (
+                        <span class="food-price">
+                          {tr.qty && <span class="food-qty">{tr.qty[locale]}</span>}{tr.price}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
+                {d.desc && <p class="food-desc">{d.desc[locale]}</p>}
               </div>
-              {d.desc && <p class="food-desc">{d.desc[locale]}</p>}
             </article>
           ))}
         </div>
@@ -274,10 +303,23 @@ const SECTIONS: FoodSection[] = [
     fill: none; stroke: #27060f; stroke-width: 1.7;
     stroke-linecap: round; stroke-linejoin: round;
   }
-  .food-item { padding: 18px 0; border-bottom: 1px solid rgba(39, 7, 15, 0.1); }
+  .food-item { display: flex; gap: 14px; padding: 18px 0; border-bottom: 1px solid rgba(39, 7, 15, 0.1); }
   .food-item:last-child { border-bottom: none; }
+  .food-item-icon {
+    width: 22px; height: 22px; flex-shrink: 0; margin-top: 1px;
+    fill: none; stroke: #27060f; stroke-width: 1.6;
+    stroke-linecap: round; stroke-linejoin: round; opacity: 0.85;
+  }
+  .food-item-body { flex: 1; min-width: 0; }
   .food-item-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
   .food-name { font-size: 16px; font-weight: 700; letter-spacing: 0.01em; color: #27060f; margin: 0; }
+  .food-badge {
+    display: inline-block; margin-left: 8px; transform: translateY(-1px);
+    font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+    color: #3d5a2e; background: rgba(61, 90, 46, 0.1);
+    border: 1px solid rgba(61, 90, 46, 0.35); border-radius: 999px;
+    padding: 1px 7px; white-space: nowrap;
+  }
   .food-prices { flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 2px; text-align: right; }
   .food-price { font-size: 14px; font-weight: 600; color: #27060f; white-space: nowrap; }
   .food-qty { font-size: 11px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: rgba(39, 7, 15, 0.5); margin-right: 8px; }

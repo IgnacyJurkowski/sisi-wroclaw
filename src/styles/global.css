@@ -411,6 +411,7 @@ footer::before {
 .menu-fold-summary:hover .menu-fold-chevron { opacity: 1; }
 .menu-fold-summary:focus-visible { outline: 2px solid var(--gold); outline-offset: -4px; border-radius: 14px; }
 .menu-fold-body { padding: 0 36px 30px; }
+.menu-fold-body > :first-child { margin-top: 0; }
 .menu-fold-note {
   font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em;
   color: var(--text-mute); margin: 0 0 6px;

@@ -393,6 +393,13 @@ const ICONS: Record<string, string> = {
   bottle: '<path d="M10 3h4"/><path d="M10 3v3l-1.4 2.3A4 4 0 0 0 8 10.4V20a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-9.6a4 4 0 0 0-.6-2.1L14 6V3"/><path d="M8 14h8"/>',
   whisky: '<path d="M5 4h14l-1 15a2 2 0 0 1-2 1.8H8a2 2 0 0 1-2-1.8L5 4z"/><path d="M6 9h12"/>',
   leaf: '<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/>',
+  // Per-spirit glyphs so each foldable range reads at a glance.
+  sprig: '<path d="M12 21V9"/><path d="M12 12c-3 0-4.5-1.5-5-4 2.5 0 4 1 5 3.5"/><path d="M12 9c-.5-2.5.6-4.5 3-5 .4 2.5-.6 4.3-3 4.8"/><path d="M12 15c2.5 0 4-1 5-3-2.5-.5-4 .4-5 2.6"/>',
+  barrel: '<path d="M7 4h10"/><path d="M7 20h10"/><path d="M7 4c-1.6 5-1.6 11 0 16"/><path d="M17 4c1.6 5 1.6 11 0 16"/><path d="M4.5 9h15"/><path d="M4.5 15h15"/>',
+  agave: '<path d="M12 22V8"/><path d="M12 12c-3 0-5-2-6-5 3-.5 5 1 6 4"/><path d="M12 12c3 0 5-2 6-5-3-.5-5 1-6 4"/><path d="M12 17c-2.5 0-4-1.5-5-4 2.5-.4 4 .8 5 3"/><path d="M12 17c2.5 0 4-1.5 5-4-2.5-.4-4 .8-5 3"/>',
+  grape: '<path d="M22 5V2l-5.89 5.89"/><circle cx="16.6" cy="15.89" r="3"/><circle cx="8.11" cy="7.4" r="3"/><circle cx="12.35" cy="11.65" r="3"/><circle cx="13.91" cy="5.85" r="3"/><circle cx="18.15" cy="10.09" r="3"/><circle cx="6.56" cy="13.2" r="3"/><circle cx="10.8" cy="17.44" r="3"/><circle cx="5" cy="19" r="3"/>',
+  droplet: '<path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/>',
+  coupe: '<path d="M4 5h16l-3 5a5 5 0 0 1-10 0z"/><path d="M12 15v5"/><path d="M8 20h8"/>',
 };
 ---
 
@@ -411,17 +418,15 @@ const ICONS: Record<string, string> = {
 
   <div class="menu-wrap">
     <div class="menu-grid" data-reveal-group>
-      {/* LEFT: cocktails, 0%, spirits */}
+      {/* LEFT: cocktails, 0%, core spirits — every section foldable, collapsed. */}
       <div class="menu-stack">
-        <section class="sisi-card menu-card">
-          <h2 class="menu-section-label"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.martini} />{t.menuPage.sections.cocktails}</h2>
+        <MenuFold label={t.menuPage.sections.cocktails} icon={ICONS.martini} count={koktajle.length}>
           {koktajle.map((item) => (
             <MenuItem name={item.name} desc={item.desc ? localizeDesc(item.desc, locale) : undefined} vol={item.vol} price={item.price} />
           ))}
-        </section>
+        </MenuFold>
 
-        <section class="sisi-card menu-card">
-          <h2 class="menu-section-label"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.leaf} />{t.menuPage.sections.nonAlcoholic}</h2>
+        <MenuFold label={t.menuPage.sections.nonAlcoholic} icon={ICONS.leaf} count={mocktails.length + spirits0.length}>
           <p class="menu-subsection">{t.menuPage.nonAlcSub.cocktails}</p>
           {mocktails.map((item) => (
             <MenuItem name={item.name} desc={item.desc ? localizeDesc(item.desc, locale) : undefined} price={item.price} />
@@ -430,13 +435,13 @@ const ICONS: Record<string, string> = {
           {spirits0.map((item) => (
             <MenuItem name={item.name} vol={item.vol} price={item.price} />
           ))}
-        </section>
+        </MenuFold>
 
         <MenuFold label={t.menuPage.sections.vodka} icon={ICONS.bottle} count={wodka.length} note={t.menuPage.pourNote}>
           {wodka.map((i) => <MenuItem name={i.name} price={i.price} />)}
         </MenuFold>
 
-        <MenuFold label={t.menuPage.sections.gin} icon={ICONS.bottle} count={gin.length} note={t.menuPage.pourNote}>
+        <MenuFold label={t.menuPage.sections.gin} icon={ICONS.sprig} count={gin.length} note={t.menuPage.pourNote}>
           {gin.map((i) => <MenuItem name={i.name} price={i.price} />)}
         </MenuFold>
 
@@ -449,64 +454,18 @@ const ICONS: Record<string, string> = {
           ))}
         </MenuFold>
 
-        <MenuFold label={t.menuPage.sections.rum} icon={ICONS.bottle} count={rum.length} note={t.menuPage.pourNote}>
+        <MenuFold label={t.menuPage.sections.rum} icon={ICONS.barrel} count={rum.length} note={t.menuPage.pourNote}>
           {rum.map((i) => <MenuItem name={i.name} desc={i.desc ? localizeDesc(i.desc, locale) : undefined} price={i.price} />)}
         </MenuFold>
 
-        <MenuFold label={t.menuPage.sections.tequila} icon={ICONS.bottle} count={tequila.length} note={t.menuPage.pourNote}>
+        <MenuFold label={t.menuPage.sections.tequila} icon={ICONS.agave} count={tequila.length} note={t.menuPage.pourNote}>
           {tequila.map((i) => <MenuItem name={i.name} price={i.price} />)}
-        </MenuFold>
-
-        <MenuFold label={t.menuPage.sections.cognac} icon={ICONS.bottle} count={koniak.length} note={t.menuPage.pourNote}>
-          {koniak.map((i) => <MenuItem name={i.name} price={i.price} />)}
-        </MenuFold>
-
-        <MenuFold label={t.menuPage.sections.liqueurs} icon={ICONS.bottle} count={likiery.length} note={t.menuPage.pourNote}>
-          {likiery.map((i) => <MenuItem name={i.name} price={i.price} />)}
-        </MenuFold>
-
-        <MenuFold label={t.menuPage.sections.vermouth} icon={ICONS.bottle} count={wermuty.length} note={t.menuPage.pourNote}>
-          {wermuty.map((i) => <MenuItem name={i.name} price={i.price} />)}
         </MenuFold>
       </div>
 
-      {/* RIGHT: wine, champagne, bottle service, beer, soft drinks */}
+      {/* RIGHT: champagne, wine, aperitifs, bottle service, beer, soft drinks. */}
       <div class="menu-stack">
-        <section class="sisi-card menu-card">
-          <h2 class="menu-section-label"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.wine} />{t.menuPage.sections.wines}</h2>
-          <p class="fw-lead">{t.menuPage.wineLead}</p>
-          <div class="ptable ptable-2">
-            <div class="ptable-head" aria-hidden="true">
-              <span></span>
-              <span class="pcol">150 ml</span>
-              <span class="pcol">750 ml</span>
-            </div>
-            {WINE_CATEGORIES.map((cat) => {
-              const list = WINES.filter((w) => w.category === cat.key);
-              return list.length === 0 ? null : (
-                <Fragment>
-                  <p class="menu-subsection">{cat.label[locale]}</p>
-                  {list.map((w) => (
-                    <div class="prow wine-row">
-                      <div class="wine-info">
-                        <p class="wine-name">{w.name}{w.vintage ? ` ${w.vintage}` : ''}<span class="wine-winery"> — {w.winery}</span>{w.featured && <span class="wine-featured">{FEATURED_LABEL[locale]}</span>}</p>
-                        {(w.dryness || w.grapes) && <p class="wine-meta">{[w.dryness && DRYNESS[w.dryness][locale], w.grapes?.join(', ')].filter(Boolean).join(' · ')}</p>}
-                        {w.region && <p class="wine-region">{w.region}</p>}
-                      </div>
-                      <div class="prices">
-                        <span class="pcell" data-vol="150 ml">{w.glassPrice}</span>
-                        <span class="pcell" data-vol="750 ml">{w.bottlePrice}</span>
-                      </div>
-                    </div>
-                  ))}
-                </Fragment>
-              );
-            })}
-          </div>
-        </section>
-
-        <section class="sisi-card menu-card">
-          <h2 class="menu-section-label"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.champagne} />{t.menuPage.sections.champagne}</h2>
+        <MenuFold label={t.menuPage.sections.champagne} icon={ICONS.champagne} count={CHAMPAGNE_HOUSES.reduce((n, h) => n + h.items.length, 0) + 1}>
           {CHAMPAGNE_HOUSES.map((h) => (
             <Fragment>
               <p class="menu-subsection">{h.house}</p>
@@ -524,7 +483,51 @@ const ICONS: Record<string, string> = {
             <p class="champ-prices">150 ml 25 zł · 750 ml 120 zł</p>
           </div>
           <p class="menu-note">{t.menuPage.champagneNote}</p>
-        </section>
+        </MenuFold>
+
+        <MenuFold label={t.menuPage.sections.wines} icon={ICONS.wine} count={WINES.length}>
+          <p class="fw-lead">{t.menuPage.wineLead}</p>
+          <div class="ptable ptable-2">
+            <div class="ptable-head" aria-hidden="true">
+              <span></span>
+              <span class="pcol">150 ml</span>
+              <span class="pcol">750 ml</span>
+            </div>
+            {WINE_CATEGORIES.map((cat) => {
+              const list = WINES.filter((w) => w.category === cat.key);
+              return list.length === 0 ? null : (
+                <Fragment>
+                  <p class="menu-subsection">{cat.label[locale]}</p>
+                  {list.map((w) => (
+                    <div class="prow wine-row">
+                      <div class="wine-info">
+                        <p class="wine-name">{w.name}{w.vintage ? ` ${w.vintage}` : ''}<span class="wine-winery"> – {w.winery}</span>{w.featured && <span class="wine-featured">{FEATURED_LABEL[locale]}</span>}</p>
+                        {(w.dryness || w.grapes) && <p class="wine-meta">{[w.dryness && DRYNESS[w.dryness][locale], w.grapes?.join(', ')].filter(Boolean).join(' · ')}</p>}
+                        {w.region && <p class="wine-region">{w.region}</p>}
+                      </div>
+                      <div class="prices">
+                        <span class="pcell" data-vol="150 ml">{w.glassPrice}</span>
+                        <span class="pcell" data-vol="750 ml">{w.bottlePrice}</span>
+                      </div>
+                    </div>
+                  ))}
+                </Fragment>
+              );
+            })}
+          </div>
+        </MenuFold>
+
+        <MenuFold label={t.menuPage.sections.cognac} icon={ICONS.grape} count={koniak.length} note={t.menuPage.pourNote}>
+          {koniak.map((i) => <MenuItem name={i.name} price={i.price} />)}
+        </MenuFold>
+
+        <MenuFold label={t.menuPage.sections.liqueurs} icon={ICONS.droplet} count={likiery.length} note={t.menuPage.pourNote}>
+          {likiery.map((i) => <MenuItem name={i.name} price={i.price} />)}
+        </MenuFold>
+
+        <MenuFold label={t.menuPage.sections.vermouth} icon={ICONS.coupe} count={wermuty.length} note={t.menuPage.pourNote}>
+          {wermuty.map((i) => <MenuItem name={i.name} price={i.price} />)}
+        </MenuFold>
 
         <MenuFold label={t.menuPage.sections.bottleService} icon={ICONS.bottle} count={bottleService.length}>
           {BOTTLE_GROUPS.map((g) => {
@@ -538,8 +541,7 @@ const ICONS: Record<string, string> = {
           })}
         </MenuFold>
 
-        <section class="sisi-card menu-card">
-          <h2 class="menu-section-label"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.beer} />{t.menuPage.sections.beer}</h2>
+        <MenuFold label={t.menuPage.sections.beer} icon={ICONS.beer} count={piwoLane.length + piwoButelkowe.length}>
           <p class="menu-subsection">{t.menuPage.sections.draught}</p>
           {piwoLane.map((item) => (
             <MenuItem name={item.name} desc={item.desc ? localizeDesc(item.desc, locale) : undefined} vol={item.vol} price={item.price} />
@@ -549,14 +551,13 @@ const ICONS: Record<string, string> = {
             <MenuItem name={item.name} desc={item.desc ? localizeDesc(item.desc, locale) : undefined} vol={item.vol} price={item.price} />
           ))}
           <p class="menu-note">{t.menuPage.bottledNote}</p>
-        </section>
+        </MenuFold>
 
-        <section class="sisi-card menu-card">
-          <h2 class="menu-section-label"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.glass} />{t.menuPage.sections.drinks}</h2>
+        <MenuFold label={t.menuPage.sections.drinks} icon={ICONS.glass} count={napoje.length}>
           {napoje.map((item) => (
             <MenuItem name={item.name} desc={item.desc ? localizeDesc(item.desc, locale) : undefined} vol={item.vol} price={item.price} />
           ))}
-        </section>
+        </MenuFold>
       </div>
     </div>
 
