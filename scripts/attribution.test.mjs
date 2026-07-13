@@ -10,9 +10,23 @@ test('keeps only campaign keys in stable order', () => {
 });
 
 test('caps values and total output', () => {
-  const result = campaignAttribution(`?utm_source=${'x'.repeat(300)}&utm_content=${'y'.repeat(600)}`);
-  const values = [...new URLSearchParams(result).values()];
-  assert.equal(values.every((value) => value.length <= 100), true);
+  const cappedValue = new URLSearchParams(campaignAttribution(`?utm_source=${'z'.repeat(101)}`));
+  assert.equal(cappedValue.get('utm_source'), 'z'.repeat(100));
+
+  const value = `${'x'.repeat(99)}%`;
+  const source = new URLSearchParams([
+    ['utm_source', value],
+    ['utm_medium', value],
+    ['utm_campaign', value],
+    ['utm_term', value],
+    ['utm_content', value],
+  ]);
+  assert.equal(source.toString().length > 512, true);
+
+  const result = campaignAttribution(`?${source}`);
+  const kept = new URLSearchParams(result);
+  assert.deepEqual([...kept.keys()], ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term']);
+  assert.equal([...kept.values()].every((item) => item.length === 100), true);
   assert.equal(result.length <= 512, true);
 });
 

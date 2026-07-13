@@ -14,10 +14,11 @@ const t = useTranslations(locale);
 const parts = t.cookie.text.split(/\{cookies\}|\{privacy\}/);
 const cookiesHref = localizedPath('cookies', locale);
 const privacyHref = localizedPath('privacy', locale);
+const noticeLang = locale === 'pl' || locale === 'en' ? undefined : 'en';
 ---
 
 <div id="cookie-banner" class="cookie-banner" role="dialog" aria-live="polite"
-     aria-label={t.cookie.dialogLabel} hidden>
+     aria-label={t.cookie.dialogLabel} lang={noticeLang} hidden>
   <p class="cookie-text">{parts[0]}<a href={cookiesHref}>{t.cookie.cookiesLink}</a>{parts[1]}<a href={privacyHref}>{t.cookie.privacyLink}</a>{parts[2]}</p>
   <div class="cookie-actions">
     <button type="button" class="btn-cta cookie-btn" data-cookie-dismiss>{t.cookie.dismiss}</button>
@@ -26,14 +27,19 @@ const privacyHref = localizedPath('privacy', locale);
 
 <script>
   const KEY = 'sisi-cookie-notice';
-  if (!localStorage.getItem(KEY)) {
-    const banner = document.getElementById('cookie-banner');
-    if (banner) {
-      banner.hidden = false;
-      banner.querySelector('[data-cookie-dismiss]')?.addEventListener('click', () => {
-        try { localStorage.setItem(KEY, 'dismissed'); } catch {}
-        banner.hidden = true;
-      });
-    }
+  const LEGACY_KEY = 'sisi-cookie-consent';
+  const banner = document.getElementById('cookie-banner');
+  let dismissed = false;
+  try {
+    localStorage.removeItem(LEGACY_KEY);
+    dismissed = localStorage.getItem(KEY) === 'dismissed';
+  } catch {}
+
+  if (!dismissed && banner) {
+    banner.hidden = false;
+    banner.querySelector('[data-cookie-dismiss]')?.addEventListener('click', () => {
+      try { localStorage.setItem(KEY, 'dismissed'); } catch {}
+      banner.hidden = true;
+    });
   }
 </script>

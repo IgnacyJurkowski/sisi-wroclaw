@@ -203,8 +203,8 @@ const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
     if (!form) return;
     const messages = JSON.parse(form.getAttribute('data-messages') || '{}');
 
-    // Fill non-PII context fields from the URL. Attribution is restricted to
-    // bounded campaign values; unrelated query data is never submitted.
+    // Fill page context and bounded campaign-attribution fields from the URL.
+    // Unrelated query parameters are never submitted.
     try {
       const pageEl = form.querySelector('[data-field-page]');
       const utmEl = form.querySelector('[data-field-utm]');
