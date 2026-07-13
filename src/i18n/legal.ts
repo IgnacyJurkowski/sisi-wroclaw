@@ -10,11 +10,6 @@
 
 // TODO(ignacy): commission professional DE/IT/CS legal translations; until then
 //   keep the English fallback and the "Polish version is authoritative" banner.
-// TODO(ignacy): confirm the guest reservation terms in this regulamin (21+
-//   admission, 50 zł reservation per person, 30 zł Saturday entry) with the
-//   reservation provider and staff, then also surface them in a guest-facing FAQ,
-//   not only here in the regulamin.
-
 import { type Locale } from './config';
 
 export type LegalSection = { heading: string; paragraphs?: string[]; items?: string[] };
@@ -34,7 +29,7 @@ const pl_terms: LegalDoc = {
     {
       heading: '2. Zasady wstępu',
       items: [
-        'Wstęp do Klubu mają wyłącznie osoby powyżej 21. roku życia. Obsługa ma prawo zażądać okazania dokumentu potwierdzającego wiek.',
+        'Obsługa ma prawo zażądać okazania dokumentu tożsamości.',
         'Organizator zastrzega sobie prawo odmowy wstępu bez podania przyczyny, w szczególności osobom nietrzeźwym, pod wpływem środków odurzających lub zachowującym się agresywnie.',
         'W lokalu obowiązuje selekcja oraz dress code w stylu smart casual.',
         'Na terenie Klubu obowiązuje zakaz wnoszenia własnego alkoholu, napojów, środków odurzających, broni oraz przedmiotów niebezpiecznych.',
@@ -45,7 +40,7 @@ const pl_terms: LegalDoc = {
       items: [
         'Rezerwacji stolika można dokonać online za pośrednictwem systemu rezerwacji dostępnego na stronie, telefonicznie pod numerem {phone} lub mailowo: {email}.',
         'Koszt rezerwacji wynosi 50 zł od osoby i jest do wykorzystania przy stoliku u obsługi. W piątki wstęp dla osób z rezerwacją jest bezpłatny, w soboty doliczany jest wstęp w wysokości 30 zł od osoby.',
-        'Warunkiem potwierdzenia rezerwacji jest przedpłata w ciągu 120 minut od otrzymania szczegółowych warunków. Brak płatności w tym czasie oznacza automatyczne anulowanie rezerwacji.',
+        'Warunkiem potwierdzenia rezerwacji jest przedpłata.',
         'Rezerwację należy odebrać w godzinach 22:00-23:30. Spóźnienie powyżej 30 minut może skutkować przekazaniem stolika innym gościom.',
         'Rezerwacje na eventy firmowe i grupowe prowadzone są odrębnie: {eventsPhone}, {eventsEmail}.',
       ],
@@ -220,7 +215,7 @@ const en_terms: LegalDoc = {
     {
       heading: '2. Entry rules',
       items: [
-        'Entry is restricted to guests over 21 years of age. Staff may request ID confirming age.',
+        'Staff may request ID.',
         'The Operator reserves the right to refuse entry without giving a reason, in particular to people who are intoxicated, under the influence of drugs or behaving aggressively.',
         'A door selection policy and a smart-casual dress code apply.',
         'Bringing your own alcohol, drinks, drugs, weapons or dangerous objects onto the premises is prohibited.',
@@ -231,7 +226,7 @@ const en_terms: LegalDoc = {
       items: [
         'A table can be reserved online via the booking system on this site, by phone at {phone} or by email at {email}.',
         'The reservation fee is PLN 50 per person and can be spent at your table with staff. On Fridays entry is free for guests with a reservation; on Saturdays an entry fee of PLN 30 per person is added.',
-        'A reservation is confirmed by prepayment within 120 minutes of receiving the detailed terms. Without payment in that time, the reservation is cancelled automatically.',
+        'A reservation is confirmed by prepayment.',
         'Reservations must be claimed between 22:00 and 23:30. Being more than 30 minutes late may result in the table being released to other guests.',
         'Corporate and group event bookings are handled separately: {eventsPhone}, {eventsEmail}.',
       ],

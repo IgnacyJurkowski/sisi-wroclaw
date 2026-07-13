@@ -45,7 +45,6 @@ assert('en canonical is locale-specific (not pl)', read('en/index.html').include
 
 // --- B2B verified facts shown exactly; 150 scoped to The Cork ---
 const enB2B = read('en/corporate-events/index.html');
-assert('fact 663 m²', enB2B.includes('663 m²'));
 assert('fact up to 150', enB2B.includes('up to 150'));
 assert('150 scoped to The Cork', enB2B.includes('seated guests at The Cork'));
 assert('fact 2 screens', enB2B.includes('2 screens'));
@@ -68,7 +67,19 @@ assert('form netlify-enabled', enB2B.includes('data-netlify="true"'));
 assert('en terms convenience note', read('en/terms/index.html').includes('provided for convenience'));
 assert('de legal english-fallback banner', read('de/datenschutz/index.html').includes('bewusst auf Englisch'));
 assert('de legal body is English fallback', read('de/datenschutz/index.html').includes('Data controller'));
-assert('age is 21+ (terms)', read('en/terms/index.html').includes('over 21'));
+const LEGAL_ROUTES = {
+  de: ['agb', 'datenschutz', 'cookie-richtlinie'],
+  it: ['regolamento', 'privacy', 'cookie'],
+  cs: ['pravidla', 'ochrana-soukromi', 'zasady-cookies'],
+};
+for (const [locale, routes] of Object.entries(LEGAL_ROUTES)) {
+  for (const route of routes) {
+    assert(
+      `${locale}/${route} English fallback body is marked lang=en`,
+      read(`${locale}/${route}/index.html`).includes('<div class="legal-body" lang="en">'),
+    );
+  }
+}
 
 // --- redirects configured ---
 const toml = readFileSync(join(ROOT, 'netlify.toml'), 'utf8');
@@ -97,7 +108,28 @@ function walk(dir) {
 }
 const htmls = walk(DIST);
 const allHtml = htmls.map((file) => readFileSync(file, 'utf8')).join('\n');
+// Ignore encoded binary asset payloads when checking human-readable claims.
+// The inlined WOFF2 happens to contain `21+` in its base64 bytes.
+const searchableHtml = allHtml.replace(/data:[^;]+;base64,[A-Za-z0-9+/=]+/g, '');
 const leaked = htmls.filter((f) => /\{(privacy|cookies|email|example|legalName|nip|regon)\}/.test(readFileSync(f, 'utf8')));
+const unverifiedRenderedClaims = [
+  ['663 m area claim', /663\s*m/i],
+  ['over-21 claim', /over[-\s]?21/i],
+  ['21+ claim', /21\+/i],
+  ['Polish over-21 claim', /powyżej 21/i],
+  ['German over-21 claim', /(?:\bab|über) 21/i],
+  ['Italian over-21 claim', /maggiori di 21/i],
+  ['Czech over-21 claim', /(?:\bod|starším) 21/i],
+  ['120-minute claim', /120 minut/i],
+  ['120-minutes claim', /120 minutes/i],
+  ['GeoCoordinates metadata', /GeoCoordinates/],
+  ['geo meta tags', /<meta name="geo\./i],
+  ['ICBM coordinate metadata', /<meta name="ICBM"/i],
+  ['InStock availability claim', /\bInStock\b/],
+];
+for (const [label, pattern] of unverifiedRenderedClaims) {
+  assert(`no ${label} in html`, !pattern.test(searchableHtml));
+}
 assert('no sample event copy', !allHtml.includes('Krótki opis wydarzenia') && !allHtml.includes('JungleW'));
 assert('no stale June event routes', !existsSync(join(DIST, 'pl/wydarzenia/2026-06-26-friday-at-sisi/index.html')));
 for (const locale of ['pl', 'en', 'de', 'it', 'cs']) {

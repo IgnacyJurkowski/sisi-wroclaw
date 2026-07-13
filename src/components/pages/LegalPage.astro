@@ -45,13 +45,15 @@ const meta = t.meta[legalKey];
     {locale !== DEFAULT_LOCALE && (
       <p class="legal-convenience">{translated ? t.legal.convenienceNote : t.legal.englishFallbackNote}</p>
     )}
-    {doc.sections.map((s) => (
-      <Fragment>
-        <h2>{fill(s.heading)}</h2>
-        {s.paragraphs?.map((p) => <p>{fill(p)}</p>)}
-        {s.items && <ul>{s.items.map((i) => <li>{fill(i)}</li>)}</ul>}
-      </Fragment>
-    ))}
+    <div class="legal-body" lang={translated ? undefined : 'en'}>
+      {doc.sections.map((section) => (
+        <Fragment>
+          <h2>{fill(section.heading)}</h2>
+          {section.paragraphs?.map((paragraph) => <p>{fill(paragraph)}</p>)}
+          {section.items && <ul>{section.items.map((item) => <li>{fill(item)}</li>)}</ul>}
+        </Fragment>
+      ))}
+    </div>
     <p class="legal-meta">{t.legal.updatedLabel} {formatLongDate(LEGAL_UPDATED_ISO, locale)}</p>
   </div>
 </Base>

@@ -34,7 +34,7 @@ const de: UI = {
     corporate: {
       title: 'Firmenevents - SiSi & The Cork Wrocław',
       description:
-        'Eventlocation im Zentrum von Breslau: Konferenzen, Panels, Präsentationen, Dinner, Launches und Networking. 663 m², bis zu 150 Sitzplätze im The Cork, 2 Bildschirme.',
+        'Eventlocation im Zentrum von Breslau: Konferenzen, Panels, Präsentationen, Dinner, Launches und Networking. Bis zu 150 Sitzplätze im The Cork, 2 Bildschirme.',
       ogDescription: 'Konferenzen, Präsentationen, Dinner und abendliche Firmenevents im Zentrum von Breslau. SiSi & The Cork.',
     },
     contact: {
@@ -183,7 +183,7 @@ const de: UI = {
     title: 'Tisch reservieren',
     body: 'Die Online-Buchung dauert nur einen Moment, und der volle Reservierungsbetrag wird am Tisch angerechnet. Freitags ist der Eintritt mit Reservierung frei.',
     reassure: 'Wir bestätigen deine Reservierung und senden dir die Details, sobald sie angenommen ist',
-    terms: 'Einlass ab 21 Jahren. Eine Tischreservierung kostet 50 zł pro Person, am Tisch anrechenbar; samstags gilt ein zusätzlicher Eintritt von 30 zł pro Person.',
+    terms: 'Eine Tischreservierung kostet 50 zł pro Person, am Tisch anrechenbar; samstags gilt ein zusätzlicher Eintritt von 30 zł pro Person.',
     info: {
       hours: 'Zeiten',
       address: 'Adresse',
@@ -283,9 +283,9 @@ const de: UI = {
       'Bei der Reservierung kannst du Menüpunkte vorauswählen, die bei Ankunft für deine Gäste bereitstehen.',
       'Außerdem sind spezielle Pakete zu Aktionspreisen verfügbar.',
       'Bitte warte nach der Reservierung auf die Bestätigung und die Zusendung der detaillierten Bedingungen.',
-      'Die Reservierung wird durch eine Vorauszahlung innerhalb von 120 Minuten nach Erhalt der Angaben bestätigt. Ohne Zahlung in dieser Zeit wird die Reservierung automatisch storniert.',
+      'Die Reservierung wird durch eine Vorauszahlung bestätigt.',
       'Reservierungen sind zwischen 22:00 und 23:30 Uhr einzulösen. Bei mehr als 30 Minuten Verspätung kann der Tisch an andere Gäste vergeben werden.',
-      'Einlass nur für Gäste über 21 Jahre mit gültigem Ausweis.',
+      'Einlass nur für Gäste mit gültigem Ausweis.',
       'Es gelten eine Türauswahl und ein Smart-Casual-Dresscode. Das Team behält sich vor, den Einlass ohne Angabe von Gründen zu verweigern, auch bei Gästen mit Reservierung (der gezahlte Betrag wird dann erstattet).',
     ],
     note: 'Bei Sonderveranstaltungen können sich die Preise ändern. Die genauen Bedingungen werden bei jeder Reservierung bestätigt.',
@@ -329,7 +329,6 @@ const de: UI = {
     facts: {
       heading: 'Der Raum in Zahlen',
       items: [
-        { value: '663 m²', label: 'Eventfläche' },
         { value: 'bis zu 150', label: 'Sitzplätze im The Cork' },
         { value: '2 Bildschirme', label: 'für Präsentationen' },
         { value: 'Zentrum', label: 'von Breslau' },
@@ -382,7 +381,7 @@ const de: UI = {
       },
       combined: {
         title: 'Der gesamte R32-Komplex',
-        body: 'Gehe nahtlos vom offiziellen Teil oder Dinner ins Abendprogramm über - alles an einem Ort, auf insgesamt 663 m² Fläche.',
+        body: 'Gehe nahtlos vom offiziellen Teil oder Dinner ins Abendprogramm über - alles an einem Ort.',
       },
     },
     why: {

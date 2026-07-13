@@ -33,7 +33,7 @@ const cs: UI = {
     corporate: {
       title: 'Firemní akce - SiSi & The Cork Wrocław',
       description:
-        'Prostor pro firemní akce v centru Vratislavi: konference, panely, prezentace, večeře, uvedení produktů a networking. 663 m², až 150 míst k sezení v The Cork, 2 obrazovky.',
+        'Prostor pro firemní akce v centru Vratislavi: konference, panely, prezentace, večeře, uvedení produktů a networking. Až 150 míst k sezení v The Cork, 2 obrazovky.',
       ogDescription: 'Konference, prezentace, večeře a večerní firemní akce v centru Vratislavi. SiSi & The Cork.',
     },
     contact: {
@@ -182,7 +182,7 @@ const cs: UI = {
     title: 'Rezervovat stůl',
     body: 'Online rezervace zabere chvíli a celá částka rezervace je k útratě u stolu. V pátek je vstup s rezervací zdarma.',
     reassure: 'Potvrzení a podrobnosti posíláme po schválení rezervace',
-    terms: 'Vstup od 21 let. Rezervace stolu je 50 zł za osobu k útratě u stolu; v sobotu se účtuje vstupné navíc 30 zł za osobu.',
+    terms: 'Rezervace stolu je 50 zł za osobu k útratě u stolu; v sobotu se účtuje vstupné navíc 30 zł za osobu.',
     info: {
       hours: 'Otevírací doba',
       address: 'Adresa',
@@ -282,9 +282,9 @@ const cs: UI = {
       'Při rezervaci si můžete předvybrat položky z menu, které budou na hosty čekat po příchodu.',
       'K dispozici jsou také speciální balíčky za zvýhodněné ceny.',
       'Po rezervaci prosím vyčkejte na potvrzení a zaslání podrobných podmínek.',
-      'Rezervace se potvrzuje platbou předem do 120 minut od obdržení údajů. Bez platby v této lhůtě se rezervace automaticky ruší.',
+      'Rezervace se potvrzuje platbou předem.',
       'Rezervaci je třeba vyzvednout mezi 22:00 a 23:30. Při zpoždění delším než 30 minut může být stůl přenechán jiným hostům.',
-      'Vstup je vyhrazen hostům starším 21 let s platným dokladem totožnosti.',
+      'Vstup je vyhrazen hostům s platným dokladem totožnosti.',
       'Platí výběr u vstupu a dress code smart casual. Obsluha si vyhrazuje právo odepřít vstup bez udání důvodu, i hostům s rezervací (zaplacená částka se v takovém případě vrací).',
     ],
     note: 'Ceny se mohou během speciálních akcí měnit. Podrobné podmínky jsou potvrzovány při každé rezervaci.',
@@ -328,7 +328,6 @@ const cs: UI = {
     facts: {
       heading: 'Prostor v číslech',
       items: [
-        { value: '663 m²', label: 'prostoru pro akce' },
         { value: 'až 150', label: 'míst k sezení v The Cork' },
         { value: '2 obrazovky', label: 'pro prezentace' },
         { value: 'centrum', label: 'Vratislavi' },
@@ -381,7 +380,7 @@ const cs: UI = {
       },
       combined: {
         title: 'Celý komplex R32',
-        body: 'Plynule přejděte z formální části nebo večeře do večerního programu - vše na jednom místě, na celkem 663 m² prostoru.',
+        body: 'Plynule přejděte z formální části nebo večeře do večerního programu - vše na jednom místě.',
       },
     },
     why: {

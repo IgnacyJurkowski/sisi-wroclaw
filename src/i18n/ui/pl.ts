@@ -35,7 +35,7 @@ const pl = {
     corporate: {
       title: 'Eventy firmowe - SiSi & The Cork Wrocław',
       description:
-        'Przestrzeń na eventy firmowe w centrum Wrocławia: konferencje, panele, prezentacje, kolacje, premiery i networking. 663 m², do 150 miejsc siedzących w The Cork, 2 ekrany.',
+        'Przestrzeń na eventy firmowe w centrum Wrocławia: konferencje, panele, prezentacje, kolacje, premiery i networking. Do 150 miejsc siedzących w The Cork, 2 ekrany.',
       ogDescription: 'Konferencje, prezentacje, kolacje i wieczorne eventy firmowe w centrum Wrocławia. SiSi & The Cork.',
     },
     contact: {
@@ -185,7 +185,7 @@ const pl = {
     title: 'Zarezerwuj stolik',
     body: 'Rezerwacja online zajmuje chwilę, a cała kwota rezerwacji jest do wykorzystania przy stoliku. W piątki wstęp z rezerwacją jest bezpłatny.',
     reassure: 'Potwierdzenie i szczegóły wysyłamy po akceptacji rezerwacji',
-    terms: 'Klub 21+. Rezerwacja stolika to 50 zł od osoby do wykorzystania przy stoliku; w soboty obowiązuje dodatkowy wstęp 30 zł od osoby.',
+    terms: 'Rezerwacja stolika to 50 zł od osoby do wykorzystania przy stoliku; w soboty obowiązuje dodatkowy wstęp 30 zł od osoby.',
     info: {
       hours: 'Godziny',
       address: 'Adres',
@@ -285,9 +285,9 @@ const pl = {
       'Podczas rezerwacji można wybrać pozycje z menu, które będą czekały na gości na start.',
       'Dostępne są również specjalne pakiety w promocyjnych cenach.',
       'Po dokonaniu rezerwacji prosimy o oczekiwanie na jej akceptację i przesłanie szczegółowych warunków.',
-      'Warunkiem potwierdzenia rezerwacji jest przedpłata w ciągu 120 minut od otrzymania informacji. Brak płatności w tym czasie oznacza automatyczne anulowanie rezerwacji.',
+      'Warunkiem potwierdzenia rezerwacji jest przedpłata.',
       'Rezerwację należy odebrać w godzinach 22:00-23:30. W przypadku spóźnienia powyżej 30 minut stolik może zostać przekazany innym gościom.',
-      'Wstęp do lokalu mają wyłącznie osoby powyżej 21. roku życia, posiadające ważny dokument tożsamości.',
+      'Wstęp do lokalu mają osoby posiadające ważny dokument tożsamości.',
       'W lokalu obowiązuje selekcja oraz dress code w stylu smart casual. Obsługa zastrzega sobie prawo odmowy wstępu bez podania przyczyny, również osobom z rezerwacją (wpłacona kwota zostaje wówczas zwrócona).',
     ],
     note: 'Ceny mogą ulec zmianie podczas imprez specjalnych. Szczegółowe warunki są każdorazowo potwierdzane podczas rezerwacji.',
@@ -336,7 +336,6 @@ const pl = {
     facts: {
       heading: 'Przestrzeń w liczbach',
       items: [
-        { value: '663 m²', label: 'przestrzeni eventowej' },
         { value: 'do 150', label: 'miejsc siedzących w The Cork' },
         { value: '2 ekrany', label: 'do prezentacji' },
         { value: 'centrum', label: 'Wrocławia' },
@@ -389,7 +388,7 @@ const pl = {
       },
       combined: {
         title: 'Cały kompleks R32',
-        body: 'Przejdź płynnie od części formalnej lub kolacji do wieczornego programu - w jednym miejscu, na łącznie 663 m² przestrzeni.',
+        body: 'Przejdź płynnie od części formalnej lub kolacji do wieczornego programu - w jednym miejscu.',
       },
     },
     why: {

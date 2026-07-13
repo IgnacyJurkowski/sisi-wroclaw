@@ -116,11 +116,6 @@ const robotsContent = robotsDirective({
     <meta name="twitter:title" content={ogTitle ?? title} />
     <meta name="twitter:description" content={ogDescription ?? description} />
     <meta name="twitter:image" content={ogImageUrl} />
-    <!-- Legacy geo hints; the NightClub JSON-LD below is the primary signal. -->
-    <meta name="geo.region" content="PL-DS" />
-    <meta name="geo.placename" content="Wrocław" />
-    <meta name="geo.position" content="51.1106;17.0286" />
-    <meta name="ICBM" content="51.1106, 17.0286" />
     {jsonLd.map((value) => (
       <script type="application/ld+json" set:html={jsonForHtml(value)} />
     ))}

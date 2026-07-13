@@ -33,7 +33,7 @@ const it: UI = {
     corporate: {
       title: 'Eventi aziendali - SiSi & The Cork Wrocław',
       description:
-        'Una location per eventi aziendali nel centro di Breslavia: conferenze, panel, presentazioni, cene, lanci e networking. 663 m², fino a 150 posti a sedere al The Cork, 2 schermi.',
+        'Una location per eventi aziendali nel centro di Breslavia: conferenze, panel, presentazioni, cene, lanci e networking. Fino a 150 posti a sedere al The Cork, 2 schermi.',
       ogDescription: 'Conferenze, presentazioni, cene ed eventi aziendali serali nel centro di Breslavia. SiSi & The Cork.',
     },
     contact: {
@@ -182,7 +182,7 @@ const it: UI = {
     title: 'Prenota un tavolo',
     body: 'Prenotare online richiede un attimo e l\'intero importo della prenotazione è accreditato al tavolo. Il venerdì, con la prenotazione, l\'ingresso è gratuito.',
     reassure: 'Confermiamo la prenotazione e inviamo i dettagli dopo l\'accettazione',
-    terms: 'Solo over 21. La prenotazione di un tavolo è di 50 zł a persona, utilizzabili al tavolo; il sabato si applica un ingresso aggiuntivo di 30 zł a persona.',
+    terms: 'La prenotazione di un tavolo è di 50 zł a persona, utilizzabili al tavolo; il sabato si applica un ingresso aggiuntivo di 30 zł a persona.',
     info: {
       hours: 'Orari',
       address: 'Indirizzo',
@@ -282,9 +282,9 @@ const it: UI = {
       'Al momento della prenotazione puoi pre-selezionare piatti del menu che attenderanno gli ospiti all\'arrivo.',
       'Sono disponibili anche pacchetti speciali a prezzi promozionali.',
       'Dopo la prenotazione, attendi la conferma e l\'invio delle condizioni dettagliate.',
-      'La prenotazione si conferma con un pagamento anticipato entro 120 minuti dalla ricezione dei dettagli. In mancanza di pagamento entro tale termine, la prenotazione viene annullata automaticamente.',
+      'La prenotazione si conferma con un pagamento anticipato.',
       'La prenotazione va ritirata tra le 22:00 e le 23:30. In caso di ritardo superiore a 30 minuti, il tavolo può essere assegnato ad altri ospiti.',
-      'L\'ingresso è riservato agli ospiti maggiori di 21 anni con documento valido.',
+      'L\'ingresso è riservato agli ospiti con documento valido.',
       'Si applicano una selezione all\'ingresso e un dress code smart casual. Il personale si riserva di rifiutare l\'ingresso senza fornire motivazioni, anche agli ospiti con prenotazione (in tal caso l\'importo versato viene rimborsato).',
     ],
     note: 'I prezzi possono variare durante gli eventi speciali. Le condizioni dettagliate vengono confermate a ogni prenotazione.',
@@ -328,7 +328,6 @@ const it: UI = {
     facts: {
       heading: 'Lo spazio in numeri',
       items: [
-        { value: '663 m²', label: 'di spazio eventi' },
         { value: 'fino a 150', label: 'posti a sedere al The Cork' },
         { value: '2 schermi', label: 'per presentazioni' },
         { value: 'centro', label: 'di Breslavia' },
@@ -381,7 +380,7 @@ const it: UI = {
       },
       combined: {
         title: 'L\'intero complesso R32',
-        body: 'Passa senza interruzioni dalla parte formale o dalla cena al programma serale - tutto in un solo luogo, su 663 m² di spazio.',
+        body: 'Passa senza interruzioni dalla parte formale o dalla cena al programma serale - tutto in un solo luogo.',
       },
     },
     why: {

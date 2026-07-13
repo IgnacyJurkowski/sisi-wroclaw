@@ -7,6 +7,7 @@ import { type Locale } from '../i18n/config';
 import { localizedPath, eventPath } from '../i18n/routes';
 import { useTranslations } from '../i18n/t';
 import { GENERATED_EVENTS } from './events.generated';
+import { eventOffer } from '../lib/event-offer.mjs';
 
 export const RESERVATION_URL =
   'https://emenago.com/inner/cart/6619/0519b014958d73fb0d5d2d58c360a661/pl';
@@ -102,15 +103,12 @@ export const LEGAL_UPDATED_ISO = '2026-06-24';
 /* Verified B2B / corporate-event facts (source-of-truth). Do NOT imply SiSi
    itself seats 150 - that figure is The Cork's seated capacity. */
 export const VENUE_FACTS = {
-  // TODO(ignacy): confirm 663 m2 is usable event space, not the total R32 complex
-  // area, before the "event space" copy stands.
-  areaSqm: 663,
   theCorkSeated: 150,
   presentationScreens: 2,
 };
 
 /* === STRUCTURED DATA (JSON-LD) === Locale-aware: url + description differ per
-   language; the venue @id is stable across locales. Keep address/geo correct. */
+   language; the venue @id is stable across locales. Keep the address correct. */
 export const BUSINESS = {
   name: 'SiSi Wrocław',
   url: 'https://sisiwroclaw.pl',
@@ -119,12 +117,8 @@ export const BUSINESS = {
   streetAddress: 'Rzeźnicza 32-33',
   locality: 'Wrocław',
   region: 'Dolnośląskie',
-  // Address + postal code confirmed against the KRS registration.
-  // TODO(verify): coordinates are best-effort for the Old Town address.
   postalCode: '50-130',
   country: 'PL',
-  latitude: 51.1106,
-  longitude: 17.0286,
   priceRange: '$$',
 };
 
@@ -160,7 +154,6 @@ export function nightClubSchema(locale: Locale = 'pl') {
     priceRange: BUSINESS.priceRange,
     currenciesAccepted: 'PLN',
     address: addressLd(),
-    geo: { '@type': 'GeoCoordinates', latitude: BUSINESS.latitude, longitude: BUSINESS.longitude },
     hasMap: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
       `${BUSINESS.streetAddress}, ${BUSINESS.locality}`,
     )}`,
@@ -214,8 +207,9 @@ export function eventSchema(list: EventItem[], locale: Locale = 'pl') {
       url: absolute(eventPath(e.slug, locale)),
       location: { '@type': 'Place', name: BUSINESS.name, address: addressLd() },
       organizer: { '@type': 'Organization', name: BUSINESS.name, url: BUSINESS.url },
-      offers: { '@type': 'Offer', url: RESERVATION_URL, availability: 'https://schema.org/InStock' },
     };
+    const offer = eventOffer(e.price);
+    if (offer) ev.offers = offer;
     if (e.note) ev.performer = { '@type': 'PerformingGroup', name: e.note };
     return ev;
   });

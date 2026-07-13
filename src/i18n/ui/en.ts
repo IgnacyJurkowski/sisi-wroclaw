@@ -33,7 +33,7 @@ const en: UI = {
     corporate: {
       title: 'Corporate Events - SiSi & The Cork Wrocław',
       description:
-        'A corporate-event venue in central Wrocław: conferences, panels, presentations, dinners, launches and networking. 663 m², up to 150 seated guests at The Cork, 2 screens.',
+        'A corporate-event venue in central Wrocław: conferences, panels, presentations, dinners, launches and networking. Up to 150 seated guests at The Cork, 2 screens.',
       ogDescription: 'Conferences, presentations, dinners and evening corporate events in central Wrocław. SiSi & The Cork.',
     },
     contact: {
@@ -182,7 +182,7 @@ const en: UI = {
     title: 'Book a table',
     body: 'Booking online takes a moment, and the full reservation amount is credited at your table. On Fridays entry is free with a reservation.',
     reassure: 'We confirm your booking and send the details once it is accepted',
-    terms: 'Over-21s only. A table reservation is 50 zł per person, credited at your table; on Saturdays a 30 zł per-person entry applies.',
+    terms: 'A table reservation is 50 zł per person, credited at your table; on Saturdays a 30 zł per-person entry applies.',
     info: {
       hours: 'Hours',
       address: 'Address',
@@ -282,9 +282,9 @@ const en: UI = {
       'When booking, you can pre-select menu items to be ready for your guests on arrival.',
       'Special packages at promotional prices are also available.',
       'After booking, please wait for confirmation and the detailed terms to be sent to you.',
-      'A reservation is confirmed by prepayment within 120 minutes of receiving the details. Without payment in that time, the reservation is cancelled automatically.',
+      'A reservation is confirmed by prepayment.',
       'Reservations must be claimed between 22:00 and 23:30. If you are more than 30 minutes late, the table may be released to other guests.',
-      'Entry is restricted to guests over 21 years of age with valid ID.',
+      'Entry is restricted to guests with valid ID.',
       'A door selection policy and a smart-casual dress code apply. Staff reserve the right to refuse entry without giving a reason, including to guests with a reservation (the amount paid is then refunded).',
     ],
     note: 'Prices may change during special events. The detailed terms are confirmed each time you book.',
@@ -328,7 +328,6 @@ const en: UI = {
     facts: {
       heading: 'The space in numbers',
       items: [
-        { value: '663 m²', label: 'of event space' },
         { value: 'up to 150', label: 'seated guests at The Cork' },
         { value: '2 screens', label: 'for presentations' },
         { value: 'central', label: 'Wrocław location' },
@@ -381,7 +380,7 @@ const en: UI = {
       },
       combined: {
         title: 'The whole R32 destination',
-        body: 'Move seamlessly from the formal part or dinner into the evening programme - all in one place, across 663 m² of space.',
+        body: 'Move seamlessly from the formal part or dinner into the evening programme - all in one place.',
       },
     },
     why: {
