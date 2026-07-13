@@ -54,8 +54,8 @@ const en: UI = {
     },
     cookies: {
       title: 'Cookie Policy - SiSi Wrocław',
-      description: 'SiSi Wrocław cookie policy - which cookies and local storage we use and how to manage your choice.',
-      ogDescription: 'Which cookies SiSi Wrocław uses and how to manage them.',
+      description: 'SiSi Wrocław cookie policy - essential storage used for notice dismissal and form and navigation state.',
+      ogDescription: 'How SiSi Wrocław uses essential storage for the notice, forms and navigation.',
     },
     notFound: {
       title: '404 - Page not found | SiSi Wrocław',
@@ -99,12 +99,11 @@ const en: UI = {
   },
 
   cookie: {
-    text: 'We use cookies and similar technologies essential to running this site. Details are in our {cookies} and {privacy}.',
+    text: 'This site stores only the dismissal of this notice and essential form and navigation state. Details are in our {cookies} and {privacy}.',
     cookiesLink: 'Cookie Policy',
     privacyLink: 'Privacy Policy',
-    accept: 'Accept',
-    reject: 'Essential only',
-    dialogLabel: 'Cookie consent',
+    dismiss: 'Got it',
+    dialogLabel: 'Essential storage notice',
   },
 
   buttons: {

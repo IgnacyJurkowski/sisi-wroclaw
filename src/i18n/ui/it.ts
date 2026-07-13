@@ -54,8 +54,8 @@ const it: UI = {
     },
     cookies: {
       title: 'Cookie - SiSi Wrocław',
-      description: 'Cookie policy del SiSi Wrocław - quali cookie e archiviazione locale usiamo e come gestire il consenso.',
-      ogDescription: 'Quali cookie usa il SiSi Wrocław e come gestirli.',
+      description: 'Cookie policy del SiSi Wrocław - archiviazione essenziale per chiudere l’avviso e per lo stato di moduli e navigazione.',
+      ogDescription: 'Come il SiSi Wrocław usa l’archiviazione essenziale per l’avviso, i moduli e la navigazione.',
     },
     notFound: {
       title: '404 - Pagina non trovata | SiSi Wrocław',
@@ -99,12 +99,11 @@ const it: UI = {
   },
 
   cookie: {
-    text: 'Usiamo cookie e tecnologie simili necessari al funzionamento del sito. I dettagli sono nella nostra {cookies} e nella {privacy}.',
+    text: 'Questo sito memorizza solo la chiusura di questo avviso e lo stato essenziale dei moduli e della navigazione. I dettagli sono nella nostra {cookies} e nella {privacy}.',
     cookiesLink: 'Cookie policy',
     privacyLink: 'Informativa sulla privacy',
-    accept: 'Accetto',
-    reject: 'Solo necessari',
-    dialogLabel: 'Consenso ai cookie',
+    dismiss: 'Ho capito',
+    dialogLabel: 'Avviso sull’archiviazione essenziale',
   },
 
   buttons: {

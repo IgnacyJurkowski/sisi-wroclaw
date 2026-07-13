@@ -104,7 +104,7 @@ const pl_privacy: LegalDoc = {
         'Rozliczenia i obowiązki podatkowe - w zakresie wymaganym przepisami. Podstawa: art. 6 ust. 1 lit. c RODO.',
         'Dochodzenie lub obrona roszczeń. Podstawa: art. 6 ust. 1 lit. f RODO.',
         'Monitoring wizyjny (CCTV) na terenie lokalu - w celu zapewnienia bezpieczeństwa osób i mienia. Podstawa: art. 6 ust. 1 lit. f RODO.',
-        'Pliki cookies i pamięć lokalna - zob. Polityka cookies. Cookies niezbędne: art. 6 ust. 1 lit. f RODO; cookies opcjonalne (jeśli wystąpią): art. 6 ust. 1 lit. a RODO.',
+        'Pamięć przeglądarki - zob. Polityka cookies. Strona przechowuje wyłącznie informację o zamknięciu komunikatu oraz niezbędny stan formularzy i nawigacji.',
       ],
     },
     {
@@ -168,31 +168,31 @@ const pl_privacy: LegalDoc = {
 const pl_cookies: LegalDoc = {
   sections: [
     {
-      heading: '1. Czym są pliki cookies',
+      heading: '1. Pamięć przeglądarki',
       paragraphs: [
-        'Pliki cookies to niewielkie pliki tekstowe zapisywane w urządzeniu użytkownika podczas korzystania ze strony. Podobnie działa pamięć lokalna przeglądarki (localStorage / sessionStorage). Wykorzystujemy te technologie, aby strona działała poprawnie.',
+        'Strona korzysta z pamięci lokalnej przeglądarki (localStorage) wyłącznie po to, aby zapamiętać zamknięcie komunikatu o niezbędnej pamięci. Stan niezbędny do obsługi formularzy i nawigacji jest używany podczas interakcji z tymi elementami.',
       ],
     },
     {
-      heading: '2. Z jakich technologii korzystamy',
+      heading: '2. Jakie dane przechowujemy',
       paragraphs: ['Obecnie strona wykorzystuje wyłącznie pamięć niezbędną do działania:'],
       items: [
-        'sisi-cookie-consent (localStorage) - zapamiętuje Twój wybór dotyczący zgody na cookies.',
-        'Niezbędne pliki techniczne dostawcy hostingu, służące prawidłowemu dostarczeniu strony.',
+        'sisi-cookie-notice (localStorage) - przechowuje wyłącznie wartość "dismissed", aby nie wyświetlać ponownie zamkniętego komunikatu.',
+        'Niezbędny stan formularzy i nawigacji - przechowywany tylko na potrzeby bieżącej interakcji ze stroną.',
       ],
     },
     {
-      heading: '3. Podstawa prawna',
+      heading: '3. Cel użycia',
       paragraphs: [
-        'Pliki niezbędne wykorzystujemy na podstawie uzasadnionego interesu (art. 6 ust. 1 lit. f RODO) - zapewnienie prawidłowego działania strony. Ewentualne pliki opcjonalne będą stosowane wyłącznie na podstawie zgody (art. 6 ust. 1 lit. a RODO).',
+        'Pamięć opisana powyżej służy wyłącznie obsłudze komunikatu oraz działania formularzy i nawigacji.',
       ],
     },
     {
-      heading: '4. Zarządzanie zgodą i cookies',
+      heading: '4. Zarządzanie pamięcią',
       items: [
-        'Wyboru dokonujesz w banerze wyświetlanym przy pierwszej wizycie.',
-        'Aby ponownie wyświetlić baner lub zmienić wybór, usuń dane strony w ustawieniach przeglądarki.',
-        'Ustawienia cookies można w każdej chwili zmienić w przeglądarce. Ograniczenie plików niezbędnych może wpłynąć na działanie strony.',
+        'Komunikat wyświetla się przy pierwszej wizycie; jego zamknięcie zapisuje wartość "dismissed".',
+        'Aby ponownie wyświetlić komunikat, usuń dane strony w ustawieniach przeglądarki.',
+        'Pamięcią strony można zarządzać w ustawieniach przeglądarki. Ograniczenie pamięci niezbędnej może wpłynąć na działanie strony.',
       ],
     },
     {
@@ -288,7 +288,7 @@ const en_privacy: LegalDoc = {
         'Accounting and tax obligations - to the extent required by law. Basis: Art. 6(1)(c) GDPR.',
         'Establishing or defending claims. Basis: Art. 6(1)(f) GDPR.',
         'Video monitoring (CCTV) on the premises - to ensure the safety of people and property. Basis: Art. 6(1)(f) GDPR.',
-        'Cookies and local storage - see the Cookie Policy. Essential cookies: Art. 6(1)(f) GDPR; optional cookies (if any): Art. 6(1)(a) GDPR.',
+        'Browser storage - see the Cookie Policy. The site stores only notice dismissal and essential form and navigation state.',
       ],
     },
     {
@@ -352,31 +352,31 @@ const en_privacy: LegalDoc = {
 const en_cookies: LegalDoc = {
   sections: [
     {
-      heading: '1. What cookies are',
+      heading: '1. Browser storage',
       paragraphs: [
-        'Cookies are small text files saved on your device when you use the site. Browser local storage (localStorage / sessionStorage) works similarly. We use these technologies so the site works correctly.',
+        'The site uses browser local storage (localStorage) only to remember that the essential-storage notice was dismissed. State essential to forms and navigation is used while you interact with those controls.',
       ],
     },
     {
-      heading: '2. What technologies we use',
+      heading: '2. What we store',
       paragraphs: ['The site currently uses only storage essential to its operation:'],
       items: [
-        'sisi-cookie-consent (localStorage) - remembers your cookie choice.',
-        'Essential technical files from the hosting provider that deliver the site correctly.',
+        'sisi-cookie-notice (localStorage) - stores only the value "dismissed" so the notice stays hidden after you close it.',
+        'Essential form and navigation state - stored only for the current interaction with the site.',
       ],
     },
     {
-      heading: '3. Legal basis',
+      heading: '3. Purpose',
       paragraphs: [
-        'We use essential storage on the basis of legitimate interest (Art. 6(1)(f) GDPR) - ensuring the site works correctly. Any optional files would be used only with consent (Art. 6(1)(a) GDPR).',
+        'The storage described above is used only for the notice and for form and navigation behavior.',
       ],
     },
     {
-      heading: '4. Managing consent and cookies',
+      heading: '4. Managing storage',
       items: [
-        'You make your choice in the banner shown on your first visit.',
-        'To see the banner again or change your choice, clear the site data in your browser settings.',
-        'You can change cookie settings in your browser at any time. Restricting essential files may affect how the site works.',
+        'The notice appears on your first visit; dismissing it stores the value "dismissed".',
+        'To see the notice again, clear the site data in your browser settings.',
+        'You can manage site storage in your browser settings. Restricting essential storage may affect how the site works.',
       ],
     },
     {

@@ -13,6 +13,13 @@ const t = useTranslations(locale);
 const f = t.b2b.form;
 const cta = t.b2b.finalCta;
 const privacyHref = localizedPath('privacy', locale);
+const formMessages = JSON.stringify({
+  required: f.errors.required,
+  email: f.errors.email,
+  consent: f.errors.consent,
+  sending: f.sending,
+  submit: f.submit,
+});
 
 // Consent label embeds a {privacy} link -> 2 plain-text segments.
 const consentParts = f.consent.split('{privacy}');
@@ -33,6 +40,7 @@ const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
       method="POST"
       data-netlify="true"
       netlify-honeypot="bot-field"
+      data-messages={formMessages}
       data-b2b-form
       novalidate
       data-reveal
@@ -187,18 +195,21 @@ const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
   </div>
 </section>
 
-<script is:inline define:vars={{ messages: { required: f.errors.required, email: f.errors.email, consent: f.errors.consent, sending: f.sending, submit: f.submit } }}>
+<script>
+  import { campaignAttribution } from '../../lib/attribution.mjs';
+
   (function () {
     const form = document.querySelector('[data-b2b-form]');
     if (!form) return;
+    const messages = JSON.parse(form.getAttribute('data-messages') || '{}');
 
-    // Fill non-PII context fields (page + UTM) from the URL. We never read or
-    // send the message/contact data anywhere except the form backend.
+    // Fill non-PII context fields from the URL. Attribution is restricted to
+    // bounded campaign values; unrelated query data is never submitted.
     try {
       const pageEl = form.querySelector('[data-field-page]');
       const utmEl = form.querySelector('[data-field-utm]');
       if (pageEl) pageEl.value = location.pathname;
-      if (utmEl) utmEl.value = location.search.replace(/^\?/, '');
+      if (utmEl) utmEl.value = campaignAttribution(location.search);
     } catch (_) {}
 
     const errBox = form.querySelector('[data-form-errors]');

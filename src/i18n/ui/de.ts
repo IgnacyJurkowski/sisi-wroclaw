@@ -55,8 +55,8 @@ const de: UI = {
     },
     cookies: {
       title: 'Cookie-Richtlinie - SiSi Wrocław',
-      description: 'Cookie-Richtlinie des SiSi Wrocław - welche Cookies und welcher lokale Speicher genutzt werden und wie du deine Einwilligung verwaltest.',
-      ogDescription: 'Welche Cookies das SiSi Wrocław nutzt und wie du sie verwaltest.',
+      description: 'Cookie-Richtlinie des SiSi Wrocław - notwendiger Speicher für das Schließen des Hinweises sowie für Formulare und Navigation.',
+      ogDescription: 'Wie das SiSi Wrocław notwendigen Speicher für den Hinweis, Formulare und Navigation nutzt.',
     },
     notFound: {
       title: '404 - Seite nicht gefunden | SiSi Wrocław',
@@ -100,12 +100,11 @@ const de: UI = {
   },
 
   cookie: {
-    text: 'Wir verwenden Cookies und ähnliche Technologien, die für den Betrieb der Website notwendig sind. Details findest du in unserer {cookies} und {privacy}.',
+    text: 'Diese Website speichert nur das Schließen dieses Hinweises sowie den notwendigen Formular- und Navigationsstatus. Details findest du in unserer {cookies} und {privacy}.',
     cookiesLink: 'Cookie-Richtlinie',
     privacyLink: 'Datenschutzerklärung',
-    accept: 'Akzeptieren',
-    reject: 'Nur notwendige',
-    dialogLabel: 'Cookie-Einwilligung',
+    dismiss: 'Verstanden',
+    dialogLabel: 'Hinweis zu notwendigem Speicher',
   },
 
   buttons: {

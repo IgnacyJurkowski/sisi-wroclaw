@@ -27,6 +27,14 @@ const emptyEventCopy = {
   it: 'Presto annunceremo nuovi eventi - seguici su Instagram.',
   cs: 'Brzy ohlásíme další akce - sledujte nás na Instagramu.',
 };
+const noticeCopy = {
+  pl: 'Ta strona przechowuje wyłącznie informację o zamknięciu tego komunikatu oraz niezbędny stan formularzy i nawigacji.',
+  en: 'This site stores only the dismissal of this notice and essential form and navigation state.',
+  de: 'Diese Website speichert nur das Schließen dieses Hinweises sowie den notwendigen Formular- und Navigationsstatus.',
+  it: 'Questo sito memorizza solo la chiusura di questo avviso e lo stato essenziale dei moduli e della navigazione.',
+  cs: 'Tento web ukládá pouze zavření tohoto oznámení a nezbytný stav formulářů a navigace.',
+};
+const noticeDismiss = { pl: 'Rozumiem', en: 'Got it', de: 'Verstanden', it: 'Ho capito', cs: 'Rozumím' };
 
 // --- i18n: every locale homepage + B2B route builds ---
 for (const l of LOCALES) assert(`home builds: /${l}/`, exists(`${l}/index.html`));
@@ -56,12 +64,36 @@ assert('FAQ rendered (FAQPage matches visible Q&A)', enB2B.includes('"@type":"FA
 assert('empty projects state shown', enB2B.includes('Write-ups of our first projects are in the works'));
 assert('no dev example client leaked', !enB2B.includes('example-conference') && !enB2B.includes('TODO: nazwa'));
 
-// --- form: required markers, hidden locale, honeypot, consent required ---
+// --- form: Netlify contract, submitted fields, fallback contacts ---
 assert('form required indicator (*)', enB2B.includes('class="req"'));
 assert('form hidden locale field', enB2B.includes('name="locale" value="en"'));
 assert('form honeypot', enB2B.includes('netlify-honeypot="bot-field"'));
 assert('form consent required', /name="consent"[^>]*required/.test(enB2B));
 assert('form netlify-enabled', enB2B.includes('data-netlify="true"'));
+assert('form name and POST method preserved', /<form[^>]*name="b2b-enquiry"[^>]*method="POST"/.test(enB2B));
+assert('form-name field preserved', enB2B.includes('name="form-name" value="b2b-enquiry"'));
+const enB2BForm = enB2B.match(/<form\b[^>]*data-b2b-form[^>]*>[\s\S]*?<\/form>/)?.[0] ?? '';
+const submittedFields = [
+  'form-name', 'locale', 'page', 'utm', 'bot-field', 'company', 'contact_person', 'email', 'phone',
+  'event_type', 'guests', 'preferred_date', 'date_flexible', 'space', 'duration', 'presentation', 'catering',
+  'technical', 'message', 'consent',
+];
+assert('all existing submitted fields preserved', submittedFields.every((name) => enB2BForm.includes(`name="${name}"`)));
+assert('localized form messages use a data attribute', /<form\b[^>]*data-messages="[^"]+"[^>]*data-b2b-form/.test(enB2B));
+assert('form fallback phone remains in HTML', enB2B.includes('href="tel:+48514032930"'));
+assert('form fallback email remains in HTML', enB2B.includes('href="mailto:events@r32.com.pl"'));
+
+// --- essential-storage notice: one truthful dismissal action per locale ---
+for (const locale of LOCALES) {
+  const home = read(`${locale}/index.html`);
+  assert(`${locale} notice describes only essential state`, home.includes(noticeCopy[locale]));
+  assert(
+    `${locale} notice has one localized dismissal button`,
+    (home.match(/<button\b[^>]*data-cookie-dismiss[^>]*>/g) || []).length === 1
+      && home.includes(`>${noticeDismiss[locale]}</button>`),
+  );
+  assert(`${locale} notice has no accept/reject choice pair`, !home.includes('data-cookie='));
+}
 
 // --- legal: en = convenience note; de/it/cs = English body + "shown in English" banner ---
 assert('en terms convenience note', read('en/terms/index.html').includes('provided for convenience'));
@@ -108,6 +140,17 @@ function walk(dir) {
 }
 const htmls = walk(DIST);
 const allHtml = htmls.map((file) => readFileSync(file, 'utf8')).join('\n');
+const scripts = walk(DIST).filter((file) => file.endsWith('.js'));
+const allScripts = scripts.map((file) => readFileSync(file, 'utf8')).join('\n');
+const allBuiltText = `${allHtml}\n${allScripts}`;
+assert(
+  'notice stores only the dismissed record',
+  allBuiltText.includes('sisi-cookie-notice')
+    && allBuiltText.includes('dismissed')
+    && !allBuiltText.includes('sisi-cookie-consent'),
+);
+assert('B2B attribution never assigns the whole query', !allBuiltText.includes('location.search.replace'));
+assert('B2B AJAX posts to the current path', allBuiltText.includes('fetch(location.pathname'));
 // Ignore encoded binary asset payloads when checking human-readable claims.
 // The inlined WOFF2 happens to contain `21+` in its base64 bytes.
 const searchableHtml = allHtml.replace(/data:[^;]+;base64,[A-Za-z0-9+/=]+/g, '');

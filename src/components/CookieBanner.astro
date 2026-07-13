@@ -1,9 +1,7 @@
 ---
-// Cookie / local-storage consent banner. The site uses only essential storage,
-// so there is nothing to block - but the banner records an explicit choice and
-// is the hook to gate any future analytics behind consent. Rendered hidden; an
-// inline script reveals it only when no choice is stored (no flash for returning
-// visitors). Position is fixed, so it never shifts layout (keeps CLS at 0).
+// Essential-storage notice. The only persistent site record remembers that the
+// visitor dismissed this notice. It renders hidden to avoid a flash for return
+// visits; fixed positioning prevents layout shifts when it is revealed.
 import { type Locale } from '../i18n/config';
 import { localizedPath } from '../i18n/routes';
 import { useTranslations } from '../i18n/t';
@@ -22,25 +20,20 @@ const privacyHref = localizedPath('privacy', locale);
      aria-label={t.cookie.dialogLabel} hidden>
   <p class="cookie-text">{parts[0]}<a href={cookiesHref}>{t.cookie.cookiesLink}</a>{parts[1]}<a href={privacyHref}>{t.cookie.privacyLink}</a>{parts[2]}</p>
   <div class="cookie-actions">
-    <button type="button" class="btn-outline cookie-btn" data-cookie="rejected">{t.cookie.reject}</button>
-    <button type="button" class="btn-cta cookie-btn" data-cookie="accepted">{t.cookie.accept}</button>
+    <button type="button" class="btn-cta cookie-btn" data-cookie-dismiss>{t.cookie.dismiss}</button>
   </div>
 </div>
 
-<script is:inline>
-  (function () {
-    try {
-      var KEY = 'sisi-cookie-consent';
-      if (localStorage.getItem(KEY)) return; // already decided
-      var el = document.getElementById('cookie-banner');
-      if (!el) return;
-      el.hidden = false;
-      el.addEventListener('click', function (e) {
-        var btn = e.target.closest('[data-cookie]');
-        if (!btn) return;
-        try { localStorage.setItem(KEY, btn.getAttribute('data-cookie')); } catch (_) {}
-        el.hidden = true;
+<script>
+  const KEY = 'sisi-cookie-notice';
+  if (!localStorage.getItem(KEY)) {
+    const banner = document.getElementById('cookie-banner');
+    if (banner) {
+      banner.hidden = false;
+      banner.querySelector('[data-cookie-dismiss]')?.addEventListener('click', () => {
+        try { localStorage.setItem(KEY, 'dismissed'); } catch {}
+        banner.hidden = true;
       });
-    } catch (_) {}
-  })();
+    }
+  }
 </script>

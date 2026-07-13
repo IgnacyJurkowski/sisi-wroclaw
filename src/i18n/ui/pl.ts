@@ -56,8 +56,8 @@ const pl = {
     },
     cookies: {
       title: 'Polityka cookies - SiSi Wrocław',
-      description: 'Polityka cookies klubu SiSi Wrocław - jakie pliki cookies i pamięć lokalną wykorzystujemy oraz jak zarządzać zgodą.',
-      ogDescription: 'Jakie cookies stosuje SiSi Wrocław i jak nimi zarządzać.',
+      description: 'Polityka cookies klubu SiSi Wrocław - pamięć niezbędna do zamknięcia komunikatu oraz obsługi formularzy i nawigacji.',
+      ogDescription: 'Jak SiSi Wrocław korzysta z pamięci niezbędnej do obsługi komunikatu, formularzy i nawigacji.',
     },
     notFound: {
       title: '404 - Nie znaleziono strony | SiSi Wrocław',
@@ -102,12 +102,11 @@ const pl = {
 
   cookie: {
     // {cookies} and {privacy} are replaced with links to the policy pages.
-    text: 'Używamy plików cookies i podobnych technologii niezbędnych do działania strony. Szczegóły znajdziesz w {cookies} oraz {privacy}.',
+    text: 'Ta strona przechowuje wyłącznie informację o zamknięciu tego komunikatu oraz niezbędny stan formularzy i nawigacji. Szczegóły znajdziesz w {cookies} oraz {privacy}.',
     cookiesLink: 'Polityce cookies',
     privacyLink: 'Polityce prywatności',
-    accept: 'Akceptuję',
-    reject: 'Tylko niezbędne',
-    dialogLabel: 'Zgoda na pliki cookies',
+    dismiss: 'Rozumiem',
+    dialogLabel: 'Informacja o niezbędnej pamięci',
   },
 
   buttons: {
