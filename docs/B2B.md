@@ -6,13 +6,14 @@ Route: `/pl/eventy-firmowe/` (and `/en/corporate-events/`, `/de/firmenevents/`,
 
 ## Verified facts (do not embellish)
 
-Defined in `src/data/site.ts` (`VENUE_FACTS`) and the `b2b.facts` dictionary:
+`src/data/site.ts` (`VENUE_FACTS`) is the source of truth for the supported
+capacity and equipment facts mirrored in each `b2b.facts` dictionary:
 
-- **663 m²** of event space.
 - **Up to 150 seated guests at The Cork** — always scope the 150 to The Cork;
   never imply SiSi itself seats 150.
 - **2 presentation screens.**
-- Central Wrocław location.
+
+The central Wrocław location is supported separately in the localized B2B copy.
 
 The page must not invent client names, logos, attendance, dates, testimonials,
 press, awards, equipment beyond the 2 screens, room capacities, catering

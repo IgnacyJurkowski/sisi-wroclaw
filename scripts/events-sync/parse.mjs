@@ -43,20 +43,36 @@ export function parseOpisy(text) {
     raw[found[i].key] = text.slice(found[i].valueStart, end).trim();
   }
 
+  const tax = parseTax(raw.tax);
+
   return {
     title: raw.title || '',
     dj: raw.dj || '',
     startTime: raw.startTime || '',
     description: raw.description || '',
     // Tax: entry price in zl. "0" -> 0 (free). Empty/absent -> undefined.
-    price: raw.tax != null && raw.tax !== '' ? toPrice(raw.tax) : undefined,
+    price: tax.price,
+    invalidPrice: tax.invalidPrice,
     genres: raw.genres ? raw.genres.split(',').map((s) => s.trim()).filter(Boolean) : [],
   };
 }
 
-function toPrice(s) {
-  const n = Number(String(s).replace(',', '.').replace(/[^\d.]/g, ''));
-  return Number.isFinite(n) ? n : undefined;
+function parseTax(value) {
+  const raw = value == null ? '' : String(value).trim();
+  if (!raw) return { price: undefined, invalidPrice: false };
+
+  const normalized = raw
+    .replace(/\s*(?:zł|zl|pln)\s*$/iu, '')
+    .trim()
+    .replace(',', '.');
+  if (!/^\d+(?:\.\d+)?$/.test(normalized)) {
+    return { price: undefined, invalidPrice: true };
+  }
+
+  const price = Number(normalized);
+  return Number.isFinite(price)
+    ? { price, invalidPrice: false }
+    : { price: undefined, invalidPrice: true };
 }
 
 /** "26-06-2026.png" -> "26-06-2026" (the pairing key); null if it isn't a dated name. */

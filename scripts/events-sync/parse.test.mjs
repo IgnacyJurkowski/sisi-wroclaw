@@ -7,6 +7,7 @@ import {
   dateKeyFromFilename,
   validateEvent,
 } from './parse.mjs';
+import { eventOffer } from '../../src/lib/event-offer.mjs';
 
 // The real example staff created in Opisy/26-06-2026, in the two layouts a
 // Google Doc text export can produce (label+value same line, or split lines).
@@ -29,6 +30,17 @@ Description:
 Krótki opis wydarzenia
 Music Genre:
 House, Pop, Funk`;
+
+function opisyWithTax(tax) {
+  return [
+    'Title: SiSi Friday',
+    'DJ: Marta',
+    ...(tax === undefined ? [] : [`Tax: ${tax}`]),
+    'Start: 22:00',
+    'Description: Autorski wieczór klubowy.',
+    'Music Genre: House',
+  ].join('\n');
+}
 
 test('parseOpisy - real example, label+value on one line', () => {
   const f = parseOpisy(SAME_LINE);
@@ -65,6 +77,62 @@ test('parseOpisy - missing optional fields are empty/undefined, not crashes', ()
   assert.equal(f.dj, '');
   assert.equal(f.price, undefined);
   assert.deepEqual(f.genres, []);
+});
+
+test('invalid Tax is rejected before an event offer can be created', () => {
+  const invalidTaxes = ['ABC', 'TBD', '-30', '+30', '30 USD', '30 zł TBD', '30,5.0'];
+  const actual = invalidTaxes.map((tax) => {
+    const fields = parseOpisy(opisyWithTax(tax));
+    return {
+      tax,
+      price: fields.price,
+      invalidPrice: fields.invalidPrice,
+      errors: validateEvent(fields, '17-07-2026'),
+      offer: eventOffer(fields.price),
+    };
+  });
+
+  assert.deepEqual(
+    actual,
+    invalidTaxes.map((tax) => ({
+      tax,
+      price: undefined,
+      invalidPrice: true,
+      errors: ['invalid Tax'],
+      offer: undefined,
+    })),
+  );
+});
+
+test('optional and nonnegative Polish Tax values retain their offer meaning', () => {
+  const actual = [
+    { label: 'absent', tax: undefined },
+    { label: 'blank', tax: '   ' },
+    { label: 'free', tax: '0' },
+    { label: 'comma-zloty', tax: ' 30,50 zł ' },
+    { label: 'dot-zl', tax: '30.50 ZL' },
+    { label: 'pln-case', tax: '30 pLn' },
+    { label: 'plain-decimal', tax: '30.5' },
+  ].map(({ label, tax }) => {
+    const fields = parseOpisy(opisyWithTax(tax));
+    return {
+      label,
+      price: fields.price,
+      invalidPrice: fields.invalidPrice,
+      errors: validateEvent(fields, '17-07-2026'),
+      offer: eventOffer(fields.price),
+    };
+  });
+
+  assert.deepEqual(actual, [
+    { label: 'absent', price: undefined, invalidPrice: false, errors: [], offer: undefined },
+    { label: 'blank', price: undefined, invalidPrice: false, errors: [], offer: undefined },
+    { label: 'free', price: 0, invalidPrice: false, errors: [], offer: { '@type': 'Offer', price: 0, priceCurrency: 'PLN' } },
+    { label: 'comma-zloty', price: 30.5, invalidPrice: false, errors: [], offer: { '@type': 'Offer', price: 30.5, priceCurrency: 'PLN' } },
+    { label: 'dot-zl', price: 30.5, invalidPrice: false, errors: [], offer: { '@type': 'Offer', price: 30.5, priceCurrency: 'PLN' } },
+    { label: 'pln-case', price: 30, invalidPrice: false, errors: [], offer: { '@type': 'Offer', price: 30, priceCurrency: 'PLN' } },
+    { label: 'plain-decimal', price: 30.5, invalidPrice: false, errors: [], offer: { '@type': 'Offer', price: 30.5, priceCurrency: 'PLN' } },
+  ]);
 });
 
 test('warsawIso - summer date is CEST (+02:00)', () => {

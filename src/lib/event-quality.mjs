@@ -7,6 +7,7 @@ export function validatePublicEvent(fields, dateKey) {
   if (!fields.title?.trim()) errors.push('missing Title');
   if (!/^\d{1,2}:\d{2}$/.test(fields.startTime || '')) errors.push('missing or invalid Start time');
   if (!/^\d{2}-\d{2}-\d{4}$/.test(dateKey || '')) errors.push('invalid date in filename');
+  if (fields.invalidPrice) errors.push('invalid Tax');
   const values = [fields.title, fields.dj, fields.description, ...(fields.genres || [])]
     .filter(Boolean)
     .map((value) => String(value));

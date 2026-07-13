@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { createServer } from 'vite';
 import { eventOffer } from '../src/lib/event-offer.mjs';
 
-const files = ['src/data/site.ts', 'src/i18n/legal.ts', 'src/i18n/ui/pl.ts', 'src/i18n/ui/en.ts', 'src/i18n/ui/de.ts', 'src/i18n/ui/it.ts', 'src/i18n/ui/cs.ts', 'src/layouts/Base.astro'];
+const files = ['src/data/site.ts', 'src/i18n/legal.ts', 'src/i18n/ui/pl.ts', 'src/i18n/ui/en.ts', 'src/i18n/ui/de.ts', 'src/i18n/ui/it.ts', 'src/i18n/ui/cs.ts', 'src/layouts/Base.astro', 'docs/B2B.md'];
 test('unverified launch claims are absent from source', async () => {
   const text = (await Promise.all(files.map((file) => readFile(file, 'utf8')))).join('\n');
   for (const pattern of [/663\s*m/i, /over[-\s]?21/i, /21\+/i, /powyżej 21/i, /(?:\bab|über) 21/i, /maggiori di 21/i, /(?:\bod|starším) 21/i, /120 minut/i, /120 minutes/i, /GeoCoordinates/, /geo\.position/, /\bInStock\b/]) {
