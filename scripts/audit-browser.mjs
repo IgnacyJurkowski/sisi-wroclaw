@@ -736,6 +736,23 @@ async function audit() {
 
           if (!REDIRECT_STATUSES.has(response.status())) {
             auditedRequestChains.set(request, fetchedChain);
+            const exposeMappedTerminalUrl =
+              request.method() === 'GET' &&
+              ASSET_RESOURCE_TYPES.has(request.resourceType()) &&
+              !request.isNavigationRequest() &&
+              response.status() >= 200 &&
+              response.status() < 300 &&
+              fetchedChain.length > 1 &&
+              mapped.href !== requestUrl.href;
+            if (exposeMappedTerminalUrl) {
+              await response.dispose();
+              await route.fulfill({
+                status: 302,
+                headers: { location: mapped.href, 'cache-control': 'no-store' },
+                body: '',
+              });
+              return;
+            }
             await route.fulfill({ response });
             return;
           }

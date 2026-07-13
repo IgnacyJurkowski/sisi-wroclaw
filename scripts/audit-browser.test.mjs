@@ -586,7 +586,7 @@ test('redirect containment: permits a canonical asset redirect only through the 
     assert.equal(exitCode, 0, JSON.stringify(summary.failures));
     assert.equal(summary.ok, true);
     assert.equal(redirectHits, 3);
-    assert.equal(finalHits, 3);
+    assert.equal(finalHits, 6);
     assert.equal(finalHost, new URL(fixture.origin).host);
     assert.equal(finalQuery, '?via=asset');
     assert.equal(summary.sameOriginAssetRequests, summary.sameOriginAssetTerminalOutcomes);
@@ -637,6 +637,219 @@ test('redirect containment: bounds an audited browser redirect loop', { timeout:
     assert.ok(limitFailures.length > 0, JSON.stringify({ loopHits, failures: summary.failures }, null, 2));
     assert.ok(limitFailures.every((failure) =>
       failure.redirectDepth === 10 && failure.chain.length === 11));
+  } finally {
+    await fixture.close();
+  }
+});
+
+test('redirect URL semantics: resolves relative CSS URLs from the terminal directory', { timeout: 60_000 }, async () => {
+  let entryHits = 0;
+  let terminalHits = 0;
+  let correctChildHits = 0;
+  let wrongChildHits = 0;
+  const fixture = await startFixture(({ response, url }) => {
+    if (url.pathname === '/sitemap.xml') return send(response, 200, sitemap(['/source/']), 'application/xml');
+    if (url.pathname === '/redirect/entry.css') {
+      entryHits += 1;
+      return send(response, 302, '', 'text/plain', {
+        location: `${CANONICAL_ORIGIN}/assets/styles/final.css`,
+      });
+    }
+    if (url.pathname === '/assets/styles/final.css') {
+      terminalHits += 1;
+      return send(response, 200, 'body { margin: 0; background-image: url("./child.svg"); }', 'text/css');
+    }
+    if (url.pathname === '/assets/styles/child.svg') {
+      correctChildHits += 1;
+      return send(
+        response,
+        200,
+        '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1"><path d="M0 0h1v1H0z"/></svg>',
+        'image/svg+xml',
+      );
+    }
+    if (url.pathname === '/redirect/child.svg') {
+      wrongChildHits += 1;
+      return send(response, 404, 'wrong CSS base URL', 'image/svg+xml');
+    }
+    if (url.pathname === '/source/') {
+      return send(response, 200, page({
+        title: 'Redirected CSS base URL',
+        asset: false,
+        head: '<link rel="stylesheet" href="/redirect/entry.css">',
+        body: `<a href="${CANONICAL_ORIGIN}/source/">Self link</a>`,
+      }));
+    }
+    return send(response, 404, 'not found', 'text/plain');
+  });
+
+  try {
+    const { exitCode, summary } = await runAudit(fixture.origin);
+    assert.deepEqual(
+      {
+        correctChildHits,
+        wrongChildHits,
+        requests: summary.sameOriginAssetRequests,
+        responses: summary.sameOriginAssetResponses,
+        terminals: summary.sameOriginAssetTerminalOutcomes,
+        assetFailures: summary.sameOriginAssetFailures,
+        correlationFailures: summary.assetCorrelationFailures,
+      },
+      {
+        correctChildHits: 3,
+        wrongChildHits: 0,
+        requests: 9,
+        responses: 9,
+        terminals: 9,
+        assetFailures: 0,
+        correlationFailures: 0,
+      },
+    );
+    assert.ok(entryHits >= 3, `redirected CSS entry was fetched only ${entryHits} times`);
+    assert.ok(terminalHits >= 6, `terminal CSS was fetched only ${terminalHits} times`);
+    assert.equal(summary.consoleErrors, 0, JSON.stringify(summary.failures));
+    assert.equal(exitCode, 0, JSON.stringify(summary.failures));
+    assert.equal(summary.ok, true);
+  } finally {
+    await fixture.close();
+  }
+});
+
+test('redirect URL semantics: resolves ES module imports from the terminal directory', { timeout: 60_000 }, async () => {
+  let entryHits = 0;
+  let terminalHits = 0;
+  let correctChildHits = 0;
+  let wrongChildHits = 0;
+  const fixture = await startFixture(({ response, url }) => {
+    if (url.pathname === '/sitemap.xml') return send(response, 200, sitemap(['/source/']), 'application/xml');
+    if (url.pathname === '/redirect/entry.js') {
+      entryHits += 1;
+      return send(response, 302, '', 'text/plain', {
+        location: `${CANONICAL_ORIGIN}/assets/modules/final.js`,
+      });
+    }
+    if (url.pathname === '/assets/modules/final.js') {
+      terminalHits += 1;
+      return send(response, 200, 'import "./child.js"; globalThis.__fixtureModuleReady = true;', 'text/javascript');
+    }
+    if (url.pathname === '/assets/modules/child.js') {
+      correctChildHits += 1;
+      return send(response, 200, 'globalThis.__fixtureModuleChildReady = true;', 'text/javascript');
+    }
+    if (url.pathname === '/redirect/child.js') {
+      wrongChildHits += 1;
+      return send(response, 404, 'wrong module base URL', 'text/javascript');
+    }
+    if (url.pathname === '/source/') {
+      return send(response, 200, page({
+        title: 'Redirected module base URL',
+        asset: false,
+        head: '<script type="module" src="/redirect/entry.js"></script>',
+        body: `<a href="${CANONICAL_ORIGIN}/source/">Self link</a>`,
+      }));
+    }
+    return send(response, 404, 'not found', 'text/plain');
+  });
+
+  try {
+    const { exitCode, summary } = await runAudit(fixture.origin);
+    assert.deepEqual(
+      {
+        correctChildHits,
+        wrongChildHits,
+        requests: summary.sameOriginAssetRequests,
+        responses: summary.sameOriginAssetResponses,
+        terminals: summary.sameOriginAssetTerminalOutcomes,
+        assetFailures: summary.sameOriginAssetFailures,
+        correlationFailures: summary.assetCorrelationFailures,
+      },
+      {
+        correctChildHits: 3,
+        wrongChildHits: 0,
+        requests: 9,
+        responses: 9,
+        terminals: 9,
+        assetFailures: 0,
+        correlationFailures: 0,
+      },
+    );
+    assert.ok(entryHits >= 3, `redirected module entry was fetched only ${entryHits} times`);
+    assert.ok(terminalHits >= 6, `terminal module was fetched only ${terminalHits} times`);
+    assert.equal(summary.consoleErrors, 0, JSON.stringify(summary.failures));
+    assert.equal(exitCode, 0, JSON.stringify(summary.failures));
+    assert.equal(summary.ok, true);
+  } finally {
+    await fixture.close();
+  }
+});
+
+test('redirect URL semantics: maps a direct canonical asset locally without exposing non-asset GET redirects', { timeout: 60_000 }, async () => {
+  let canonicalAssetHits = 0;
+  let xhrRedirectHits = 0;
+  let xhrTerminalHits = 0;
+  const canonicalAssetHosts = new Set();
+  const fixture = await startFixture(({ request, response, url }) => {
+    if (url.pathname === '/sitemap.xml') return send(response, 200, sitemap(['/source/']), 'application/xml');
+    if (url.pathname === '/redirect/data.json') {
+      xhrRedirectHits += 1;
+      return send(response, 302, '', 'text/plain', {
+        location: `${CANONICAL_ORIGIN}/assets/direct/data.json`,
+      });
+    }
+    if (url.pathname === '/assets/direct/data.json') {
+      xhrTerminalHits += 1;
+      return send(response, 200, '{"ok":true}', 'application/json');
+    }
+    if (url.pathname === '/assets/direct/pixel.svg') {
+      canonicalAssetHits += 1;
+      canonicalAssetHosts.add(request.headers.host || '');
+      return send(
+        response,
+        200,
+        '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1"><path d="M0 0h1v1H0z"/></svg>',
+        'image/svg+xml',
+      );
+    }
+    if (url.pathname === '/source/') {
+      return send(response, 200, page({
+        title: 'Direct canonical asset',
+        asset: false,
+        body: `<script>
+          const request = new XMLHttpRequest();
+          request.open('GET', '/redirect/data.json', false);
+          request.send();
+          if (request.status !== 200) throw new Error('redirected fixture XHR failed');
+        </script><img src="${CANONICAL_ORIGIN}/assets/direct/pixel.svg" alt="Fixture pixel" width="1" height="1"><a href="${CANONICAL_ORIGIN}/source/">Self link</a>`,
+      }));
+    }
+    return send(response, 404, 'not found', 'text/plain');
+  });
+
+  try {
+    const { exitCode, summary } = await runAudit(fixture.origin);
+    assert.deepEqual(
+      {
+        requests: summary.sameOriginAssetRequests,
+        responses: summary.sameOriginAssetResponses,
+        terminals: summary.sameOriginAssetTerminalOutcomes,
+        assetFailures: summary.sameOriginAssetFailures,
+        correlationFailures: summary.assetCorrelationFailures,
+      },
+      {
+        requests: 3,
+        responses: 3,
+        terminals: 3,
+        assetFailures: 0,
+        correlationFailures: 0,
+      },
+    );
+    assert.equal(canonicalAssetHits, 3);
+    assert.deepEqual([...canonicalAssetHosts], [new URL(fixture.origin).host]);
+    assert.equal(xhrRedirectHits, 3);
+    assert.equal(xhrTerminalHits, 3);
+    assert.equal(summary.consoleErrors, 0, JSON.stringify(summary.failures));
+    assert.equal(exitCode, 0, JSON.stringify(summary.failures));
+    assert.equal(summary.ok, true);
   } finally {
     await fixture.close();
   }
