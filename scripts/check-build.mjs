@@ -4,7 +4,9 @@
 
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
+import { dirname, extname, join, relative, sep } from 'node:path';
+
+import { cacheAssetInventory, headersForPath, parseHeaderRules } from './generate-headers.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = join(ROOT, 'dist');
@@ -144,6 +146,13 @@ assert('legacy /menu redirect', toml.includes('from = "/menu"'));
 
 // --- generated response policy: exact CSP/security headers + bounded caching ---
 const headersOutput = exists('_headers') ? read('_headers') : '';
+let headerRules = [];
+let headerParseError;
+try {
+  headerRules = parseHeaderRules(headersOutput);
+} catch (error) {
+  headerParseError = error;
+}
 const bootstrapHash = "'sha256-/x7W7R75k8Roq0WaVRQX9blP4OufE5xbAdzklGxsgpw='";
 const expectedCsp = [
   "default-src 'self'",
@@ -159,13 +168,15 @@ const expectedCsp = [
   "frame-ancestors 'none'",
 ].join('; ');
 const requiredHeaderSections = [
-  ['HTML revalidates', '/*.html\n  Cache-Control: public, max-age=0, must-revalidate'],
+  [
+    'safe request-path default revalidates',
+    'Permissions-Policy: camera=(), microphone=(), geolocation=()\n  Cache-Control: public, max-age=0, must-revalidate',
+  ],
   ['content-addressed assets are immutable', '/assets/*\n  Cache-Control: public, max-age=31536000, immutable'],
   ['fonts are immutable', '/fonts/*\n  Cache-Control: public, max-age=31536000, immutable'],
-  ['named video media revalidates', '/video/*\n  Cache-Control: public, max-age=0, must-revalidate'],
-  ['self-hosted image media revalidates', '/framerusercontent.com/images/*\n  Cache-Control: public, max-age=0, must-revalidate'],
 ];
 assert('dist/_headers generated', exists('_headers'));
+assert('dist/_headers parses as deterministic path rules', !headerParseError);
 assert(
   'root CSP is the exact launch policy',
   headersOutput.includes(`/*\n  Content-Security-Policy: ${expectedCsp}\n`),
@@ -185,10 +196,27 @@ assert(
 for (const [label, section] of requiredHeaderSections) {
   assert(`cache policy: ${label}`, headersOutput.includes(section));
 }
+const revalidate = 'public, max-age=0, must-revalidate';
+const immutable = 'public, max-age=31536000, immutable';
+for (const pathname of ['/', '/pl/', '/menu', '/definitely-missing/', '/404']) {
+  assert(
+    `request path ${pathname} safely revalidates`,
+    headersForPath(headerRules, pathname)['Cache-Control'] === revalidate,
+  );
+}
+assert(
+  'request-path precedence keeps content-addressed assets immutable',
+  headersForPath(headerRules, '/assets/app.abcdef12.js')['Cache-Control'] === immutable,
+);
+assert(
+  'request-path precedence keeps approved local fonts immutable',
+  headersForPath(headerRules, '/fonts/cal-sans-400-latin.woff2')['Cache-Control'] === immutable,
+);
 assert(
   'wildcard CORS is absent from generated and Netlify headers',
   !/Access-Control-Allow-Origin/i.test(headersOutput) && !/Access-Control-Allow-Origin/i.test(toml),
 );
+assert('generated _headers is the only cache-policy authority', !/\bCache-Control\s*=/i.test(toml));
 
 // --- sitemap + no token leakage ---
 // Event detail pages are dynamic (one per event x locale), so derive their count
@@ -226,9 +254,31 @@ const files = inventory(DIST);
 const htmls = files.filter((file) => file.endsWith('.html'));
 const scripts = files.filter((file) => file.endsWith('.js'));
 const assetFiles = files.filter((file) => file.startsWith(join(DIST, 'assets') + '/'));
-const fontFiles = files.filter((file) => file.startsWith(join(DIST, 'fonts') + '/'));
-const videoFiles = files.filter((file) => file.startsWith(join(DIST, 'video') + '/'));
-const imageFiles = files.filter((file) => file.startsWith(join(DIST, 'framerusercontent.com/images') + '/'));
+const cacheKinds = new Map([
+  ['.png', 'image'], ['.jpg', 'image'], ['.jpeg', 'image'], ['.webp', 'image'],
+  ['.avif', 'image'], ['.svg', 'image'], ['.gif', 'image'], ['.ico', 'image'],
+  ['.mp4', 'media'], ['.webm', 'media'],
+  ['.woff', 'font'], ['.woff2', 'font'], ['.ttf', 'font'], ['.otf', 'font'],
+]);
+const expectedCacheFiles = files
+  .filter((file) => cacheKinds.has(extname(file).toLowerCase()))
+  .map((file) => ({
+    requestPath: `/${relative(DIST, file).split(sep).join('/')}`,
+    kind: cacheKinds.get(extname(file).toLowerCase()),
+  }))
+  .sort((a, b) => a.requestPath.localeCompare(b.requestPath));
+const expectedCacheTotals = {
+  image: expectedCacheFiles.filter(({ kind }) => kind === 'image').length,
+  media: expectedCacheFiles.filter(({ kind }) => kind === 'media').length,
+  font: expectedCacheFiles.filter(({ kind }) => kind === 'font').length,
+};
+let cacheInventory = { files: [], totals: { image: 0, media: 0, font: 0, total: 0, immutable: 0, revalidate: 0 } };
+let cacheInventoryError;
+try {
+  cacheInventory = cacheAssetInventory(DIST, headerRules);
+} catch (error) {
+  cacheInventoryError = error;
+}
 const allHtml = htmls.map((file) => readFileSync(file, 'utf8')).join('\n');
 const externalScriptBodies = scripts.map((file) => readFileSync(file, 'utf8'));
 const inlineScriptBodies = htmls.flatMap((file) => executableInlineScripts(readFileSync(file, 'utf8')));
@@ -239,9 +289,39 @@ assert(
   assetFiles.length > 0
     && assetFiles.every((file) => /\.[A-Za-z0-9_-]{8,}\.[a-z0-9]+$/i.test(file)),
 );
-assert('immutable font cache rule covers built fonts', fontFiles.length > 0);
-assert('revalidation cache rule covers named video media', videoFiles.length > 0);
-assert('revalidation cache rule covers self-hosted images', imageFiles.length > 0);
+assert('every emitted image/media/font resolves through the generated matcher', !cacheInventoryError);
+assert(
+  `cache inventory covers exactly ${expectedCacheFiles.length} emitted image/media/font files`,
+  cacheInventory.files.length === expectedCacheFiles.length
+    && cacheInventory.files.every(({ requestPath }, index) => requestPath === expectedCacheFiles[index]?.requestPath),
+);
+for (const kind of ['image', 'media', 'font']) {
+  assert(
+    `cache inventory ${kind} total = ${expectedCacheTotals[kind]}`,
+    expectedCacheTotals[kind] > 0 && cacheInventory.totals[kind] === expectedCacheTotals[kind],
+  );
+}
+assert(
+  `cache policy totals cover all ${expectedCacheFiles.length} emitted files`,
+  cacheInventory.totals.total === expectedCacheFiles.length
+    && cacheInventory.totals.immutable + cacheInventory.totals.revalidate === expectedCacheFiles.length,
+);
+assert(
+  'root icons, Framer assets, Google fonts, and nested Framer fonts are inventoried',
+  [
+    (path) => path === '/favicon.svg',
+    (path) => path.startsWith('/framerusercontent.com/assets/'),
+    (path) => path.startsWith('/fonts.gstatic.com/'),
+    (path) => path.startsWith('/framerusercontent.com/third-party-assets/'),
+  ].every((matches) => cacheInventory.files.some(({ requestPath }) => matches(requestPath))),
+);
+assert(
+  'immutable caching is limited to approved /fonts and content-addressed /assets paths',
+  cacheInventory.files.every(({ requestPath, cacheControl }) => {
+    const approved = requestPath.startsWith('/fonts/') || requestPath.startsWith('/assets/');
+    return approved ? cacheControl === immutable : cacheControl === revalidate;
+  }),
+);
 assert('executable build text is non-empty', executableBuiltText.trim().length > 0);
 assert('executable build text excludes JSON-LD payloads', !executableBuiltText.includes('"@context":"https://schema.org"'));
 assert(
