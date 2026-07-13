@@ -46,6 +46,7 @@ const englishCookieOgMeta = 'How SiSi Wrocław uses essential storage for the no
 for (const l of LOCALES) assert(`home builds: /${l}/`, exists(`${l}/index.html`));
 const B2B = { pl: 'eventy-firmowe', en: 'corporate-events', de: 'firmenevents', it: 'eventi-aziendali', cs: 'firemni-akce' };
 for (const l of LOCALES) assert(`b2b builds: /${l}/${B2B[l]}/`, exists(`${l}/${B2B[l]}/index.html`));
+const b2bPages = Object.fromEntries(LOCALES.map((locale) => [locale, read(`${locale}/${B2B[locale]}/index.html`)]));
 
 // --- html lang changes per locale ---
 for (const l of LOCALES) assert(`<html lang="${l}">`, new RegExp(`<html lang="${l}">`).test(read(`${l}/index.html`)));
@@ -71,6 +72,33 @@ assert('empty projects state shown', enB2B.includes('Write-ups of our first proj
 assert('no dev example client leaked', !enB2B.includes('example-conference') && !enB2B.includes('TODO: nazwa'));
 
 // --- form: Netlify contract, submitted fields, fallback contacts ---
+for (const locale of LOCALES) {
+  const html = b2bPages[locale];
+  const forms = html.match(/<form\b[^>]*\bname="b2b-enquiry"[^>]*>[\s\S]*?<\/form>/g) ?? [];
+  const form = forms[0] ?? '';
+  const openTag = form.match(/^<form\b[^>]*>/)?.[0] ?? '';
+  const errorStatus = form.match(/<div class="b2b-form-status b2b-status-error"[\s\S]*?<\/div>/)?.[0] ?? '';
+
+  assert(`${locale} has exactly one b2b-enquiry form`, forms.length === 1);
+  assert(
+    `${locale} form has Netlify POST and honeypot attributes`,
+    openTag.includes('method="POST"')
+      && openTag.includes('data-netlify="true"')
+      && openTag.includes('netlify-honeypot="bot-field"'),
+  );
+  assert(
+    `${locale} form has the static form-name detector`,
+    form.includes('type="hidden" name="form-name" value="b2b-enquiry"'),
+  );
+  assert(
+    `${locale} form has the bot-field detector`,
+    /<input\b[^>]*\btype="text"[^>]*\bname="bot-field"/.test(form),
+  );
+  assert(
+    `${locale} error fallback contains the launch contacts`,
+    errorStatus.includes('events@r32.com.pl') && errorStatus.includes('+48 514 032 930'),
+  );
+}
 assert('form required indicator (*)', enB2B.includes('class="req"'));
 assert('form hidden locale field', enB2B.includes('name="locale" value="en"'));
 assert('form honeypot', enB2B.includes('netlify-honeypot="bot-field"'));
