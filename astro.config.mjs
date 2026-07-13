@@ -9,7 +9,12 @@ export default defineConfig({
   trailingSlash: 'always',
   // Inline component CSS into the HTML so the small stylesheets stop being
   // render-blocking network requests (improves FCP/LCP).
-  build: { inlineStylesheets: 'always' },
+  build: {
+    inlineStylesheets: 'always',
+    // Keep emitted, content-addressed files aligned with the immutable
+    // /assets/* response policy generated after each build.
+    assets: 'assets',
+  },
   // CSS handled by Lightning CSS instead of Vite's default esbuild. esbuild's
   // minifier collapsed our `backdrop-filter` + `-webkit-backdrop-filter` pairs
   // down to the `-webkit-` form only, which silently killed the nav / cookie /
@@ -21,6 +26,9 @@ export default defineConfig({
   vite: {
     css: { transformer: 'lightningcss' },
     build: {
+      // CSP permits one exact pre-paint bootstrap only. Everything Astro/Vite
+      // processes must remain a same-origin file rather than inline code.
+      assetsInlineLimit: 0,
       cssMinify: 'lightningcss',
       cssTarget: ['chrome79', 'firefox78', 'safari12', 'edge88', 'ios12'],
     },

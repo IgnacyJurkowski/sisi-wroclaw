@@ -18,7 +18,6 @@ const canonical = new URL(target, Astro.site).href;
     <meta name="robots" content="noindex, follow" />
     <link rel="canonical" href={canonical} />
     <meta http-equiv="refresh" content={`0; url=${target}`} />
-    <script is:inline>location.replace('/pl/');</script>
   </head>
   <body>
     <a href={target}>SiSi Wrocław</a>

@@ -138,7 +138,7 @@ const robotsContent = robotsDirective({
         complete (load + idle), so its continuous drift/twinkle never inflates
         mobile Speed Index. Honours prefers-reduced-motion (the field stays
         still); the CSS in Particles.astro guards this too. */}
-    <script is:inline>
+    <script>
       (function () {
         if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
         var live = function () { document.documentElement.classList.add('bg-live'); };

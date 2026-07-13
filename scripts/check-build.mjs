@@ -142,6 +142,54 @@ const toml = readFileSync(join(ROOT, 'netlify.toml'), 'utf8');
 assert('root redirect / -> /pl/', toml.includes('from = "/"') && toml.includes('to = "/pl/"'));
 assert('legacy /menu redirect', toml.includes('from = "/menu"'));
 
+// --- generated response policy: exact CSP/security headers + bounded caching ---
+const headersOutput = exists('_headers') ? read('_headers') : '';
+const bootstrapHash = "'sha256-/x7W7R75k8Roq0WaVRQX9blP4OufE5xbAdzklGxsgpw='";
+const expectedCsp = [
+  "default-src 'self'",
+  `script-src 'self' ${bootstrapHash}`,
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: https:",
+  "font-src 'self' data:",
+  "media-src 'self'",
+  "connect-src 'self'",
+  "form-action 'self'",
+  "base-uri 'self'",
+  "object-src 'none'",
+  "frame-ancestors 'none'",
+].join('; ');
+const requiredHeaderSections = [
+  ['HTML revalidates', '/*.html\n  Cache-Control: public, max-age=0, must-revalidate'],
+  ['content-addressed assets are immutable', '/assets/*\n  Cache-Control: public, max-age=31536000, immutable'],
+  ['fonts are immutable', '/fonts/*\n  Cache-Control: public, max-age=31536000, immutable'],
+  ['named video media revalidates', '/video/*\n  Cache-Control: public, max-age=0, must-revalidate'],
+  ['self-hosted image media revalidates', '/framerusercontent.com/images/*\n  Cache-Control: public, max-age=0, must-revalidate'],
+];
+assert('dist/_headers generated', exists('_headers'));
+assert(
+  'root CSP is the exact launch policy',
+  headersOutput.includes(`/*\n  Content-Security-Policy: ${expectedCsp}\n`),
+);
+assert(
+  'root security headers are complete',
+  [
+    '  X-Content-Type-Options: nosniff',
+    '  Referrer-Policy: strict-origin-when-cross-origin',
+    '  Permissions-Policy: camera=(), microphone=(), geolocation=()',
+  ].every((header) => headersOutput.includes(header)),
+);
+assert(
+  'CSP contains exactly the permitted inline hash',
+  (headersOutput.match(/'sha256-[A-Za-z0-9+/]+=*'/g) ?? []).join(',') === bootstrapHash,
+);
+for (const [label, section] of requiredHeaderSections) {
+  assert(`cache policy: ${label}`, headersOutput.includes(section));
+}
+assert(
+  'wildcard CORS is absent from generated and Netlify headers',
+  !/Access-Control-Allow-Origin/i.test(headersOutput) && !/Access-Control-Allow-Origin/i.test(toml),
+);
+
 // --- sitemap + no token leakage ---
 // Event detail pages are dynamic (one per event x locale), so derive their count
 // from the build instead of hardcoding it - otherwise adding an event in Drive
@@ -177,11 +225,23 @@ function executableInlineScripts(html) {
 const files = inventory(DIST);
 const htmls = files.filter((file) => file.endsWith('.html'));
 const scripts = files.filter((file) => file.endsWith('.js'));
+const assetFiles = files.filter((file) => file.startsWith(join(DIST, 'assets') + '/'));
+const fontFiles = files.filter((file) => file.startsWith(join(DIST, 'fonts') + '/'));
+const videoFiles = files.filter((file) => file.startsWith(join(DIST, 'video') + '/'));
+const imageFiles = files.filter((file) => file.startsWith(join(DIST, 'framerusercontent.com/images') + '/'));
 const allHtml = htmls.map((file) => readFileSync(file, 'utf8')).join('\n');
 const externalScriptBodies = scripts.map((file) => readFileSync(file, 'utf8'));
 const inlineScriptBodies = htmls.flatMap((file) => executableInlineScripts(readFileSync(file, 'utf8')));
 const executableBuiltText = [...externalScriptBodies, ...inlineScriptBodies].join('\n');
 assert('build inventory finds external JavaScript', scripts.length > 0);
+assert(
+  'immutable asset cache rule covers emitted content-addressed files',
+  assetFiles.length > 0
+    && assetFiles.every((file) => /\.[A-Za-z0-9_-]{8,}\.[a-z0-9]+$/i.test(file)),
+);
+assert('immutable font cache rule covers built fonts', fontFiles.length > 0);
+assert('revalidation cache rule covers named video media', videoFiles.length > 0);
+assert('revalidation cache rule covers self-hosted images', imageFiles.length > 0);
 assert('executable build text is non-empty', executableBuiltText.trim().length > 0);
 assert('executable build text excludes JSON-LD payloads', !executableBuiltText.includes('"@context":"https://schema.org"'));
 assert(
