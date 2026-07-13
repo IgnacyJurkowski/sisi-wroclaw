@@ -1,8 +1,8 @@
-name: Deploy to Netlify
+name: Launch gate
 
 on:
+  pull_request:
   push:
-    branches: [main]
 
 jobs:
   test:
@@ -17,12 +17,3 @@ jobs:
 
       - run: npm ci
       - run: npm test
-
-  deploy:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Trigger Netlify production build
-        env:
-          NETLIFY_DEPLOY_HOOK: ${{ secrets.NETLIFY_DEPLOY_HOOK }}
-        run: curl --fail-with-body --silent --show-error -X POST "$NETLIFY_DEPLOY_HOOK"

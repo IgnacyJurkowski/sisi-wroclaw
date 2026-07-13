@@ -25,11 +25,12 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
-          node-version: '22'
+          node-version: '22.12.0'
+          cache: npm
 
       - run: npm ci
 
@@ -46,6 +47,8 @@ jobs:
         run: npm test
 
       - name: Commit, push, and deploy if changed
+        env:
+          NETLIFY_DEPLOY_HOOK: ${{ secrets.NETLIFY_DEPLOY_HOOK }}
         run: |
           if [ -z "$(git status --porcelain src/data/events.generated.ts public/events)" ]; then
             echo "No event changes; nothing to publish."
@@ -57,4 +60,4 @@ jobs:
           git commit -m "chore(events): sync lineup from Drive"
           git pull --rebase --autostash origin main
           git push
-          curl -fsS -X POST "${{ secrets.NETLIFY_DEPLOY_HOOK }}"
+          curl --fail-with-body --silent --show-error -X POST "$NETLIFY_DEPLOY_HOOK"

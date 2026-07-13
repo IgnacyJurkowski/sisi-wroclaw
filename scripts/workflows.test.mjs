@@ -1,0 +1,63 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+
+const CHECKOUT_SHA = '34e114876b0b11c390a56381ad16ebd13914f8d5';
+const SETUP_NODE_SHA = '49933ea5288caeca8642d1e84afbd3f7d6820020';
+const REQUIRED_TEST = 'npm run test:unit && npm run check && npm run build && npm run test:build';
+const REQUIRED_HOOK = 'curl --fail-with-body --silent --show-error -X POST "$NETLIFY_DEPLOY_HOOK"';
+
+async function workflow(name) {
+  return readFile(`.github/workflows/${name}.yml`, 'utf8');
+}
+
+function assertNodeGate(source) {
+  assert.match(source, new RegExp(`uses: actions/checkout@${CHECKOUT_SHA}\\b`));
+  assert.match(source, new RegExp(`uses: actions/setup-node@${SETUP_NODE_SHA}\\b`));
+  assert.match(source, /node-version:\s*['"]?22\.12\.0['"]?/);
+  assert.match(source, /cache:\s*['"]?npm['"]?/);
+  assert.match(source, /run:\s*npm ci\b/);
+  assert.match(source, /run:\s*npm test\b/);
+}
+
+function assertFailClosedHook(source) {
+  assert.match(source, /NETLIFY_DEPLOY_HOOK:\s*\$\{\{ secrets\.NETLIFY_DEPLOY_HOOK \}\}/);
+  assert.ok(source.includes(REQUIRED_HOOK));
+  assert.doesNotMatch(source, /run:[^\n]*secrets\.NETLIFY_DEPLOY_HOOK/);
+}
+
+test('npm test is the complete launch gate', async () => {
+  const pkg = JSON.parse(await readFile('package.json', 'utf8'));
+  assert.equal(pkg.scripts.test, REQUIRED_TEST);
+});
+
+test('CI publishes the exact Launch gate / test status on pushes and pull requests', async () => {
+  const source = await workflow('ci');
+  assert.match(source, /^name:\s*Launch gate\s*$/m);
+  assert.match(source, /^\s{2}pull_request:\s*$/m);
+  assert.match(source, /^\s{2}push:\s*$/m);
+  assert.match(source, /^\s{2}test:\s*$/m);
+  assertNodeGate(source);
+});
+
+test('production deploy waits for the complete launch gate and fails closed', async () => {
+  const source = await workflow('deploy');
+  assert.match(source, /^\s{2}test:\s*$/m);
+  assertNodeGate(source);
+  assert.match(source, /^\s{2}deploy:\s*$/m);
+  assert.match(source, /^\s{4}needs:\s*test\s*$/m);
+  assertFailClosedHook(source);
+});
+
+test('event sync uses the pinned runtime, complete gate, and fail-closed hook', async () => {
+  const source = await workflow('sync-events');
+  assertNodeGate(source);
+  assertFailClosedHook(source);
+});
+
+test('workflow dependencies are immutable and legacy launch settings stay absent', async () => {
+  const sources = (await Promise.all(['ci', 'deploy', 'sync-events'].map(workflow))).join('\n');
+  assert.doesNotMatch(sources, /uses:\s*actions\/(?:checkout|setup-node)@v\d+\b/);
+  assert.doesNotMatch(sources, /node-version:\s*['"]?(?:20|22)['"]?\s*$/m);
+  assert.doesNotMatch(sources, /curl\s+(?:-s|-fsS)\s+-X POST/);
+});
