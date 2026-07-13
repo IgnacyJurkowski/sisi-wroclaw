@@ -370,6 +370,56 @@ footer::before {
 }
 .menu-item-vol { font-size: 11px; letter-spacing: 0.04em; color: var(--text-mute); white-space: nowrap; }
 
+/* === FOLDABLE SPIRIT SECTIONS (native <details>, no JS) ===
+   The summary is the click target; the frosted look matches .menu-card, but the
+   summary owns the padding so the whole header stays tappable when collapsed. */
+.menu-fold {
+  background: rgba(28, 6, 13, 0.66);
+  backdrop-filter: blur(14px);
+  border-color: rgba(237, 219, 194, 0.14);
+  padding: 0;
+}
+.menu-fold-summary {
+  display: flex; align-items: center; gap: 11px;
+  padding: 26px 36px; cursor: pointer;
+  list-style: none; -webkit-tap-highlight-color: transparent;
+}
+.menu-fold-summary::-webkit-details-marker { display: none; }
+.menu-fold-icon {
+  width: 24px; height: 24px; flex-shrink: 0;
+  fill: none; stroke: var(--gold); stroke-width: 1.7;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.menu-fold-title {
+  font-family: var(--font-display); font-size: 1.25rem; font-weight: 400;
+  text-transform: uppercase; letter-spacing: 0.04em; color: var(--gold);
+}
+.menu-fold-count {
+  font-size: 12px; font-weight: 600; letter-spacing: 0.06em;
+  color: var(--text-mute);
+}
+.menu-fold-chevron {
+  width: 20px; height: 20px; margin-left: auto; flex-shrink: 0;
+  fill: none; stroke: var(--gold); stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round; opacity: 0.65;
+}
+.menu-fold[open] .menu-fold-chevron { transform: rotate(180deg); }
+@media (prefers-reduced-motion: no-preference) {
+  .menu-fold-chevron { transition: transform 160ms ease; }
+}
+.menu-fold-summary:hover .menu-fold-title { color: var(--cream); }
+.menu-fold-summary:hover .menu-fold-chevron { opacity: 1; }
+.menu-fold-summary:focus-visible { outline: 2px solid var(--gold); outline-offset: -4px; border-radius: 14px; }
+.menu-fold-body { padding: 0 36px 30px; }
+.menu-fold-note {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--text-mute); margin: 0 0 6px;
+}
+@media (max-width: 600px) {
+  .menu-fold-summary { padding: 22px 24px; }
+  .menu-fold-body { padding: 0 24px 24px; }
+}
+
 /* === BUTTONS === */
 .btn-cta {
   display: inline-flex; align-items: center; justify-content: center;

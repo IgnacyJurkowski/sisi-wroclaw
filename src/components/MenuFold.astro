@@ -1,0 +1,29 @@
+---
+// A collapsible menu section for the long spirit ranges (whisky, gin, rum…).
+// Native <details>/<summary> — zero JavaScript, keyboard-accessible — so it
+// costs nothing on the 100/100 pages. The summary IS the click target (icon +
+// label + count + chevron). Item rows are passed as children via <slot>. The
+// frosted-card look and all fold chrome live in global.css (.menu-fold*), since
+// scoped styles wouldn't cross the component boundary to a slotted MenuItem.
+interface Props {
+  label: string;
+  icon: string;        // inner <path> markup for the category glyph
+  count?: number;      // shown next to the label so a collapsed range reads its size
+  note?: string;       // e.g. "Serving 4 cl"
+  open?: boolean;      // default collapsed
+}
+const { label, icon, count, note, open = false } = Astro.props;
+const chevron = '<path d="m6 9 6 6 6-6"/>';
+---
+<details class="sisi-card menu-fold" open={open}>
+  <summary class="menu-fold-summary">
+    <svg class="menu-fold-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icon} />
+    <span class="menu-fold-title">{label}</span>
+    {count != null && <span class="menu-fold-count">{count}</span>}
+    <svg class="menu-fold-chevron" viewBox="0 0 24 24" aria-hidden="true" set:html={chevron} />
+  </summary>
+  <div class="menu-fold-body">
+    {note && <p class="menu-fold-note">{note}</p>}
+    <slot />
+  </div>
+</details>
