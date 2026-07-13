@@ -4,9 +4,10 @@ import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import CookieBanner from '../components/CookieBanner.astro';
 import Particles from '../components/Particles.astro';
-import { nightClubSchema, websiteSchema } from '../data/site';
+import { BUSINESS, nightClubSchema, websiteSchema } from '../data/site';
 import { DEFAULT_LOCALE, LOCALE_LANG, LOCALE_OG, type Locale } from '../i18n/config';
 import { alternates, localizedPath, type RouteKey } from '../i18n/routes';
+import { jsonForHtml, robotsDirective } from '../lib/launch.mjs';
 
 interface Props {
   locale: Locale;
@@ -66,18 +67,12 @@ const xDefaultPath = altPaths
 const xDefault = xDefaultPath ? new URL(xDefaultPath, Astro.site).href : undefined;
 const jsonLd = [nightClubSchema(locale), websiteSchema(locale), ...schema];
 
-// Index only the canonical production domain. Netlify deploy previews, branch
-// deploys, and the *.netlify.app production deploy all stay out of the index
-// until sisiwroclaw.pl points at this build. Detected from Netlify's build env
-// (CONTEXT + URL), so no per-deploy host is hardcoded beyond the canonical one.
-const PRODUCTION_URL = 'https://sisi-wroclaw.netlify.app';
-const isProductionHost =
-  process.env.CONTEXT === 'production' && process.env.URL === PRODUCTION_URL;
-const robotsContent = !isProductionHost
-  ? 'noindex, nofollow'
-  : noindex
-    ? 'noindex, follow'
-    : 'index, follow';
+const robotsContent = robotsDirective({
+  context: process.env.CONTEXT,
+  siteUrl: process.env.URL,
+  canonicalOrigin: BUSINESS.url,
+  noindex,
+});
 ---
 
 <!DOCTYPE html>
@@ -126,8 +121,8 @@ const robotsContent = !isProductionHost
     <meta name="geo.placename" content="Wrocław" />
     <meta name="geo.position" content="51.1106;17.0286" />
     <meta name="ICBM" content="51.1106, 17.0286" />
-    {jsonLd.map((s) => (
-      <script type="application/ld+json" set:html={JSON.stringify(s)} />
+    {jsonLd.map((value) => (
+      <script type="application/ld+json" set:html={jsonForHtml(value)} />
     ))}
   </head>
   <body>

@@ -9,7 +9,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "test": "npm run test:unit && astro build && node scripts/check-build.mjs",
-    "test:unit": "node --test scripts/events-sync/*.test.mjs",
+    "test:unit": "node --test scripts/*.test.mjs scripts/events-sync/*.test.mjs",
     "test:build": "node scripts/check-build.mjs"
   },
   "dependencies": {
