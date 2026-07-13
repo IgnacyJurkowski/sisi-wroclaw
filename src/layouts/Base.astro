@@ -4,6 +4,7 @@ import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import CookieBanner from '../components/CookieBanner.astro';
 import Particles from '../components/Particles.astro';
+import Popup from '../components/Popup.astro';
 import { nightClubSchema, websiteSchema } from '../data/site';
 import { DEFAULT_LOCALE, LOCALE_LANG, LOCALE_OG, type Locale } from '../i18n/config';
 import { alternates, localizedPath, type RouteKey } from '../i18n/routes';
@@ -142,6 +143,7 @@ const robotsContent = !isProductionHost
     </main>
     <Footer locale={locale} />
     <CookieBanner locale={locale} />
+    <Popup locale={locale} />
     <script>import '../scripts/nav.ts';</script>
     <script>import '../scripts/scroll-animations.ts';</script>
     {/* Wake the frozen Particles backdrop only after the page is visually

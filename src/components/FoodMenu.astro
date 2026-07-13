@@ -11,7 +11,7 @@ const { locale } = Astro.props;
 type L = Record<Locale, string>;
 type Diet = 'vegetarian' | 'vegan';
 interface Tier { qty?: L; price: string }
-interface Dish { icon: string; name: L; desc?: L; tiers: Tier[]; diet?: Diet }
+interface Dish { icon: string; name: L; desc?: L; tiers: Tier[]; diet?: Diet; spicy?: boolean }
 interface FoodSection { title: L; icon: string; dishes: Dish[] }
 
 // Section-header glyphs (Lucide, MIT), stroked in burgundy on the cream band —
@@ -25,14 +25,21 @@ const ICONS = {
   platter: '<path d="M12 3v3"/><path d="M5 9h14"/><path d="M6 9a6 6 0 0 0 12 0"/><path d="M12 15v3"/><path d="M4 21h16"/><path d="M7 21a5 5 0 0 1 10 0"/>',
   cheese: '<path d="M4 13v5a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-6"/><path d="M3.5 12.5 13 4c4 0 7.5 3.4 7.5 8.5Z"/><circle cx="9" cy="15.5" r=".9"/><circle cx="14" cy="16" r=".9"/>',
   drumstick: '<path d="M15.4 15.63a7.87 6 135 1 1 6.23-6.23 4.5 3.43 0 0 0-6.23 6.23Z"/><path d="m8.29 12.71-2.6 2.6a2.5 2.5 0 1 0-1.65 4.65A2.5 2.5 0 1 0 8.7 18.3l2.59-2.59"/>',
+  utensils: '<path d="M3 2v7c0 1.1.9 2 2 2h.5c1.1 0 2-.9 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/>',
+  knife: '<path d="m3 22 5-5"/><path d="M8 17c3.5-1 5.5-3 8.5-6l3-3c1.2-1.2-.6-3-1.8-1.8l-3 3c-3 3-5 5-6 8.5z"/><path d="m14 7 3 3"/>',
+  // Badge glyphs — a leaf in a circle for veg/vegan, a chili for spicy.
+  leafCircle: '<circle cx="12" cy="12" r="9"/><path d="M8.7 15.3c-.3-3 1.9-5.4 5.4-5.6-.2 3.3-2.1 5.2-5.4 5.6Z"/><path d="M9 15c.4-1.1 1-2 1.9-2.7"/>',
+  chili: '<path d="M9 14.5c0 2.8 2.3 4.5 5 4.5 3 0 5.5-2.4 5.5-5.8 0-4-3.4-6.2-7-6.2"/><path d="M12.5 7c0-1.9 1.4-3.3 3.3-3.3.2 1.3 1.1 2.2 2.4 2.4"/>',
+  shrimp: '<path d="M20 10c-5 0-9 3-9 8"/><path d="M20 10c1.7 0 2.5.9 2.5 2.2S21.7 14.5 20 14.5"/><path d="M11 18a6 6 0 0 1-6-6 3 3 0 0 1 3-3"/><path d="M5 12c-1.4 0-2.5-.6-3-2"/><path d="M8 15c-1.4 0-2.6-.7-3.5-2"/>',
 };
 
-// Diet badge labels. Only the clearly-vegetarian cheese board is marked for now;
-// the rest await the kitchen's confirmed vegan/vegetarian list.
+// Diet badge labels (shown as the badge's tooltip / a11y label). Only the
+// clearly-vegetarian cheese board is marked; the rest await the kitchen's list.
 const DIET: Record<Diet, L> = {
-  vegetarian: { pl: 'wege', en: 'veggie', de: 'veggie', it: 'veggie', cs: 'veggie' },
-  vegan: { pl: 'vegan', en: 'vegan', de: 'vegan', it: 'vegan', cs: 'vegan' },
+  vegetarian: { pl: 'wegetariańskie', en: 'vegetarian', de: 'vegetarisch', it: 'vegetariano', cs: 'vegetariánské' },
+  vegan: { pl: 'wegańskie', en: 'vegan', de: 'vegan', it: 'vegano', cs: 'veganské' },
 };
+const SPICY: L = { pl: 'ostre', en: 'spicy', de: 'scharf', it: 'piccante', cs: 'pálivé' };
 
 // Portion labels reused across dishes.
 const QTY: Record<string, L> = {
@@ -66,17 +73,17 @@ const TAGLINE = {
 const SECTIONS: FoodSection[] = [
   {
     title: { pl: 'Na początek', en: 'To start', de: 'Zum Anfang', it: 'Per iniziare', cs: 'Na začátek' },
-    icon: ICONS.shell,
+    icon: ICONS.utensils,
     dishes: [
       {
         icon: ICONS.shell,
         name: { pl: 'Ostrygi', en: 'Oysters', de: 'Austern', it: 'Ostriche', cs: 'Ústřice' },
         desc: {
-          pl: 'Szkocja / Irlandia / Francja, na lodzie · do wyboru: klasyczna cytryna / sos mignonette / spicy mango',
-          en: 'Scotland / Ireland / France, on ice · choice of: classic lemon / mignonette / spicy mango',
-          de: 'Schottland / Irland / Frankreich, auf Eis · zur Wahl: klassisch Zitrone / Mignonette / Spicy Mango',
-          it: 'Scozia / Irlanda / Francia, su ghiaccio · a scelta: limone classico / mignonette / mango piccante',
-          cs: 'Skotsko / Irsko / Francie, na ledu · na výběr: klasický citron / mignonette / pikantní mango',
+          pl: 'Szkocja · Irlandia · Francja, na lodzie\nSosy do wyboru: klasyczna cytryna, mignonette, spicy mango',
+          en: 'Scotland · Ireland · France, on ice\nSauces to choose: classic lemon, mignonette, spicy mango',
+          de: 'Schottland · Irland · Frankreich, auf Eis\nSaucen zur Wahl: klassisch Zitrone, Mignonette, Spicy Mango',
+          it: 'Scozia · Irlanda · Francia, su ghiaccio\nSalse a scelta: limone classico, mignonette, mango piccante',
+          cs: 'Skotsko · Irsko · Francie, na ledu\nOmáčky na výběr: klasický citron, mignonette, pikantní mango',
         },
         tiers: [{ qty: QTY.p3, price: '49 zł' }, { qty: QTY.p6, price: '85 zł' }, { qty: QTY.p9, price: '120 zł' }],
       },
@@ -93,7 +100,7 @@ const SECTIONS: FoodSection[] = [
         tiers: [],
       },
       {
-        icon: ICONS.beef,
+        icon: ICONS.knife,
         name: {
           pl: 'Klasyczny tatar wołowy The Cork',
           en: 'The Cork classic beef tartare',
@@ -130,6 +137,7 @@ const SECTIONS: FoodSection[] = [
       },
       {
         icon: ICONS.fish,
+        spicy: true,
         name: {
           pl: 'Tuńczyk Blue Fin à la chinoise',
           en: 'Blue Fin tuna à la chinoise',
@@ -190,7 +198,7 @@ const SECTIONS: FoodSection[] = [
     icon: ICONS.flame,
     dishes: [
       {
-        icon: ICONS.fish,
+        icon: ICONS.shrimp,
         name: { pl: 'Seafood basket', en: 'Seafood basket', de: 'Seafood-Korb', it: 'Cestino di mare', cs: 'Seafood basket' },
         desc: {
           pl: 'Krewetki / dorsz / kalmar / dip czosnkowo-ziołowy / cytryna / chipsy warzywne',
@@ -203,6 +211,7 @@ const SECTIONS: FoodSection[] = [
       },
       {
         icon: ICONS.drumstick,
+        spicy: true,
         name: {
           pl: 'Buffalo – chrupiący kurczak',
           en: 'Buffalo crispy chicken',
@@ -240,19 +249,35 @@ const SECTIONS: FoodSection[] = [
             <article class="food-item">
               <svg class="food-item-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={d.icon} />
               <div class="food-item-body">
-                <div class="food-item-head">
-                  <h4 class="food-name">{d.name[locale]}{d.diet && <span class="food-badge">{DIET[d.diet][locale]}</span>}</h4>
-                  {d.tiers.length > 0 && (
-                    <div class="food-prices">
-                      {d.tiers.map((tr) => (
-                        <span class="food-price">
-                          {tr.qty && <span class="food-qty">{tr.qty[locale]}</span>}{tr.price}
-                        </span>
-                      ))}
-                    </div>
-                  )}
+                <div class="food-item-text">
+                  <h4 class="food-name">
+                    {d.name[locale]}
+                    {(d.diet || d.spicy) && (
+                      <span class="food-badges">
+                        {d.diet && (
+                          <span class="food-badge food-badge-veg" title={DIET[d.diet][locale]} aria-label={DIET[d.diet][locale]}>
+                            <svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.leafCircle} />
+                          </span>
+                        )}
+                        {d.spicy && (
+                          <span class="food-badge food-badge-spicy" title={SPICY[locale]} aria-label={SPICY[locale]}>
+                            <svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.chili} />
+                          </span>
+                        )}
+                      </span>
+                    )}
+                  </h4>
+                  {d.desc && <p class="food-desc">{d.desc[locale]}</p>}
                 </div>
-                {d.desc && <p class="food-desc">{d.desc[locale]}</p>}
+                {d.tiers.length > 0 && (
+                  <div class="food-prices">
+                    {d.tiers.map((tr) => (
+                      <span class="food-price">
+                        {tr.qty && <span class="food-qty">{tr.qty[locale]}</span>}{tr.price}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
             </article>
           ))}
@@ -310,20 +335,21 @@ const SECTIONS: FoodSection[] = [
     fill: none; stroke: #27060f; stroke-width: 1.6;
     stroke-linecap: round; stroke-linejoin: round; opacity: 0.85;
   }
-  .food-item-body { flex: 1; min-width: 0; }
-  .food-item-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+  .food-item-body { flex: 1; min-width: 0; display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+  .food-item-text { flex: 1; min-width: 0; }
   .food-name { font-size: 16px; font-weight: 700; letter-spacing: 0.01em; color: #27060f; margin: 0; }
-  .food-badge {
-    display: inline-block; margin-left: 8px; transform: translateY(-1px);
-    font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
-    color: #3d5a2e; background: rgba(61, 90, 46, 0.1);
-    border: 1px solid rgba(61, 90, 46, 0.35); border-radius: 999px;
-    padding: 1px 7px; white-space: nowrap;
+  .food-badges { display: inline-flex; gap: 5px; margin-left: 8px; vertical-align: middle; }
+  .food-badge { display: inline-flex; align-items: center; justify-content: center; }
+  .food-badge svg {
+    width: 17px; height: 17px; fill: none; stroke-width: 1.7;
+    stroke-linecap: round; stroke-linejoin: round;
   }
+  .food-badge-veg svg { stroke: #3d5a2e; }
+  .food-badge-spicy svg { stroke: #b4442f; }
   .food-prices { flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 2px; text-align: right; }
   .food-price { font-size: 14px; font-weight: 600; color: #27060f; white-space: nowrap; }
   .food-qty { font-size: 11px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: rgba(39, 7, 15, 0.5); margin-right: 8px; }
-  .food-desc { font-size: 13px; line-height: 1.6; color: rgba(39, 7, 15, 0.62); margin: 6px 0 0; max-width: 46ch; }
+  .food-desc { font-size: 13px; line-height: 1.6; color: rgba(39, 7, 15, 0.62); margin: 4px 0 0; max-width: 46ch; white-space: pre-line; }
 
   @media (max-width: 760px) {
     .food-menu { margin-top: 72px; padding: 72px 20px 80px; }
