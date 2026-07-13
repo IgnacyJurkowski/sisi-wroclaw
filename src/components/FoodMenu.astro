@@ -27,9 +27,10 @@ const ICONS = {
   drumstick: '<path d="M15.4 15.63a7.87 6 135 1 1 6.23-6.23 4.5 3.43 0 0 0-6.23 6.23Z"/><path d="m8.29 12.71-2.6 2.6a2.5 2.5 0 1 0-1.65 4.65A2.5 2.5 0 1 0 8.7 18.3l2.59-2.59"/>',
   utensils: '<path d="M3 2v7c0 1.1.9 2 2 2h.5c1.1 0 2-.9 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/>',
   knife: '<path d="M15 3v12h-5c-.023 -3.681 .184 -7.406 5 -12m0 12v6h-1v-3"/>',
-  // Badge glyphs — a leaf in a circle for veg/vegan, a chili for spicy.
-  leafCircle: '<circle cx="12" cy="12" r="9"/><path d="M8.7 15.3c-.3-3 1.9-5.4 5.4-5.6-.2 3.3-2.1 5.2-5.4 5.6Z"/><path d="M9 15c.4-1.1 1-2 1.9-2.7"/>',
-  chili: '<path d="M9 14.5c0 2.8 2.3 4.5 5 4.5 3 0 5.5-2.4 5.5-5.8 0-4-3.4-6.2-7-6.2"/><path d="M12.5 7c0-1.9 1.4-3.3 3.3-3.3.2 1.3 1.1 2.2 2.4 2.4"/>',
+  // Badge glyphs (real library icons) — a leaf (Lucide) shown in a CSS circle
+  // for veg, a chili pepper (Tabler) for spicy.
+  leafCircle: '<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>',
+  chili: '<path d="M13 11c0 2.21-2.239 4-5 4s-5-1.79-5-4a8 8 0 1 0 16 0a3 3 0 0 0-6 0"/><path d="M16 8c0-2 2-4 4-4"/>',
   shrimp: '<path d="M11 12h.01"/><path d="M13 22c.5-.5 1.12-1 2.5-1-1.38 0-2-.5-2.5-1"/><path d="M14 2a3.28 3.28 0 0 1-3.227 1.798l-6.17-.561A2.387 2.387 0 1 0 4.387 8H15.5a1 1 0 0 1 0 13 1 1 0 0 0 0-5H12a7 7 0 0 1-7-7V8"/><path d="M14 8a8.5 8.5 0 0 1 0 8"/><path d="M16 16c2 0 4.5-4 4-6"/>',
 };
 
@@ -339,12 +340,17 @@ const SECTIONS: FoodSection[] = [
   .food-item-text { flex: 1; min-width: 0; }
   .food-name { font-size: 16px; font-weight: 700; letter-spacing: 0.01em; color: #27060f; margin: 0; }
   .food-badges { display: inline-flex; gap: 5px; margin-left: 8px; vertical-align: middle; }
-  .food-badge { display: inline-flex; align-items: center; justify-content: center; }
+  .food-badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 21px; height: 21px; border-radius: 50%; border: 1px solid;
+  }
   .food-badge svg {
-    width: 17px; height: 17px; fill: none; stroke-width: 1.7;
+    width: 12px; height: 12px; fill: none; stroke-width: 1.9;
     stroke-linecap: round; stroke-linejoin: round;
   }
+  .food-badge-veg { border-color: rgba(61, 90, 46, 0.4); background: rgba(61, 90, 46, 0.09); }
   .food-badge-veg svg { stroke: #3d5a2e; }
+  .food-badge-spicy { border-color: rgba(180, 68, 47, 0.42); background: rgba(180, 68, 47, 0.09); }
   .food-badge-spicy svg { stroke: #b4442f; }
   .food-prices { flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 2px; text-align: right; }
   .food-price { font-size: 14px; font-weight: 600; color: #27060f; white-space: nowrap; }
