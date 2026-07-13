@@ -232,7 +232,6 @@ const it: UI = {
       draught: 'Alla spina',
       bottled: 'In bottiglia',
       wines: 'Carta dei vini',
-      nightMenu: 'Night Menu by The Cork',
     },
     whiskyGroups: { irish: 'Irlandese', scotch: 'Scozzese', japanese: 'Giapponese', bourbon: 'Bourbon' },
     nonAlcSub: { cocktails: 'Mocktail', spirits: 'Distillati analcolici' },
@@ -240,8 +239,6 @@ const it: UI = {
     bottledNote: 'Tutte le bottiglie 330 ml.',
     wineLead: 'Puntiamo sulle cantine polacche — una selezione di vini autoctoni, dai bianchi aromatici, passando per arancione e rosé di carattere, fino agli eleganti rossi. Serviamo tutti i vini al calice e in bottiglia.',
     champagneNote: 'Il calice (125 ml) è disponibile solo per G. H. Mumm Grand Cordon e Perrier-Jouët Grand Brut. Tutti gli altri champagne sono serviti solo in bottiglia.',
-    nightLead: 'Stuzzichini eleganti da condividere, preparati da The Cork: caviale, ostriche, taglieri di formaggi e salumi (charcuterie).',
-    foodwineNote: 'La carta dei vini completa e il Night Menu sono disponibili nel club - chiedi al personale la selezione e i prezzi attuali.',
     ctaText: 'Vuoi prenotare un tavolo e ordinare in anticipo? Contattaci.',
   },
 

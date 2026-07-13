@@ -232,7 +232,6 @@ const cs: UI = {
       draught: 'Točené',
       bottled: 'Lahvové',
       wines: 'Vinný lístek',
-      nightMenu: 'Night Menu by The Cork',
     },
     whiskyGroups: { irish: 'Irská', scotch: 'Skotská', japanese: 'Japonská', bourbon: 'Bourbon' },
     nonAlcSub: { cocktails: 'Nealko koktejly', spirits: 'Nealko lihoviny' },
@@ -240,8 +239,6 @@ const cs: UI = {
     bottledNote: 'Všechny lahve 330 ml.',
     wineLead: 'Sázíme na polská vinařství — výběr domácích vín od aromatických bílých, přes výrazné oranžové a rosé, až po elegantní červená. Všechna vína podáváme po sklenici i v lahvi.',
     champagneNote: 'Sklenka (125 ml) je k dispozici pouze pro G. H. Mumm Grand Cordon a Perrier-Jouët Grand Brut. Ostatní šampaňské podáváme výhradně v lahvích.',
-    nightLead: 'Elegantní pochoutky ke sdílení, připravené The Cork: kaviár, ústřice, sýrová a uzeninová prkénka (charcuterie).',
-    foodwineNote: 'Kompletní vinný lístek a Night Menu jsou k dispozici v klubu - zeptejte se obsluhy na aktuální nabídku a ceny.',
     ctaText: 'Chcete rezervovat stůl a objednat předem? Ozvěte se nám.',
   },
 
