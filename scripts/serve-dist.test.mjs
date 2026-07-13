@@ -4,6 +4,7 @@ import { once } from 'node:events';
 import {
   mkdirSync,
   mkdtempSync,
+  renameSync,
   rmSync,
   symlinkSync,
   writeFileSync,
@@ -113,6 +114,9 @@ test('maps every required static type to a non-sniffed MIME', () => {
 test('serves a temporary dist through real HTTP with bounded responses and clean shutdown', async (t) => {
   assert.equal(typeof distServer.createDistServer, 'function');
   const fixture = createDistFixture();
+  let finalFileSwapped = false;
+  let parentDirectorySwapped = false;
+  let escapedParentHandle;
   const server = distServer.createDistServer({
     dist: fixture.dist,
     onError: () => {},
@@ -121,6 +125,21 @@ test('serves a temporary dist through real HTTP with bounded responses and clean
         const error = new Error('simulated file race');
         error.code = 'EIO';
         throw error;
+      }
+      if (file.endsWith(`${join('', 'file-swap.txt')}`) && !finalFileSwapped) {
+        finalFileSwapped = true;
+        rmSync(file);
+        symlinkSync(join(fixture.outside, 'final-secret.txt'), file);
+      }
+      if (file.endsWith(join('parent-swap', 'inside.txt')) && !parentDirectorySwapped) {
+        parentDirectorySwapped = true;
+        renameSync(
+          join(fixture.dist, 'parent-swap'),
+          join(fixture.dist, 'parent-swap-contained'),
+        );
+        symlinkSync(join(fixture.outside, 'parent-swap'), join(fixture.dist, 'parent-swap'));
+        escapedParentHandle = await open(file, flags);
+        return escapedParentHandle;
       }
       return open(file, flags);
     },
@@ -200,6 +219,49 @@ test('serves a temporary dist through real HTTP with bounded responses and clean
       assertRootPolicy(icon);
     });
 
+    await t.test('canonicalizes contained request paths before selecting cache policy', async () => {
+      const icon = await request(server, '/assets/../favicon.svg');
+      assert.equal(icon.statusCode, 200);
+      assert.match(icon.body.toString(), /<svg>/);
+      assertRootPolicy(icon);
+      assertRevalidates(icon);
+
+      const video = await request(server, '/fonts/../video/clip.mp4');
+      assert.equal(video.statusCode, 200);
+      assert.equal(video.body.toString(), '0123456789');
+      assertRootPolicy(video);
+      assertRevalidates(video);
+    });
+
+    await t.test('forces immutable-prefix 404 and 416 responses to safe revalidation', async () => {
+      for (const pathname of ['/assets/missing.abcdef12.js', '/fonts/missing.woff2']) {
+        const missing = await request(server, pathname);
+        assert.equal(missing.statusCode, 404, pathname);
+        assert.match(missing.body.toString(), /Built 404 fixture/, pathname);
+        assertRootPolicy(missing);
+        assertRevalidates(missing);
+      }
+
+      const invalidRange = await request(server, '/assets/app.abcdef12.js', {
+        headers: { Range: 'bytes=999-1000' },
+      });
+      assert.equal(invalidRange.statusCode, 416);
+      assert.equal(invalidRange.headers['content-range'], 'bytes */26');
+      assertRootPolicy(invalidRange);
+      assertRevalidates(invalidRange);
+    });
+
+    await t.test('rejects every range request on an empty file', async () => {
+      const response = await request(server, '/assets/empty.abcdef12.js', {
+        headers: { Range: 'bytes=-1' },
+      });
+      assert.equal(response.statusCode, 416);
+      assert.equal(response.headers['content-range'], 'bytes */0');
+      assert.equal(response.body.length, 0);
+      assertRootPolicy(response);
+      assertRevalidates(response);
+    });
+
     await t.test('serves required media and font MIME types', async () => {
       const webm = await request(server, '/media/clip.webm');
       assert.equal(webm.statusCode, 200);
@@ -223,6 +285,23 @@ test('serves a temporary dist through real HTTP with bounded responses and clean
         assertRootPolicy(response);
         assertRevalidates(response);
       }
+    });
+
+    await t.test('does not disclose bytes after final-file or parent-directory swaps', async () => {
+      const finalFile = await request(server, '/file-swap.txt');
+      assert.equal(finalFile.statusCode, 403);
+      assert.doesNotMatch(finalFile.body.toString(), /outside final marker/);
+      assertRootPolicy(finalFile);
+      assertRevalidates(finalFile);
+
+      const parentDirectory = await request(server, '/parent-swap/inside.txt');
+      assert.equal(parentDirectory.statusCode, 403);
+      assert.doesNotMatch(parentDirectory.body.toString(), /outside parent marker/);
+      assertRootPolicy(parentDirectory);
+      assertRevalidates(parentDirectory);
+
+      assert.ok(escapedParentHandle);
+      await assert.rejects(() => escapedParentHandle.stat(), { code: 'EBADF' });
     });
 
     await t.test('bounds unsupported methods and filesystem race failures', async () => {
@@ -259,17 +338,22 @@ function createDistFixture() {
   writeFixture(dist, '/pl/index.html', '<h1>Polski fixture</h1>');
   writeFixture(dist, '/404.html', '<h1>Built 404 fixture</h1>');
   writeFixture(dist, '/assets/app.abcdef12.js', 'globalThis.fixture = true;');
+  writeFixture(dist, '/assets/empty.abcdef12.js', '');
   writeFixture(dist, '/fonts/local.woff2', Buffer.from([0, 1, 2, 3]));
   writeFixture(dist, '/favicon.svg', '<svg></svg>');
   writeFixture(dist, '/video/clip.mp4', '0123456789');
   writeFixture(dist, '/media/clip.webm', 'webm');
   writeFixture(dist, '/nested/font.otf', Buffer.from([0, 1]));
   writeFixture(dist, '/race.txt', 'race');
+  writeFixture(dist, '/file-swap.txt', 'inside final fixture');
+  writeFixture(dist, '/parent-swap/inside.txt', 'inside parent fixture');
   writeFixture(outside, '/secret.txt', 'outside secret');
+  writeFixture(outside, '/final-secret.txt', 'outside final marker');
+  writeFixture(outside, '/parent-swap/inside.txt', 'outside parent marker');
   symlinkSync(join(outside, 'secret.txt'), join(dist, 'leak.txt'));
   symlinkSync(outside, join(dist, 'leak-directory'));
 
-  return { root, dist };
+  return { root, dist, outside };
 }
 
 function writeFixture(root, requestPath, contents) {

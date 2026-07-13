@@ -167,37 +167,58 @@ const expectedCsp = [
   "object-src 'none'",
   "frame-ancestors 'none'",
 ].join('; ');
-const requiredHeaderSections = [
-  [
-    'safe request-path default revalidates',
-    'Permissions-Policy: camera=(), microphone=(), geolocation=()\n  Cache-Control: public, max-age=0, must-revalidate',
-  ],
-  ['content-addressed assets are immutable', '/assets/*\n  Cache-Control: public, max-age=31536000, immutable'],
-  ['fonts are immutable', '/fonts/*\n  Cache-Control: public, max-age=31536000, immutable'],
-];
+const revalidate = 'public, max-age=0, must-revalidate';
+const immutable = 'public, max-age=31536000, immutable';
+const expectedRulePatterns = ['/*', '/assets/*', '/fonts/*'];
+const expectedSecurityHeaders = {
+  'Content-Security-Policy': expectedCsp,
+  'X-Content-Type-Options': 'nosniff',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
+};
 assert('dist/_headers generated', exists('_headers'));
 assert('dist/_headers parses as deterministic path rules', !headerParseError);
 assert(
+  'response rules use exact Netlify merge order',
+  headerRules.length === expectedRulePatterns.length
+    && headerRules.every(({ pattern }, index) => pattern === expectedRulePatterns[index]),
+);
+assert(
+  'every response rule repeats the complete security tuple',
+  headerRules.length === expectedRulePatterns.length
+    && headerRules.every(({ headers }) => Object.entries(expectedSecurityHeaders)
+      .every(([name, value]) => headers[name] === value)),
+);
+assert(
   'root CSP is the exact launch policy',
-  headersOutput.includes(`/*\n  Content-Security-Policy: ${expectedCsp}\n`),
+  headerRules[0]?.pattern === '/*'
+    && headerRules[0]?.headers['Content-Security-Policy'] === expectedCsp,
 );
 assert(
   'root security headers are complete',
-  [
-    '  X-Content-Type-Options: nosniff',
-    '  Referrer-Policy: strict-origin-when-cross-origin',
-    '  Permissions-Policy: camera=(), microphone=(), geolocation=()',
-  ].every((header) => headersOutput.includes(header)),
+  Object.entries(expectedSecurityHeaders)
+    .every(([name, value]) => headerRules[0]?.headers[name] === value),
 );
 assert(
-  'CSP contains exactly the permitted inline hash',
-  (headersOutput.match(/'sha256-[A-Za-z0-9+/]+=*'/g) ?? []).join(',') === bootstrapHash,
+  'each CSP contains exactly the permitted inline hash',
+  headerRules.length === expectedRulePatterns.length
+    && headerRules.every(({ headers }) => {
+      const hashes = headers['Content-Security-Policy']?.match(/'sha256-[A-Za-z0-9+/]+=*'/g) ?? [];
+      return hashes.length === 1 && hashes[0] === bootstrapHash;
+    }),
 );
-for (const [label, section] of requiredHeaderSections) {
-  assert(`cache policy: ${label}`, headersOutput.includes(section));
-}
-const revalidate = 'public, max-age=0, must-revalidate';
-const immutable = 'public, max-age=31536000, immutable';
+assert(
+  'cache policy: content-addressed assets are immutable',
+  headerRules[1]?.headers['Cache-Control'] === immutable,
+);
+assert(
+  'cache policy: fonts are immutable',
+  headerRules[2]?.headers['Cache-Control'] === immutable,
+);
+assert(
+  'cache policy: safe request-path fallback revalidates',
+  headerRules[0]?.headers['Cache-Control'] === revalidate,
+);
 for (const pathname of ['/', '/pl/', '/menu', '/definitely-missing/', '/404']) {
   assert(
     `request path ${pathname} safely revalidates`,

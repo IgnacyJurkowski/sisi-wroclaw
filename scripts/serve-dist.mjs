@@ -1,4 +1,5 @@
 import {
+  constants,
   lstatSync,
   readFileSync,
   realpathSync,
@@ -72,7 +73,9 @@ export function createDistServer({
           response.destroy(error);
           return;
         }
-        sendText(response, 500, rootHeaders, 'Internal Server Error', request.method);
+        const status = [400, 403].includes(error.statusCode) ? error.statusCode : 500;
+        const body = status === 400 ? 'Bad Request' : status === 403 ? 'Forbidden' : 'Internal Server Error';
+        sendText(response, status, rootHeaders, body, request.method);
       });
   });
 }
@@ -95,8 +98,8 @@ async function handleRequest({ request, response, distRoot, distReal, rules, roo
   let requestPath;
   let candidate;
   try {
-    requestPath = decodeRequestPath(rawPathname);
     candidate = resolveRequestPath(distRoot, rawPathname);
+    requestPath = canonicalRequestPath(distRoot, candidate);
   } catch (error) {
     const status = error.statusCode === 403 ? 403 : 400;
     sendText(response, status, rootHeaders, status === 403 ? 'Forbidden' : 'Bad Request', method);
@@ -123,31 +126,62 @@ async function handleRequest({ request, response, distRoot, distReal, rules, roo
       return;
     }
     if (!file) {
-      sendText(response, 404, headersForPath(rules, requestPath), 'Not Found', method);
+      sendText(response, 404, rootHeaders, 'Not Found', method);
       return;
     }
   }
 
-  await serveFile({ request, response, requestPath, status, file, rules, openFile });
+  await serveFile({
+    request,
+    response,
+    requestPath,
+    status,
+    file,
+    distReal,
+    rules,
+    rootHeaders,
+    openFile,
+  });
 }
 
-async function serveFile({ request, response, requestPath, status, file, rules, openFile }) {
-  const handle = await openFile(file, 'r');
+async function serveFile({
+  request,
+  response,
+  requestPath,
+  status,
+  file,
+  distReal,
+  rules,
+  rootHeaders,
+  openFile,
+}) {
+  let handle;
+  try {
+    handle = await openFile(file, constants.O_RDONLY | constants.O_NOFOLLOW);
+  } catch (error) {
+    if (error.code === 'ELOOP') throw httpError(403, 'final symlink is forbidden');
+    throw error;
+  }
   let handedToStream = false;
 
   try {
-    const fileStat = await handle.stat();
-    if (!fileStat.isFile()) throw new Error(`Built response is not a regular file: ${file}`);
+    const fileStat = await verifiedOpenedFileStat(handle, distReal);
+    if (!fileStat.isFile()) throw httpError(403, 'opened response is not a regular file');
 
-    const headers = {
-      ...headersForPath(rules, requestPath),
+    let headers = {
+      ...(status === 200 ? headersForPath(rules, requestPath) : rootHeaders),
       'Content-Type': contentType(file),
       'Accept-Ranges': 'bytes',
     };
     const range = status === 200 ? validRange(request.headers.range, fileStat.size) : undefined;
     if (range === null) {
-      headers['Content-Range'] = `bytes */${fileStat.size}`;
-      headers['Content-Length'] = '0';
+      headers = {
+        ...rootHeaders,
+        'Content-Type': contentType(file),
+        'Accept-Ranges': 'bytes',
+        'Content-Range': `bytes */${fileStat.size}`,
+        'Content-Length': '0',
+      };
       response.writeHead(416, headers);
       response.end();
       return;
@@ -176,6 +210,27 @@ async function serveFile({ request, response, requestPath, status, file, rules, 
   } finally {
     if (!handedToStream) await handle.close();
   }
+}
+
+async function verifiedOpenedFileStat(handle, distReal) {
+  let descriptorTarget;
+  try {
+    descriptorTarget = await realpath(`/proc/self/fd/${handle.fd}`);
+  } catch {
+    throw httpError(403, 'opened descriptor target cannot be verified');
+  }
+  if (!isWithin(distReal, descriptorTarget)) {
+    throw httpError(403, 'opened descriptor target escapes dist');
+  }
+
+  const [handleStat, targetStat] = await Promise.all([
+    handle.stat(),
+    stat(descriptorTarget),
+  ]);
+  if (handleStat.dev !== targetStat.dev || handleStat.ino !== targetStat.ino) {
+    throw httpError(403, 'opened descriptor identity changed');
+  }
+  return handleStat;
 }
 
 async function findBuiltFile(candidate, distReal) {
@@ -212,6 +267,11 @@ function decodeRequestPath(rawPathname) {
   return decoded.replaceAll('\\', '/');
 }
 
+function canonicalRequestPath(root, candidate) {
+  const containedPath = relative(root, candidate).split(sep).join('/');
+  return containedPath ? `/${containedPath}` : '/';
+}
+
 function rejectExistingSymlinks(root, candidate) {
   const parts = relative(root, candidate).split(sep).filter(Boolean);
   let current = root;
@@ -234,6 +294,7 @@ function isWithin(root, candidate) {
 
 function validRange(rangeHeader, size) {
   if (!rangeHeader) return undefined;
+  if (size === 0) return null;
   const match = rangeHeader.match(/^bytes=(\d*)-(\d*)$/);
   if (!match || (!match[1] && !match[2])) return null;
 

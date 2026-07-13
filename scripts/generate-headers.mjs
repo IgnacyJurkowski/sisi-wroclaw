@@ -96,20 +96,18 @@ export function inlineScriptHashes(html) {
 export function renderHeaders(hashes) {
   const uniqueHashes = [...new Set(hashes)].sort();
   const scriptSource = ["'self'", ...uniqueHashes].join(' ');
+  const securityHeaders = [
+    `  Content-Security-Policy: default-src 'self'; script-src ${scriptSource}; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; media-src 'self'; connect-src 'self'; form-action 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'`,
+    '  X-Content-Type-Options: nosniff',
+    '  Referrer-Policy: strict-origin-when-cross-origin',
+    '  Permissions-Policy: camera=(), microphone=(), geolocation=()',
+  ];
 
-  return `/*
-  Content-Security-Policy: default-src 'self'; script-src ${scriptSource}; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; media-src 'self'; connect-src 'self'; form-action 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'
-  X-Content-Type-Options: nosniff
-  Referrer-Policy: strict-origin-when-cross-origin
-  Permissions-Policy: camera=(), microphone=(), geolocation=()
-  Cache-Control: ${REVALIDATE}
-
-/assets/*
-  Cache-Control: ${IMMUTABLE}
-
-/fonts/*
-  Cache-Control: ${IMMUTABLE}
-`;
+  return [
+    renderHeaderRule('/*', securityHeaders, REVALIDATE),
+    renderHeaderRule('/assets/*', securityHeaders, IMMUTABLE),
+    renderHeaderRule('/fonts/*', securityHeaders, IMMUTABLE),
+  ].join('\n\n') + '\n';
 }
 
 export function parseHeaderRules(source) {
@@ -221,6 +219,10 @@ export function generateHeaders({ dist = DEFAULT_DIST } = {}) {
 
 function hashSource(source) {
   return `'sha256-${createHash('sha256').update(source).digest('base64')}'`;
+}
+
+function renderHeaderRule(pattern, securityHeaders, cacheControl) {
+  return [pattern, ...securityHeaders, `  Cache-Control: ${cacheControl}`].join('\n');
 }
 
 function isScriptTagAt(html, start, closing) {

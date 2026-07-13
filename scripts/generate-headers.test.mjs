@@ -109,6 +109,7 @@ test('rejects unmatched and malformed script starts and ends', () => {
 
 test('renders the complete launch policy without wildcard CORS', () => {
   const output = renderHeaders([BOOTSTRAP_HASH]);
+  const rules = headerPolicy.parseHeaderRules(output);
   const policy = [
     "default-src 'self'",
     `script-src 'self' ${BOOTSTRAP_HASH}`,
@@ -123,33 +124,31 @@ test('renders the complete launch policy without wildcard CORS', () => {
     "frame-ancestors 'none'",
   ].join('; ');
 
-  assert.match(output, new RegExp(`^/\\*\\n  Content-Security-Policy: ${escapeRegExp(policy)}$`, 'm'));
-  for (const header of [
-    'X-Content-Type-Options: nosniff',
-    'Referrer-Policy: strict-origin-when-cross-origin',
-    'Permissions-Policy: camera=(), microphone=(), geolocation=()',
-  ]) {
-    assert.match(output, new RegExp(`^  ${escapeRegExp(header)}$`, 'm'));
+  assert.deepEqual(rules.map(({ pattern }) => pattern), ['/*', '/assets/*', '/fonts/*']);
+  for (const rule of rules) {
+    assert.equal(rule.headers['Content-Security-Policy'], policy, rule.pattern);
+    assert.equal(rule.headers['X-Content-Type-Options'], 'nosniff', rule.pattern);
+    assert.equal(rule.headers['Referrer-Policy'], 'strict-origin-when-cross-origin', rule.pattern);
+    assert.equal(rule.headers['Permissions-Policy'], 'camera=(), microphone=(), geolocation=()', rule.pattern);
   }
   assert.doesNotMatch(output, /Access-Control-Allow-Origin/i);
 });
 
 test('sorts and deduplicates hashes deterministically', () => {
   const output = renderHeaders(["'sha256-z='", "'sha256-a='", "'sha256-z='"]);
-  assert.match(output, /script-src 'self' 'sha256-a=' 'sha256-z='/);
-  assert.equal((output.match(/'sha256-z='/g) ?? []).length, 1);
+  const rules = headerPolicy.parseHeaderRules(output);
+  for (const rule of rules) {
+    assert.match(rule.headers['Content-Security-Policy'], /script-src 'self' 'sha256-a=' 'sha256-z='/);
+    assert.equal((rule.headers['Content-Security-Policy'].match(/'sha256-z='/g) ?? []).length, 1);
+  }
 });
 
 test('renders HTML, immutable hashed asset, font, and revalidated media cache sections', () => {
-  const output = renderHeaders([BOOTSTRAP_HASH]);
-  for (const section of [
-    'Permissions-Policy: camera=(), microphone=(), geolocation=()\n  Cache-Control: public, max-age=0, must-revalidate',
-    '/assets/*\n  Cache-Control: public, max-age=31536000, immutable',
-    '/fonts/*\n  Cache-Control: public, max-age=31536000, immutable',
-  ]) {
-    assert.match(output, new RegExp(escapeRegExp(section)));
-  }
-  assert.doesNotMatch(output, /^\/\*\.html$/m);
+  const rules = headerPolicy.parseHeaderRules(renderHeaders([BOOTSTRAP_HASH]));
+  assert.equal(rules[0].headers['Cache-Control'], 'public, max-age=0, must-revalidate');
+  assert.equal(rules[1].headers['Cache-Control'], 'public, max-age=31536000, immutable');
+  assert.equal(rules[2].headers['Cache-Control'], 'public, max-age=31536000, immutable');
+  assert.equal(rules.some(({ pattern }) => pattern === '/*.html'), false);
 });
 
 test('matches generated cache rules by request path with a safe default and specific overrides', () => {
@@ -171,6 +170,40 @@ test('matches generated cache rules by request path with a safe default and spec
   assert.equal(
     headerPolicy.headersForPath(rules, '/fonts.gstatic.com/s/family/font.woff2')['Cache-Control'],
     revalidate,
+  );
+});
+
+test('merges all matching rules in source order so the later specific rule wins', () => {
+  const specific = {
+    pattern: '/assets/*',
+    headers: {
+      'Cache-Control': 'public, max-age=31536000, immutable',
+      'X-Rule': 'specific',
+    },
+  };
+  const fallback = {
+    pattern: '/*',
+    headers: {
+      'Cache-Control': 'public, max-age=0, must-revalidate',
+      'X-Rule': 'fallback',
+      'X-Fallback-Only': 'must not merge',
+    },
+  };
+
+  assert.deepEqual(
+    headerPolicy.headersForPath([fallback, specific], '/assets/app.abcdef12.js'),
+    {
+      ...fallback.headers,
+      ...specific.headers,
+    },
+  );
+  assert.deepEqual(headerPolicy.headersForPath([fallback, specific], '/pl/'), fallback.headers);
+  assert.deepEqual(
+    headerPolicy.headersForPath([specific, fallback], '/assets/app.abcdef12.js'),
+    {
+      ...specific.headers,
+      ...fallback.headers,
+    },
   );
 });
 
@@ -280,10 +313,6 @@ test('importing the module does not write headers as a side effect', () => {
     rmSync(cwd, { recursive: true, force: true });
   }
 });
-
-function escapeRegExp(value) {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
 
 function writeFixture(root, requestPath, contents) {
   const file = join(root, requestPath.replace(/^\//, ''));
