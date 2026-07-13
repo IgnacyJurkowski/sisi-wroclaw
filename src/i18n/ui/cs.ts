@@ -334,6 +334,7 @@ const cs: UI = {
       body: 'Od konferencí, panelů a prezentací po večeře, uvedení produktů, networking a večerní firemní akce. Spojte restauraci The Cork s energií SiSi a uspořádejte celou akci na jednom místě.',
       ctaPrimary: 'Zeptat se na termín',
       ctaSecondary: 'Poznat prostory',
+      contactLead: 'Raději si promluvíte?',
     },
     facts: {
       heading: 'Prostor v číslech',

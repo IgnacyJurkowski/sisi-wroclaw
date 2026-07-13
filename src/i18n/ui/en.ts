@@ -334,6 +334,7 @@ const en: UI = {
       body: 'From conferences, panels and presentations to dinners, launches, networking and evening corporate events. Combine the restaurant The Cork with the energy of SiSi and host the whole event in one place.',
       ctaPrimary: 'Request a date',
       ctaSecondary: 'Explore the spaces',
+      contactLead: 'Prefer to talk it through?',
     },
     facts: {
       heading: 'The space in numbers',

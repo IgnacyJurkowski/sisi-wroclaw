@@ -334,6 +334,7 @@ const it: UI = {
       body: 'Da conferenze, panel e presentazioni a cene, lanci, networking ed eventi aziendali serali. Unisci il ristorante The Cork all\'energia di SiSi e organizza l\'intero evento in un solo luogo.',
       ctaPrimary: 'Richiedi una data',
       ctaSecondary: 'Scopri gli spazi',
+      contactLead: 'Preferisci parlarne?',
     },
     facts: {
       heading: 'Lo spazio in numeri',

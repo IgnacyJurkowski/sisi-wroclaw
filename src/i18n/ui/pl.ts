@@ -342,6 +342,7 @@ const pl = {
       body: 'Od konferencji, paneli i prezentacji po kolacje, premiery, networking i wieczorne wydarzenia firmowe. Połącz restaurację The Cork z energią SiSi i zorganizuj cały event w jednym miejscu.',
       ctaPrimary: 'Zapytaj o termin',
       ctaSecondary: 'Poznaj przestrzenie',
+      contactLead: 'Wolisz porozmawiać?',
     },
     facts: {
       heading: 'Przestrzeń w liczbach',
