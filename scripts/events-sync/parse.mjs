@@ -117,6 +117,25 @@ export function warsawIso(dateStr, time) {
   return `${yyyy}-${p(mm)}-${p(dd)}T${p(hh)}:${p(min)}:00${sign}${oh}:${om}`;
 }
 
+// A club night runs ~6h past its listed start, so it only counts as "ended"
+// after that window - the same constant src/data/site.ts uses to move a night
+// from the upcoming list into the archive. Kept in sync by name, not import,
+// because this module must stay dependency-free of the Astro/site code.
+const EVENT_DURATION_MS = 6 * 60 * 60 * 1000;
+
+/** True once an event on `dateKey` (DD-MM-YYYY, optional HH:MM `startTime`) has
+    fully ended by `now`, using the same start+6h window the site archives on.
+    A missing/malformed start is treated as a late 23:59 start so we only ever
+    call a night "past" once it is certainly over; a malformed dateKey returns
+    false so such an event stays fail-closed rather than being quietly skipped.
+    `now` is injectable so the boundary is unit-testable. */
+export function isPastEvent(dateKey, startTime, now = Date.now()) {
+  if (!/^\d{2}-\d{2}-\d{4}$/.test(dateKey || '')) return false;
+  const time = /^\d{1,2}:\d{2}$/.test(startTime || '') ? startTime : '23:59';
+  const start = Date.parse(warsawIso(dateKey, time));
+  return Number.isFinite(start) && start + EVENT_DURATION_MS < now;
+}
+
 /** Stable, sort-friendly slug for the banner filename + (later) per-event URLs.
     ("26-06-2026","Friday at SiSi") -> "2026-06-26-friday-at-sisi". */
 export function eventSlug(dateStr, title) {

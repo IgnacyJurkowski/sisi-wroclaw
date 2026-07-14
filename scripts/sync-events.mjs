@@ -10,9 +10,12 @@
 //
 // Bad-row policy (no status field in the template, so it maps to file state):
 //   - incomplete pair (banner XOR doc)          -> skip + report  ("draft")
-//   - complete pair, doc missing Title/Start     -> FAIL, keep last-good
+//   - upcoming/live pair failing validation      -> FAIL, keep last-good
+//   - past (already-ended) pair failing validation -> skip + report
 //   - count drops > 50% from populated last-good -> FAIL, keep last-good
-// FAIL = non-zero exit, no write; CI leaves the last-good file in place.
+// FAIL = non-zero exit, no write; CI leaves the last-good file in place. Past
+// events are archive-only, so a malformed leftover there is skipped rather than
+// blocking the whole lineup; a valid past event still publishes to the archive.
 
 import { createHash } from 'node:crypto';
 import { writeFile, mkdir, readFile, readdir, rm } from 'node:fs/promises';
@@ -25,6 +28,7 @@ import {
   warsawIso,
   eventSlug,
   dateKeyFromFilename,
+  isPastEvent,
   validateEvent,
 } from './events-sync/parse.mjs';
 
@@ -76,7 +80,17 @@ async function run() {
     const fields = parseOpisy(await exportDocText(token, doc.id));
     const errors = validateEvent(fields, dateKey);
     if (errors.length) {
-      failed.push(`${dateKey}: ${errors.join('; ')}`);
+      // Fail closed only for events that are still upcoming/live: a broken
+      // current night must halt the sync so staff notice, never silently
+      // vanish. A finished (past) event is archive-only, so a malformed
+      // leftover (e.g. a stale placeholder) is skipped with a warning instead
+      // of taking the whole lineup down. Valid past events still publish into
+      // the archive below - only unpublishable junk is dropped here.
+      if (isPastEvent(dateKey, fields.startTime)) {
+        skipped.push(`${dateKey}: ${errors.join('; ')} (past; kept out of archive)`);
+      } else {
+        failed.push(`${dateKey}: ${errors.join('; ')}`);
+      }
       continue;
     }
 
