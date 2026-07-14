@@ -5,6 +5,7 @@ import {
   warsawIso,
   eventSlug,
   dateKeyFromFilename,
+  isPastEvent,
   validateEvent,
 } from './parse.mjs';
 import { eventOffer } from '../../src/lib/event-offer.mjs';
@@ -188,4 +189,34 @@ test('validateEvent - applies public sample-quality policy', () => {
     '26-06-2026',
   );
   assert.ok(errs.some((e) => /sample-quality/.test(e)));
+});
+
+// The sync fails closed on a broken upcoming night but only skips a broken
+// past one (archive-only). isPastEvent draws that line on the same start+6h
+// window the site archives on, so these cases lock the boundary.
+const NOON_14_JUL = Date.parse('2026-07-14T12:00:00+02:00');
+
+test('isPastEvent - a night that ended weeks ago is past', () => {
+  assert.equal(isPastEvent('26-06-2026', '22:00', NOON_14_JUL), true);
+});
+
+test('isPastEvent - a future night is not past', () => {
+  assert.equal(isPastEvent('20-07-2026', '22:00', NOON_14_JUL), false);
+});
+
+test('isPastEvent - a night still inside its 6h window is not yet past', () => {
+  // 22:00 start + 6h ends 04:00; at 01:00 the night is still running.
+  const during = Date.parse('2026-07-15T01:00:00+02:00');
+  assert.equal(isPastEvent('14-07-2026', '22:00', during), false);
+});
+
+test('isPastEvent - missing start time assumes a late 23:59 start', () => {
+  // Old night with no parsable start still resolves as past...
+  assert.equal(isPastEvent('26-06-2026', '', NOON_14_JUL), true);
+  // ...but today's night is not called past before it could have ended.
+  assert.equal(isPastEvent('14-07-2026', '', NOON_14_JUL), false);
+});
+
+test('isPastEvent - malformed date key is never treated as past', () => {
+  assert.equal(isPastEvent('not-a-date', '22:00', NOON_14_JUL), false);
 });
