@@ -33,7 +33,7 @@ const it: UI = {
     corporate: {
       title: 'Eventi aziendali - SiSi & The Cork Wrocław',
       description:
-        'Una location per eventi aziendali nel centro di Breslavia: conferenze, panel, presentazioni, cene, lanci e networking. Fino a 150 posti a sedere al The Cork, 2 schermi.',
+        'Una location per eventi aziendali nel centro di Breslavia: conferenze, panel, presentazioni, cene, lanci e networking. 663 m², fino a 150 posti a sedere al The Cork, 2 schermi.',
       ogDescription: 'Conferenze, presentazioni, cene ed eventi aziendali serali nel centro di Breslavia. SiSi & The Cork.',
     },
     contact: {
@@ -338,7 +338,9 @@ const it: UI = {
     facts: {
       heading: 'Lo spazio in numeri',
       items: [
+        { icon: 'area', value: '663 m²', label: 'di spazio eventi' },
         { icon: 'seated', value: 'fino a 150', label: 'posti a sedere al The Cork' },
+        { icon: 'standing', value: 'fino a 500', label: 'ospiti in piedi (buffet)' },
         { icon: 'screens', value: '2 schermi', label: 'per presentazioni' },
         { icon: 'location', value: 'centro', label: 'di Breslavia' },
       ],
@@ -384,14 +386,16 @@ const it: UI = {
       sisi: {
         title: 'SiSi',
         body: 'Un music club con l\'energia giusta per chiudere la serata.',
-          points: [
-            'Programmi serali, networking e feste',
-            'Musica dal vivo e DJ',
-          ],
+        points: [
+          'Programmi serali, networking e feste',
+          'Musica dal vivo e DJ',
+          'Fino a 500 ospiti in piedi (buffet)',
+          '2 schermi per presentazioni',
+        ],
       },
       combined: {
         title: 'L\'intero complesso R32',
-        body: 'Passa senza interruzioni dalla parte formale o dalla cena al programma serale - tutto in un solo luogo.',
+        body: 'Passa senza interruzioni dalla parte formale o dalla cena al programma serale - tutto in un solo luogo, su 663 m² di spazio.',
       },
     },
     why: {

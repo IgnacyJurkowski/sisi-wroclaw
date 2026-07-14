@@ -33,7 +33,7 @@ const en: UI = {
     corporate: {
       title: 'Corporate Events - SiSi & The Cork Wrocław',
       description:
-        'A corporate-event venue in central Wrocław: conferences, panels, presentations, dinners, launches and networking. Up to 150 seated guests at The Cork, 2 screens.',
+        'A corporate-event venue in central Wrocław: conferences, panels, presentations, dinners, launches and networking. 663 m², up to 150 seated guests at The Cork, 2 screens.',
       ogDescription: 'Conferences, presentations, dinners and evening corporate events in central Wrocław. SiSi & The Cork.',
     },
     contact: {
@@ -338,7 +338,9 @@ const en: UI = {
     facts: {
       heading: 'The space in numbers',
       items: [
+        { icon: 'area', value: '663 m²', label: 'of event space' },
         { icon: 'seated', value: 'up to 150', label: 'seated guests at The Cork' },
+        { icon: 'standing', value: 'up to 500', label: 'standing guests (buffet)' },
         { icon: 'screens', value: '2 screens', label: 'for presentations' },
         { icon: 'location', value: 'central', label: 'Wrocław location' },
       ],
@@ -384,14 +386,16 @@ const en: UI = {
       sisi: {
         title: 'SiSi',
         body: 'A music club with the energy to close out the night.',
-          points: [
-            'Evening programmes, networking and celebrations',
-            'Live music and DJs',
-          ],
+        points: [
+          'Evening programmes, networking and celebrations',
+          'Live music and DJs',
+          'Up to 500 standing guests (buffet)',
+          '2 presentation screens',
+        ],
       },
       combined: {
         title: 'The whole R32 destination',
-        body: 'Move seamlessly from the formal part or dinner into the evening programme - all in one place.',
+        body: 'Move seamlessly from the formal part or dinner into the evening programme - all in one place, across 663 m² of space.',
       },
     },
     why: {

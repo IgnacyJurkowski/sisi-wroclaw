@@ -35,7 +35,7 @@ const pl = {
     corporate: {
       title: 'Eventy firmowe - SiSi & The Cork Wrocław',
       description:
-        'Przestrzeń na eventy firmowe w centrum Wrocławia: konferencje, panele, prezentacje, kolacje, premiery i networking. Do 150 miejsc siedzących w The Cork, 2 ekrany.',
+        'Przestrzeń na eventy firmowe w centrum Wrocławia: konferencje, panele, prezentacje, kolacje, premiery i networking. 663 m², do 150 miejsc siedzących w The Cork, 2 ekrany.',
       ogDescription: 'Konferencje, prezentacje, kolacje i wieczorne eventy firmowe w centrum Wrocławia. SiSi & The Cork.',
     },
     contact: {
@@ -346,7 +346,9 @@ const pl = {
     facts: {
       heading: 'Przestrzeń w liczbach',
       items: [
+        { icon: 'area' as const, value: '663 m²', label: 'przestrzeni eventowej' },
         { icon: 'seated' as const, value: 'do 150', label: 'miejsc siedzących w The Cork' },
+        { icon: 'standing' as const, value: 'do 500', label: 'gości na stojąco (bufet)' },
         { icon: 'screens' as const, value: '2 ekrany', label: 'do prezentacji' },
         { icon: 'location' as const, value: 'centrum', label: 'Wrocławia' },
       ],
@@ -392,14 +394,16 @@ const pl = {
       sisi: {
         title: 'SiSi',
         body: 'Klub muzyczny z energią, która domyka wieczór.',
-          points: [
-            'Wieczorne programy, networking i świętowanie',
-            'Muzyka na żywo i DJ-e',
-          ],
+        points: [
+          'Wieczorne programy, networking i świętowanie',
+          'Muzyka na żywo i DJ-e',
+          'Do 500 gości na stojąco (bufet)',
+          '2 ekrany do prezentacji',
+        ],
       },
       combined: {
         title: 'Cały kompleks R32',
-        body: 'Przejdź płynnie od części formalnej lub kolacji do wieczornego programu - w jednym miejscu.',
+        body: 'Przejdź płynnie od części formalnej lub kolacji do wieczornego programu - w jednym miejscu, na łącznie 663 m² przestrzeni.',
       },
     },
     why: {

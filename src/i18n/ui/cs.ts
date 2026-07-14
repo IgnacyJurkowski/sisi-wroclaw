@@ -33,7 +33,7 @@ const cs: UI = {
     corporate: {
       title: 'Firemní akce - SiSi & The Cork Wrocław',
       description:
-        'Prostor pro firemní akce v centru Vratislavi: konference, panely, prezentace, večeře, uvedení produktů a networking. Až 150 míst k sezení v The Cork, 2 obrazovky.',
+        'Prostor pro firemní akce v centru Vratislavi: konference, panely, prezentace, večeře, uvedení produktů a networking. 663 m², až 150 míst k sezení v The Cork, 2 obrazovky.',
       ogDescription: 'Konference, prezentace, večeře a večerní firemní akce v centru Vratislavi. SiSi & The Cork.',
     },
     contact: {
@@ -338,7 +338,9 @@ const cs: UI = {
     facts: {
       heading: 'Prostor v číslech',
       items: [
+        { icon: 'area', value: '663 m²', label: 'prostoru pro akce' },
         { icon: 'seated', value: 'až 150', label: 'míst k sezení v The Cork' },
+        { icon: 'standing', value: 'až 500', label: 'hostů ve stoje (bufet)' },
         { icon: 'screens', value: '2 obrazovky', label: 'pro prezentace' },
         { icon: 'location', value: 'centrum', label: 'Vratislavi' },
       ],
@@ -384,14 +386,16 @@ const cs: UI = {
       sisi: {
         title: 'SiSi',
         body: 'Music club s energií, která uzavře večer.',
-          points: [
-            'Večerní programy, networking a oslavy',
-            'Živá hudba a DJ',
-          ],
+        points: [
+          'Večerní programy, networking a oslavy',
+          'Živá hudba a DJ',
+          'Až 500 hostů ve stoje (bufet)',
+          '2 obrazovky pro prezentace',
+        ],
       },
       combined: {
         title: 'Celý komplex R32',
-        body: 'Plynule přejděte z formální části nebo večeře do večerního programu - vše na jednom místě.',
+        body: 'Plynule přejděte z formální části nebo večeře do večerního programu - vše na jednom místě, na celkem 663 m² prostoru.',
       },
     },
     why: {

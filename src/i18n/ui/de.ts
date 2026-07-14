@@ -34,7 +34,7 @@ const de: UI = {
     corporate: {
       title: 'Firmenevents - SiSi & The Cork Wrocław',
       description:
-        'Eventlocation im Zentrum von Breslau: Konferenzen, Panels, Präsentationen, Dinner, Launches und Networking. Bis zu 150 Sitzplätze im The Cork, 2 Bildschirme.',
+        'Eventlocation im Zentrum von Breslau: Konferenzen, Panels, Präsentationen, Dinner, Launches und Networking. 663 m², bis zu 150 Sitzplätze im The Cork, 2 Bildschirme.',
       ogDescription: 'Konferenzen, Präsentationen, Dinner und abendliche Firmenevents im Zentrum von Breslau. SiSi & The Cork.',
     },
     contact: {
@@ -339,7 +339,9 @@ const de: UI = {
     facts: {
       heading: 'Der Raum in Zahlen',
       items: [
+        { icon: 'area', value: '663 m²', label: 'Eventfläche' },
         { icon: 'seated', value: 'bis zu 150', label: 'Sitzplätze im The Cork' },
+        { icon: 'standing', value: 'bis zu 500', label: 'Gäste im Stehen (Buffet)' },
         { icon: 'screens', value: '2 Bildschirme', label: 'für Präsentationen' },
         { icon: 'location', value: 'Zentrum', label: 'von Breslau' },
       ],
@@ -385,14 +387,16 @@ const de: UI = {
       sisi: {
         title: 'SiSi',
         body: 'Ein Music Club mit der Energie, den Abend ausklingen zu lassen.',
-          points: [
-            'Abendprogramme, Networking und Feiern',
-            'Live-Musik und DJs',
-          ],
+        points: [
+          'Abendprogramme, Networking und Feiern',
+          'Live-Musik und DJs',
+          'Bis zu 500 Gäste im Stehen (Buffet)',
+          '2 Präsentationsbildschirme',
+        ],
       },
       combined: {
         title: 'Der gesamte R32-Komplex',
-        body: 'Gehe nahtlos vom offiziellen Teil oder Dinner ins Abendprogramm über - alles an einem Ort.',
+        body: 'Gehe nahtlos vom offiziellen Teil oder Dinner ins Abendprogramm über - alles an einem Ort, auf insgesamt 663 m² Fläche.',
       },
     },
     why: {

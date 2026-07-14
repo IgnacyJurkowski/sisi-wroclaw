@@ -9,8 +9,10 @@ Route: `/pl/eventy-firmowe/` (and `/en/corporate-events/`, `/de/firmenevents/`,
 `src/data/site.ts` (`VENUE_FACTS`) is the source of truth for the supported
 capacity and equipment facts mirrored in each `b2b.facts` dictionary:
 
+- **663 m² of event space** — confirmed verified by the owner (2026-07-14).
 - **Up to 150 seated guests at The Cork** — always scope the 150 to The Cork;
   never imply SiSi itself seats 150.
+- **Up to 500 standing guests (buffet).**
 - **2 presentation screens.**
 
 The central Wrocław location is supported separately in the localized B2B copy.

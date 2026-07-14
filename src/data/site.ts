@@ -103,7 +103,9 @@ export const LEGAL_UPDATED_ISO = '2026-06-24';
 /* Verified B2B / corporate-event facts (source-of-truth). Do NOT imply SiSi
    itself seats 150 - that figure is The Cork's seated capacity. */
 export const VENUE_FACTS = {
+  areaSqm: 663,
   theCorkSeated: 150,
+  standingBuffet: 500,
   presentationScreens: 2,
 };
 
