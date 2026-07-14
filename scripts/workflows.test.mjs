@@ -31,6 +31,7 @@ test('package scripts expose the complete launch and exploit gates', async () =>
   assert.equal(pkg.scripts.test, REQUIRED_TEST);
   assert.equal(pkg.scripts['test:security'], 'node scripts/security-browser.mjs');
   assert.equal(pkg.scripts['verify:release'], 'npm test && npm run test:security');
+  assert.equal(pkg.scripts['smoke:host'], 'node scripts/smoke-host.mjs');
 });
 
 test('Netlify production builds use the exact audited Node runtime', async () => {

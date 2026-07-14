@@ -14,6 +14,7 @@
     "test": "npm run test:unit && npm run check && npm run build && npm run test:build",
     "test:security": "node scripts/security-browser.mjs",
     "verify:release": "npm test && npm run test:security",
+    "smoke:host": "node scripts/smoke-host.mjs",
     "test:unit": "node --test scripts/*.test.mjs scripts/events-sync/*.test.mjs",
     "build:check": "npm run build && node scripts/check-build.mjs",
     "test:build": "node scripts/check-build.mjs"
