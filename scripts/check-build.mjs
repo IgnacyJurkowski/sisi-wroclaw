@@ -434,8 +434,14 @@ for (const [label, pattern] of unverifiedRenderedClaims) {
 }
 assert('no sample event copy', !allHtml.includes('Krótki opis wydarzenia') && !allHtml.includes('JungleW'));
 assert('no stale June event routes', !existsSync(join(DIST, 'pl/wydarzenia/2026-06-26-friday-at-sisi/index.html')));
-for (const locale of ['pl', 'en', 'de', 'it', 'cs']) {
-  assert(`${locale} home has empty event state`, read(`${locale}/index.html`).includes(emptyEventCopy[locale]));
+// The home shows the empty-event copy only while there is nothing to list;
+// once staff publish an event in Drive it renders the lineup instead. So this
+// invariant applies to the zero-event build only - the same reason eventCount
+// is derived dynamically above (publishing an event must never fail CI).
+if (eventCount === 0) {
+  for (const locale of LOCALES) {
+    assert(`${locale} home has empty event state`, read(`${locale}/index.html`).includes(emptyEventCopy[locale]));
+  }
 }
 assert('no leaked {tokens} in html', leaked.length === 0);
 assert(`html pages = 52 base + ${eventCount} events x5`, htmls.length === 52 + eventCount * 5);
