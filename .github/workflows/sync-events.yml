@@ -19,13 +19,15 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          ssh-key: ${{ secrets.EVENT_SYNC_DEPLOY_KEY }}
 
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
@@ -59,5 +61,8 @@ jobs:
           git add src/data/events.generated.ts public/events
           git commit -m "chore(events): sync lineup from Drive"
           git pull --rebase --autostash origin main
+          # Re-test the exact rebased commit so concurrent main changes cannot
+          # bypass the release gate before the protected-branch push.
+          npm test
           git push
           curl --fail-with-body --silent --show-error -X POST "$NETLIFY_DEPLOY_HOOK"
