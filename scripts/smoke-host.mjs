@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { pathToFileURL } from 'node:url';
 
 const CANONICAL_ORIGIN = 'https://sisiwroclaw.pl';
 const REQUEST_TIMEOUT_MS = 15_000;
@@ -73,16 +74,35 @@ function attributes(tag) {
   return result;
 }
 
-function tags(html, name) {
-  return [...html.matchAll(new RegExp(`<${name}\\b[^>]*>`, 'gi'))].map((match) => match[0]);
+function activeHtml(html) {
+  let output = html;
+  let previous;
+  do {
+    previous = output;
+    output = output
+      .replace(/<!--[\s\S]*?-->/g, '')
+      .replace(/<(script|style|template|noscript)\b[^>]*>[\s\S]*?<\/\1\s*>/gi, '');
+  } while (output !== previous);
+  return output;
 }
 
-function robotsValue(html) {
+function tags(html, name) {
+  return [...activeHtml(html).matchAll(new RegExp(`<${name}\\b[^>]*>`, 'gi'))].map((match) => match[0]);
+}
+
+function robotsValues(html) {
+  const values = [];
   for (const tag of tags(html, 'meta')) {
     const attrs = attributes(tag);
-    if (attrs.get('name')?.toLowerCase() === 'robots') return attrs.get('content') ?? '';
+    if (attrs.get('name')?.toLowerCase() === 'robots') values.push(attrs.get('content') ?? '');
   }
-  return null;
+  return values;
+}
+
+export function assertRobots(html, expected, label) {
+  const values = robotsValues(html);
+  assert.equal(values.length, 1, `${label} must emit exactly one active robots directive`);
+  assert.equal(values[0], expected, `${label} has the wrong robots directive`);
 }
 
 function linkMetadata(html) {
@@ -140,7 +160,7 @@ function referencedAssets(html, documentUrl, origin) {
 }
 
 function assertCanonicalMetadata(html, route, expectedRobots) {
-  assert.equal(robotsValue(html), expectedRobots, `${route} has the wrong robots directive`);
+  assertRobots(html, expectedRobots, route);
   const { canonical, alternates } = linkMetadata(html);
   assert.equal(canonical.length, 1, `${route} must emit exactly one canonical URL`);
   assert.equal(new URL(canonical[0]).origin, CANONICAL_ORIGIN, `${route} canonical uses the wrong origin`);
@@ -154,9 +174,9 @@ function assertCanonicalMetadata(html, route, expectedRobots) {
   }
 }
 
-function assertCorporateForm(html) {
-  const forms = html.match(/<form\b[^>]*\bname="b2b-enquiry"[^>]*>[\s\S]*?<\/form>/gi) ?? [];
-  assert.equal(forms.length, 1, 'corporate route must contain exactly one detected b2b-enquiry form');
+export function assertCorporateForm(html) {
+  const forms = activeHtml(html).match(/<form\b[^>]*\bname="b2b-enquiry"[^>]*>[\s\S]*?<\/form>/gi) ?? [];
+  assert.equal(forms.length, 1, 'corporate route must contain exactly one active detected b2b-enquiry form');
   const form = forms[0];
   const open = form.match(/^<form\b[^>]*>/i)?.[0] ?? '';
   const attrs = attributes(open);
@@ -256,7 +276,9 @@ async function smoke(origin, expectedRobots) {
   assert.equal(missing.status, 404, `utility path returned ${missing.status}, expected 404`);
   assertSecurityHeaders(missing, 'utility 404');
   const missingHtml = await missing.text();
-  assert.match(robotsValue(missingHtml) ?? '', /^noindex(?:,|$)/, 'utility 404 is indexable');
+  const missingRobots = robotsValues(missingHtml);
+  assert.equal(missingRobots.length, 1, 'utility 404 must emit exactly one active robots directive');
+  assert.match(missingRobots[0], /^noindex(?:,|$)/, 'utility 404 is indexable');
   summary.utility404Noindex = true;
   console.log('PASS utility 404 is secured and non-indexable');
 
@@ -264,8 +286,10 @@ async function smoke(origin, expectedRobots) {
   console.log(JSON.stringify(summary, null, 2));
 }
 
-const { origin, expectedRobots } = parseArguments(process.argv.slice(2));
-smoke(origin, expectedRobots).catch((error) => {
-  console.error(error.stack || error);
-  process.exitCode = 1;
-});
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  const { origin, expectedRobots } = parseArguments(process.argv.slice(2));
+  smoke(origin, expectedRobots).catch((error) => {
+    console.error(error.stack || error);
+    process.exitCode = 1;
+  });
+}
