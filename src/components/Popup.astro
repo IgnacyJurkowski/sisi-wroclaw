@@ -1,5 +1,6 @@
 ---
-// Site-wide announcement modal, shown once per browser session (sessionStorage).
+// Site-wide announcement modal, shown once until dismissed (localStorage, the
+// same disclosed storage the cookie notice uses).
 // Self-contained: copy is localised here, styling + the tiny no-dependency script
 // live in this file. Honours prefers-reduced-motion (no entrance animation) and
 // stays hidden entirely without JS.
@@ -82,7 +83,7 @@ const sun = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2
     const KEY = 'sisi-summer-fri-dismissed';
     const root = document.querySelector<HTMLElement>('[data-popup]');
     if (!root) return;
-    try { if (sessionStorage.getItem(KEY)) return; } catch (_) {}
+    try { if (localStorage.getItem(KEY)) return; } catch (_) {}
 
     let lastFocus: HTMLElement | null = null;
     const open = () => {
@@ -94,7 +95,7 @@ const sun = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2
     const close = () => {
       root.hidden = true;
       document.removeEventListener('keydown', onKey);
-      try { sessionStorage.setItem(KEY, '1'); } catch (_) {}
+      try { localStorage.setItem(KEY, '1'); } catch (_) {}
       lastFocus?.focus?.();
     };
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') close(); };

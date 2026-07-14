@@ -9,9 +9,7 @@ Route: `/pl/eventy-firmowe/` (and `/en/corporate-events/`, `/de/firmenevents/`,
 `src/data/site.ts` (`VENUE_FACTS`) is the source of truth for the supported
 capacity and equipment facts mirrored in each `b2b.facts` dictionary:
 
-- **663 m² of event space** — restored at the owner's request. NOTE: still
-  carries a TODO in `VENUE_FACTS` to confirm this is usable event space, not the
-  total R32 complex area. Confirm before treating it as fully verified.
+- **663 m² of event space** — confirmed verified by the owner (2026-07-14).
 - **Up to 150 seated guests at The Cork** — always scope the 150 to The Cork;
   never imply SiSi itself seats 150.
 - **Up to 500 standing guests (buffet).**
