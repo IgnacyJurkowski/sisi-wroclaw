@@ -109,8 +109,7 @@ assert('form-name field preserved', enB2B.includes('name="form-name" value="b2b-
 const enB2BForm = enB2B.match(/<form\b[^>]*data-b2b-form[^>]*>[\s\S]*?<\/form>/)?.[0] ?? '';
 const submittedFields = [
   'form-name', 'locale', 'page', 'utm', 'bot-field', 'company', 'contact_person', 'email', 'phone',
-  'event_type', 'guests', 'preferred_date', 'preferred_date_iso', 'date_flexible', 'space', 'duration', 'presentation', 'catering',
-  'technical', 'message', 'consent',
+  'event_type', 'guests', 'preferred_date', 'preferred_date_iso', 'date_flexible', 'space', 'duration', 'message', 'consent',
 ];
 assert(
   'all existing submitted fields preserved, including preferred_date_iso',

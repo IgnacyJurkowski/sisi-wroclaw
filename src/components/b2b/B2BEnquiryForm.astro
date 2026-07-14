@@ -150,21 +150,6 @@ const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
         </div>
 
         <div class="b2b-field b2b-field-wide">
-          <label for="b2b-presentation">{f.presentation} <span class="opt">{f.optional}</span></label>
-          <input id="b2b-presentation" name="presentation" type="text" />
-        </div>
-
-        <div class="b2b-field">
-          <label for="b2b-catering">{f.catering} <span class="opt">{f.optional}</span></label>
-          <input id="b2b-catering" name="catering" type="text" />
-        </div>
-
-        <div class="b2b-field">
-          <label for="b2b-technical">{f.technical} <span class="opt">{f.optional}</span></label>
-          <input id="b2b-technical" name="technical" type="text" />
-        </div>
-
-        <div class="b2b-field b2b-field-wide">
           <label for="b2b-message">{f.message} <span class="req" aria-hidden="true">*</span></label>
           <textarea id="b2b-message" name="message" rows="4" required placeholder={f.messagePlaceholder} aria-describedby="err-message"></textarea>
           <p class="b2b-field-error" id="err-message" data-error hidden></p>
