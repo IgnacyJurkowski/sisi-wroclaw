@@ -174,17 +174,37 @@ function assertCanonicalMetadata(html, route, expectedRobots) {
   }
 }
 
-export function assertCorporateForm(html) {
-  const forms = activeHtml(html).match(/<form\b[^>]*\bname="b2b-enquiry"[^>]*>[\s\S]*?<\/form>/gi) ?? [];
+export function assertCorporateForm(html, netlifyProcessed = false) {
+  const forms = (activeHtml(html).match(/<form\b[^>]*>[\s\S]*?<\/form\s*>/gi) ?? [])
+    .filter((form) => {
+      const open = form.match(/^<form\b[^>]*>/i)?.[0] ?? '';
+      return attributes(open).get('name') === 'b2b-enquiry';
+    });
   assert.equal(forms.length, 1, 'corporate route must contain exactly one active detected b2b-enquiry form');
   const form = forms[0];
   const open = form.match(/^<form\b[^>]*>/i)?.[0] ?? '';
   const attrs = attributes(open);
   assert.equal(attrs.get('method')?.toUpperCase(), 'POST', 'corporate form must POST');
-  assert.equal(attrs.get('data-netlify'), 'true', 'corporate form must enable Netlify detection');
-  assert.equal(attrs.get('netlify-honeypot'), 'bot-field', 'corporate form must declare its honeypot');
-  assert.match(form, /<input\b[^>]*\btype="hidden"[^>]*\bname="form-name"[^>]*\bvalue="b2b-enquiry"/i);
-  assert.match(form, /<input\b[^>]*\bname="bot-field"/i);
+  if (netlifyProcessed) {
+    assert.equal(attrs.has('data-netlify'), false, 'Netlify post-processing must strip Netlify detection');
+    assert.equal(attrs.has('netlify-honeypot'), false, 'Netlify post-processing must strip the honeypot marker');
+  } else {
+    assert.equal(attrs.get('data-netlify'), 'true', 'corporate form must enable Netlify detection');
+    assert.equal(attrs.get('netlify-honeypot'), 'bot-field', 'corporate form must declare its honeypot');
+  }
+  const inputs = tags(form, 'input').map(attributes);
+  assert.equal(
+    inputs.filter((input) => input.get('type') === 'hidden'
+      && input.get('name') === 'form-name'
+      && input.get('value') === 'b2b-enquiry').length,
+    1,
+    'corporate form must contain exactly one matching hidden form-name input',
+  );
+  assert.equal(
+    inputs.filter((input) => input.get('name') === 'bot-field').length,
+    1,
+    'corporate form must contain exactly one honeypot input',
+  );
 }
 
 async function mapLimit(items, concurrency, worker) {
@@ -249,16 +269,18 @@ async function smoke(origin, expectedRobots) {
     assertSecurityHeaders(response, canonicalUrl.pathname);
     const html = await response.text();
     assertCanonicalMetadata(html, canonicalUrl.pathname, expectedRobots);
-    return { canonicalUrl, target, html };
+    const netlifyProcessed = response.headers.get('server')?.toLowerCase() === 'netlify'
+      && Boolean(response.headers.get('x-nf-request-id'));
+    return { canonicalUrl, target, html, netlifyProcessed };
   });
   summary.pagesChecked = pages.length;
   console.log(`PASS ${pages.length}/${locations.length} sitemap route(s) return canonical secured HTML`);
 
   const corporate = pages.find(({ canonicalUrl }) => canonicalUrl.pathname === '/pl/eventy-firmowe/');
   assert.ok(corporate, 'Polish corporate route is absent from the sitemap');
-  assertCorporateForm(corporate.html);
+  assertCorporateForm(corporate.html, corporate.netlifyProcessed);
   summary.formDetected = true;
-  console.log('PASS corporate Netlify form detection markup is present');
+  console.log('PASS corporate Netlify form contract matches its processing state');
 
   const assetUrls = [...new Set(pages.flatMap(({ html, target }) => referencedAssets(html, target, origin)))].sort();
   assert.ok(assetUrls.length > 0, 'no same-origin assets were discovered');

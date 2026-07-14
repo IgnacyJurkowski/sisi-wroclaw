@@ -6,6 +6,10 @@ const validForm = `<form name="b2b-enquiry" method="POST" data-netlify="true" ne
   <input type="hidden" name="form-name" value="b2b-enquiry">
   <input type="text" name="bot-field">
 </form>`;
+const processedForm = validForm
+  .replace(' data-netlify="true"', '')
+  .replace(' netlify-honeypot="bot-field"', '');
+const processedSingleQuotedForm = processedForm.replaceAll('"', "'");
 
 test('robots validation ignores comments and requires one active directive', () => {
   const commentedExpected = '<!-- <meta name="robots" content="index, follow"> -->';
@@ -29,4 +33,12 @@ test('form validation ignores commented and otherwise inert form markup', () => 
   assert.throws(() => assertCorporateForm(`<template>${validForm}</template>`), /exactly one active detected/);
   assert.throws(() => assertCorporateForm(`<script type="text/plain">${validForm}</script>`), /exactly one active detected/);
   assert.doesNotThrow(() => assertCorporateForm(`<!-- ${validForm} -->${validForm}`));
+});
+
+test('form validation distinguishes source markup from Netlify post-processing', () => {
+  assert.doesNotThrow(() => assertCorporateForm(validForm, false));
+  assert.doesNotThrow(() => assertCorporateForm(processedForm, true));
+  assert.doesNotThrow(() => assertCorporateForm(processedSingleQuotedForm, true));
+  assert.throws(() => assertCorporateForm(processedForm, false), /enable Netlify detection/);
+  assert.throws(() => assertCorporateForm(validForm, true), /must strip Netlify detection/);
 });
