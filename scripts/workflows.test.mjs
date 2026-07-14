@@ -54,12 +54,15 @@ test('CI publishes the exact Launch gate / test status on pushes and pull reques
   assert.match(source, /^\s{2}pull_request:\s*$/m);
   assert.match(source, /^\s{2}push:\s*$/m);
   assert.match(source, /^\s{2}test:\s*$/m);
+  assert.match(source, /^\s{4}name:\s*Launch gate \/ test\s*$/m);
   assertNodeGate(source);
 });
 
 test('production deploy waits for the complete launch gate and fails closed', async () => {
   const source = await workflow('deploy');
   assert.match(source, /^\s{2}test:\s*$/m);
+  assert.match(source, /^\s{4}name:\s*Deploy gate \/ test\s*$/m);
+  assert.doesNotMatch(source, /^\s{4}name:\s*Launch gate \/ test\s*$/m);
   assertNodeGate(source);
   assert.match(source, /^\s{2}deploy:\s*$/m);
   assert.match(source, /^\s{4}needs:\s*test\s*$/m);
