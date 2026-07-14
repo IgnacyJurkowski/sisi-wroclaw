@@ -34,6 +34,14 @@ test('package scripts expose the complete launch and exploit gates', async () =>
   assert.equal(pkg.scripts['smoke:host'], 'node scripts/smoke-host.mjs');
 });
 
+test('clean installs declare the Node build types used by Astro', async () => {
+  const pkg = JSON.parse(await readFile('package.json', 'utf8'));
+  const tsconfig = JSON.parse(await readFile('tsconfig.json', 'utf8'));
+
+  assert.match(pkg.devDependencies['@types/node'], /^\^22\./);
+  assert.deepEqual(tsconfig.compilerOptions.types, ['node']);
+});
+
 test('Netlify production builds use the exact audited Node runtime', async () => {
   const source = await readFile('netlify.toml', 'utf8');
   assert.match(source, /^\s*NODE_VERSION\s*=\s*"22\.12\.0"\s*$/m);
