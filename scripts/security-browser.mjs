@@ -207,7 +207,7 @@ async function exerciseTemporaryCopy(copyRoot) {
     await writeFile(path.join(copyRoot, 'src/data/events.generated.ts'), fixtureSource(), 'utf8');
     await runCommand(process.execPath, ['/usr/bin/npm', 'run', 'build'], {
       cwd: copyRoot,
-      env: { ...process.env, CONTEXT: 'production', URL: 'https://sisiwroclaw.pl' },
+      env: { ...process.env, CONTEXT: 'production', URL: 'https://www.sisiwroclaw.pl' },
     });
     console.log('PASS temporary hostile-event production build completed');
 

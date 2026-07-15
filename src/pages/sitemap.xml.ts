@@ -6,7 +6,7 @@ import { EVENTS } from '../data/site';
 // Build-time sitemap covering every locale of every route, each with full
 // hreflang alternates + x-default. Stays in sync with the central route map.
 export const GET: APIRoute = ({ site }) => {
-  const origin = (site?.href ?? 'https://sisiwroclaw.pl/').replace(/\/$/, '');
+  const origin = (site?.href ?? 'https://www.sisiwroclaw.pl/').replace(/\/$/, '');
   const abs = (p: string) => origin + p;
 
   const urls = ROUTE_KEYS.flatMap((key) =>

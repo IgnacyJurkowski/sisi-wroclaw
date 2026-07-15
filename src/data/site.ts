@@ -113,9 +113,9 @@ export const VENUE_FACTS = {
    language; the venue @id is stable across locales. Keep the address correct. */
 export const BUSINESS = {
   name: 'SiSi Wrocław',
-  url: 'https://sisiwroclaw.pl',
-  logo: 'https://sisiwroclaw.pl/apple-touch-icon.png',
-  image: 'https://sisiwroclaw.pl/framerusercontent.com/images/nBW0AVejCOoiy2Rctqcid0SY6Q.webp',
+  url: 'https://www.sisiwroclaw.pl',
+  logo: 'https://www.sisiwroclaw.pl/apple-touch-icon.png',
+  image: 'https://www.sisiwroclaw.pl/framerusercontent.com/images/nBW0AVejCOoiy2Rctqcid0SY6Q.webp',
   streetAddress: 'Rzeźnicza 32-33',
   locality: 'Wrocław',
   region: 'Dolnośląskie',

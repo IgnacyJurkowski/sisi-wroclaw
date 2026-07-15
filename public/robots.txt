@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://sisiwroclaw.pl/sitemap.xml
+Sitemap: https://www.sisiwroclaw.pl/sitemap.xml

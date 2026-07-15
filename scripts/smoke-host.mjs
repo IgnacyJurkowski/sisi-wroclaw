@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { pathToFileURL } from 'node:url';
 
-const CANONICAL_ORIGIN = 'https://sisiwroclaw.pl';
+const CANONICAL_ORIGIN = 'https://www.sisiwroclaw.pl';
 const REQUEST_TIMEOUT_MS = 15_000;
 const PAGE_CONCURRENCY = 8;
 const ASSET_CONCURRENCY = 12;

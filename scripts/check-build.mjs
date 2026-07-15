@@ -10,6 +10,8 @@ import { cacheAssetInventory, headersForPath, parseHeaderRules } from './generat
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = join(ROOT, 'dist');
+const CANONICAL_ORIGIN = 'https://www.sisiwroclaw.pl';
+const BARE_ORIGIN = CANONICAL_ORIGIN.replace('www.', '');
 
 if (!existsSync(DIST)) {
   console.error('dist/ not found - run `npm run build` first.');
@@ -112,8 +114,8 @@ for (const l of LOCALES) assert(`<html lang="${l}">`, new RegExp(`<html lang="${
 const plHome = read('pl/index.html');
 assert('hreflang has 5 locales', (plHome.match(/rel="alternate" hreflang="(pl|en|de|it|cs)"/g) || []).length === 5);
 assert('hreflang x-default present', plHome.includes('hreflang="x-default"'));
-assert('pl canonical is /pl/', plHome.includes('href="https://sisiwroclaw.pl/pl/"'));
-assert('en canonical is locale-specific (not pl)', read('en/index.html').includes('rel="canonical" href="https://sisiwroclaw.pl/en/"'));
+assert('pl canonical is final /pl/', plHome.includes(`href="${CANONICAL_ORIGIN}/pl/"`));
+assert('en canonical is final locale-specific URL', read('en/index.html').includes(`rel="canonical" href="${CANONICAL_ORIGIN}/en/"`));
 
 // --- B2B verified facts shown exactly; 150 scoped to The Cork ---
 const enB2B = read('en/corporate-events/index.html');
@@ -385,6 +387,16 @@ try {
   cacheInventoryError = error;
 }
 const allHtml = htmls.map((file) => readFileSync(file, 'utf8')).join('\n');
+const sitemapXml = read('sitemap.xml');
+const robotsSource = readFileSync(join(ROOT, 'public/robots.txt'), 'utf8');
+assert('rendered HTML uses the final www origin', allHtml.includes(CANONICAL_ORIGIN));
+assert('rendered HTML contains no bare absolute origin', !allHtml.includes(BARE_ORIGIN));
+assert('sitemap uses the final www origin', sitemapXml.includes(`<loc>${CANONICAL_ORIGIN}/`));
+assert('sitemap contains no bare absolute origin', !sitemapXml.includes(BARE_ORIGIN));
+assert(
+  'robots.txt names the final-host sitemap',
+  robotsSource.includes(`Sitemap: ${CANONICAL_ORIGIN}/sitemap.xml`) && !robotsSource.includes(BARE_ORIGIN),
+);
 const externalScriptBodies = scripts.map((file) => readFileSync(file, 'utf8'));
 const inlineScriptBodies = htmls.flatMap((file) => executableInlineScripts(readFileSync(file, 'utf8')));
 const executableBuiltText = [...externalScriptBodies, ...inlineScriptBodies].join('\n');

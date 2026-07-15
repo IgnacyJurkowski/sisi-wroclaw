@@ -4,6 +4,8 @@ import { readFile } from 'node:fs/promises';
 import { createServer } from 'vite';
 import { eventOffer } from '../src/lib/event-offer.mjs';
 
+const CANONICAL_ORIGIN = 'https://www.sisiwroclaw.pl';
+
 const files = ['src/data/site.ts', 'src/i18n/legal.ts', 'src/i18n/ui/pl.ts', 'src/i18n/ui/en.ts', 'src/i18n/ui/de.ts', 'src/i18n/ui/it.ts', 'src/i18n/ui/cs.ts', 'src/layouts/Base.astro', 'docs/B2B.md'];
 test('unverified launch claims are absent from source', async () => {
   const text = (await Promise.all(files.map((file) => readFile(file, 'utf8')))).join('\n');
@@ -22,10 +24,10 @@ test('event offers state only a verified numeric entry price', () => {
   assert.equal(eventOffer('30'), undefined);
   assert.equal(eventOffer(null), undefined);
 });
-test('event schema attaches only the verified offer to priced events', async () => {
+test('structured data uses the final origin and attaches only verified event offers', async () => {
   const server = await createServer({ server: { middlewareMode: true }, appType: 'custom', logLevel: 'silent' });
   try {
-    const { eventSchema } = await server.ssrLoadModule('/src/data/site.ts');
+    const { BUSINESS, eventSchema, nightClubSchema, websiteSchema } = await server.ssrLoadModule('/src/data/site.ts');
     const event = {
       title: 'Verified price fixture',
       slug: '2026-07-13-verified-price-fixture',
@@ -34,7 +36,14 @@ test('event schema attaches only the verified offer to priced events', async () 
     };
     const [priced] = eventSchema([{ ...event, price: 30 }], 'en');
     const [unpriced] = eventSchema([event], 'en');
+    const graph = [nightClubSchema('en'), websiteSchema('en'), priced];
+    const serialized = JSON.stringify(graph);
 
+    assert.equal(BUSINESS.url, CANONICAL_ORIGIN);
+    assert.ok(serialized.includes(CANONICAL_ORIGIN));
+    assert.equal(serialized.includes(CANONICAL_ORIGIN.replace('www.', '')), false);
+    assert.equal(priced.url, `${CANONICAL_ORIGIN}/en/events/${event.slug}/`);
+    assert.equal(priced.organizer.url, CANONICAL_ORIGIN);
     assert.deepEqual(priced.offers, { '@type': 'Offer', price: 30, priceCurrency: 'PLN' });
     assert.equal(unpriced.offers, undefined);
   } finally {

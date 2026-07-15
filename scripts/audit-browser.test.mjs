@@ -9,7 +9,7 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const AUDIT_SCRIPT = path.join(ROOT, 'scripts/audit-browser.mjs');
-const CANONICAL_ORIGIN = 'https://sisiwroclaw.pl';
+const CANONICAL_ORIGIN = 'https://www.sisiwroclaw.pl';
 
 function send(response, status, body, contentType = 'text/html; charset=utf-8', headers = {}) {
   response.writeHead(status, { 'content-type': contentType, ...headers });

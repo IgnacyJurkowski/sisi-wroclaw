@@ -3,7 +3,7 @@ import { defineConfig } from 'astro/config';
 
 // SiSi Wrocław — static marketing site, deployed to Netlify (publish: dist/)
 export default defineConfig({
-  site: 'https://sisiwroclaw.pl',
+  site: 'https://www.sisiwroclaw.pl',
   // Localized routes are directory-style with a trailing slash; pin it so
   // canonical/hreflang/sitemap URLs all agree and avoid trailing-slash dupes.
   trailingSlash: 'always',
