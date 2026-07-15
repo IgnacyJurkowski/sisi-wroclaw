@@ -27,6 +27,40 @@ const results = [];
 const assert = (label, cond) => results.push([label, !!cond]);
 
 const LOCALES = ['pl', 'en', 'de', 'it', 'cs'];
+const PAGE_TITLES = {
+  pl: {
+    home: 'Klub muzyczny i bar koktajlowy we Wrocławiu | SiSi',
+    menu: 'Karta baru i koktajle | SiSi Wrocław',
+    contact: 'Kontakt i dane firmy | SiSi Wrocław',
+  },
+  en: {
+    home: 'Music Club & Cocktail Bar in Wrocław | SiSi',
+    menu: 'Bar Menu & Cocktails | SiSi Wrocław',
+    contact: 'Contact & Company Details | SiSi Wrocław',
+  },
+  de: {
+    home: 'Musikclub & Cocktailbar in Breslau | SiSi',
+    menu: 'Barkarte & Cocktails | SiSi Wrocław',
+    contact: 'Kontakt & Unternehmensdaten | SiSi Wrocław',
+  },
+  it: {
+    home: 'Music club e cocktail bar a Breslavia | SiSi',
+    menu: 'Menu bar e cocktail | SiSi Wrocław',
+    contact: 'Contatti e dati societari | SiSi Wrocław',
+  },
+  cs: {
+    home: 'Hudební klub a koktejlový bar ve Vratislavi | SiSi',
+    menu: 'Barové menu a koktejly | SiSi Wrocław',
+    contact: 'Kontakt a firemní údaje | SiSi Wrocław',
+  },
+};
+const TITLE_ROUTES = {
+  pl: { home: '', menu: 'menu', contact: 'kontakt' },
+  en: { home: '', menu: 'menu', contact: 'contact' },
+  de: { home: '', menu: 'menu', contact: 'kontakt' },
+  it: { home: '', menu: 'menu', contact: 'contatti' },
+  cs: { home: '', menu: 'menu', contact: 'kontakt' },
+};
 const EVENT_ROUTES = { pl: 'wydarzenia', en: 'events', de: 'veranstaltungen', it: 'eventi', cs: 'akce' };
 const emptyEventCopy = {
   pl: 'Wkrótce ogłosimy kolejne wydarzenia - śledź nas na Instagramie.',
@@ -71,6 +105,14 @@ const cookieMeta = {
 
 // --- i18n: every locale homepage + B2B route builds ---
 for (const l of LOCALES) assert(`home builds: /${l}/`, exists(`${l}/index.html`));
+for (const locale of LOCALES) {
+  for (const page of ['home', 'menu', 'contact']) {
+    const route = TITLE_ROUTES[locale][page];
+    const path = route ? `${locale}/${route}/index.html` : `${locale}/index.html`;
+    const renderedTitle = read(path).match(/<title>([^<]*)<\/title>/)?.[1].replaceAll('&amp;', '&') ?? '';
+    assert(`${locale} ${page} title is localized`, renderedTitle === PAGE_TITLES[locale][page]);
+  }
+}
 for (const locale of LOCALES) {
   const home = read(`${locale}/index.html`);
   const images = home.match(/<img\b[^>]*>/g) ?? [];

@@ -4,7 +4,7 @@ import type { UI } from './pl';
 const it: UI = {
   meta: {
     home: {
-      title: 'SiSi Wrocław - Music Club & Bar',
+      title: 'Music club e cocktail bar a Breslavia | SiSi',
       description:
         'SiSi - music club e bar nel complesso R32 in via Rzeźnicza, a Breslavia. Musica dal vivo, DJ e cocktail d\'autore, venerdì e sabato dalle 22:00 alle 04:00.',
       ogDescription: 'Musica dal vivo, DJ e cocktail d\'autore. Un music club nel centro di Breslavia.',
@@ -16,7 +16,7 @@ const it: UI = {
       ogDescription: 'Concerti, DJ e serate a tema. Prossimi eventi e archivio del SiSi Wrocław.',
     },
     menu: {
-      title: 'Menu - SiSi Wrocław',
+      title: 'Menu bar e cocktail | SiSi Wrocław',
       description: 'Il menu bar del SiSi Wrocław - cocktail d\'autore, vini polacchi, birre belghe e un Night Menu by The Cork.',
       ogDescription: 'Cocktail d\'autore, vini polacchi e un Night Menu by The Cork. SiSi Wrocław.',
     },
@@ -37,7 +37,7 @@ const it: UI = {
       ogDescription: 'Conferenze, presentazioni, cene ed eventi aziendali serali nel centro di Breslavia. SiSi & The Cork.',
     },
     contact: {
-      title: 'Contatti - SiSi Wrocław',
+      title: 'Contatti e dati societari | SiSi Wrocław',
       description:
         'Contatti e informazioni societarie del SiSi Wrocław - indirizzo, telefono, e-mail e dati di registro (NIP, REGON, KRS).',
       ogDescription: 'Contatti e dati societari del SiSi Wrocław.',

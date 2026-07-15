@@ -4,7 +4,7 @@ import type { UI } from './pl';
 const cs: UI = {
   meta: {
     home: {
-      title: 'SiSi Wrocław - Music Club & Bar',
+      title: 'Hudební klub a koktejlový bar ve Vratislavi | SiSi',
       description:
         'SiSi - hudební klub a bar v komplexu R32 na ulici Rzeźnicza ve Vratislavi. Živá hudba, DJ a autorské koktejly, pátky a soboty 22:00-04:00.',
       ogDescription: 'Živá hudba, DJ a autorské koktejly. Hudební klub v centru Vratislavi.',
@@ -16,7 +16,7 @@ const cs: UI = {
       ogDescription: 'Koncerty, DJ a tematické večery. Nadcházející akce a archiv SiSi Wrocław.',
     },
     menu: {
-      title: 'Menu - SiSi Wrocław',
+      title: 'Barové menu a koktejly | SiSi Wrocław',
       description: 'Barové menu SiSi Wrocław - autorské koktejly, polská vína, belgická piva a Night Menu by The Cork.',
       ogDescription: 'Autorské koktejly, polská vína a Night Menu by The Cork. SiSi Wrocław.',
     },
@@ -37,7 +37,7 @@ const cs: UI = {
       ogDescription: 'Konference, prezentace, večeře a večerní firemní akce v centru Vratislavi. SiSi & The Cork.',
     },
     contact: {
-      title: 'Kontakt - SiSi Wrocław',
+      title: 'Kontakt a firemní údaje | SiSi Wrocław',
       description:
         'Kontaktní a firemní údaje SiSi Wrocław - adresa, telefon, e-mail a registrační údaje (NIP, REGON, KRS).',
       ogDescription: 'Kontaktní a firemní údaje SiSi Wrocław.',

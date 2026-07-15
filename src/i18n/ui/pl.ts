@@ -6,7 +6,7 @@
 const pl = {
   meta: {
     home: {
-      title: 'SiSi Wrocław - Music Club & Bar',
+      title: 'Klub muzyczny i bar koktajlowy we Wrocławiu | SiSi',
       description:
         'SiSi - klub muzyczny i bar w kompleksie R32 przy Rzeźniczej we Wrocławiu. Muzyka na żywo, DJ-e i autorskie koktajle w piątki i soboty, 22:00-04:00.',
       ogDescription: 'Muzyka na żywo, DJ-e i autorskie koktajle. Klub muzyczny w centrum Wrocławia.',
@@ -18,7 +18,7 @@ const pl = {
       ogDescription: 'Koncerty, DJ-e i imprezy tematyczne. Nadchodzące wydarzenia i archiwum SiSi Wrocław.',
     },
     menu: {
-      title: 'Menu - SiSi Wrocław',
+      title: 'Karta baru i koktajle | SiSi Wrocław',
       description: 'Karta baru SiSi Wrocław - autorskie koktajle, polskie wina, piwa belgijskie i Night Menu by The Cork.',
       ogDescription: 'Autorskie koktajle, polskie wina i Night Menu by The Cork. Karta SiSi Wrocław.',
     },
@@ -39,7 +39,7 @@ const pl = {
       ogDescription: 'Konferencje, prezentacje, kolacje i wieczorne eventy firmowe w centrum Wrocławia. SiSi & The Cork.',
     },
     contact: {
-      title: 'Kontakt - SiSi Wrocław',
+      title: 'Kontakt i dane firmy | SiSi Wrocław',
       description:
         'Dane kontaktowe i informacje o podmiocie prowadzącym klub SiSi Wrocław - adres, telefon, e-mail oraz dane rejestrowe (NIP, REGON, KRS).',
       ogDescription: 'Dane kontaktowe i rejestrowe klubu SiSi Wrocław.',
