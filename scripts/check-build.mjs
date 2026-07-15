@@ -144,6 +144,18 @@ for (const l of LOCALES) assert(`<html lang="${l}">`, new RegExp(`<html lang="${
 
 // --- hreflang complete + locale-specific canonical ---
 const plHome = read('pl/index.html');
+const plJsonLd = [...plHome.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+  .map((match) => JSON.parse(match[1]));
+const siteEntityGraph = plJsonLd.find((value) => Array.isArray(value['@graph']));
+const siteEntityIds = new Set((siteEntityGraph?.['@graph'] ?? []).map((node) => node['@id']));
+assert(
+  'site JSON-LD connects legal organization, R32 venue, nightclub, and website in one graph',
+  siteEntityIds.size === 4
+    && siteEntityIds.has(`${CANONICAL_ORIGIN}/#organization`)
+    && siteEntityIds.has('https://www.r32.com.pl/#eventvenue')
+    && siteEntityIds.has(`${CANONICAL_ORIGIN}/#nightclub`)
+    && siteEntityIds.has(`${CANONICAL_ORIGIN}/#website`),
+);
 assert('hreflang has 5 locales', (plHome.match(/rel="alternate" hreflang="(pl|en|de|it|cs)"/g) || []).length === 5);
 assert('hreflang x-default present', plHome.includes('hreflang="x-default"'));
 assert('pl canonical is final /pl/', plHome.includes(`href="${CANONICAL_ORIGIN}/pl/"`));

@@ -5,6 +5,9 @@ import { createServer } from 'vite';
 import { eventOffer } from '../src/lib/event-offer.mjs';
 
 const CANONICAL_ORIGIN = 'https://www.sisiwroclaw.pl';
+const ORGANIZATION_ID = `${CANONICAL_ORIGIN}/#organization`;
+const NIGHTCLUB_ID = `${CANONICAL_ORIGIN}/#nightclub`;
+const R32_ID = 'https://www.r32.com.pl/#eventvenue';
 
 const files = ['src/data/site.ts', 'src/i18n/legal.ts', 'src/i18n/ui/pl.ts', 'src/i18n/ui/en.ts', 'src/i18n/ui/de.ts', 'src/i18n/ui/it.ts', 'src/i18n/ui/cs.ts', 'src/layouts/Base.astro', 'docs/B2B.md'];
 test('unverified launch claims are absent from source', async () => {
@@ -27,7 +30,14 @@ test('event offers state only a verified numeric entry price', () => {
 test('structured data uses the final origin and attaches only verified event offers', async () => {
   const server = await createServer({ server: { middlewareMode: true }, appType: 'custom', logLevel: 'silent' });
   try {
-    const { BUSINESS, eventSchema, nightClubSchema, websiteSchema } = await server.ssrLoadModule('/src/data/site.ts');
+    const {
+      BUSINESS,
+      entityGraphSchema,
+      eventSchema,
+      eventVenueSchema,
+      nightClubSchema,
+      organizationSchema,
+    } = await server.ssrLoadModule('/src/data/site.ts');
     const event = {
       title: 'Verified price fixture',
       slug: '2026-07-13-verified-price-fixture',
@@ -36,14 +46,36 @@ test('structured data uses the final origin and attaches only verified event off
     };
     const [priced] = eventSchema([{ ...event, price: 30 }], 'en');
     const [unpriced] = eventSchema([event], 'en');
-    const graph = [nightClubSchema('en'), websiteSchema('en'), priced];
+    const organization = organizationSchema();
+    const eventVenue = eventVenueSchema();
+    const nightClub = nightClubSchema('en');
+    const entityGraph = entityGraphSchema('en');
+    const graph = [entityGraph, priced];
     const serialized = JSON.stringify(graph);
 
     assert.equal(BUSINESS.url, CANONICAL_ORIGIN);
     assert.ok(serialized.includes(CANONICAL_ORIGIN));
     assert.equal(serialized.includes(CANONICAL_ORIGIN.replace('www.', '')), false);
+    assert.equal(organization['@type'], 'Organization');
+    assert.equal(organization['@id'], ORGANIZATION_ID);
+    assert.equal(organization.legalName, 'Rzeźnicza 32 Sp. z o.o.');
+    assert.deepEqual(
+      organization.identifier.map(({ propertyID, value }) => [propertyID, value]),
+      [['KRS', '0001085945'], ['NIP', '8971933394'], ['REGON', '527683726']],
+    );
+    assert.equal(eventVenue['@type'], 'EventVenue');
+    assert.equal(eventVenue['@id'], R32_ID);
+    assert.deepEqual(eventVenue.containsPlace, { '@id': NIGHTCLUB_ID });
+    assert.deepEqual(nightClub.parentOrganization, { '@id': ORGANIZATION_ID });
+    assert.deepEqual(nightClub.containedInPlace, { '@id': R32_ID });
+    assert.deepEqual(
+      entityGraph['@graph'].map((node) => node['@id']),
+      [ORGANIZATION_ID, R32_ID, NIGHTCLUB_ID, `${CANONICAL_ORIGIN}/#website`],
+    );
+    assert.equal(entityGraph['@graph'].some((node) => '@context' in node), false);
     assert.equal(priced.url, `${CANONICAL_ORIGIN}/en/events/${event.slug}/`);
-    assert.equal(priced.organizer.url, CANONICAL_ORIGIN);
+    assert.deepEqual(priced.location, { '@id': NIGHTCLUB_ID });
+    assert.deepEqual(priced.organizer, { '@id': NIGHTCLUB_ID });
     assert.deepEqual(priced.offers, { '@type': 'Offer', price: 30, priceCurrency: 'PLN' });
     assert.equal(unpriced.offers, undefined);
   } finally {

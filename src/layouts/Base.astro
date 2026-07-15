@@ -5,7 +5,7 @@ import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import CookieBanner from '../components/CookieBanner.astro';
 import Particles from '../components/Particles.astro';
-import { BUSINESS, nightClubSchema, websiteSchema } from '../data/site';
+import { BUSINESS, entityGraphSchema } from '../data/site';
 import { DEFAULT_LOCALE, LOCALE_LANG, LOCALE_OG, type Locale } from '../i18n/config';
 import { alternates, localizedPath, type RouteKey } from '../i18n/routes';
 import { jsonForHtml, robotsDirective } from '../lib/launch.mjs';
@@ -66,7 +66,7 @@ const xDefaultPath = altPaths
     ? localizedPath(routeKey, DEFAULT_LOCALE)
     : undefined;
 const xDefault = xDefaultPath ? new URL(xDefaultPath, Astro.site).href : undefined;
-const jsonLd = [nightClubSchema(locale), websiteSchema(locale), ...schema];
+const jsonLd = [entityGraphSchema(locale), ...schema];
 
 const robotsContent = robotsDirective({
   context: process.env.CONTEXT,

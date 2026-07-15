@@ -137,6 +137,13 @@ export const BUSINESS = {
   priceRange: '$$',
 };
 
+const ENTITY_IDS = {
+  organization: `${BUSINESS.url}/#organization`,
+  eventVenue: 'https://www.r32.com.pl/#eventvenue',
+  nightClub: `${BUSINESS.url}/#nightclub`,
+  website: `${BUSINESS.url}/#website`,
+};
+
 function absolute(path: string) {
   return `${BUSINESS.url}${path}`;
 }
@@ -152,13 +159,49 @@ function addressLd() {
   };
 }
 
+/** Verified legal operator already named on the public legal and contact pages. */
+export function organizationSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    '@id': ENTITY_IDS.organization,
+    name: COMPANY.legalName,
+    legalName: COMPANY.legalName,
+    alternateName: COMPANY.tradeName,
+    taxID: COMPANY.nip,
+    identifier: [
+      { '@type': 'PropertyValue', propertyID: 'KRS', value: COMPANY.krs },
+      { '@type': 'PropertyValue', propertyID: 'NIP', value: COMPANY.nip },
+      { '@type': 'PropertyValue', propertyID: 'REGON', value: COMPANY.regon },
+    ],
+    address: addressLd(),
+    email: COMPANY.email,
+    telephone: COMPANY.phoneHref.replace('tel:', ''),
+  };
+}
+
+/** R32 destination that publicly contains SiSi at the same verified address. */
+export function eventVenueSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'EventVenue',
+    '@id': ENTITY_IDS.eventVenue,
+    name: 'R32',
+    url: 'https://www.r32.com.pl/',
+    address: addressLd(),
+    email: CONTACT.eventsEmail,
+    telephone: CONTACT.eventsPhoneHref.replace('tel:', ''),
+    containsPlace: { '@id': ENTITY_IDS.nightClub },
+  };
+}
+
 /** Site-wide venue entity (LocalBusiness -> NightClub), localized url + description. */
 export function nightClubSchema(locale: Locale = 'pl') {
   const t = useTranslations(locale);
   return {
     '@context': 'https://schema.org',
     '@type': 'NightClub',
-    '@id': `${BUSINESS.url}/#nightclub`,
+    '@id': ENTITY_IDS.nightClub,
     name: BUSINESS.name,
     url: absolute(localizedPath('home', locale)),
     logo: BUSINESS.logo,
@@ -176,6 +219,8 @@ export function nightClubSchema(locale: Locale = 'pl') {
       { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Friday', 'Saturday'], opens: '22:00', closes: '04:00' },
     ],
     sameAs: [CONTACT.instagram, CONTACT.facebook, CONTACT.tripadvisor],
+    parentOrganization: { '@id': ENTITY_IDS.organization },
+    containedInPlace: { '@id': ENTITY_IDS.eventVenue },
     acceptsReservations: 'True',
     potentialAction: {
       '@type': 'ReserveAction',
@@ -198,11 +243,25 @@ export function websiteSchema(locale: Locale = 'pl') {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    '@id': `${BUSINESS.url}/#website`,
+    '@id': ENTITY_IDS.website,
     url: absolute(localizedPath('home', locale)),
     name: BUSINESS.name,
     inLanguage: locale,
-    publisher: { '@id': `${BUSINESS.url}/#nightclub` },
+    publisher: { '@id': ENTITY_IDS.nightClub },
+  };
+}
+
+/** One connected site-entity graph; page-specific Event nodes are added beside it. */
+export function entityGraphSchema(locale: Locale = 'pl') {
+  const schemas: Record<string, unknown>[] = [
+    organizationSchema(),
+    eventVenueSchema(),
+    nightClubSchema(locale),
+    websiteSchema(locale),
+  ];
+  return {
+    '@context': 'https://schema.org',
+    '@graph': schemas.map(({ '@context': _context, ...node }) => node),
   };
 }
 
@@ -220,8 +279,8 @@ export function eventSchema(list: EventItem[], locale: Locale = 'pl') {
       eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
       image: [absolute(e.img)],
       url: absolute(eventPath(e.slug, locale)),
-      location: { '@type': 'Place', name: BUSINESS.name, address: addressLd() },
-      organizer: { '@type': 'Organization', name: BUSINESS.name, url: BUSINESS.url },
+      location: { '@id': ENTITY_IDS.nightClub },
+      organizer: { '@id': ENTITY_IDS.nightClub },
     };
     const offer = eventOffer(e.price);
     if (offer) ev.offers = offer;
