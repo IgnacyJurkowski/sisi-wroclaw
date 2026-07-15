@@ -18,7 +18,7 @@ const mapHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComp
       <Heading class="display res-title">{t.reservationsHome.title}</Heading>
       <p class="res-body">{t.reservationsHome.body}</p>
       <p class="res-terms-line">{t.reservationsHome.terms}</p>
-      <a href={reservationUrl('reservations_section')} class="btn-cta res-cta" rel="noopener" target="_blank">{t.buttons.reserveOnline}</a>
+      <a href={reservationUrl('reservations_section', locale)} class="btn-cta res-cta" rel="noopener" target="_blank">{t.buttons.reserveOnline}</a>
       <p class="res-reassure">{t.reservationsHome.reassure}</p>
     </div>
 

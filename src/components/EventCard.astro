@@ -37,7 +37,7 @@ const imgSizes = '(max-width: 640px) 92vw, 30vw';
       )}
       {past
         ? <span class="ev-done">{t.eventCard.finished}</span>
-        : <a href={reservationUrl('event_card')} class="btn-cta" rel="noopener" target="_blank">{t.eventCard.reserve}</a>}
+        : <a href={reservationUrl('event_card', locale)} class="btn-cta" rel="noopener" target="_blank">{t.eventCard.reserve}</a>}
     </div>
   </div>
 </article>

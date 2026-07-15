@@ -63,7 +63,7 @@ const metaDesc = event.description || t.meta.events.description;
         {past ? (
           <span class="evd-done">{t.eventCard.finished}</span>
         ) : (
-          <a href={reservationUrl('event_detail')} class="btn-cta" rel="noopener" target="_blank">
+          <a href={reservationUrl('event_detail', locale)} class="btn-cta" rel="noopener" target="_blank">
             {t.eventCard.reserve}
           </a>
         )}

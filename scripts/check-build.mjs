@@ -59,6 +59,7 @@ for (const locale of LOCALES) {
   );
 }
 const RESERVATIONS = { pl: 'rezerwacje', en: 'reservations', de: 'reservierungen', it: 'prenotazioni', cs: 'rezervace' };
+const EMENAGO_LOCALES = { pl: 'pl', en: 'en', de: 'de', it: 'it', cs: 'pl' };
 for (const locale of LOCALES) {
   const home = read(`${locale}/index.html`);
   const internalPath = `/${locale}/${RESERVATIONS[locale]}/`;
@@ -72,8 +73,8 @@ for (const locale of LOCALES) {
 
   const reservationPage = read(`${locale}/${RESERVATIONS[locale]}/index.html`);
   assert(
-    `${locale} reservation page retains the tracked Emenago booking action`,
-    reservationPage.includes('https://emenago.com/inner/cart/6619/0519b014958d73fb0d5d2d58c360a661/pl')
+    `${locale} reservation page uses its verified Emenago locale and retains tracking`,
+    reservationPage.includes(`https://emenago.com/inner/cart/6619/0519b014958d73fb0d5d2d58c360a661/${EMENAGO_LOCALES[locale]}`)
       && reservationPage.includes('utm_content=reservations_section'),
   );
 }

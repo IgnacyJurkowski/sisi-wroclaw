@@ -9,17 +9,30 @@ import { useTranslations } from '../i18n/t';
 import { GENERATED_EVENTS } from './events.generated';
 import { eventOffer } from '../lib/event-offer.mjs';
 
-export const RESERVATION_URL =
-  'https://emenago.com/inner/cart/6619/0519b014958d73fb0d5d2d58c360a661/pl';
+const RESERVATION_BASE_URL =
+  'https://emenago.com/inner/cart/6619/0519b014958d73fb0d5d2d58c360a661';
+const RESERVATION_LOCALES: Record<Locale, 'pl' | 'en' | 'de' | 'it'> = {
+  pl: 'pl',
+  en: 'en',
+  de: 'de',
+  it: 'it',
+  // Emenago's /cs route currently renders English, not Czech. Retain the
+  // existing Polish fallback until the provider exposes a genuine Czech flow.
+  cs: 'pl',
+};
+
+function reservationDestination(locale: Locale): string {
+  return `${RESERVATION_BASE_URL}/${RESERVATION_LOCALES[locale]}`;
+}
 
 /**
  * Canonical outbound reservation link (the emenago cart) with campaign tracking.
  * `content` marks the CTA location, e.g. 'hero', 'event_card', 'header'.
- * Note: emenago has no localized carts, so every locale uses the /pl cart. The
- * reservation flow is slated to be rebuilt in-house, which will replace this.
+ * The locale map includes only provider flows whose rendered language has been
+ * verified; unsupported locales retain the established Polish fallback.
  */
-export function reservationUrl(content: string): string {
-  return `${RESERVATION_URL}?utm_source=website&utm_medium=cta&utm_campaign=reservation&utm_content=${content}`;
+export function reservationUrl(content: string, locale: Locale): string {
+  return `${reservationDestination(locale)}?utm_source=website&utm_medium=cta&utm_campaign=reservation&utm_content=${content}`;
 }
 
 // `start` is the complete ISO date-time with a DST-aware Europe/Warsaw offset
@@ -168,7 +181,7 @@ export function nightClubSchema(locale: Locale = 'pl') {
       '@type': 'ReserveAction',
       target: {
         '@type': 'EntryPoint',
-        urlTemplate: RESERVATION_URL,
+        urlTemplate: reservationDestination(locale),
         inLanguage: locale,
         actionPlatform: [
           'http://schema.org/DesktopWebPlatform',
