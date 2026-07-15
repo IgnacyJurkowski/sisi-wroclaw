@@ -99,7 +99,7 @@ const robotsContent = robotsDirective({
     <link rel="preload" as="font" type="font/woff2" href="/fonts/cal-sans-400-latin.woff2" crossorigin />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="robots" content={robotsContent} />
+    {robotsContent && <meta name="robots" content={robotsContent} />}
     {canonical && <link rel="canonical" href={canonical} />}
     {hreflangs.map((h) => <link rel="alternate" hreflang={h.locale} href={h.href} />)}
     {xDefault && <link rel="alternate" hreflang="x-default" href={xDefault} />}

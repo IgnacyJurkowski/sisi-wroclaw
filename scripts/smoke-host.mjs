@@ -14,12 +14,12 @@ const SECURITY_HEADERS = [
 const ASSET_PATH = /(?:^\/(?:assets|fonts|framerusercontent\.com|video)\/|\.(?:avif|css|gif|ico|jpe?g|js|mjs|mp4|png|svg|webm|webp|woff2?|ttf|otf)(?:$|[?#]))/i;
 
 function usage() {
-  return 'Usage: node scripts/smoke-host.mjs <origin> <expected-robots>';
+  return 'Usage: node scripts/smoke-host.mjs <origin> <expected-robots|none>';
 }
 
 function parseArguments(argv) {
-  const [originValue, expectedRobots] = argv;
-  assert.ok(originValue && expectedRobots, usage());
+  const [originValue, expectedRobotsValue] = argv;
+  assert.ok(originValue && expectedRobotsValue, usage());
   const origin = new URL(originValue);
   assert.ok(['http:', 'https:'].includes(origin.protocol), 'origin must use http or https');
   assert.equal(origin.username, '', 'origin must not contain credentials');
@@ -27,7 +27,8 @@ function parseArguments(argv) {
   assert.equal(origin.pathname, '/', 'origin must not contain a path');
   assert.equal(origin.search, '', 'origin must not contain a query');
   assert.equal(origin.hash, '', 'origin must not contain a fragment');
-  assert.equal(expectedRobots.trim(), expectedRobots, 'expected robots value must be trimmed');
+  assert.equal(expectedRobotsValue.trim(), expectedRobotsValue, 'expected robots value must be trimmed');
+  const expectedRobots = expectedRobotsValue === 'none' ? null : expectedRobotsValue;
   return { origin, expectedRobots };
 }
 
@@ -101,6 +102,10 @@ function robotsValues(html) {
 
 export function assertRobots(html, expected, label) {
   const values = robotsValues(html);
+  if (expected === null) {
+    assert.equal(values.length, 0, `${label} must omit the robots directive`);
+    return;
+  }
   assert.equal(values.length, 1, `${label} must emit exactly one active robots directive`);
   assert.equal(values[0], expected, `${label} has the wrong robots directive`);
 }

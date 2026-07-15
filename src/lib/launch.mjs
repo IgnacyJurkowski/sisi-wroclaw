@@ -12,5 +12,5 @@ export function robotsDirective({ context, siteUrl, canonicalOrigin, noindex = f
   if (context !== 'production' || !siteOrigin || !canonical || siteOrigin !== canonical) {
     return 'noindex, nofollow';
   }
-  return noindex ? 'noindex, follow' : 'index, follow';
+  return noindex ? 'noindex, follow' : undefined;
 }

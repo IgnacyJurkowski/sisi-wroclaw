@@ -28,6 +28,15 @@ test('robots validation ignores comments and requires one active directive', () 
   assert.doesNotThrow(() => assertRobots(`${commentedExpected}<meta name="robots" content="index, follow">`, 'index, follow', '/pl/'));
 });
 
+test('robots validation can require the directive to be absent', () => {
+  const directive = '<meta name="robots" content="index, follow">';
+  assert.doesNotThrow(() => assertRobots('<title>Canonical page</title>', null, '/pl/'));
+  assert.throws(
+    () => assertRobots(directive, null, '/pl/'),
+    /must omit the robots directive/,
+  );
+});
+
 test('form validation ignores commented and otherwise inert form markup', () => {
   assert.throws(() => assertCorporateForm(`<!-- ${validForm} -->`), /exactly one active detected/);
   assert.throws(() => assertCorporateForm(`<template>${validForm}</template>`), /exactly one active detected/);
