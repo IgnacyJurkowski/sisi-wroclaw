@@ -28,9 +28,11 @@ const teaser = upcoming.slice(0, 2);
       )}
     </div>
 
-    <div class="ev-more" data-reveal>
-      <a href={eventsHref} class="btn-outline">{t.buttons.seeAllEvents}</a>
-    </div>
+    {upcoming.length > 0 && (
+      <div class="ev-more" data-reveal>
+        <a href={eventsHref} class="btn-outline">{t.buttons.seeAllEvents}</a>
+      </div>
+    )}
   </div>
 </section>
 

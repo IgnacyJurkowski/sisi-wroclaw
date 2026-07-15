@@ -24,6 +24,7 @@ const results = [];
 const assert = (label, cond) => results.push([label, !!cond]);
 
 const LOCALES = ['pl', 'en', 'de', 'it', 'cs'];
+const EVENT_ROUTES = { pl: 'wydarzenia', en: 'events', de: 'veranstaltungen', it: 'eventi', cs: 'akce' };
 const emptyEventCopy = {
   pl: 'Wkrótce ogłosimy kolejne wydarzenia - śledź nas na Instagramie.',
   en: 'More events coming soon - follow us on Instagram.',
@@ -550,7 +551,13 @@ assert('no stale June event routes', !existsSync(join(DIST, 'pl/wydarzenia/2026-
 // is derived dynamically above (publishing an event must never fail CI).
 if (eventCount === 0) {
   for (const locale of LOCALES) {
-    assert(`${locale} home has empty event state`, read(`${locale}/index.html`).includes(emptyEventCopy[locale]));
+    const home = read(`${locale}/index.html`);
+    const eventOutlineCtas = home.match(new RegExp(
+      `<a\\b(?=[^>]*href="/${locale}/${EVENT_ROUTES[locale]}/")(?=[^>]*class="btn-outline")[^>]*>`,
+      'g',
+    )) ?? [];
+    assert(`${locale} home has empty event state`, home.includes(emptyEventCopy[locale]));
+    assert(`${locale} home hides event CTAs while the event feed is empty`, eventOutlineCtas.length === 0);
   }
 }
 assert('no leaked {tokens} in html', leaked.length === 0);

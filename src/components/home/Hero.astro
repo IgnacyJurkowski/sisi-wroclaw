@@ -3,8 +3,8 @@ import { type Locale } from '../../i18n/config';
 import { localizedPath } from '../../i18n/routes';
 import { useTranslations } from '../../i18n/t';
 
-interface Props { locale: Locale }
-const { locale } = Astro.props;
+interface Props { locale: Locale; hasUpcomingEvents: boolean }
+const { locale, hasUpcomingEvents } = Astro.props;
 const t = useTranslations(locale);
 const eventsHref = localizedPath('events', locale);
 const reservationsHref = localizedPath('reservations', locale);
@@ -18,7 +18,7 @@ const reservationsHref = localizedPath('reservations', locale);
     <h1 class="display hero-title" data-hero>{t.hero.titleLine1}<br />{t.hero.titleLine2}</h1>
     <div class="hero-actions" data-hero>
       <a href={reservationsHref} class="btn-cta">{t.nav.reservations}</a>
-      <a href={eventsHref} class="btn-outline">{t.buttons.calendar}</a>
+      {hasUpcomingEvents && <a href={eventsHref} class="btn-outline">{t.buttons.calendar}</a>}
     </div>
   </div>
 

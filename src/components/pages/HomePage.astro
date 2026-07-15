@@ -29,7 +29,7 @@ const homeEvents = splitEvents().upcoming.slice(0, 2);
   preloadImage="/framerusercontent.com/images/nBW0AVejCOoiy2Rctqcid0SY6Q.webp"
   schema={eventSchema(homeEvents, locale)}
 >
-  <Hero locale={locale} />
+  <Hero locale={locale} hasUpcomingEvents={homeEvents.length > 0} />
   <About locale={locale} />
   <R32 locale={locale} />
   <MenuTeaser locale={locale} />
