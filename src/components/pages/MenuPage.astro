@@ -77,9 +77,9 @@ function localizeDesc(desc: string, loc: Locale): string {
 
 // Polish-vineyard wine list, grouped by colour. Wine name, winery, grape names
 // and region are brand/proper-noun invariant; dryness and the colour category
-// are localised (DRYNESS / WINE_CATEGORIES). Prices are per-wine: a 150 ml glass
-// and a 750 ml bottle. `vintage` is only set where a year was given; `featured`
-// flags the one premium pour (a subtle label, never a loud badge).
+// are localised (DRYNESS / WINE_CATEGORIES). Every wine has a 750 ml bottle
+// price; only Halka and Triada have a 150 ml glass price. `vintage` is only set
+// where a year was given; `featured` flags the one recommended bottle.
 type WineCategory = 'white' | 'red' | 'roseOrange';
 type Dryness = 'dry' | 'semiDry';
 
@@ -90,7 +90,7 @@ interface Wine {
   dryness?: Dryness;
   grapes?: string[];
   region?: string;
-  glassPrice: string;   // 150 ml
+  glassPrice?: string;  // 150 ml
   bottlePrice: string;  // 750 ml
   vintage?: string;
   featured?: boolean;
@@ -99,16 +99,16 @@ interface Wine {
 const WINES: Wine[] = [
   // White
   { category: 'white', name: 'Halka', winery: "Winnica L'Opera", dryness: 'semiDry', grapes: ['Chardonnay', 'Bronner', 'Muscaris'], region: 'Wzgórza Trzebnickie, Dolny Śląsk', glassPrice: '37 zł', bottlePrice: '220 zł' },
-  { category: 'white', name: 'Hibernal', winery: 'Winnica Turnau', dryness: 'semiDry', grapes: ['Hibernal'], region: 'Baniewice, Pomorze Zachodnie', glassPrice: '55 zł', bottlePrice: '330 zł' },
-  { category: 'white', name: 'Solaris', winery: 'Dom Charbielin', dryness: 'semiDry', grapes: ['Solaris'], region: 'Charbielin, Opolskie', glassPrice: '60 zł', bottlePrice: '360 zł' },
-  { category: 'white', name: 'Chardonnay Barrique', winery: 'Winnica Płochockich', dryness: 'dry', grapes: ['Chardonnay'], region: 'Daromin, Świętokrzyskie', glassPrice: '70 zł', bottlePrice: '420 zł', vintage: '2024', featured: true },
+  { category: 'white', name: 'Hibernal', winery: 'Winnica Turnau', dryness: 'semiDry', grapes: ['Hibernal'], region: 'Baniewice, Pomorze Zachodnie', bottlePrice: '330 zł' },
+  { category: 'white', name: 'Solaris', winery: 'Dom Charbielin', dryness: 'semiDry', grapes: ['Solaris'], region: 'Charbielin, Opolskie', bottlePrice: '360 zł' },
+  { category: 'white', name: 'Chardonnay Barrique', winery: 'Winnica Płochockich', dryness: 'dry', grapes: ['Chardonnay'], region: 'Daromin, Świętokrzyskie', bottlePrice: '420 zł', vintage: '2024', featured: true },
   // Red
   { category: 'red', name: 'Triada', winery: "Winnica L'Opera", dryness: 'dry', grapes: ['Baron', 'Cabernet Cantor', 'Cabernet Cortis'], region: 'Wzgórza Trzebnickie, Dolny Śląsk', glassPrice: '40 zł', bottlePrice: '240 zł' },
-  { category: 'red', name: 'Rege', winery: 'Winnica Płochockich', glassPrice: '55 zł', bottlePrice: '330 zł' },
-  { category: 'red', name: 'Pinot Noir', winery: 'Winnica Turnau', dryness: 'dry', grapes: ['Pinot Noir'], region: 'Baniewice, Pomorze Zachodnie', glassPrice: '70 zł', bottlePrice: '420 zł' },
+  { category: 'red', name: 'Rege', winery: 'Winnica Płochockich', bottlePrice: '330 zł' },
+  { category: 'red', name: 'Pinot Noir', winery: 'Winnica Turnau', dryness: 'dry', grapes: ['Pinot Noir'], region: 'Baniewice, Pomorze Zachodnie', bottlePrice: '420 zł' },
   // Rosé / Orange
-  { category: 'roseOrange', name: 'Yacobus Orange', winery: 'Winnica Jakubów', dryness: 'dry', grapes: ['Hibernal', 'Riesling', 'Solaris', 'Traminer'], region: 'Wzgórza Dalkowskie, Dolny Śląsk', glassPrice: '65 zł', bottlePrice: '390 zł' },
-  { category: 'roseOrange', name: 'Rosé', winery: 'Winnica Turnau', dryness: 'semiDry', grapes: ['Rondo', 'Regent'], region: 'Baniewice, Pomorze Zachodnie', glassPrice: '55 zł', bottlePrice: '330 zł' },
+  { category: 'roseOrange', name: 'Yacobus Orange', winery: 'Winnica Jakubów', dryness: 'dry', grapes: ['Hibernal', 'Riesling', 'Solaris', 'Traminer'], region: 'Wzgórza Dalkowskie, Dolny Śląsk', bottlePrice: '390 zł' },
+  { category: 'roseOrange', name: 'Rosé', winery: 'Winnica Turnau', dryness: 'semiDry', grapes: ['Rondo', 'Regent'], region: 'Baniewice, Pomorze Zachodnie', bottlePrice: '330 zł' },
 ];
 
 // Display order of the colour groups + their localised labels.
@@ -331,14 +331,14 @@ const wermuty: Item[] = [
 type BottleGroup = 'vodka' | 'whisky' | 'tequila' | 'rum' | 'liqueur';
 const bottleService: { name: string; vol: string; price: string; group: BottleGroup }[] = [
   { group: 'vodka', name: 'Ostoya', vol: '700 ml', price: '269 zł' },
-  { group: 'vodka', name: 'Ostoya Black', vol: '700 ml', price: '270 zł' },
+  { group: 'vodka', name: 'Ostoya Black', vol: '700 ml', price: '289 zł' },
   { group: 'vodka', name: 'Grey Goose', vol: '700 ml', price: '400 zł' },
   { group: 'vodka', name: 'Grey Goose Altius', vol: '700 ml', price: '790 zł' },
   { group: 'vodka', name: 'Grey Goose Aurora', vol: '1,75 l', price: '890 zł' },
   { group: 'whisky', name: 'Chivas XII', vol: '700 ml', price: '379 zł' },
   { group: 'whisky', name: 'Chivas XV', vol: '700 ml', price: '450 zł' },
   { group: 'whisky', name: 'Chivas XVIII', vol: '700 ml', price: '630 zł' },
-  { group: 'whisky', name: 'Chivas Crystal', vol: '700 ml', price: '350 zł' },
+  { group: 'whisky', name: 'Chivas Crystal', vol: '700 ml', price: '379 zł' },
   { group: 'tequila', name: 'Patrón Silver', vol: '700 ml', price: '630 zł' },
   { group: 'tequila', name: 'Patrón Reposado', vol: '700 ml', price: '730 zł' },
   { group: 'tequila', name: 'Patrón Añejo', vol: '700 ml', price: '800 zł' },
@@ -358,11 +358,11 @@ const napoje: Item[] = [
   { name: 'Coca-Cola / Coca-Cola Zero', vol: '250 ml', price: '13 zł' },
   { name: 'Coca-Cola', vol: '150 ml', price: '10 zł' },
   { name: 'Sprite / Fanta', vol: '250 ml', price: '13 zł' },
-  { name: 'Cappy', desc: 'Grejpfrut / Jabłko / Multiwitamina', price: '13 zł' },
-  { name: 'Fuze Tea', desc: 'Brzoskwinia / Hibiskus / Cytryna', price: '15 zł' },
-  { name: 'Red Bull', desc: 'Original / Sugar Free / Tropical / Peach', price: '16 zł' },
-  { name: '3 Cents', desc: 'Tonic / Aegean Tonic / Grapefruit / Cherry / Lemonade', price: '14 zł' },
-  { name: 'Karafka lemoniady', price: '30 zł' },
+  { name: 'Cappy', desc: 'Grejpfrut / Jabłko / Multiwitamina', vol: '250 ml', price: '13 zł' },
+  { name: 'Fuze Tea', desc: 'Brzoskwinia / Hibiskus / Cytryna', vol: '250 ml', price: '15 zł' },
+  { name: 'Red Bull', desc: 'Original / Sugar Free / Tropical / Peach', vol: '250 ml', price: '16 zł' },
+  { name: '3 Cents', desc: 'Tonic / Aegean Tonic / Grapefruit / Cherry / Lemonade', vol: '250 ml', price: '14 zł' },
+  { name: 'Karafka lemoniady', vol: '1000 ml', price: '30 zł' },
   { name: 'Kropla Beskidu', desc: 'Woda mineralna niegazowana', vol: '300 ml', price: '10 zł' },
   { name: 'Délice', desc: 'Woda mineralna gazowana', vol: '300 ml', price: '10 zł' },
 ];
@@ -506,7 +506,7 @@ const ICONS: Record<string, string> = {
                         {w.region && <p class="wine-region">{w.region}</p>}
                       </div>
                       <div class="prices">
-                        <span class="pcell" data-vol="150 ml">{w.glassPrice}</span>
+                        <span class="pcell" data-vol="150 ml">{w.glassPrice ?? '—'}</span>
                         <span class="pcell" data-vol="750 ml">{w.bottlePrice}</span>
                       </div>
                     </div>

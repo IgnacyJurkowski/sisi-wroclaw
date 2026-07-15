@@ -47,6 +47,63 @@ for (const l of LOCALES) assert(`home builds: /${l}/`, exists(`${l}/index.html`)
 const B2B = { pl: 'eventy-firmowe', en: 'corporate-events', de: 'firmenevents', it: 'eventi-aziendali', cs: 'firemni-akce' };
 for (const l of LOCALES) assert(`b2b builds: /${l}/${B2B[l]}/`, exists(`${l}/${B2B[l]}/index.html`));
 const b2bPages = Object.fromEntries(LOCALES.map((locale) => [locale, read(`${locale}/${B2B[locale]}/index.html`)]));
+const plMenu = read('pl/menu/index.html');
+
+function renderedBlocks(html, className) {
+  const marker = `<div class="${className}"`;
+  const starts = [];
+  let cursor = 0;
+  while ((cursor = html.indexOf(marker, cursor)) !== -1) {
+    starts.push(cursor);
+    cursor += marker.length;
+  }
+  return starts.map((start, index) => html.slice(start, starts[index + 1] ?? html.length));
+}
+
+const hasRenderedText = (html, text) => html.includes(`>${text}<`);
+const wineRows = renderedBlocks(plMenu, 'prow wine-row');
+const menuItems = renderedBlocks(plMenu, 'menu-item');
+const wineRow = (name) => wineRows.find((row) => hasRenderedText(row, name)) ?? '';
+const menuItemRow = (name, volume) => menuItems.find((row) => (
+  hasRenderedText(row, name) && (!volume || hasRenderedText(row, volume))
+)) ?? '';
+const winePrice = (row, volume) => row.match(
+  new RegExp(`<span\\b[^>]*class="pcell"[^>]*data-vol="${volume}"[^>]*>([^<]*)</span>`),
+)?.[1] ?? '';
+
+const expectedWines = [
+  ['Halka', '37 zł', '220 zł'],
+  ['Hibernal', '—', '330 zł'],
+  ['Solaris', '—', '360 zł'],
+  ['Chardonnay Barrique 2024', '—', '420 zł'],
+  ['Triada', '40 zł', '240 zł'],
+  ['Rege', '—', '330 zł'],
+  ['Pinot Noir', '—', '420 zł'],
+  ['Yacobus Orange', '—', '390 zł'],
+  ['Rosé', '—', '330 zł'],
+];
+for (const [name, glassPrice, bottlePrice] of expectedWines) {
+  const row = wineRow(name);
+  assert(
+    `${name} has the requested glass and bottle availability`,
+    winePrice(row, '150 ml') === glassPrice && winePrice(row, '750 ml') === bottlePrice,
+  );
+}
+
+for (const [name, price] of [['Ostoya Black', '289 zł'], ['Chivas Crystal', '379 zł']]) {
+  const row = menuItemRow(name, '700 ml');
+  assert(`${name} has the requested bottle price`, hasRenderedText(row, price));
+}
+
+for (const [name, volume] of [
+  ['Cappy', '250 ml'],
+  ['Fuze Tea', '250 ml'],
+  ['Red Bull', '250 ml'],
+  ['3 Cents', '250 ml'],
+  ['Karafka lemoniady', '1000 ml'],
+]) {
+  assert(`${name} has the requested volume`, hasRenderedText(menuItemRow(name), volume));
+}
 
 // --- html lang changes per locale ---
 for (const l of LOCALES) assert(`<html lang="${l}">`, new RegExp(`<html lang="${l}">`).test(read(`${l}/index.html`)));
