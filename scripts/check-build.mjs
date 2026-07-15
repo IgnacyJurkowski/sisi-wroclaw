@@ -57,6 +57,25 @@ for (const locale of LOCALES) {
       && images.every((image) => hasPositiveDimension(image, 'width') && hasPositiveDimension(image, 'height')),
   );
 }
+const RESERVATIONS = { pl: 'rezerwacje', en: 'reservations', de: 'reservierungen', it: 'prenotazioni', cs: 'rezervace' };
+for (const locale of LOCALES) {
+  const home = read(`${locale}/index.html`);
+  const internalPath = `/${locale}/${RESERVATIONS[locale]}/`;
+  const internalCtas = ['nav-cta', 'btn-cta mobile-cta', 'btn-cta'].map((className) => (
+    home.match(new RegExp(`<a\\b(?=[^>]*href="${internalPath}")(?=[^>]*class="${className}")[^>]*>`))?.[0] ?? ''
+  ));
+  assert(
+    `${locale} header, mobile, and hero CTAs use the internal reservation page`,
+    internalCtas.every((tag) => tag && !/\\btarget=/.test(tag)),
+  );
+
+  const reservationPage = read(`${locale}/${RESERVATIONS[locale]}/index.html`);
+  assert(
+    `${locale} reservation page retains the tracked Emenago booking action`,
+    reservationPage.includes('https://emenago.com/inner/cart/6619/0519b014958d73fb0d5d2d58c360a661/pl')
+      && reservationPage.includes('utm_content=reservations_section'),
+  );
+}
 const B2B = { pl: 'eventy-firmowe', en: 'corporate-events', de: 'firmenevents', it: 'eventi-aziendali', cs: 'firemni-akce' };
 for (const l of LOCALES) assert(`b2b builds: /${l}/${B2B[l]}/`, exists(`${l}/${B2B[l]}/index.html`));
 const b2bPages = Object.fromEntries(LOCALES.map((locale) => [locale, read(`${locale}/${B2B[locale]}/index.html`)]));

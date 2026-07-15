@@ -2,7 +2,7 @@
 import Logo from './Logo.astro';
 import SocialIcon from './SocialIcon.astro';
 import LocaleSwitcher from './LocaleSwitcher.astro';
-import { CONTACT, reservationUrl } from '../data/site';
+import { CONTACT } from '../data/site';
 import { type Locale } from '../i18n/config';
 import { NAV_KEYS, localizedPath, type RouteKey } from '../i18n/routes';
 import { useTranslations } from '../i18n/t';
@@ -13,6 +13,7 @@ const t = useTranslations(locale);
 
 const links = NAV_KEYS.map((key) => ({ key, href: localizedPath(key, locale), label: t.nav[key] }));
 const homeHref = localizedPath('home', locale);
+const reservationsHref = localizedPath('reservations', locale);
 ---
 
 <a href="#main" class="skip-link">{t.nav.skip}</a>
@@ -27,7 +28,7 @@ const homeHref = localizedPath('home', locale);
         <a href={p.href} aria-current={p.key === active ? 'page' : undefined}>{p.label}</a>
       ))}
     </div>
-    <a href={reservationUrl('header')} class="nav-cta" rel="noopener" target="_blank">{t.nav.reservations}</a>
+    <a href={reservationsHref} class="nav-cta">{t.nav.reservations}</a>
   </div>
   <div class="nav-right">
     <div class="nav-social">
@@ -47,7 +48,7 @@ const homeHref = localizedPath('home', locale);
     {links.map((p) => (
       <a href={p.href} class:list={[{ active: p.key === active }]} data-nav-link>{p.label}</a>
     ))}
-    <a href={reservationUrl('mobile_menu')} class="btn-cta mobile-cta" rel="noopener" target="_blank" data-nav-link>{t.nav.reservations}</a>
+    <a href={reservationsHref} class="btn-cta mobile-cta" data-nav-link>{t.nav.reservations}</a>
   </div>
   <div class="mobile-social">
     <a href={CONTACT.instagram} class="social-icon" rel="noopener" target="_blank" aria-label="Instagram"><SocialIcon name="instagram" /></a>
