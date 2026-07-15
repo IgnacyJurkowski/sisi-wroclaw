@@ -1,0 +1,8 @@
+{
+  "projectId": "f6f3fb04-029d-4c53-81b9-fbb37e098efb",
+  "projectName": "SISI Wrocław Design System",
+  "shape": "custom-styles",
+  "mechanism": "mechanism-1-styles-tokens-cards",
+  "localDir": "./ds-bundle",
+  "readmeHeader": ".design-sync/conventions.md"
+}

@@ -13,6 +13,9 @@ node_modules/
 dist/
 .astro/
 
+# /design-sync build output (regenerable from src + .design-sync/)
+ds-bundle/
+
 # Never commit credentials (Google service-account keys / OAuth secrets).
 # The events sync reads them from a GitHub secret in CI, or
 # GOOGLE_APPLICATION_CREDENTIALS locally.
