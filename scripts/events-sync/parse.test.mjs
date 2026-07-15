@@ -8,6 +8,7 @@ import {
   isPastEvent,
   validateEvent,
 } from './parse.mjs';
+import * as eventParse from './parse.mjs';
 import { eventOffer } from '../../src/lib/event-offer.mjs';
 
 // The real example staff created in Opisy/26-06-2026, in the two layouts a
@@ -153,6 +154,12 @@ test('dateKeyFromFilename pairs banner to doc', () => {
   assert.equal(dateKeyFromFilename('26-06-2026.png'), '26-06-2026');
   assert.equal(dateKeyFromFilename('26-06-2026'), '26-06-2026');
   assert.equal(dateKeyFromFilename('not-a-date.png'), null);
+});
+
+test('temporarily suppresses the SiSi Fridays placeholder date only', () => {
+  assert.equal(typeof eventParse.isSuppressedEventDate, 'function');
+  assert.equal(eventParse.isSuppressedEventDate?.('17-07-2026'), true);
+  assert.equal(eventParse.isSuppressedEventDate?.('18-07-2026'), false);
 });
 
 test('eventSlug is stable, sort-friendly, ascii', () => {

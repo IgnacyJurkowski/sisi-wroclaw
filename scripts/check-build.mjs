@@ -490,6 +490,13 @@ for (const [label, pattern] of unverifiedRenderedClaims) {
   assert(`no ${label} in html`, !pattern.test(searchableHtml));
 }
 assert('no sample event copy', !allHtml.includes('Krótki opis wydarzenia') && !allHtml.includes('JungleW'));
+assert(
+  'SiSi Fridays placeholder is not published',
+  !allHtml.includes('SiSi Fridays')
+    && !allHtml.includes('DJ Marta Kwiatek')
+    && !existsSync(join(DIST, 'pl/wydarzenia/2026-07-17-sisi-fridays/index.html'))
+    && !existsSync(join(DIST, 'events/2026-07-17-sisi-fridays.webp')),
+);
 assert('no stale June event routes', !existsSync(join(DIST, 'pl/wydarzenia/2026-06-26-friday-at-sisi/index.html')));
 // The home shows the empty-event copy only while there is nothing to list;
 // once staff publish an event in Drive it renders the lineup instead. So this

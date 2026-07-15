@@ -81,6 +81,15 @@ export function dateKeyFromFilename(name) {
   return m ? m[1] : null;
 }
 
+// Temporary owner-requested suppression while the 17 July listing is still a
+// placeholder. Keeping this in the sync policy prevents the scheduled Drive
+// import from republishing it before the real event content is ready.
+const SUPPRESSED_EVENT_DATES = new Set(['17-07-2026']);
+
+export function isSuppressedEventDate(dateKey) {
+  return SUPPRESSED_EVENT_DATES.has(dateKey);
+}
+
 const WARSAW = 'Europe/Warsaw';
 
 /** Offset (ms) of Europe/Warsaw at a given UTC instant, via Intl longOffset. */
