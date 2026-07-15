@@ -8,6 +8,7 @@ const CANONICAL_ORIGIN = 'https://www.sisiwroclaw.pl';
 const ORGANIZATION_ID = `${CANONICAL_ORIGIN}/#organization`;
 const NIGHTCLUB_ID = `${CANONICAL_ORIGIN}/#nightclub`;
 const R32_ID = 'https://www.r32.com.pl/#eventvenue';
+const FACEBOOK_URL = 'https://www.facebook.com/sisimusicclub';
 
 const files = ['src/data/site.ts', 'src/i18n/legal.ts', 'src/i18n/ui/pl.ts', 'src/i18n/ui/en.ts', 'src/i18n/ui/de.ts', 'src/i18n/ui/it.ts', 'src/i18n/ui/cs.ts', 'src/layouts/Base.astro', 'docs/B2B.md'];
 test('unverified launch claims are absent from source', async () => {
@@ -32,6 +33,7 @@ test('structured data uses the final origin and attaches only verified event off
   try {
     const {
       BUSINESS,
+      CONTACT,
       entityGraphSchema,
       eventSchema,
       eventVenueSchema,
@@ -54,6 +56,7 @@ test('structured data uses the final origin and attaches only verified event off
     const serialized = JSON.stringify(graph);
 
     assert.equal(BUSINESS.url, CANONICAL_ORIGIN);
+    assert.equal(CONTACT.facebook, FACEBOOK_URL);
     assert.ok(serialized.includes(CANONICAL_ORIGIN));
     assert.equal(serialized.includes(CANONICAL_ORIGIN.replace('www.', '')), false);
     assert.equal(organization['@type'], 'Organization');
@@ -68,6 +71,8 @@ test('structured data uses the final origin and attaches only verified event off
     assert.deepEqual(eventVenue.containsPlace, { '@id': NIGHTCLUB_ID });
     assert.deepEqual(nightClub.parentOrganization, { '@id': ORGANIZATION_ID });
     assert.deepEqual(nightClub.containedInPlace, { '@id': R32_ID });
+    assert.equal(nightClub.sameAs.includes(FACEBOOK_URL), true);
+    assert.equal(nightClub.sameAs.some((url) => /facebook\.com\/share\//.test(url)), false);
     assert.deepEqual(
       entityGraph['@graph'].map((node) => node['@id']),
       [ORGANIZATION_ID, R32_ID, NIGHTCLUB_ID, `${CANONICAL_ORIGIN}/#website`],

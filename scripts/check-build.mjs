@@ -12,6 +12,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = join(ROOT, 'dist');
 const CANONICAL_ORIGIN = 'https://www.sisiwroclaw.pl';
 const BARE_ORIGIN = CANONICAL_ORIGIN.replace('www.', '');
+const FACEBOOK_URL = 'https://www.facebook.com/sisimusicclub';
 
 if (!existsSync(DIST)) {
   console.error('dist/ not found - run `npm run build` first.');
@@ -69,7 +70,8 @@ const cookieMeta = {
 // --- i18n: every locale homepage + B2B route builds ---
 for (const l of LOCALES) assert(`home builds: /${l}/`, exists(`${l}/index.html`));
 for (const locale of LOCALES) {
-  const images = read(`${locale}/index.html`).match(/<img\b[^>]*>/g) ?? [];
+  const home = read(`${locale}/index.html`);
+  const images = home.match(/<img\b[^>]*>/g) ?? [];
   const hasPositiveDimension = (image, name) => Number(
     image.match(new RegExp(`\\b${name}="([0-9]+)"`))?.[1] ?? 0,
   ) > 0;
@@ -77,6 +79,11 @@ for (const locale of LOCALES) {
     `${locale} home images declare positive width and height`,
     images.length > 0
       && images.every((image) => hasPositiveDimension(image, 'width') && hasPositiveDimension(image, 'height')),
+  );
+  assert(
+    `${locale} social links use the durable official Facebook profile`,
+    home.split(`href="${FACEBOOK_URL}"`).length - 1 === 3
+      && !home.includes('facebook.com/share/'),
   );
 }
 const RESERVATIONS = { pl: 'rezerwacje', en: 'reservations', de: 'reservierungen', it: 'prenotazioni', cs: 'rezervace' };
@@ -169,6 +176,9 @@ const plJsonLd = [...plHome.matchAll(/<script type="application\/ld\+json">([\s\
   .map((match) => JSON.parse(match[1]));
 const siteEntityGraph = plJsonLd.find((value) => Array.isArray(value['@graph']));
 const siteEntityIds = new Set((siteEntityGraph?.['@graph'] ?? []).map((node) => node['@id']));
+const siteNightClub = (siteEntityGraph?.['@graph'] ?? []).find(
+  (node) => node['@id'] === `${CANONICAL_ORIGIN}/#nightclub`,
+);
 assert(
   'site JSON-LD connects legal organization, R32 venue, nightclub, and website in one graph',
   siteEntityIds.size === 4
@@ -176,6 +186,12 @@ assert(
     && siteEntityIds.has('https://www.r32.com.pl/#eventvenue')
     && siteEntityIds.has(`${CANONICAL_ORIGIN}/#nightclub`)
     && siteEntityIds.has(`${CANONICAL_ORIGIN}/#website`),
+);
+assert(
+  'nightclub sameAs uses the durable official Facebook profile',
+  Array.isArray(siteNightClub?.sameAs)
+    && siteNightClub.sameAs.includes(FACEBOOK_URL)
+    && siteNightClub.sameAs.every((url) => !/facebook\.com\/share\//.test(url)),
 );
 assert('hreflang has 5 locales', (plHome.match(/rel="alternate" hreflang="(pl|en|de|it|cs)"/g) || []).length === 5);
 assert('hreflang x-default present', plHome.includes('hreflang="x-default"'));
