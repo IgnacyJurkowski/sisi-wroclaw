@@ -28,6 +28,7 @@ import {
   warsawIso,
   eventSlug,
   dateKeyFromFilename,
+  isSuppressedEventDate,
   isPastEvent,
   validateEvent,
 } from './events-sync/parse.mjs';
@@ -69,6 +70,11 @@ async function run() {
   const bannerRecords = [];
 
   for (const dateKey of dates) {
+    if (isSuppressedEventDate(dateKey)) {
+      skipped.push(`${dateKey}: temporarily suppressed`);
+      continue;
+    }
+
     const banner = bannerByDate.get(dateKey);
     const doc = docByDate.get(dateKey);
 

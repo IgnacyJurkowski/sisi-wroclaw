@@ -2,19 +2,4 @@
 // folder (Banery + Opisy). Do not edit by hand - the next sync overwrites it.
 import type { EventItem } from './site';
 
-export const GENERATED_EVENTS: EventItem[] = [
-  {
-    "title": "SiSi Fridays",
-    "slug": "2026-07-17-sisi-fridays",
-    "start": "2026-07-17T22:00:00+02:00",
-    "note": "DJ Marta Kwiatek",
-    "img": "/events/2026-07-17-sisi-fridays.webp",
-    "price": 30,
-    "description": "Autorski wieczór klubowy — house, disco i groove do białego rana. Rezydenci SiSi i goście specjalni.",
-    "genres": [
-      "House",
-      "Disco",
-      "Funk"
-    ]
-  }
-];
+export const GENERATED_EVENTS: EventItem[] = [];
