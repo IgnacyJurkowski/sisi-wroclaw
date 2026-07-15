@@ -47,7 +47,15 @@ const mapHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComp
 </section>
 
 <style>
-  .reservations { padding: 56px 0 96px; }
+  /* The booking moment is the one warm, creamy zone in an otherwise dark-wine
+     site - a deliberate hospitality break that makes "reserve a table" pop.
+     Everything inside re-themes to dark-on-cream for contrast. */
+  .reservations {
+    padding: 72px 0 96px;
+    background: var(--cream);
+    color: #27060f;
+  }
+  .res-pitch .page-label { color: #9c2742; }
   .res-grid {
     display: grid;
     grid-template-columns: 1.1fr 0.9fr;
@@ -56,25 +64,35 @@ const mapHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComp
   }
   .res-title {
     font-size: clamp(2rem, 5vw, 3.4rem);
-    text-transform: uppercase; color: var(--cream);
+    text-transform: uppercase; color: #27060f;
     margin: 12px 0 20px; line-height: 1.05;
   }
   .res-body {
-    color: var(--text-dim); font-size: 16px; line-height: 1.8;
+    color: rgba(39, 7, 15, 0.74); font-size: 16px; line-height: 1.8;
     margin-bottom: 28px; max-width: 460px;
   }
   .res-terms-line {
-    font-size: 13px; line-height: 1.6; color: var(--text-dim);
+    font-size: 13px; line-height: 1.6; color: rgba(39, 7, 15, 0.72);
     max-width: 460px; margin-bottom: 24px;
-    padding: 13px 16px; border: 1px solid var(--line); border-radius: 10px;
-    background: rgba(255, 255, 255, 0.02);
+    padding: 13px 16px; border: 1px solid rgba(39, 7, 15, 0.18); border-radius: 10px;
+    background: rgba(39, 7, 15, 0.04);
   }
-  .res-cta { padding: 15px 34px; font-size: 13px; }
+  /* Invert the CTA: a solid wine button on cream reads as the primary action. */
+  .res-pitch .res-cta { padding: 15px 34px; font-size: 13px; background: var(--bg); color: var(--cream); }
+  .res-pitch .res-cta:hover { background: var(--panel); color: var(--cream); }
+  .res-pitch .res-cta:active { background: var(--panel-2); color: var(--cream); }
   .res-reassure {
     margin-top: 18px; font-size: 12px; letter-spacing: 0.03em;
-    color: var(--text-mute);
+    color: rgba(39, 7, 15, 0.7);
   }
 
+  /* The info panel becomes a solid deep-wine card - a crisp anchor on the cream
+     (the default glass .sisi-card would wash out to a muddy tint over cream). */
+  .res-grid .res-info {
+    background: var(--bg);
+    border-color: rgba(39, 7, 15, 0.14);
+    box-shadow: 0 14px 40px rgba(39, 7, 15, 0.20);
+  }
   .res-info { padding: 22px 30px; }
   .res-row {
     display: flex; justify-content: space-between; gap: 24px;

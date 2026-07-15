@@ -464,23 +464,49 @@ footer::before {
   margin-bottom: 28px;
 }
 
+/* === PAGE INTRO (first-paint veil) === */
+/* A brief wine veil carrying the mark, lifting on load. Purely decorative, so it
+   is built to never block: pointer-events stay off and it fades to hidden via a
+   forwards animation (no JS, no storage - unlike the old loader that once blocked
+   the nav). prefers-reduced-motion removes it outright. */
+.page-intro {
+  position: fixed; inset: 0; z-index: 9999;
+  display: grid; place-items: center;
+  background: var(--bg);
+  pointer-events: none;
+  animation: page-intro-veil 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.14s both;
+}
+.page-intro__mark {
+  display: block;
+  opacity: 0; transform: translateY(10px) scale(0.985);
+  animation: page-intro-mark 0.36s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.page-intro__mark svg { height: 40px; width: auto; }
+@keyframes page-intro-mark { to { opacity: 1; transform: none; } }
+@keyframes page-intro-veil { to { opacity: 0; visibility: hidden; } }
+@media (prefers-reduced-motion: reduce) { .page-intro { display: none; } }
+
 /* === RESPONSIVE === */
 @media (max-width: 860px) {
-  /* Collapsed bar: logo (left), language switcher + hamburger (right).
-     The links, the Rezerwacje CTA and the social row all live in the menu now. */
-  .nav-center, .nav-social { display: none !important; }
+  /* Collapsed bar: logo (left), the Rezerwacje CTA, then language switcher +
+     hamburger (right). Only the nav links and social row move into the menu -
+     the reservation button stays in the bar so booking is always one tap away. */
+  .nav-links, .nav-social { display: none !important; }
+  .nav-center { gap: 0; }
   .nav-left { flex: 1; }
   .nav-right { flex: 0 0 auto; }
   .nav-lang { display: block; }
   #hamburger { display: flex; }
-  /* Raise the bar above the menu overlay (z 60) so the logo, language switcher
-     and the morphing hamburger-X stay on top and tappable while it's open. */
+  /* Raise the bar above the menu overlay (z 60) so the logo, reservation CTA,
+     language switcher and the morphing hamburger-X stay on top and tappable. */
   #main-nav { z-index: 70; gap: 10px; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
 }
 
 @media (max-width: 600px) {
   #main-nav { top: 0.5rem; width: calc(100vw - 1rem); border-radius: 12px; }
+  /* Compact the reservation CTA so logo + button + language + hamburger all fit. */
+  .nav-cta { padding: 8px 13px; font-size: 10px; letter-spacing: 0.05em; }
   .footer-grid { grid-template-columns: 1fr; gap: 36px; }
   .page-header { padding-left: 20px; padding-right: 20px; }
   .container { padding-inline: 20px; }
