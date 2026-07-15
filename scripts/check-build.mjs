@@ -46,6 +46,17 @@ const englishCookieOgMeta = 'How SiSi Wrocław uses essential storage for the no
 
 // --- i18n: every locale homepage + B2B route builds ---
 for (const l of LOCALES) assert(`home builds: /${l}/`, exists(`${l}/index.html`));
+for (const locale of LOCALES) {
+  const images = read(`${locale}/index.html`).match(/<img\b[^>]*>/g) ?? [];
+  const hasPositiveDimension = (image, name) => Number(
+    image.match(new RegExp(`\\b${name}="([0-9]+)"`))?.[1] ?? 0,
+  ) > 0;
+  assert(
+    `${locale} home images declare positive width and height`,
+    images.length > 0
+      && images.every((image) => hasPositiveDimension(image, 'width') && hasPositiveDimension(image, 'height')),
+  );
+}
 const B2B = { pl: 'eventy-firmowe', en: 'corporate-events', de: 'firmenevents', it: 'eventi-aziendali', cs: 'firemni-akce' };
 for (const l of LOCALES) assert(`b2b builds: /${l}/${B2B[l]}/`, exists(`${l}/${B2B[l]}/index.html`));
 const b2bPages = Object.fromEntries(LOCALES.map((locale) => [locale, read(`${locale}/${B2B[locale]}/index.html`)]));

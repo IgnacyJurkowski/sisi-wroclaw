@@ -8,11 +8,17 @@ const { locale } = Astro.props;
 const t = useTranslations(locale);
 
 const imgs = [
-  '/framerusercontent.com/images/QxXDx4GN74BgGuzaDth23HA.webp',
-  '/framerusercontent.com/images/RHdmR5s8jXTtyexi8FJLI4WDkig.webp',
-  '/framerusercontent.com/images/RMGSDUbOPnta4fZZQKL5BcnP3Pw.webp',
+  { src: '/framerusercontent.com/images/QxXDx4GN74BgGuzaDth23HA.webp', width: 900, height: 599 },
+  { src: '/framerusercontent.com/images/RHdmR5s8jXTtyexi8FJLI4WDkig.webp', width: 900, height: 599 },
+  { src: '/framerusercontent.com/images/RMGSDUbOPnta4fZZQKL5BcnP3Pw.webp', width: 900, height: 600 },
 ];
-const cards = imgs.map((img, i) => ({ img, title: t.about.cards[i], v: variants(img, CARD_WIDTHS) }));
+const cards = imgs.map(({ src, width, height }, i) => ({
+  img: src,
+  width,
+  height,
+  title: t.about.cards[i],
+  v: variants(src, CARD_WIDTHS),
+}));
 const imgSizes = '(max-width: 600px) 90vw, (max-width: 900px) 45vw, 24vw';
 ---
 
@@ -29,7 +35,7 @@ const imgSizes = '(max-width: 600px) 90vw, (max-width: 900px) 45vw, 24vw';
         <picture>
           <source type="image/avif" srcset={c.v.avif} sizes={imgSizes} />
           <source type="image/webp" srcset={c.v.webp} sizes={imgSizes} />
-          <img src={c.img} alt={c.title} loading="lazy" />
+          <img src={c.img} alt={c.title} width={c.width} height={c.height} loading="lazy" />
         </picture>
         <figcaption class="display">{c.title}</figcaption>
       </figure>

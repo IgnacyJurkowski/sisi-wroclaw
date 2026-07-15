@@ -11,9 +11,11 @@ const imgSizes = '(max-width: 600px) 90vw, (max-width: 900px) 45vw, 24vw';
 // Venue gallery (opening-night photos). These show the live music and the
 // crowd, so they carry content, not decoration - real, localized alt text per
 // image (describes what is visible; no invented detail).
-const gallery: { src: string; alt: Record<Locale, string> }[] = [
+const gallery: { src: string; width: number; height: number; alt: Record<Locale, string> }[] = [
   {
     src: '/framerusercontent.com/images/u3EOm1VtOnATOkUYHKikl5aBc.webp',
+    width: 728,
+    height: 486,
     alt: {
       pl: 'Wokalistka podczas występu na żywo w SiSi',
       en: 'A vocalist performing live at SiSi',
@@ -24,6 +26,8 @@ const gallery: { src: string; alt: Record<Locale, string> }[] = [
   },
   {
     src: '/framerusercontent.com/images/MHGypGkoM6EkRCjBAVKzMUmwRG4.webp',
+    width: 900,
+    height: 600,
     alt: {
       pl: 'Goście na parkiecie podczas imprezy w SiSi',
       en: 'Guests on the dance floor during a night at SiSi',
@@ -34,6 +38,8 @@ const gallery: { src: string; alt: Record<Locale, string> }[] = [
   },
   {
     src: '/framerusercontent.com/images/cDJcCUEanjQSoFpALHKgU3hNpQ.webp',
+    width: 900,
+    height: 600,
     alt: {
       pl: 'Zespół grający na żywo na scenie SiSi',
       en: 'A band playing live on the SiSi stage',
@@ -71,7 +77,13 @@ const gallery: { src: string; alt: Record<Locale, string> }[] = [
           <picture>
             <source type="image/avif" srcset={variants(shot.src, CARD_WIDTHS).avif} sizes={imgSizes} />
             <source type="image/webp" srcset={variants(shot.src, CARD_WIDTHS).webp} sizes={imgSizes} />
-            <img src={shot.src} alt={shot.alt[locale]} loading="lazy" />
+            <img
+              src={shot.src}
+              alt={shot.alt[locale]}
+              width={shot.width}
+              height={shot.height}
+              loading="lazy"
+            />
           </picture>
         </div>
       )
