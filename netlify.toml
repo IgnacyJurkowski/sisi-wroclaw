@@ -5,6 +5,19 @@
 [build.environment]
   NODE_VERSION = "22.12.0"
 
+# Bare host -> final www host in one hop for both protocols.
+[[redirects]]
+  from = "http://sisiwroclaw.pl/*"
+  to = "https://www.sisiwroclaw.pl/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://sisiwroclaw.pl/*"
+  to = "https://www.sisiwroclaw.pl/:splat"
+  status = 301
+  force = true
+
 # Root -> default locale (forced: shadows the build-time fallback index.html).
 [[redirects]]
   from = "/"

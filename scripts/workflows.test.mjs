@@ -11,6 +11,16 @@ async function workflow(name) {
   return readFile(`.github/workflows/${name}.yml`, 'utf8');
 }
 
+function netlifyRedirects(source) {
+  return source
+    .split(/(?=^\[\[redirects\]\]\s*$)/m)
+    .filter((block) => /^\[\[redirects\]\]\s*$/m.test(block))
+    .map((block) => Object.fromEntries(
+      [...block.matchAll(/^\s*(from|to|status|force)\s*=\s*(?:"([^"]*)"|(\d+|true|false))\s*$/gm)]
+        .map((match) => [match[1], match[2] ?? (match[3] === 'true' ? true : match[3] === 'false' ? false : Number(match[3]))]),
+    ));
+}
+
 function assertNodeGate(source) {
   assert.match(source, new RegExp(`uses: actions/checkout@${CHECKOUT_SHA}\\b`));
   assert.match(source, new RegExp(`uses: actions/setup-node@${SETUP_NODE_SHA}\\b`));
@@ -46,6 +56,22 @@ test('Netlify production builds use the exact audited Node runtime', async () =>
   const source = await readFile('netlify.toml', 'utf8');
   assert.match(source, /^\s*NODE_VERSION\s*=\s*"22\.12\.0"\s*$/m);
   assert.doesNotMatch(source, /^\s*NODE_VERSION\s*=\s*"22"\s*$/m);
+});
+
+test('Netlify redirects both bare protocols directly to the final www host', async () => {
+  const source = await readFile('netlify.toml', 'utf8');
+  const redirects = netlifyRedirects(source);
+  const expected = ['http:', 'https:'].map((protocol) => ({
+    from: `${protocol}//sisiwroclaw.pl/*`,
+    to: 'https://www.sisiwroclaw.pl/:splat',
+    status: 301,
+    force: true,
+  }));
+
+  assert.deepEqual(redirects.slice(0, 2), expected);
+  assert.equal(redirects.filter(({ from }) => expected.some((rule) => rule.from === from)).length, 2);
+  assert.equal(redirects.some(({ from }) => from?.startsWith('https://www.sisiwroclaw.pl')), false);
+  assert.equal(redirects[2]?.from, '/');
 });
 
 test('CI publishes the exact Launch gate / test status on pushes and pull requests', async () => {
