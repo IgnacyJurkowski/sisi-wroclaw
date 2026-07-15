@@ -123,6 +123,7 @@ const cs: UI = {
   hero: {
     titleLine1: 'SRDCE VRATISLAVI',
     titleLine2: 'BIJE V SiSi',
+    descriptor: 'Hudební klub, živá vystoupení, DJové a koktejly v centru Vratislavi.',
     discover: 'ZOBRAZIT VÍCE',
   },
 

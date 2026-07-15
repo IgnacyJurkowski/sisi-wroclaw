@@ -123,6 +123,7 @@ const en: UI = {
   hero: {
     titleLine1: 'THE HEART OF WROCŁAW',
     titleLine2: 'BEATS AT SiSi',
+    descriptor: 'Music club, live acts, DJs and cocktails in central Wrocław.',
     discover: 'SEE MORE',
   },
 

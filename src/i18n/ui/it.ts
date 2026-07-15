@@ -123,6 +123,7 @@ const it: UI = {
   hero: {
     titleLine1: 'IL CUORE DI BRESLAVIA',
     titleLine2: 'BATTE AL SiSi',
+    descriptor: 'Music club, live act, DJ e cocktail nel centro di Breslavia.',
     discover: 'VEDI DI PIÙ',
   },
 

@@ -126,6 +126,7 @@ const pl = {
   hero: {
     titleLine1: 'SERCE WROCŁAWIA',
     titleLine2: 'BIJE W SiSi',
+    descriptor: 'Klub muzyczny, live acts, DJ-e i koktajle w centrum Wrocławia.',
     discover: 'ZOBACZ WIĘCEJ',
   },
 

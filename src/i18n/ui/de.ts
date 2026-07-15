@@ -124,6 +124,7 @@ const de: UI = {
   hero: {
     titleLine1: 'DAS HERZ BRESLAUS',
     titleLine2: 'SCHLÄGT IM SiSi',
+    descriptor: 'Musikclub, Live-Acts, DJs und Cocktails im Zentrum von Breslau.',
     discover: 'MEHR SEHEN',
   },
 

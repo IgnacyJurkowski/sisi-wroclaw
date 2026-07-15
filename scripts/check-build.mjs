@@ -54,6 +54,13 @@ const PAGE_TITLES = {
     contact: 'Kontakt a firemní údaje | SiSi Wrocław',
   },
 };
+const HERO_DESCRIPTORS = {
+  pl: 'Klub muzyczny, live acts, DJ-e i koktajle w centrum Wrocławia.',
+  en: 'Music club, live acts, DJs and cocktails in central Wrocław.',
+  de: 'Musikclub, Live-Acts, DJs und Cocktails im Zentrum von Breslau.',
+  it: 'Music club, live act, DJ e cocktail nel centro di Breslavia.',
+  cs: 'Hudební klub, živá vystoupení, DJové a koktejly v centru Vratislavi.',
+};
 const TITLE_ROUTES = {
   pl: { home: '', menu: 'menu', contact: 'kontakt' },
   en: { home: '', menu: 'menu', contact: 'contact' },
@@ -115,6 +122,21 @@ for (const locale of LOCALES) {
 }
 for (const locale of LOCALES) {
   const home = read(`${locale}/index.html`);
+  const heroTitleEnd = home.indexOf('</h1>');
+  const heroDescriptor = home.match(
+    /<p\b(?=[^>]*\bclass="hero-descriptor")(?=[^>]*\bdata-hero(?:\s|=|>))[^>]*>([^<]*)<\/p>/,
+  );
+  const heroDescriptorAt = heroDescriptor ? home.indexOf(heroDescriptor[0]) : -1;
+  const heroActionsAt = home.search(
+    /<div\b(?=[^>]*\bclass="hero-actions")(?=[^>]*\bdata-hero(?:\s|=|>))[^>]*>/,
+  );
+  assert(
+    `${locale} hero names the venue category before its actions`,
+    heroDescriptor?.[1] === HERO_DESCRIPTORS[locale]
+      && heroDescriptorAt > heroTitleEnd
+      && heroDescriptorAt < heroActionsAt
+      && home.split('class="hero-descriptor"').length - 1 === 1,
+  );
   const images = home.match(/<img\b[^>]*>/g) ?? [];
   const hasPositiveDimension = (image, name) => Number(
     image.match(new RegExp(`\\b${name}="([0-9]+)"`))?.[1] ?? 0,
