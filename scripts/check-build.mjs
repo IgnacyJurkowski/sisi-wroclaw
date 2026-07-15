@@ -411,6 +411,10 @@ assert(
 const externalScriptBodies = scripts.map((file) => readFileSync(file, 'utf8'));
 const inlineScriptBodies = htmls.flatMap((file) => executableInlineScripts(readFileSync(file, 'utf8')));
 const executableBuiltText = [...externalScriptBodies, ...inlineScriptBodies].join('\n');
+assert(
+  'rendered pages omit the stacked summer-hours modal and its storage key',
+  !allHtml.includes('data-popup') && !executableBuiltText.includes('sisi-summer-fri-dismissed'),
+);
 assert('build inventory finds external JavaScript', scripts.length > 0);
 assert(
   'immutable asset cache rule covers emitted content-addressed files',
