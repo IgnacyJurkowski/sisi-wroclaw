@@ -54,8 +54,8 @@ const cs: UI = {
     },
     cookies: {
       title: 'Zásady cookies - SiSi Wrocław',
-      description: 'SiSi Wrocław cookie policy - essential storage used for notice dismissal and form and navigation state.',
-      ogDescription: 'How SiSi Wrocław uses essential storage for the notice, forms and navigation.',
+      description: 'Zásady používání souborů cookie SiSi Wrocław - nezbytné ukládání informace o zavření oznámení a stavu formulářů a navigace.',
+      ogDescription: 'Jak SiSi Wrocław používá nezbytné ukládání pro oznámení, formuláře a navigaci.',
     },
     notFound: {
       title: '404 - Stránka nenalezena | SiSi Wrocław',
@@ -99,11 +99,11 @@ const cs: UI = {
   },
 
   cookie: {
-    text: 'This site stores only the dismissal of this notice and essential form and navigation state. Details are in our {cookies} and {privacy}.',
-    cookiesLink: 'Cookie Policy',
-    privacyLink: 'Privacy Policy',
-    dismiss: 'Got it',
-    dialogLabel: 'Essential storage notice',
+    text: 'Tento web ukládá pouze informaci o zavření tohoto oznámení a nezbytný stav formulářů a navigace. Podrobnosti najdete v našich {cookies} a {privacy}.',
+    cookiesLink: 'zásadách používání souborů cookie',
+    privacyLink: 'zásadách ochrany soukromí',
+    dismiss: 'Rozumím',
+    dialogLabel: 'Oznámení o nezbytném ukládání',
   },
 
   buttons: {

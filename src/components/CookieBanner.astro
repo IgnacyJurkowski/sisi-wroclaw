@@ -14,11 +14,10 @@ const t = useTranslations(locale);
 const parts = t.cookie.text.split(/\{cookies\}|\{privacy\}/);
 const cookiesHref = localizedPath('cookies', locale);
 const privacyHref = localizedPath('privacy', locale);
-const noticeLang = locale === 'pl' || locale === 'en' ? undefined : 'en';
 ---
 
 <div id="cookie-banner" class="cookie-banner" role="dialog" aria-live="polite"
-     aria-label={t.cookie.dialogLabel} lang={noticeLang} hidden>
+     aria-label={t.cookie.dialogLabel} hidden>
   <p class="cookie-text">{parts[0]}<a href={cookiesHref}>{t.cookie.cookiesLink}</a>{parts[1]}<a href={privacyHref}>{t.cookie.privacyLink}</a>{parts[2]}</p>
   <div class="cookie-actions">
     <button type="button" class="btn-cta cookie-btn" data-cookie-dismiss>{t.cookie.dismiss}</button>

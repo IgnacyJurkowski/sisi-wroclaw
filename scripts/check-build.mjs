@@ -36,14 +36,35 @@ const englishNoticeText = 'This site stores only the dismissal of this notice an
 const noticeCopy = {
   pl: 'Ta strona przechowuje wyłącznie informację o zamknięciu tego komunikatu oraz niezbędny stan formularzy i nawigacji. Szczegóły znajdziesz w Polityce cookies oraz Polityce prywatności.',
   en: englishNoticeText,
-  de: englishNoticeText,
-  it: englishNoticeText,
-  cs: englishNoticeText,
+  de: 'Diese Website speichert ausschließlich, dass dieser Hinweis geschlossen wurde, sowie notwendige Formular- und Navigationszustände. Einzelheiten findest du in unserer Cookie-Richtlinie und unserer Datenschutzerklärung.',
+  it: 'Questo sito memorizza esclusivamente la chiusura di questo avviso e lo stato essenziale dei moduli e della navigazione. I dettagli sono disponibili nella nostra informativa sui cookie e nella nostra informativa sulla privacy.',
+  cs: 'Tento web ukládá pouze informaci o zavření tohoto oznámení a nezbytný stav formulářů a navigace. Podrobnosti najdete v našich zásadách používání souborů cookie a zásadách ochrany soukromí.',
 };
-const noticeDismiss = { pl: 'Rozumiem', en: 'Got it', de: 'Got it', it: 'Got it', cs: 'Got it' };
-const noticeFallbackLocales = new Set(['de', 'it', 'cs']);
-const englishCookieMeta = 'SiSi Wrocław cookie policy - essential storage used for notice dismissal and form and navigation state.';
-const englishCookieOgMeta = 'How SiSi Wrocław uses essential storage for the notice, forms and navigation.';
+const noticeDismiss = { pl: 'Rozumiem', en: 'Got it', de: 'Verstanden', it: 'Ho capito', cs: 'Rozumím' };
+const noticeDialogLabel = {
+  pl: 'Informacja o niezbędnej pamięci',
+  en: 'Essential storage notice',
+  de: 'Hinweis zur notwendigen Speicherung',
+  it: 'Avviso sull\'archiviazione essenziale',
+  cs: 'Oznámení o nezbytném ukládání',
+};
+const cookieMeta = {
+  de: {
+    route: 'cookie-richtlinie',
+    description: 'Cookie-Richtlinie von SiSi Wrocław - notwendige Speicherung für das Schließen des Hinweises sowie für Formular- und Navigationszustände.',
+    ogDescription: 'Wie SiSi Wrocław notwendige Speicherung für den Hinweis, Formulare und die Navigation verwendet.',
+  },
+  it: {
+    route: 'cookie',
+    description: 'Informativa sui cookie di SiSi Wrocław - archiviazione essenziale usata per la chiusura dell\'avviso e lo stato dei moduli e della navigazione.',
+    ogDescription: 'Come SiSi Wrocław usa l\'archiviazione essenziale per l\'avviso, i moduli e la navigazione.',
+  },
+  cs: {
+    route: 'zasady-cookies',
+    description: 'Zásady používání souborů cookie SiSi Wrocław - nezbytné ukládání informace o zavření oznámení a stavu formulářů a navigace.',
+    ogDescription: 'Jak SiSi Wrocław používá nezbytné ukládání pro oznámení, formuláře a navigaci.',
+  },
+};
 
 // --- i18n: every locale homepage + B2B route builds ---
 for (const l of LOCALES) assert(`home builds: /${l}/`, exists(`${l}/index.html`));
@@ -238,16 +259,21 @@ for (const locale of LOCALES) {
   );
   assert(
     `${locale} notice language-of-parts marker is correct`,
-    noticeFallbackLocales.has(locale) ? bannerTag.includes('lang="en"') : !/\blang=/.test(bannerTag),
+    !/\blang=/.test(bannerTag),
+  );
+  assert(
+    `${locale} notice dialog label is localized`,
+    bannerTag.includes(`aria-label="${noticeDialogLabel[locale]}"`),
   );
   assert(`${locale} notice has no accept/reject choice pair`, !home.includes('data-cookie='));
 }
-const fallbackCookieRoutes = { de: 'cookie-richtlinie', it: 'cookie', cs: 'zasady-cookies' };
-for (const [locale, route] of Object.entries(fallbackCookieRoutes)) {
+for (const [locale, { route, description, ogDescription }] of Object.entries(cookieMeta)) {
+  const page = read(`${locale}/${route}/index.html`);
   assert(
-    `${locale} cookie metadata uses the English fallback`,
-    read(`${locale}/${route}/index.html`).includes(`content="${englishCookieMeta}"`)
-      && read(`${locale}/${route}/index.html`).includes(`content="${englishCookieOgMeta}"`),
+    `${locale} cookie metadata is localized`,
+    page.includes(`<meta name="description" content="${description}">`)
+      && page.includes(`<meta property="og:description" content="${ogDescription}">`)
+      && page.includes(`<meta name="twitter:description" content="${ogDescription}">`),
   );
 }
 
