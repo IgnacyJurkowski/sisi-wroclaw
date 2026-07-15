@@ -242,7 +242,7 @@ Expected:
 
 ```text
 301 https://www.sisiwroclaw.pl/pl/?utm_source=redirect-test
-200 
+200
 ```
 
 - [ ] **Step 8: Re-run live indexing acceptance and the complete host smoke**
