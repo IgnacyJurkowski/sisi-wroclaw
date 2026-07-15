@@ -8,8 +8,6 @@ import { formatLongDate } from '../../i18n/format';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const t = useTranslations(locale);
-
-const mapHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(CONTACT.address)}`;
 ---
 
 <Base
@@ -41,7 +39,7 @@ const mapHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComp
         </p>
         <p>
           <strong>{t.contactPage.addressLabel}</strong><br />
-          <a href={mapHref} rel="noopener" target="_blank">{COMPANY.street}, {COMPANY.postalCity}</a>
+          <a href={CONTACT.mapsUrl} rel="noopener" target="_blank">{COMPANY.street}, {COMPANY.postalCity}</a>
         </p>
         <p>
           <strong>{t.contactPage.hoursLabel}</strong><br />

@@ -80,7 +80,7 @@ export function splitEvents(list: EventItem[] = EVENTS, now: number = Date.now()
 export const CONTACT = {
   email: 'biuro@r32.com.pl',
   address: 'Rzeźnicza 32-33, 50-130 Wrocław',
-  mapsUrl: 'https://www.google.com/maps/dir//SISI%20%7C%20Music%20Club%20Wroc%C5%82aw',
+  mapsUrl: 'https://www.google.com/maps/search/?api=1&query=SISI%20%7C%20Music%20Club%20Wroc%C5%82aw&query_place_id=ChIJS14DTYDDD0cRWrK8z0wRcsM',
   phone: '+48 515 126 260',
   phoneHref: 'tel:+48515126260',
   eventsPhone: '+48 514 032 930',
@@ -212,9 +212,7 @@ export function nightClubSchema(locale: Locale = 'pl') {
     priceRange: BUSINESS.priceRange,
     currenciesAccepted: 'PLN',
     address: addressLd(),
-    hasMap: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-      `${BUSINESS.streetAddress}, ${BUSINESS.locality}`,
-    )}`,
+    hasMap: CONTACT.mapsUrl,
     openingHoursSpecification: [
       { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Friday', 'Saturday'], opens: '22:00', closes: '04:00' },
     ],

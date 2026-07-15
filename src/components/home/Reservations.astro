@@ -7,8 +7,6 @@ interface Props { locale: Locale; headingLevel?: 'h1' | 'h2' }
 const { locale, headingLevel = 'h2' } = Astro.props;
 const t = useTranslations(locale);
 const Heading = headingLevel;
-
-const mapHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(CONTACT.address)}`;
 ---
 
 <section id="rezerwacja" class="reservations">
@@ -29,7 +27,7 @@ const mapHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComp
       </div>
       <div class="res-row">
         <span class="res-k">{t.reservationsHome.info.address}</span>
-        <span class="res-v"><a href={mapHref} rel="noopener" target="_blank">{CONTACT.address}</a></span>
+        <span class="res-v"><a href={CONTACT.mapsUrl} rel="noopener" target="_blank">{CONTACT.address}</a></span>
       </div>
       <div class="res-row">
         <span class="res-k">{t.reservationsHome.info.reservations}</span>

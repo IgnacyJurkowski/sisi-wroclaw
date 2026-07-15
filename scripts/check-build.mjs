@@ -13,6 +13,8 @@ const DIST = join(ROOT, 'dist');
 const CANONICAL_ORIGIN = 'https://www.sisiwroclaw.pl';
 const BARE_ORIGIN = CANONICAL_ORIGIN.replace('www.', '');
 const FACEBOOK_URL = 'https://www.facebook.com/sisimusicclub';
+const MAPS_URL = 'https://www.google.com/maps/search/?api=1&query=SISI%20%7C%20Music%20Club%20Wroc%C5%82aw&query_place_id=ChIJS14DTYDDD0cRWrK8z0wRcsM';
+const MAPS_HREF = `href="${MAPS_URL.replaceAll('&', '&amp;')}"`;
 
 if (!existsSync(DIST)) {
   console.error('dist/ not found - run `npm run build` first.');
@@ -85,8 +87,14 @@ for (const locale of LOCALES) {
     home.split(`href="${FACEBOOK_URL}"`).length - 1 === 3
       && !home.includes('facebook.com/share/'),
   );
+  assert(
+    `${locale} footer uses the verified Google Maps place`,
+    home.split(MAPS_HREF).length - 1 === 1
+      && !home.includes('google.com/maps/dir//'),
+  );
 }
 const RESERVATIONS = { pl: 'rezerwacje', en: 'reservations', de: 'reservierungen', it: 'prenotazioni', cs: 'rezervace' };
+const CONTACTS = { pl: 'kontakt', en: 'contact', de: 'kontakt', it: 'contatti', cs: 'kontakt' };
 const EMENAGO_LOCALES = { pl: 'pl', en: 'en', de: 'de', it: 'it', cs: 'pl' };
 for (const locale of LOCALES) {
   const home = read(`${locale}/index.html`);
@@ -104,6 +112,18 @@ for (const locale of LOCALES) {
     `${locale} reservation page uses its verified Emenago locale and retains tracking`,
     reservationPage.includes(`https://emenago.com/inner/cart/6619/0519b014958d73fb0d5d2d58c360a661/${EMENAGO_LOCALES[locale]}`)
       && reservationPage.includes('utm_content=reservations_section'),
+  );
+  assert(
+    `${locale} reservation page uses the verified Google Maps place`,
+    reservationPage.split(MAPS_HREF).length - 1 === 2
+      && !reservationPage.includes('query=Rze%C5%BAnicza'),
+  );
+
+  const contactPage = read(`${locale}/${CONTACTS[locale]}/index.html`);
+  assert(
+    `${locale} contact page uses the verified Google Maps place`,
+    contactPage.split(MAPS_HREF).length - 1 === 2
+      && !contactPage.includes('query=Rze%C5%BAnicza'),
   );
 }
 const B2B = { pl: 'eventy-firmowe', en: 'corporate-events', de: 'firmenevents', it: 'eventi-aziendali', cs: 'firemni-akce' };
@@ -193,6 +213,7 @@ assert(
     && siteNightClub.sameAs.includes(FACEBOOK_URL)
     && siteNightClub.sameAs.every((url) => !/facebook\.com\/share\//.test(url)),
 );
+assert('nightclub hasMap uses the verified Google Maps place', siteNightClub?.hasMap === MAPS_URL);
 assert('hreflang has 5 locales', (plHome.match(/rel="alternate" hreflang="(pl|en|de|it|cs)"/g) || []).length === 5);
 assert('hreflang x-default present', plHome.includes('hreflang="x-default"'));
 assert('pl canonical is final /pl/', plHome.includes(`href="${CANONICAL_ORIGIN}/pl/"`));
