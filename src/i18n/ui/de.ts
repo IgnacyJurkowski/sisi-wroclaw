@@ -345,7 +345,6 @@ const de: UI = {
       title: 'Private Feiern im Herzen von Breslau',
       body: 'Geburtstage, Jubiläen und private Feiern im SiSi, im The Cork oder im gesamten R32. Miete deinen Wunschbereich exklusiv und stimme Bar, Catering, Musik und Gestaltung mit unserem Team ab.',
       ctaPrimary: 'Termin anfragen',
-      ctaSecondary: 'Räume entdecken',
       contactLead: 'Möchtest du lieber persönlich sprechen?',
     },
     occasions: {
@@ -361,21 +360,9 @@ const de: UI = {
       heading: 'Individuelles Angebot',
       body: 'Wir kalkulieren jede Veranstaltung individuell nach Besprechung der Details. Der Termin wird mit Vertrag und Anzahlung bestätigt; der Restbetrag ist vor der Veranstaltung fällig.',
     },
-    faq: {
-      heading: 'Häufig gestellte Fragen',
-      items: [
-        { q: 'Welche privaten Veranstaltungen könnt ihr ausrichten?', a: 'Wir richten Geburtstage, Jubiläen und andere private Feiern aus.' },
-        { q: 'Kann ich einen Bereich exklusiv mieten?', a: 'Ja. SiSi, The Cork oder das gesamte R32 können exklusiv gemietet werden.' },
-        { q: 'Wie viele Gäste finden in den Räumen Platz?', a: 'Im The Cork sind bis zu 150 Sitzplätze möglich; im SiSi bis zu 500 stehende Gäste im Buffetformat.' },
-        { q: 'Was könnt ihr für eine private Feier bereitstellen?', a: 'Wir können Bar, Open Bar oder Open Tab, Catering, DJ oder Live-Musik, Garderobe, getrennte Bereiche, laufende Reinigung und organisatorische Unterstützung bereitstellen.' },
-        { q: 'Kann ich eine Torte, Dekoration oder einen eigenen Fotografen mitbringen?', a: 'Torte und Dekoration sind nach vorheriger Absprache möglich. Ein vom Veranstalter gewählter Fotograf darf während der Veranstaltung fotografieren.' },
-        { q: 'Was kostet eine private Feier?', a: 'Wir kalkulieren jede Veranstaltung individuell nach Besprechung von Termin, Gästezahl, Bereich und Umfang.' },
-        { q: 'Wie bestätige ich einen Termin?', a: 'Der Termin wird mit Vertrag und Anzahlung bestätigt; der Restbetrag ist vor der Veranstaltung fällig.' },
-      ],
-    },
     form: {
       heading: 'Erzähl uns von deinem Anlass',
-      intro: 'Nenne uns deinen Wunschtermin, die Gästezahl, den Anlass und den gewünschten Bereich. Unser Team erstellt ein individuelles Angebot.',
+      intro: 'Nenne uns deinen Wunschtermin, die Gästezahl und den Anlass. Unser Team erstellt ein individuelles Angebot.',
       name: 'Vor- und Nachname',
       occasion: 'Anlass',
       occasionPlaceholder: 'Anlass auswählen',

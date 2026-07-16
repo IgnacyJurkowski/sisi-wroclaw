@@ -22,7 +22,6 @@ const formMessages = JSON.stringify({
 });
 const consentParts = shared.consent.split('{privacy}');
 const occasionKeys = ['birthday', 'anniversary', 'celebration', 'exclusive', 'other'] as const;
-const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
 ---
 
 <section id="private-enquiry" class="private-enquiry">
@@ -119,22 +118,6 @@ const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
             clear={shared.dateClear}
           />
           <p class="private-field-error" id="private-err-preferred_date" data-error-for="preferred_date" hidden></p>
-        </div>
-
-        <div class="private-field">
-          <label id="lbl-private-space" for="private-space">{shared.space} <span class="opt">{shared.optional}</span></label>
-          <CustomSelect
-            id="private-space"
-            name="space"
-            placeholder={shared.spacePlaceholder}
-            labelledby="lbl-private-space"
-            options={spaceKeys.map((key) => ({ value: key, label: shared.spaceOptions[key] }))}
-          />
-        </div>
-
-        <div class="private-field">
-          <label for="private-duration">{shared.duration} <span class="opt">{shared.optional}</span></label>
-          <input id="private-duration" name="duration" type="text" placeholder={shared.durationPlaceholder} />
         </div>
 
         <div class="private-field private-field-wide">

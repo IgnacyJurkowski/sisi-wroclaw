@@ -349,7 +349,6 @@ const pl = {
       title: 'Imprezy prywatne w sercu Wrocławia',
       body: 'Urodziny, rocznice i prywatne przyjęcia w SiSi, The Cork lub całym R32. Wybierz przestrzeń na wyłączność i ustal z naszym zespołem bar, catering, muzykę oraz oprawę wydarzenia.',
       ctaPrimary: 'Zapytaj o termin',
-      ctaSecondary: 'Poznaj przestrzenie',
       contactLead: 'Wolisz porozmawiać?',
     },
     occasions: {
@@ -365,21 +364,9 @@ const pl = {
       heading: 'Wycena indywidualna',
       body: 'Koszt ustalamy indywidualnie po omówieniu szczegółów wydarzenia. Termin potwierdzamy umową i zaliczką, a pozostała część jest płatna przed wydarzeniem.',
     },
-    faq: {
-      heading: 'Najczęstsze pytania',
-      items: [
-        { q: 'Jakie imprezy prywatne można u was zorganizować?', a: 'Organizujemy urodziny, rocznice i inne prywatne przyjęcia.' },
-        { q: 'Czy można wynająć przestrzeń na wyłączność?', a: 'Tak. SiSi, The Cork lub cały kompleks R32 mogą być wynajęte na wyłączność.' },
-        { q: 'Ilu gości mieszczą przestrzenie?', a: 'The Cork mieści do 150 gości na miejscach siedzących, a SiSi do 500 gości na stojąco w formacie bufetowym.' },
-        { q: 'Co możecie zapewnić podczas prywatnego przyjęcia?', a: 'Możemy zapewnić bar, open bar lub open tab, catering, DJ-a lub muzykę na żywo, szatnię, wydzielenie stref, bieżący serwis sprzątający oraz wsparcie organizacyjne.' },
-        { q: 'Czy można przynieść tort, dekoracje lub własnego fotografa?', a: 'Tort i dekoracje są możliwe po wcześniejszym uzgodnieniu. Fotograf wybrany przez organizatora może realizować zdjęcia podczas wydarzenia.' },
-        { q: 'Ile kosztuje organizacja imprezy prywatnej?', a: 'Koszt ustalamy indywidualnie po omówieniu terminu, liczby gości, przestrzeni i zakresu wydarzenia.' },
-        { q: 'Jak potwierdzić termin?', a: 'Termin potwierdzamy umową i zaliczką, a pozostała część jest płatna przed wydarzeniem.' },
-      ],
-    },
     form: {
       heading: 'Opowiedz nam o swojej okazji',
-      intro: 'Podaj planowany termin, liczbę gości, rodzaj okazji i wybraną przestrzeń. Zespół przygotuje indywidualną propozycję.',
+      intro: 'Podaj planowany termin, liczbę gości i rodzaj okazji. Zespół przygotuje indywidualną propozycję.',
       name: 'Imię i nazwisko',
       occasion: 'Rodzaj okazji',
       occasionPlaceholder: 'Wybierz okazję',

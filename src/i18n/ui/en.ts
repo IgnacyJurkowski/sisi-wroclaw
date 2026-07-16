@@ -344,7 +344,6 @@ const en: UI = {
       title: 'Private events in the heart of Wrocław',
       body: 'Birthdays, anniversaries and private celebrations at SiSi, The Cork or the entire R32. Hire your chosen space exclusively and arrange the bar, catering, music and event setting with our team.',
       ctaPrimary: 'Request a date',
-      ctaSecondary: 'Explore the spaces',
       contactLead: 'Prefer to talk it through?',
     },
     occasions: {
@@ -360,21 +359,9 @@ const en: UI = {
       heading: 'Tailored pricing',
       body: 'We price every event individually after discussing the details. The date is confirmed with a contract and a deposit, with the balance due before the event.',
     },
-    faq: {
-      heading: 'Frequently asked questions',
-      items: [
-        { q: 'What private events can you host?', a: 'We host birthdays, anniversaries and other private celebrations.' },
-        { q: 'Can I hire a space exclusively?', a: 'Yes. SiSi, The Cork or the entire R32 can be hired exclusively.' },
-        { q: 'How many guests can the spaces accommodate?', a: 'The Cork seats up to 150 guests, while SiSi accommodates up to 500 standing guests in a buffet format.' },
-        { q: 'What can you provide for a private celebration?', a: 'We can provide a bar, open bar or open tab, catering, a DJ or live music, cloakroom service, separate zones, ongoing cleaning and organisational support.' },
-        { q: 'Can I bring a cake, decorations or my own photographer?', a: 'A cake and decorations can be arranged in advance. A photographer chosen by the organiser may take photographs during the event.' },
-        { q: 'How much does a private event cost?', a: 'We price every event individually after discussing the date, guest count, space and scope.' },
-        { q: 'How do I secure a date?', a: 'The date is confirmed with a contract and a deposit, with the balance due before the event.' },
-      ],
-    },
     form: {
       heading: 'Tell us about your celebration',
-      intro: 'Share your preferred date, guest count, occasion and chosen space. Our team will prepare a tailored proposal.',
+      intro: 'Share your preferred date, guest count and occasion. Our team will prepare a tailored proposal.',
       name: 'Name',
       occasion: 'Occasion',
       occasionPlaceholder: 'Choose an occasion',
