@@ -1,0 +1,44 @@
+---
+import { type Locale } from '../../i18n/config';
+import { useTranslations } from '../../i18n/t';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const occasions = useTranslations(locale).privateEvents.occasions;
+const ICONS = [
+  '<path d="M4 21h16"/><path d="M5 21v-7h14v7"/><path d="M7 14v-4h10v4"/><path d="M9 10V7h6v3"/><path d="M9 4h.01"/><path d="M12 4h.01"/><path d="M15 4h.01"/>',
+  '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z"/>',
+  '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  '<circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/>',
+] as const;
+---
+
+<section class="private-occasions">
+  <div class="container">
+    <h2 class="display private-section-title">{occasions.heading}</h2>
+    <ul class="private-occasions-grid" data-reveal-group>
+      {occasions.items.map((item, index) => (
+        <li class="private-occasion sisi-card">
+          <svg class="private-occasion-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS[index]} />
+          <h3 class="private-occasion-title">{item.title}</h3>
+          <p class="private-occasion-body">{item.body}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .private-occasions { padding: 72px 0 32px; }
+  .private-section-title { font-size: clamp(1.5rem, 3.4vw, 2.2rem); text-transform: uppercase; text-align: center; margin-bottom: 36px; }
+  .private-occasions-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .private-occasion { padding: 28px 24px; }
+  .private-occasion-icon {
+    width: 25px; height: 25px; display: block; margin-bottom: 15px;
+    fill: none; stroke: var(--gold); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
+  }
+  .private-occasion-title { font-size: 16px; text-transform: uppercase; letter-spacing: 0.02em; color: var(--cream); margin-bottom: 10px; }
+  .private-occasion-body { font-size: 13px; line-height: 1.65; color: var(--text-dim); }
+  @media (max-width: 900px) { .private-occasions-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 540px) { .private-occasions-grid { grid-template-columns: 1fr; } }
+</style>

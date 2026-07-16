@@ -11,6 +11,7 @@ export const ROUTE_KEYS = [
   'careers',
   'reservations',
   'corporate',
+  'privateEvents',
   'contact',
   'terms',
   'privacy',
@@ -26,6 +27,7 @@ export const SLUGS: Record<RouteKey, Record<Locale, string>> = {
   careers: { pl: 'kariera', en: 'careers', de: 'karriere', it: 'lavora-con-noi', cs: 'kariera' },
   reservations: { pl: 'rezerwacje', en: 'reservations', de: 'reservierungen', it: 'prenotazioni', cs: 'rezervace' },
   corporate: { pl: 'eventy-firmowe', en: 'corporate-events', de: 'firmenevents', it: 'eventi-aziendali', cs: 'firemni-akce' },
+  privateEvents: { pl: 'imprezy-prywatne', en: 'private-events', de: 'private-feiern', it: 'eventi-privati', cs: 'soukrome-akce' },
   contact: { pl: 'kontakt', en: 'contact', de: 'kontakt', it: 'contatti', cs: 'kontakt' },
   terms: { pl: 'regulamin', en: 'terms', de: 'agb', it: 'regolamento', cs: 'pravidla' },
   privacy: { pl: 'polityka-prywatnosci', en: 'privacy-policy', de: 'datenschutz', it: 'privacy', cs: 'ochrana-soukromi' },
@@ -33,7 +35,7 @@ export const SLUGS: Record<RouteKey, Record<Locale, string>> = {
 };
 
 /** Main navigation links, in order. Reservations is rendered as the CTA. */
-export const NAV_KEYS: RouteKey[] = ['events', 'menu', 'careers', 'corporate'];
+export const NAV_KEYS: RouteKey[] = ['events', 'menu', 'careers', 'privateEvents', 'corporate'];
 
 /** Legal/utility links shown in the footer. */
 export const FOOTER_LEGAL_KEYS: RouteKey[] = ['terms', 'privacy', 'cookies', 'contact'];

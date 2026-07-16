@@ -1,0 +1,80 @@
+---
+import { CONTACT } from '../../data/site';
+import { type Locale } from '../../i18n/config';
+import { useTranslations } from '../../i18n/t';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const h = useTranslations(locale).privateEvents.hero;
+---
+
+<section class="private-hero">
+  <div class="private-hero-bg" aria-hidden="true"></div>
+  <div class="private-hero-scrim" aria-hidden="true"></div>
+  <div class="container private-hero-content" data-reveal>
+    <span class="page-label">{h.eyebrow}</span>
+    <h1 class="display private-hero-title">{h.title}</h1>
+    <p class="private-hero-body">{h.body}</p>
+    <div class="private-hero-actions">
+      <a href="#private-enquiry" class="btn-cta">{h.ctaPrimary}</a>
+      <a href="#private-spaces" class="btn-outline">{h.ctaSecondary}</a>
+    </div>
+    <p class="private-hero-contact">
+      <span class="private-hero-contact-lead">{h.contactLead}</span>
+      <a href={CONTACT.eventsPhoneHref}>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z" /></svg>
+        {CONTACT.eventsPhone}
+      </a>
+      <span class="private-hero-contact-sep" aria-hidden="true">·</span>
+      <a href={`mailto:${CONTACT.eventsEmail}`}>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg>
+        {CONTACT.eventsEmail}
+      </a>
+    </p>
+  </div>
+</section>
+
+<style>
+  .private-hero {
+    position: relative; overflow: hidden;
+    padding: calc(var(--nav-height) + 64px) 0 80px;
+    display: flex; align-items: center; min-height: 64vh;
+  }
+  .private-hero-bg {
+    position: absolute; left: 0; right: 0; top: -10%; height: 120%;
+    background: url('/framerusercontent.com/images/u3EOm1VtOnATOkUYHKikl5aBc.webp') center/cover no-repeat;
+  }
+  .private-hero-scrim {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(39,6,15,0.78) 0%, rgba(39,6,15,0.7) 50%, rgba(39,6,15,0.96) 100%);
+  }
+  .private-hero-content { position: relative; z-index: 2; max-width: 760px; }
+  .private-hero-title {
+    font-size: clamp(2.2rem, 6vw, 4.2rem); line-height: 1.06;
+    text-transform: uppercase; color: var(--cream); margin: 14px 0 22px;
+    text-shadow: 0 2px 40px rgba(0,0,0,0.5);
+  }
+  .private-hero-body { color: var(--text-dim); font-size: 17px; line-height: 1.8; max-width: 660px; margin-bottom: 32px; }
+  .private-hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+  .private-hero-contact {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 8px 14px;
+    margin-top: 22px; font-size: 14px; color: rgba(237,219,194,0.72);
+  }
+  .private-hero-contact-lead { color: var(--text-dim); }
+  .private-hero-contact a {
+    display: inline-flex; align-items: center; gap: 7px;
+    color: var(--cream); text-decoration: none;
+    border-bottom: 1px solid transparent; transition: border-color 150ms ease, color 150ms ease;
+  }
+  .private-hero-contact a:hover { color: var(--gold); border-bottom-color: rgba(251,210,149,0.5); }
+  .private-hero-contact a svg {
+    width: 15px; height: 15px; flex-shrink: 0;
+    fill: none; stroke: var(--gold); stroke-width: 1.7;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+  .private-hero-contact-sep { color: rgba(237,219,194,0.3); }
+  @media (max-width: 600px) {
+    .private-hero { min-height: 0; padding-bottom: 56px; }
+    .private-hero-contact-sep { display: none; }
+  }
+</style>

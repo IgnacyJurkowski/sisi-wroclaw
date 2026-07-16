@@ -2,13 +2,24 @@
 import { type Locale } from '../../i18n/config';
 import { useTranslations } from '../../i18n/t';
 
-interface Props { locale: Locale }
-const { locale } = Astro.props;
+interface Props {
+  locale: Locale;
+  sectionId?: string;
+  enquiryId?: string;
+  ctaLabel?: string;
+}
+const {
+  locale,
+  sectionId = 'b2b-spaces',
+  enquiryId = 'b2b-enquiry',
+  ctaLabel,
+} = Astro.props;
 const t = useTranslations(locale);
 const s = t.b2b.spaces;
+const resolvedCtaLabel = ctaLabel ?? t.buttons.planEvent;
 ---
 
-<section id="b2b-spaces" class="b2b-spaces">
+<section id={sectionId} class="b2b-spaces">
   <div class="container">
     <h2 class="display b2b-section-title">{s.heading}</h2>
     <div class="b2b-spaces-grid" data-reveal-group>
@@ -32,7 +43,7 @@ const s = t.b2b.spaces;
       <p class="b2b-space-body">{s.combined.body}</p>
     </article>
     <div class="b2b-spaces-cta" data-reveal>
-      <a href="#b2b-enquiry" class="btn-cta">{t.buttons.planEvent}</a>
+      <a href={`#${enquiryId}`} class="btn-cta">{resolvedCtaLabel}</a>
     </div>
   </div>
 </section>

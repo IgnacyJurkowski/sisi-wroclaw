@@ -1,0 +1,64 @@
+---
+import Included from '../b2b/Included.astro';
+import EventProcess from '../b2b/EventProcess.astro';
+import SpacesSection from '../b2b/SpacesSection.astro';
+import VenueFacts from '../b2b/VenueFacts.astro';
+import PrivateEventsEnquiryForm from '../private-events/PrivateEventsEnquiryForm.astro';
+import PrivateEventsFAQ from '../private-events/PrivateEventsFAQ.astro';
+import PrivateEventsHero from '../private-events/PrivateEventsHero.astro';
+import PrivateOccasions from '../private-events/PrivateOccasions.astro';
+import PrivatePricing from '../private-events/PrivatePricing.astro';
+import { privateEventsServiceSchema } from '../../data/site';
+import { type Locale } from '../../i18n/config';
+import { localizedPath } from '../../i18n/routes';
+import { useTranslations } from '../../i18n/t';
+import Base from '../../layouts/Base.astro';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const pageUrl = new URL(localizedPath('privateEvents', locale), Astro.site).href;
+const homeUrl = new URL(localizedPath('home', locale), Astro.site).href;
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: t.privateEvents.faq.items.map((item) => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: { '@type': 'Answer', text: item.a },
+  })),
+};
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'SiSi Wrocław', item: homeUrl },
+    { '@type': 'ListItem', position: 2, name: t.nav.privateEvents, item: pageUrl },
+  ],
+};
+---
+
+<Base
+  locale={locale}
+  routeKey="privateEvents"
+  title={t.meta.privateEvents.title}
+  description={t.meta.privateEvents.description}
+  ogTitle={t.meta.privateEvents.title}
+  ogDescription={t.meta.privateEvents.ogDescription}
+  schema={[privateEventsServiceSchema(locale), faqSchema, breadcrumb]}
+>
+  <PrivateEventsHero locale={locale} />
+  <PrivateOccasions locale={locale} />
+  <VenueFacts locale={locale} />
+  <Included locale={locale} />
+  <SpacesSection
+    locale={locale}
+    sectionId="private-spaces"
+    enquiryId="private-enquiry"
+    ctaLabel={t.privateEvents.hero.ctaPrimary}
+  />
+  <PrivatePricing locale={locale} />
+  <EventProcess locale={locale} />
+  <PrivateEventsFAQ locale={locale} />
+  <PrivateEventsEnquiryForm locale={locale} />
+</Base>

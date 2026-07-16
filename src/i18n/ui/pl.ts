@@ -38,6 +38,13 @@ const pl = {
         'Przestrzeń na eventy firmowe w centrum Wrocławia: konferencje, panele, prezentacje, kolacje, premiery i networking. 663 m², do 150 miejsc siedzących w The Cork, 2 ekrany.',
       ogDescription: 'Konferencje, prezentacje, kolacje i wieczorne eventy firmowe w centrum Wrocławia. SiSi & The Cork.',
     },
+    privateEvents: {
+      title: 'Imprezy prywatne i urodziny we Wrocławiu | SiSi',
+      description:
+        'Zorganizuj urodziny, rocznicę lub prywatne przyjęcie w SiSi, The Cork albo całym R32. Wynajem na wyłączność, bar, catering, muzyka i indywidualna oferta.',
+      ogDescription:
+        'Zorganizuj urodziny, rocznicę lub prywatne przyjęcie w SiSi, The Cork albo całym R32. Wynajem na wyłączność, bar, catering, muzyka i indywidualna oferta.',
+    },
     contact: {
       title: 'Kontakt i dane firmy | SiSi Wrocław',
       description:
@@ -76,6 +83,7 @@ const pl = {
     menu: 'Menu',
     careers: 'Kariera',
     corporate: 'Dla firm',
+    privateEvents: 'Imprezy prywatne',
     reservations: 'Rezerwacje',
     contact: 'Kontakt',
     terms: 'Regulamin',
@@ -333,6 +341,59 @@ const pl = {
     label: 'Błąd 404',
     title: 'Tej strony nie ma',
     body: 'Wygląda na to, że strona, której szukasz, zniknęła jak ostatni gość o świcie. Wróć na stronę główną albo sprawdź, co u nas gramy.',
+  },
+
+  privateEvents: {
+    hero: {
+      eyebrow: 'Imprezy prywatne w centrum Wrocławia',
+      title: 'Imprezy prywatne w sercu Wrocławia',
+      body: 'Urodziny, rocznice i prywatne przyjęcia w SiSi, The Cork lub całym R32. Wybierz przestrzeń na wyłączność i ustal z naszym zespołem bar, catering, muzykę oraz oprawę wydarzenia.',
+      ctaPrimary: 'Zapytaj o termin',
+      ctaSecondary: 'Poznaj przestrzenie',
+      contactLead: 'Wolisz porozmawiać?',
+    },
+    occasions: {
+      heading: 'Prywatne okazje w R32',
+      items: [
+        { title: 'Urodziny', body: 'Kolacja, bar i muzyka w formacie ustalonym z naszym zespołem.' },
+        { title: 'Rocznice', body: 'Prywatna kolacja lub wieczorne przyjęcie w wybranej przestrzeni.' },
+        { title: 'Prywatne przyjęcia', body: 'Wydarzenia dla zaproszonych gości z cateringiem, barem i oprawą muzyczną.' },
+        { title: 'Wyłączność przestrzeni', body: 'SiSi, The Cork lub cały kompleks R32 mogą być wynajęte na wyłączność.' },
+      ],
+    },
+    pricing: {
+      heading: 'Wycena indywidualna',
+      body: 'Koszt ustalamy indywidualnie po omówieniu szczegółów wydarzenia. Termin potwierdzamy umową i zaliczką, a pozostała część jest płatna przed wydarzeniem.',
+    },
+    faq: {
+      heading: 'Najczęstsze pytania',
+      items: [
+        { q: 'Jakie imprezy prywatne można u was zorganizować?', a: 'Organizujemy urodziny, rocznice i inne prywatne przyjęcia.' },
+        { q: 'Czy można wynająć przestrzeń na wyłączność?', a: 'Tak. SiSi, The Cork lub cały kompleks R32 mogą być wynajęte na wyłączność.' },
+        { q: 'Ilu gości mieszczą przestrzenie?', a: 'The Cork mieści do 150 gości na miejscach siedzących, a SiSi do 500 gości na stojąco w formacie bufetowym.' },
+        { q: 'Co możecie zapewnić podczas prywatnego przyjęcia?', a: 'Możemy zapewnić bar, open bar lub open tab, catering, DJ-a lub muzykę na żywo, szatnię, wydzielenie stref, bieżący serwis sprzątający oraz wsparcie organizacyjne.' },
+        { q: 'Czy można przynieść tort, dekoracje lub własnego fotografa?', a: 'Tort i dekoracje są możliwe po wcześniejszym uzgodnieniu. Fotograf wybrany przez organizatora może realizować zdjęcia podczas wydarzenia.' },
+        { q: 'Ile kosztuje organizacja imprezy prywatnej?', a: 'Koszt ustalamy indywidualnie po omówieniu terminu, liczby gości, przestrzeni i zakresu wydarzenia.' },
+        { q: 'Jak potwierdzić termin?', a: 'Termin potwierdzamy umową i zaliczką, a pozostała część jest płatna przed wydarzeniem.' },
+      ],
+    },
+    form: {
+      heading: 'Opowiedz nam o swojej okazji',
+      intro: 'Podaj planowany termin, liczbę gości, rodzaj okazji i wybraną przestrzeń. Zespół przygotuje indywidualną propozycję.',
+      name: 'Imię i nazwisko',
+      occasion: 'Rodzaj okazji',
+      occasionPlaceholder: 'Wybierz okazję',
+      occasionOptions: {
+        birthday: 'Urodziny',
+        anniversary: 'Rocznica',
+        celebration: 'Prywatne przyjęcie',
+        exclusive: 'Wynajem na wyłączność',
+        other: 'Inna okazja',
+      },
+      messagePlaceholder: 'Opisz krótko swoją okazję.',
+      success: 'Dziękujemy za zapytanie. Odezwiemy się z indywidualną propozycją.',
+      subject: 'Zapytanie o imprezę prywatną - SiSi Wrocław',
+    },
   },
 
   // B2B service claims in this section (open bar, bringing a cake, external

@@ -37,6 +37,13 @@ const de: UI = {
         'Eventlocation im Zentrum von Breslau: Konferenzen, Panels, Präsentationen, Dinner, Launches und Networking. 663 m², bis zu 150 Sitzplätze im The Cork, 2 Bildschirme.',
       ogDescription: 'Konferenzen, Präsentationen, Dinner und abendliche Firmenevents im Zentrum von Breslau. SiSi & The Cork.',
     },
+    privateEvents: {
+      title: 'Private Feiern & Geburtstage in Breslau | SiSi',
+      description:
+        'Feiere Geburtstag, Jubiläum oder einen privaten Anlass im SiSi, im The Cork oder im gesamten R32. Exklusive Anmietung, Bar, Catering, Musik und individuelles Angebot.',
+      ogDescription:
+        'Feiere Geburtstag, Jubiläum oder einen privaten Anlass im SiSi, im The Cork oder im gesamten R32. Exklusive Anmietung, Bar, Catering, Musik und individuelles Angebot.',
+    },
     contact: {
       title: 'Kontakt & Unternehmensdaten | SiSi Wrocław',
       description:
@@ -75,6 +82,7 @@ const de: UI = {
     menu: 'Menü',
     careers: 'Karriere',
     corporate: 'Firmenevents',
+    privateEvents: 'Private Feiern',
     reservations: 'Reservieren',
     contact: 'Kontakt',
     terms: 'AGB',
@@ -329,6 +337,59 @@ const de: UI = {
     label: 'Fehler 404',
     title: 'Diese Seite ist weg',
     body: 'Sieht aus, als wäre die gesuchte Seite verschwunden wie der letzte Gast im Morgengrauen. Zurück zur Startseite oder schau, was bei uns läuft.',
+  },
+
+  privateEvents: {
+    hero: {
+      eyebrow: 'Private Feiern im Zentrum von Breslau',
+      title: 'Private Feiern im Herzen von Breslau',
+      body: 'Geburtstage, Jubiläen und private Feiern im SiSi, im The Cork oder im gesamten R32. Miete deinen Wunschbereich exklusiv und stimme Bar, Catering, Musik und Gestaltung mit unserem Team ab.',
+      ctaPrimary: 'Termin anfragen',
+      ctaSecondary: 'Räume entdecken',
+      contactLead: 'Möchtest du lieber persönlich sprechen?',
+    },
+    occasions: {
+      heading: 'Private Anlässe im R32',
+      items: [
+        { title: 'Geburtstage', body: 'Dinner, Bar und Musik in einem mit unserem Team abgestimmten Format.' },
+        { title: 'Jubiläen', body: 'Ein privates Dinner oder eine abendliche Feier im gewählten Bereich.' },
+        { title: 'Private Feiern', body: 'Veranstaltungen für geladene Gäste mit Catering, Bar und Musik.' },
+        { title: 'Exklusive Anmietung', body: 'SiSi, The Cork oder das gesamte R32 können exklusiv gemietet werden.' },
+      ],
+    },
+    pricing: {
+      heading: 'Individuelles Angebot',
+      body: 'Wir kalkulieren jede Veranstaltung individuell nach Besprechung der Details. Der Termin wird mit Vertrag und Anzahlung bestätigt; der Restbetrag ist vor der Veranstaltung fällig.',
+    },
+    faq: {
+      heading: 'Häufig gestellte Fragen',
+      items: [
+        { q: 'Welche privaten Veranstaltungen könnt ihr ausrichten?', a: 'Wir richten Geburtstage, Jubiläen und andere private Feiern aus.' },
+        { q: 'Kann ich einen Bereich exklusiv mieten?', a: 'Ja. SiSi, The Cork oder das gesamte R32 können exklusiv gemietet werden.' },
+        { q: 'Wie viele Gäste finden in den Räumen Platz?', a: 'Im The Cork sind bis zu 150 Sitzplätze möglich; im SiSi bis zu 500 stehende Gäste im Buffetformat.' },
+        { q: 'Was könnt ihr für eine private Feier bereitstellen?', a: 'Wir können Bar, Open Bar oder Open Tab, Catering, DJ oder Live-Musik, Garderobe, getrennte Bereiche, laufende Reinigung und organisatorische Unterstützung bereitstellen.' },
+        { q: 'Kann ich eine Torte, Dekoration oder einen eigenen Fotografen mitbringen?', a: 'Torte und Dekoration sind nach vorheriger Absprache möglich. Ein vom Veranstalter gewählter Fotograf darf während der Veranstaltung fotografieren.' },
+        { q: 'Was kostet eine private Feier?', a: 'Wir kalkulieren jede Veranstaltung individuell nach Besprechung von Termin, Gästezahl, Bereich und Umfang.' },
+        { q: 'Wie bestätige ich einen Termin?', a: 'Der Termin wird mit Vertrag und Anzahlung bestätigt; der Restbetrag ist vor der Veranstaltung fällig.' },
+      ],
+    },
+    form: {
+      heading: 'Erzähl uns von deinem Anlass',
+      intro: 'Nenne uns deinen Wunschtermin, die Gästezahl, den Anlass und den gewünschten Bereich. Unser Team erstellt ein individuelles Angebot.',
+      name: 'Vor- und Nachname',
+      occasion: 'Anlass',
+      occasionPlaceholder: 'Anlass auswählen',
+      occasionOptions: {
+        birthday: 'Geburtstag',
+        anniversary: 'Jubiläum',
+        celebration: 'Private Feier',
+        exclusive: 'Exklusive Anmietung',
+        other: 'Anderer Anlass',
+      },
+      messagePlaceholder: 'Beschreibe deinen Anlass kurz.',
+      success: 'Vielen Dank für deine Anfrage. Wir melden uns mit einem individuellen Angebot.',
+      subject: 'Anfrage für eine private Feier - SiSi Wrocław',
+    },
   },
 
   b2b: {

@@ -301,3 +301,18 @@ export function corporateServiceSchema(locale: Locale = 'pl') {
     provider: { '@id': `${BUSINESS.url}/#nightclub` },
   };
 }
+
+/** Private-celebration service entity for the dedicated consumer journey. */
+export function privateEventsServiceSchema(locale: Locale = 'pl') {
+  const t = useTranslations(locale);
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    serviceType: t.privateEvents.hero.eyebrow,
+    name: t.meta.privateEvents.title,
+    description: t.meta.privateEvents.description,
+    url: absolute(localizedPath('privateEvents', locale)),
+    areaServed: { '@type': 'City', name: 'Wrocław' },
+    provider: { '@id': `${BUSINESS.url}/#nightclub` },
+  };
+}

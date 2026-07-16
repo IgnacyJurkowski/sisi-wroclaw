@@ -219,6 +219,30 @@ for (const locale of LOCALES) {
 const B2B = { pl: 'eventy-firmowe', en: 'corporate-events', de: 'firmenevents', it: 'eventi-aziendali', cs: 'firemni-akce' };
 for (const l of LOCALES) assert(`b2b builds: /${l}/${B2B[l]}/`, exists(`${l}/${B2B[l]}/index.html`));
 const b2bPages = Object.fromEntries(LOCALES.map((locale) => [locale, read(`${locale}/${B2B[locale]}/index.html`)]));
+const PRIVATE_EVENTS = {
+  pl: 'imprezy-prywatne',
+  en: 'private-events',
+  de: 'private-feiern',
+  it: 'eventi-privati',
+  cs: 'soukrome-akce',
+};
+const PRIVATE_EVENT_TITLES = {
+  pl: 'Imprezy prywatne i urodziny we Wrocławiu | SiSi',
+  en: 'Private Events & Birthday Parties in Wrocław | SiSi',
+  de: 'Private Feiern & Geburtstage in Breslau | SiSi',
+  it: 'Eventi privati e compleanni a Breslavia | SiSi',
+  cs: 'Soukromé akce a narozeniny ve Vratislavi | SiSi',
+};
+for (const locale of LOCALES) {
+  assert(
+    `private events builds: /${locale}/${PRIVATE_EVENTS[locale]}/`,
+    exists(`${locale}/${PRIVATE_EVENTS[locale]}/index.html`),
+  );
+}
+const privateEventPages = Object.fromEntries(LOCALES.map((locale) => {
+  const path = `${locale}/${PRIVATE_EVENTS[locale]}/index.html`;
+  return [locale, exists(path) ? read(path) : ''];
+}));
 const plMenu = read('pl/menu/index.html');
 
 function renderedBlocks(html, className) {
@@ -318,6 +342,102 @@ assert('enquiry CTA targets #b2b-enquiry', enB2B.includes('href="#b2b-enquiry"')
 assert('form section id present', enB2B.includes('id="b2b-enquiry"'));
 assert('FAQ rendered (FAQPage matches visible Q&A)', enB2B.includes('"@type":"FAQPage"') && enB2B.includes('How many seated guests'));
 
+// --- private events: approved Polish source copy + faithful localized journey ---
+for (const locale of LOCALES) {
+  const html = privateEventPages[locale];
+  const routePath = `/${locale}/${PRIVATE_EVENTS[locale]}/`;
+  const renderedTitle = html.match(/<title>([^<]*)<\/title>/)?.[1].replaceAll('&amp;', '&') ?? '';
+  assert(`${locale} private-events title is localized`, renderedTitle === PRIVATE_EVENT_TITLES[locale]);
+  assert(
+    `${locale} private-events route is linked from desktop, mobile, footer, and locale navigation`,
+    html.split(`href="${routePath}"`).length - 1 === 4,
+  );
+  assert(
+    `${locale} private-events canonical and five hreflang alternates are present`,
+    html.includes(`rel="canonical" href="${CANONICAL_ORIGIN}${routePath}"`)
+      && (html.match(/rel="alternate" hreflang="(pl|en|de|it|cs)"/g) || []).length === 5
+      && html.includes('hreflang="x-default"'),
+  );
+  assert(
+    `${locale} private-events FAQ schema matches visible FAQ content`,
+    html.includes('"@type":"FAQPage"')
+      && html.includes('class="private-faq-item"'),
+  );
+}
+
+const plPrivateEvents = privateEventPages.pl;
+for (const approvedCopy of [
+  'Imprezy prywatne w centrum Wrocławia',
+  'Imprezy prywatne w sercu Wrocławia',
+  'Urodziny, rocznice i prywatne przyjęcia w SiSi, The Cork lub całym R32. Wybierz przestrzeń na wyłączność i ustal z naszym zespołem bar, catering, muzykę oraz oprawę wydarzenia.',
+  'Prywatne okazje w R32',
+  'Kolacja, bar i muzyka w formacie ustalonym z naszym zespołem.',
+  'Prywatna kolacja lub wieczorne przyjęcie w wybranej przestrzeni.',
+  'Wydarzenia dla zaproszonych gości z cateringiem, barem i oprawą muzyczną.',
+  'SiSi, The Cork lub cały kompleks R32 mogą być wynajęte na wyłączność.',
+  'Wycena indywidualna',
+  'Koszt ustalamy indywidualnie po omówieniu szczegółów wydarzenia. Termin potwierdzamy umową i zaliczką, a pozostała część jest płatna przed wydarzeniem.',
+  'Opowiedz nam o swojej okazji',
+  'Podaj planowany termin, liczbę gości, rodzaj okazji i wybraną przestrzeń. Zespół przygotuje indywidualną propozycję.',
+  'Dziękujemy za zapytanie. Odezwiemy się z indywidualną propozycją.',
+]) {
+  assert(`private-events Polish copy: ${approvedCopy.slice(0, 48)}`, plPrivateEvents.includes(approvedCopy));
+}
+assert(
+  'private-events page keeps verified capacities scoped to each space',
+  plPrivateEvents.includes('do 150')
+    && plPrivateEvents.includes('miejsc siedzących w The Cork')
+    && plPrivateEvents.includes('do 500')
+    && plPrivateEvents.includes('gości na stojąco (bufet)'),
+);
+assert(
+  'private-events page includes only approved individual-pricing terms',
+  !/minimum spend|minimaln(?:a|y)|cena od|\b[0-9]+\s*zł\b/i.test(plPrivateEvents),
+);
+
+// --- private consumer form: separate Netlify identity, no company field ---
+for (const locale of LOCALES) {
+  const html = privateEventPages[locale];
+  const forms = html.match(/<form\b[^>]*\bname="private-enquiry"[^>]*>[\s\S]*?<\/form>/g) ?? [];
+  const form = forms[0] ?? '';
+  const openTag = form.match(/^<form\b[^>]*>/)?.[0] ?? '';
+  const errorStatus = form.match(/<div class="private-form-status private-status-error"[\s\S]*?<\/div>/)?.[0] ?? '';
+  const submittedFields = [
+    'form-name', 'subject', 'locale', 'page', 'utm', 'bot-field', 'name', 'email', 'phone',
+    'occasion', 'guests', 'preferred_date', 'preferred_date_iso', 'space', 'duration', 'message', 'consent',
+  ];
+  const requiredFields = ['name', 'email', 'occasion', 'guests', 'preferred_date', 'message', 'consent'];
+
+  assert(`${locale} has exactly one private-enquiry form`, forms.length === 1);
+  assert(
+    `${locale} private form has Netlify POST and honeypot attributes`,
+    openTag.includes('method="POST"')
+      && openTag.includes('data-netlify="true"')
+      && openTag.includes('netlify-honeypot="bot-field"')
+      && openTag.includes('data-private-events-form'),
+  );
+  assert(
+    `${locale} private form has its own detector and notification subject`,
+    form.includes('type="hidden" name="form-name" value="private-enquiry"')
+      && form.includes('type="hidden" name="subject"'),
+  );
+  assert(
+    `${locale} private form submits the complete approved field set`,
+    submittedFields.every((name) => form.includes(`name="${name}"`)),
+  );
+  assert(
+    `${locale} private form requires the approved consumer fields`,
+    requiredFields.every((name) => new RegExp(`<(?:input|select|textarea)\\b(?=[^>]*\\bname="${name}")(?=[^>]*\\brequired(?:\\s|=|>))[^>]*>`).test(form)),
+  );
+  assert(
+    `${locale} private form has no company or flexible-date field`,
+    !/\bname="company"/.test(form) && !/\bname="date_flexible"/.test(form),
+  );
+  assert(
+    `${locale} private form error fallback contains the events contacts`,
+    errorStatus.includes('events@r32.com.pl') && errorStatus.includes('+48 514 032 930'),
+  );
+}
 // --- case studies: no published project -> neutral empty state, no fake client ---
 assert('empty projects state shown', enB2B.includes('Write-ups of our first projects are in the works'));
 assert('no dev example client leaked', !enB2B.includes('example-conference') && !enB2B.includes('TODO: nazwa'));
@@ -358,6 +478,10 @@ assert('form netlify-enabled', enB2B.includes('data-netlify="true"'));
 assert('form name and POST method preserved', /<form[^>]*name="b2b-enquiry"[^>]*method="POST"/.test(enB2B));
 assert('form-name field preserved', enB2B.includes('name="form-name" value="b2b-enquiry"'));
 const enB2BForm = enB2B.match(/<form\b[^>]*data-b2b-form[^>]*>[\s\S]*?<\/form>/)?.[0] ?? '';
+assert(
+  'corporate form has a neutral notification subject',
+  enB2BForm.includes('type="hidden" name="subject"'),
+);
 const submittedFields = [
   'form-name', 'locale', 'page', 'utm', 'bot-field', 'company', 'contact_person', 'email', 'phone',
   'event_type', 'guests', 'preferred_date', 'preferred_date_iso', 'date_flexible', 'space', 'duration', 'message', 'consent',
@@ -531,7 +655,7 @@ const eventCount = existsSync(eventsDir)
   ? readdirSync(eventsDir).filter((e) => statSync(join(eventsDir, e)).isDirectory()).length
   : 0;
 assert('sitemap.xml built', exists('sitemap.xml'));
-assert(`sitemap urls = 50 base + ${eventCount} events x5`, (read('sitemap.xml').match(/<loc>/g) || []).length === 50 + eventCount * 5);
+assert(`sitemap urls = 55 base + ${eventCount} events x5`, (read('sitemap.xml').match(/<loc>/g) || []).length === 55 + eventCount * 5);
 
 function inventory(dir) {
   let out = [];
@@ -727,7 +851,7 @@ if (eventCount === 0) {
   }
 }
 assert('no leaked {tokens} in html', leaked.length === 0);
-assert(`html pages = 52 base + ${eventCount} events x5`, htmls.length === 52 + eventCount * 5);
+assert(`html pages = 57 base + ${eventCount} events x5`, htmls.length === 57 + eventCount * 5);
 
 // --- report ---
 let failed = 0;
