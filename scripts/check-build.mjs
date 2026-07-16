@@ -26,6 +26,37 @@ const exists = (rel) => existsSync(join(DIST, rel));
 const results = [];
 const assert = (label, cond) => results.push([label, !!cond]);
 
+// --- navigation: approved desktop spacing and compact breakpoint ---
+const globalCssSource = readFileSync(join(ROOT, 'src/styles/global.css'), 'utf8');
+assert(
+  'desktop nav uses the approved 1120px width',
+  globalCssSource.includes('width: min(1120px, calc(100vw - 2rem));'),
+);
+assert(
+  'desktop nav separates its center and right clusters by 40px',
+  /#main-nav\s*\{[\s\S]*?display: flex; align-items: center; gap: 40px;/.test(globalCssSource),
+);
+assert(
+  'desktop nav separates the last link and reservation CTA by 40px',
+  globalCssSource.includes('.nav-center { display: flex; align-items: center; gap: 40px; flex-shrink: 0; }'),
+);
+assert(
+  'desktop nav separates links by 32px',
+  globalCssSource.includes('.nav-links { display: flex; align-items: center; gap: 32px; }'),
+);
+assert(
+  'compact navigation begins at 1100px',
+  globalCssSource.includes('@media (max-width: 1100px) {'),
+);
+assert(
+  'compact navigation no longer waits until 860px',
+  !globalCssSource.includes('@media (max-width: 860px) {'),
+);
+assert(
+  'mobile reservation CTA dimensions stay unchanged',
+  globalCssSource.includes('.nav-cta { padding: 8px 13px; font-size: 10px; letter-spacing: 0.05em; }'),
+);
+
 const LOCALES = ['pl', 'en', 'de', 'it', 'cs'];
 const PAGE_TITLES = {
   pl: {
@@ -233,6 +264,13 @@ const PRIVATE_EVENT_TITLES = {
   it: 'Eventi privati e compleanni a Breslavia | SiSi',
   cs: 'Soukromé akce a narozeniny ve Vratislavi | SiSi',
 };
+const PRIVATE_FORM_INTROS = {
+  pl: 'Podaj planowany termin, liczbę gości i rodzaj okazji. Zespół przygotuje indywidualną propozycję.',
+  en: 'Share your preferred date, guest count and occasion. Our team will prepare a tailored proposal.',
+  de: 'Nenne uns deinen Wunschtermin, die Gästezahl und den Anlass. Unser Team erstellt ein individuelles Angebot.',
+  it: 'Indicaci la data prevista, il numero di ospiti e l\'occasione. Il nostro team preparerà una proposta personalizzata.',
+  cs: 'Uveďte plánovaný termín, počet hostů a typ příležitosti. Náš tým připraví individuální nabídku.',
+};
 for (const locale of LOCALES) {
   assert(
     `private events builds: /${locale}/${PRIVATE_EVENTS[locale]}/`,
@@ -371,10 +409,34 @@ for (const locale of LOCALES) {
       && (html.match(/rel="alternate" hreflang="(pl|en|de|it|cs)"/g) || []).length === 5
       && html.includes('hreflang="x-default"'),
   );
+  const retainedSections = [
+    'class="private-hero"',
+    'class="private-occasions"',
+    'class="private-pricing"',
+    'id="private-enquiry"',
+  ];
+  const retainedSectionPositions = retainedSections.map((marker) => html.indexOf(marker));
   assert(
-    `${locale} private-events FAQ schema matches visible FAQ content`,
-    html.includes('"@type":"FAQPage"')
-      && html.includes('class="private-faq-item"'),
+    `${locale} private-events journey is exactly hero, occasions, pricing, then form`,
+    retainedSections.every((marker) => html.split(marker).length - 1 === 1)
+      && retainedSectionPositions.every((position) => position >= 0)
+      && retainedSectionPositions.every((position, index) => index === 0 || position > retainedSectionPositions[index - 1]),
+  );
+  assert(
+    `${locale} private-events omits the broad B2B sections, FAQ, and spaces CTA`,
+    [
+      'class="b2b-facts"',
+      'class="b2b-included"',
+      'id="private-spaces"',
+      'class="b2b-process"',
+      'class="private-faq"',
+      '"@type":"FAQPage"',
+      'href="#private-spaces"',
+    ].every((marker) => !html.includes(marker)),
+  );
+  assert(
+    `${locale} private-events form intro matches the approved concise journey`,
+    html.includes(PRIVATE_FORM_INTROS[locale].replaceAll("'", '&#39;')),
   );
 }
 
@@ -391,18 +453,11 @@ for (const approvedCopy of [
   'Wycena indywidualna',
   'Koszt ustalamy indywidualnie po omówieniu szczegółów wydarzenia. Termin potwierdzamy umową i zaliczką, a pozostała część jest płatna przed wydarzeniem.',
   'Opowiedz nam o swojej okazji',
-  'Podaj planowany termin, liczbę gości, rodzaj okazji i wybraną przestrzeń. Zespół przygotuje indywidualną propozycję.',
+  'Podaj planowany termin, liczbę gości i rodzaj okazji. Zespół przygotuje indywidualną propozycję.',
   'Dziękujemy za zapytanie. Odezwiemy się z indywidualną propozycją.',
 ]) {
   assert(`private-events Polish copy: ${approvedCopy.slice(0, 48)}`, plPrivateEvents.includes(approvedCopy));
 }
-assert(
-  'private-events page keeps verified capacities scoped to each space',
-  plPrivateEvents.includes('do 150')
-    && plPrivateEvents.includes('miejsc siedzących w The Cork')
-    && plPrivateEvents.includes('do 500')
-    && plPrivateEvents.includes('gości na stojąco (bufet)'),
-);
 assert(
   'private-events page includes only approved individual-pricing terms',
   !/minimum spend|minimaln(?:a|y)|cena od|\b[0-9]+\s*zł\b/i.test(plPrivateEvents),
@@ -417,8 +472,10 @@ for (const locale of LOCALES) {
   const errorStatus = form.match(/<div class="private-form-status private-status-error"[\s\S]*?<\/div>/)?.[0] ?? '';
   const submittedFields = [
     'form-name', 'subject', 'locale', 'page', 'utm', 'bot-field', 'name', 'email', 'phone',
-    'occasion', 'guests', 'preferred_date', 'preferred_date_iso', 'space', 'duration', 'message', 'consent',
+    'occasion', 'guests', 'preferred_date', 'preferred_date_iso', 'message', 'consent',
   ];
+  const renderedFields = [...form.matchAll(/<(?:input|select|textarea)\b[^>]*\bname="([^"]+)"/g)]
+    .map((match) => match[1]);
   const requiredFields = ['name', 'email', 'occasion', 'guests', 'preferred_date', 'message', 'consent'];
 
   assert(`${locale} has exactly one private-enquiry form`, forms.length === 1);
@@ -435,8 +492,8 @@ for (const locale of LOCALES) {
       && form.includes('type="hidden" name="subject"'),
   );
   assert(
-    `${locale} private form submits the complete approved field set`,
-    submittedFields.every((name) => form.includes(`name="${name}"`)),
+    `${locale} private form submits exactly the approved field set`,
+    JSON.stringify(renderedFields) === JSON.stringify(submittedFields),
   );
   assert(
     `${locale} private form requires the approved consumer fields`,

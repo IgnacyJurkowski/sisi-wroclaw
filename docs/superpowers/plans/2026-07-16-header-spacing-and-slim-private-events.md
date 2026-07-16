@@ -32,7 +32,8 @@
   ```js
   const globalCssSource = readFileSync(join(ROOT, 'src/styles/global.css'), 'utf8');
   assert('desktop nav uses the approved 1120px width', globalCssSource.includes('width: min(1120px, calc(100vw - 2rem));'));
-  assert('desktop nav separates its center and right clusters by 40px', globalCssSource.includes('display: flex; align-items: center; gap: 40px;'));
+  assert('desktop nav separates its center and right clusters by 40px', /#main-nav\s*\{[\s\S]*?display: flex; align-items: center; gap: 40px;/.test(globalCssSource));
+  assert('desktop nav separates the last link and reservation CTA by 40px', globalCssSource.includes('.nav-center { display: flex; align-items: center; gap: 40px; flex-shrink: 0; }'));
   assert('desktop nav separates links by 32px', globalCssSource.includes('.nav-links { display: flex; align-items: center; gap: 32px; }'));
   assert('compact navigation begins at 1100px', globalCssSource.includes('@media (max-width: 1100px) {'));
   assert('compact navigation no longer waits until 860px', !globalCssSource.includes('@media (max-width: 860px) {'));
