@@ -313,6 +313,14 @@ const siteEntityIds = new Set((siteEntityGraph?.['@graph'] ?? []).map((node) => 
 const siteNightClub = (siteEntityGraph?.['@graph'] ?? []).find(
   (node) => node['@id'] === `${CANONICAL_ORIGIN}/#nightclub`,
 );
+const siteEventVenue = (siteEntityGraph?.['@graph'] ?? []).find(
+  (node) => node['@id'] === 'https://www.r32.com.pl/#eventvenue',
+);
+const expectedVenueGeo = {
+  '@type': 'GeoCoordinates',
+  latitude: 51.1106472,
+  longitude: 17.0279287,
+};
 assert(
   'site JSON-LD connects legal organization, R32 venue, nightclub, and website in one graph',
   siteEntityIds.size === 4
@@ -328,6 +336,11 @@ assert(
     && siteNightClub.sameAs.every((url) => !/facebook\.com\/share\//.test(url)),
 );
 assert('nightclub hasMap uses the verified Google Maps place', siteNightClub?.hasMap === MAPS_URL);
+assert(
+  'nightclub and R32 expose the verified venue coordinates',
+  JSON.stringify(siteNightClub?.geo) === JSON.stringify(expectedVenueGeo)
+    && JSON.stringify(siteEventVenue?.geo) === JSON.stringify(expectedVenueGeo),
+);
 assert('hreflang has 5 locales', (plHome.match(/rel="alternate" hreflang="(pl|en|de|it|cs)"/g) || []).length === 5);
 assert('hreflang x-default present', plHome.includes('hreflang="x-default"'));
 assert('pl canonical is final /pl/', plHome.includes(`href="${CANONICAL_ORIGIN}/pl/"`));
@@ -828,7 +841,6 @@ const unverifiedRenderedClaims = [
   ['Czech over-21 claim', /(?:\bod|starším) 21/i],
   ['120-minute claim', /120 minut/i],
   ['120-minutes claim', /120 minutes/i],
-  ['GeoCoordinates metadata', /GeoCoordinates/],
   ['geo meta tags', /<meta name="geo\./i],
   ['ICBM coordinate metadata', /<meta name="ICBM"/i],
   ['InStock availability claim', /\bInStock\b/],
