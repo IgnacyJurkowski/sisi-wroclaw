@@ -438,8 +438,14 @@ for (const locale of LOCALES) {
     errorStatus.includes('events@r32.com.pl') && errorStatus.includes('+48 514 032 930'),
   );
 }
-// --- case studies: no published project -> neutral empty state, no fake client ---
-assert('empty projects state shown', enB2B.includes('Write-ups of our first projects are in the works'));
+// --- case studies: publish proof only when a real, approved project exists ---
+for (const locale of LOCALES) {
+  assert(
+    `${locale} omits the case-study section while no project is published`,
+    !b2bPages[locale].includes('<section class="b2b-projects">')
+      && !b2bPages[locale].includes('b2b-projects-empty'),
+  );
+}
 assert('no dev example client leaked', !enB2B.includes('example-conference') && !enB2B.includes('TODO: nazwa'));
 
 // --- form: Netlify contract, submitted fields, fallback contacts ---
