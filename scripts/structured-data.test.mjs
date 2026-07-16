@@ -10,6 +10,11 @@ const NIGHTCLUB_ID = `${CANONICAL_ORIGIN}/#nightclub`;
 const R32_ID = 'https://www.r32.com.pl/#eventvenue';
 const FACEBOOK_URL = 'https://www.facebook.com/sisimusicclub';
 const MAPS_URL = 'https://www.google.com/maps/search/?api=1&query=SISI%20%7C%20Music%20Club%20Wroc%C5%82aw&query_place_id=ChIJS14DTYDDD0cRWrK8z0wRcsM';
+const VENUE_GEO = {
+  '@type': 'GeoCoordinates',
+  latitude: 51.1106472,
+  longitude: 17.0279287,
+};
 
 const files = ['src/data/site.ts', 'src/i18n/legal.ts', 'src/i18n/ui/pl.ts', 'src/i18n/ui/en.ts', 'src/i18n/ui/de.ts', 'src/i18n/ui/it.ts', 'src/i18n/ui/cs.ts', 'src/layouts/Base.astro', 'docs/B2B.md'];
 test('unverified launch claims are absent from source', async () => {
@@ -17,7 +22,7 @@ test('unverified launch claims are absent from source', async () => {
   // 663 m² and the up-to-500 standing capacity were confirmed verified by the
   // owner (2026-07-14) and intentionally removed from this guard; the remaining
   // patterns still block unverified age, timing and schema claims.
-  for (const pattern of [/over[-\s]?21/i, /21\+/i, /powyżej 21/i, /(?:\bab|über) 21/i, /maggiori di 21/i, /(?:\bod|starším) 21/i, /120 minut/i, /120 minutes/i, /GeoCoordinates/, /geo\.position/, /\bInStock\b/]) {
+  for (const pattern of [/over[-\s]?21/i, /21\+/i, /powyżej 21/i, /(?:\bab|über) 21/i, /maggiori di 21/i, /(?:\bod|starším) 21/i, /120 minut/i, /120 minutes/i, /geo\.position/, /\bInStock\b/]) {
     assert.equal(pattern.test(text), false, `unexpected launch claim matching ${pattern}`);
   }
 });
@@ -70,10 +75,12 @@ test('structured data uses the final origin and attaches only verified event off
     );
     assert.equal(eventVenue['@type'], 'EventVenue');
     assert.equal(eventVenue['@id'], R32_ID);
+    assert.deepEqual(eventVenue.geo, VENUE_GEO);
     assert.deepEqual(eventVenue.containsPlace, { '@id': NIGHTCLUB_ID });
     assert.deepEqual(nightClub.parentOrganization, { '@id': ORGANIZATION_ID });
     assert.deepEqual(nightClub.containedInPlace, { '@id': R32_ID });
     assert.equal(nightClub.hasMap, MAPS_URL);
+    assert.deepEqual(nightClub.geo, VENUE_GEO);
     assert.equal(nightClub.sameAs.includes(FACEBOOK_URL), true);
     assert.equal(nightClub.sameAs.some((url) => /facebook\.com\/share\//.test(url)), false);
     assert.deepEqual(

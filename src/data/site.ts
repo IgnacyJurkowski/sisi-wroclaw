@@ -134,6 +134,10 @@ export const BUSINESS = {
   region: 'Dolnośląskie',
   postalCode: '50-130',
   country: 'PL',
+  // Building point for Rzeźnicza 32-33, verified against the public address
+  // record on 2026-07-16. Keep both connected venue entities on one location.
+  latitude: 51.1106472,
+  longitude: 17.0279287,
   priceRange: '$$',
 };
 
@@ -156,6 +160,14 @@ function addressLd() {
     addressRegion: BUSINESS.region,
     postalCode: BUSINESS.postalCode,
     addressCountry: BUSINESS.country,
+  };
+}
+
+function venueGeoLd() {
+  return {
+    '@type': 'GeoCoordinates',
+    latitude: BUSINESS.latitude,
+    longitude: BUSINESS.longitude,
   };
 }
 
@@ -189,6 +201,7 @@ export function eventVenueSchema() {
     name: 'R32',
     url: 'https://www.r32.com.pl/',
     address: addressLd(),
+    geo: venueGeoLd(),
     email: CONTACT.eventsEmail,
     telephone: CONTACT.eventsPhoneHref.replace('tel:', ''),
     containsPlace: { '@id': ENTITY_IDS.nightClub },
@@ -212,6 +225,7 @@ export function nightClubSchema(locale: Locale = 'pl') {
     priceRange: BUSINESS.priceRange,
     currenciesAccepted: 'PLN',
     address: addressLd(),
+    geo: venueGeoLd(),
     hasMap: CONTACT.mapsUrl,
     openingHoursSpecification: [
       { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Friday', 'Saturday'], opens: '22:00', closes: '04:00' },
