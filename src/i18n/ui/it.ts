@@ -36,6 +36,13 @@ const it: UI = {
         'Una location per eventi aziendali nel centro di Breslavia: conferenze, panel, presentazioni, cene, lanci e networking. 663 m², fino a 150 posti a sedere al The Cork, 2 schermi.',
       ogDescription: 'Conferenze, presentazioni, cene ed eventi aziendali serali nel centro di Breslavia. SiSi & The Cork.',
     },
+    privateEvents: {
+      title: 'Eventi privati e compleanni a Breslavia | SiSi',
+      description:
+        'Organizza un compleanno, un anniversario o una festa privata al SiSi, al The Cork o nell\'intero R32. Uso esclusivo, bar, catering, musica e proposta personalizzata.',
+      ogDescription:
+        'Organizza un compleanno, un anniversario o una festa privata al SiSi, al The Cork o nell\'intero R32. Uso esclusivo, bar, catering, musica e proposta personalizzata.',
+    },
     contact: {
       title: 'Contatti e dati societari | SiSi Wrocław',
       description:
@@ -74,6 +81,7 @@ const it: UI = {
     menu: 'Menu',
     careers: 'Lavora con noi',
     corporate: 'Aziende',
+    privateEvents: 'Eventi privati',
     reservations: 'Prenotazioni',
     contact: 'Contatti',
     terms: 'Regolamento',
@@ -328,6 +336,59 @@ const it: UI = {
     label: 'Errore 404',
     title: 'Questa pagina non c\'è',
     body: 'Sembra che la pagina che cerchi sia svanita come l\'ultimo ospite all\'alba. Torna alla home o scopri cosa suoniamo.',
+  },
+
+  privateEvents: {
+    hero: {
+      eyebrow: 'Eventi privati nel centro di Breslavia',
+      title: 'Eventi privati nel cuore di Breslavia',
+      body: 'Compleanni, anniversari e feste private al SiSi, al The Cork o nell\'intero R32. Scegli lo spazio in uso esclusivo e concorda con il nostro team bar, catering, musica e allestimento dell\'evento.',
+      ctaPrimary: 'Richiedi una data',
+      ctaSecondary: 'Scopri gli spazi',
+      contactLead: 'Preferisci parlarne?',
+    },
+    occasions: {
+      heading: 'Occasioni private al R32',
+      items: [
+        { title: 'Compleanni', body: 'Cena, bar e musica in un formato concordato con il nostro team.' },
+        { title: 'Anniversari', body: 'Una cena privata o una festa serale nello spazio scelto.' },
+        { title: 'Feste private', body: 'Eventi per ospiti invitati con catering, bar e musica.' },
+        { title: 'Uso esclusivo', body: 'SiSi, The Cork o l\'intero R32 possono essere riservati in esclusiva.' },
+      ],
+    },
+    pricing: {
+      heading: 'Preventivo personalizzato',
+      body: 'Definiamo il costo individualmente dopo aver discusso i dettagli dell\'evento. La data viene confermata con un contratto e un acconto; il saldo è dovuto prima dell\'evento.',
+    },
+    faq: {
+      heading: 'Domande frequenti',
+      items: [
+        { q: 'Quali eventi privati potete organizzare?', a: 'Organizziamo compleanni, anniversari e altre feste private.' },
+        { q: 'Posso riservare uno spazio in esclusiva?', a: 'Sì. SiSi, The Cork o l\'intero R32 possono essere riservati in esclusiva.' },
+        { q: 'Quanti ospiti possono accogliere gli spazi?', a: 'The Cork accoglie fino a 150 ospiti seduti, mentre SiSi fino a 500 ospiti in piedi con formula buffet.' },
+        { q: 'Cosa potete fornire per una festa privata?', a: 'Possiamo fornire bar, open bar o open tab, catering, DJ o musica dal vivo, guardaroba, zone separate, pulizia continua e supporto organizzativo.' },
+        { q: 'Posso portare una torta, decorazioni o un fotografo?', a: 'Torta e decorazioni sono possibili previo accordo. Un fotografo scelto dall\'organizzatore può realizzare fotografie durante l\'evento.' },
+        { q: 'Quanto costa un evento privato?', a: 'Definiamo il costo individualmente dopo aver discusso data, numero di ospiti, spazio e servizi.' },
+        { q: 'Come confermo la data?', a: 'La data viene confermata con un contratto e un acconto; il saldo è dovuto prima dell\'evento.' },
+      ],
+    },
+    form: {
+      heading: 'Parlaci della tua occasione',
+      intro: 'Indicaci la data prevista, il numero di ospiti, l\'occasione e lo spazio scelto. Il nostro team preparerà una proposta personalizzata.',
+      name: 'Nome e cognome',
+      occasion: 'Occasione',
+      occasionPlaceholder: 'Scegli un\'occasione',
+      occasionOptions: {
+        birthday: 'Compleanno',
+        anniversary: 'Anniversario',
+        celebration: 'Festa privata',
+        exclusive: 'Uso esclusivo',
+        other: 'Altra occasione',
+      },
+      messagePlaceholder: 'Descrivi brevemente la tua occasione.',
+      success: 'Grazie per la richiesta. Ti contatteremo con una proposta personalizzata.',
+      subject: 'Richiesta per un evento privato - SiSi Wrocław',
+    },
   },
 
   b2b: {

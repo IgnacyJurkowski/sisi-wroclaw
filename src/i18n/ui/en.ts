@@ -36,6 +36,13 @@ const en: UI = {
         'A corporate-event venue in central Wrocław: conferences, panels, presentations, dinners, launches and networking. 663 m², up to 150 seated guests at The Cork, 2 screens.',
       ogDescription: 'Conferences, presentations, dinners and evening corporate events in central Wrocław. SiSi & The Cork.',
     },
+    privateEvents: {
+      title: 'Private Events & Birthday Parties in Wrocław | SiSi',
+      description:
+        'Host a birthday, anniversary or private celebration at SiSi, The Cork or the entire R32. Exclusive hire, bar, catering, music and a tailored proposal.',
+      ogDescription:
+        'Host a birthday, anniversary or private celebration at SiSi, The Cork or the entire R32. Exclusive hire, bar, catering, music and a tailored proposal.',
+    },
     contact: {
       title: 'Contact & Company Details | SiSi Wrocław',
       description:
@@ -74,6 +81,7 @@ const en: UI = {
     menu: 'Menu',
     careers: 'Careers',
     corporate: 'Corporate',
+    privateEvents: 'Private events',
     reservations: 'Reservations',
     contact: 'Contact',
     terms: 'Terms',
@@ -328,6 +336,59 @@ const en: UI = {
     label: 'Error 404',
     title: 'This page is gone',
     body: 'Looks like the page you are after vanished like the last guest at dawn. Head back home or see what we are playing.',
+  },
+
+  privateEvents: {
+    hero: {
+      eyebrow: 'Private events in central Wrocław',
+      title: 'Private events in the heart of Wrocław',
+      body: 'Birthdays, anniversaries and private celebrations at SiSi, The Cork or the entire R32. Hire your chosen space exclusively and arrange the bar, catering, music and event setting with our team.',
+      ctaPrimary: 'Request a date',
+      ctaSecondary: 'Explore the spaces',
+      contactLead: 'Prefer to talk it through?',
+    },
+    occasions: {
+      heading: 'Private celebrations at R32',
+      items: [
+        { title: 'Birthdays', body: 'Dinner, bar and music in a format arranged with our team.' },
+        { title: 'Anniversaries', body: 'A private dinner or evening celebration in your chosen space.' },
+        { title: 'Private celebrations', body: 'Invite-only events with catering, bar service and music.' },
+        { title: 'Exclusive hire', body: 'SiSi, The Cork or the entire R32 can be hired exclusively.' },
+      ],
+    },
+    pricing: {
+      heading: 'Tailored pricing',
+      body: 'We price every event individually after discussing the details. The date is confirmed with a contract and a deposit, with the balance due before the event.',
+    },
+    faq: {
+      heading: 'Frequently asked questions',
+      items: [
+        { q: 'What private events can you host?', a: 'We host birthdays, anniversaries and other private celebrations.' },
+        { q: 'Can I hire a space exclusively?', a: 'Yes. SiSi, The Cork or the entire R32 can be hired exclusively.' },
+        { q: 'How many guests can the spaces accommodate?', a: 'The Cork seats up to 150 guests, while SiSi accommodates up to 500 standing guests in a buffet format.' },
+        { q: 'What can you provide for a private celebration?', a: 'We can provide a bar, open bar or open tab, catering, a DJ or live music, cloakroom service, separate zones, ongoing cleaning and organisational support.' },
+        { q: 'Can I bring a cake, decorations or my own photographer?', a: 'A cake and decorations can be arranged in advance. A photographer chosen by the organiser may take photographs during the event.' },
+        { q: 'How much does a private event cost?', a: 'We price every event individually after discussing the date, guest count, space and scope.' },
+        { q: 'How do I secure a date?', a: 'The date is confirmed with a contract and a deposit, with the balance due before the event.' },
+      ],
+    },
+    form: {
+      heading: 'Tell us about your celebration',
+      intro: 'Share your preferred date, guest count, occasion and chosen space. Our team will prepare a tailored proposal.',
+      name: 'Name',
+      occasion: 'Occasion',
+      occasionPlaceholder: 'Choose an occasion',
+      occasionOptions: {
+        birthday: 'Birthday',
+        anniversary: 'Anniversary',
+        celebration: 'Private celebration',
+        exclusive: 'Exclusive hire',
+        other: 'Other occasion',
+      },
+      messagePlaceholder: 'Briefly describe your celebration.',
+      success: 'Thank you for your enquiry. We will get back to you with a tailored proposal.',
+      subject: 'Private event enquiry - SiSi Wrocław',
+    },
   },
 
   b2b: {

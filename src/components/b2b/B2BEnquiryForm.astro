@@ -41,11 +41,14 @@ const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
       data-netlify="true"
       netlify-honeypot="bot-field"
       data-messages={formMessages}
+      data-required-fields="company,contact_person,email,event_type,guests,preferred_date,message"
+      data-event-enquiry-form
       data-b2b-form
       novalidate
       data-reveal
     >
       <input type="hidden" name="form-name" value="b2b-enquiry" />
+      <input type="hidden" name="subject" value="Corporate event enquiry - SiSi Wrocław" />
       <input type="hidden" name="locale" value={locale} />
       <input type="hidden" name="page" data-field-page value="" />
       <input type="hidden" name="utm" data-field-utm value="" />
@@ -64,19 +67,19 @@ const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
         <div class="b2b-field">
           <label for="b2b-company">{f.companyName} <span class="req" aria-hidden="true">*</span></label>
           <input id="b2b-company" name="company" type="text" required autocomplete="organization" aria-describedby="err-company" />
-          <p class="b2b-field-error" id="err-company" data-error hidden></p>
+          <p class="b2b-field-error" id="err-company" data-error-for="company" hidden></p>
         </div>
 
         <div class="b2b-field">
           <label for="b2b-person">{f.contactPerson} <span class="req" aria-hidden="true">*</span></label>
           <input id="b2b-person" name="contact_person" type="text" required autocomplete="name" aria-describedby="err-contact_person" />
-          <p class="b2b-field-error" id="err-contact_person" data-error hidden></p>
+          <p class="b2b-field-error" id="err-contact_person" data-error-for="contact_person" hidden></p>
         </div>
 
         <div class="b2b-field">
           <label for="b2b-email">{f.email} <span class="req" aria-hidden="true">*</span></label>
           <input id="b2b-email" name="email" type="email" required autocomplete="email" aria-describedby="err-email" />
-          <p class="b2b-field-error" id="err-email" data-error hidden></p>
+          <p class="b2b-field-error" id="err-email" data-error-for="email" hidden></p>
         </div>
 
         <div class="b2b-field">
@@ -95,7 +98,7 @@ const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
             describedby="err-event_type"
             options={eventTypeKeys.map((k) => ({ value: k, label: f.eventTypeOptions[k] }))}
           />
-          <p class="b2b-field-error" id="err-event_type" data-error hidden></p>
+          <p class="b2b-field-error" id="err-event_type" data-error-for="event_type" hidden></p>
         </div>
 
         <div class="b2b-field">
@@ -109,7 +112,7 @@ const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
             decreaseLabel={f.guestsDecrease}
             increaseLabel={f.guestsIncrease}
           />
-          <p class="b2b-field-error" id="err-guests" data-error hidden></p>
+          <p class="b2b-field-error" id="err-guests" data-error-for="guests" hidden></p>
         </div>
 
         <div class="b2b-field">
@@ -130,7 +133,7 @@ const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
           <label class="b2b-check">
             <input type="checkbox" name="date_flexible" value="yes" data-field-flexible /> {f.dateFlexible}
           </label>
-          <p class="b2b-field-error" id="err-preferred_date" data-error hidden></p>
+          <p class="b2b-field-error" id="err-preferred_date" data-error-for="preferred_date" hidden></p>
         </div>
 
         <div class="b2b-field">
@@ -152,7 +155,7 @@ const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
         <div class="b2b-field b2b-field-wide">
           <label for="b2b-message">{f.message} <span class="req" aria-hidden="true">*</span></label>
           <textarea id="b2b-message" name="message" rows="4" required placeholder={f.messagePlaceholder} aria-describedby="err-message"></textarea>
-          <p class="b2b-field-error" id="err-message" data-error hidden></p>
+          <p class="b2b-field-error" id="err-message" data-error-for="message" hidden></p>
         </div>
 
         <div class="b2b-field b2b-field-wide">
@@ -160,7 +163,7 @@ const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
             <input type="checkbox" name="consent" value="yes" required aria-describedby="err-consent" data-field-consent />
             <span>{consentParts[0]}<a href={privacyHref}>{f.consentPrivacyLink}</a>{consentParts[1]}</span>
           </label>
-          <p class="b2b-field-error" id="err-consent" data-error hidden></p>
+          <p class="b2b-field-error" id="err-consent" data-error-for="consent" hidden></p>
         </div>
       </div>
 
@@ -168,11 +171,11 @@ const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
         <button type="submit" class="btn-cta" data-submit>{f.submit}</button>
       </div>
 
-      <div class="b2b-form-status" data-status-success aria-live="polite" hidden>
+      <div class="b2b-form-status" data-status-success aria-live="polite" tabindex="-1" hidden>
         <p class="b2b-status-title">{f.success.title}</p>
         <p class="b2b-status-body">{f.success.body}</p>
       </div>
-      <div class="b2b-form-status b2b-status-error" data-status-error aria-live="assertive" hidden>
+      <div class="b2b-form-status b2b-status-error" data-status-error aria-live="assertive" tabindex="-1" hidden>
         <p class="b2b-status-title">{f.error.title}</p>
         <p class="b2b-status-body">{f.error.body} <a href={CONTACT.eventsPhoneHref}>{CONTACT.eventsPhone}</a> · <a href={`mailto:${CONTACT.eventsEmail}`}>{CONTACT.eventsEmail}</a></p>
       </div>
@@ -181,88 +184,7 @@ const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
 </section>
 
 <script>
-  import { campaignAttribution } from '../../lib/attribution.mjs';
-
-  (function () {
-    const formElement = document.querySelector('[data-b2b-form]');
-    if (!(formElement instanceof HTMLFormElement)) return;
-    const form: HTMLFormElement = formElement;
-    const messages = JSON.parse(form.getAttribute('data-messages') || '{}') as Record<string, string>;
-
-    // Fill page context and bounded campaign-attribution fields from the URL.
-    // Unrelated query parameters are never submitted.
-    try {
-      const pageEl = form.querySelector<HTMLInputElement>('[data-field-page]');
-      const utmEl = form.querySelector<HTMLInputElement>('[data-field-utm]');
-      if (pageEl) pageEl.value = location.pathname;
-      if (utmEl) utmEl.value = campaignAttribution(location.search);
-    } catch {}
-
-    const errBox = form.querySelector<HTMLElement>('[data-form-errors]');
-    const okBox = form.querySelector<HTMLElement>('[data-status-success]');
-    const failBox = form.querySelector<HTMLElement>('[data-status-error]');
-    const submit = form.querySelector<HTMLButtonElement>('[data-submit]');
-    if (!submit) return;
-
-    function setError(name: string, msg: string): void {
-      const field = form.querySelector<HTMLElement>('[name="' + name + '"]');
-      const errEl = document.getElementById('err-' + name);
-      if (field) field.setAttribute('aria-invalid', 'true');
-      if (errEl) { errEl.textContent = msg; errEl.hidden = false; }
-    }
-    function clearErrors(): void {
-      form.querySelectorAll<HTMLElement>('[data-error]').forEach(function (e) { e.hidden = true; e.textContent = ''; });
-      form.querySelectorAll('[aria-invalid]').forEach(function (e) { e.removeAttribute('aria-invalid'); });
-      if (errBox) errBox.hidden = true;
-    }
-    function validate(): boolean {
-      clearErrors();
-      let firstBad: HTMLElement | null = null;
-      const required = ['company', 'contact_person', 'email', 'event_type', 'guests', 'message'];
-      required.forEach(function (n) {
-        const el = form.querySelector<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>('[name="' + n + '"]');
-        if (el && !String(el.value).trim()) { setError(n, messages.required); firstBad = firstBad || el; }
-      });
-      const email = form.querySelector<HTMLInputElement>('[name="email"]');
-      if (email && email.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) {
-        setError('email', messages.email); firstBad = firstBad || email;
-      }
-      const flexible = form.querySelector<HTMLInputElement>('[data-field-flexible]');
-      const date = form.querySelector<HTMLInputElement>('[data-field-date]');
-      if (date && !date.value.trim() && !(flexible && flexible.checked)) {
-        setError('preferred_date', messages.required); firstBad = firstBad || date;
-      }
-      const consent = form.querySelector<HTMLInputElement>('[data-field-consent]');
-      if (consent && !consent.checked) { setError('consent', messages.consent); firstBad = firstBad || consent; }
-      if (firstBad) {
-        if (errBox) errBox.hidden = false;
-        firstBad.focus();
-      }
-      return !firstBad;
-    }
-
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      if (okBox) okBox.hidden = true;
-      if (failBox) failBox.hidden = true;
-      if (!validate()) return;
-
-      submit.disabled = true;
-      submit.textContent = messages.sending;
-      const data = new URLSearchParams();
-      for (const [key, value] of new FormData(form)) data.append(key, String(value));
-      // POST to the current page (Netlify intercepts form POSTs by form-name);
-      // avoids the forced "/" -> "/pl/" redirect swallowing the submission.
-      fetch(location.pathname, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: data.toString() })
-        .then(function (res) {
-          if (!res.ok) throw new Error('bad status');
-          form.reset();
-          if (okBox) { okBox.hidden = false; okBox.focus(); }
-        })
-        .catch(function () { if (failBox) failBox.hidden = false; })
-        .finally(function () { submit.disabled = false; submit.textContent = messages.submit; });
-    });
-  })();
+  import '../../scripts/event-enquiry-form';
 </script>
 
 <style>

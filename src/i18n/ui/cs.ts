@@ -36,6 +36,13 @@ const cs: UI = {
         'Prostor pro firemní akce v centru Vratislavi: konference, panely, prezentace, večeře, uvedení produktů a networking. 663 m², až 150 míst k sezení v The Cork, 2 obrazovky.',
       ogDescription: 'Konference, prezentace, večeře a večerní firemní akce v centru Vratislavi. SiSi & The Cork.',
     },
+    privateEvents: {
+      title: 'Soukromé akce a narozeniny ve Vratislavi | SiSi',
+      description:
+        'Uspořádejte narozeniny, výročí nebo soukromou oslavu v SiSi, The Cork nebo v celém R32. Exkluzivní pronájem, bar, catering, hudba a individuální nabídka.',
+      ogDescription:
+        'Uspořádejte narozeniny, výročí nebo soukromou oslavu v SiSi, The Cork nebo v celém R32. Exkluzivní pronájem, bar, catering, hudba a individuální nabídka.',
+    },
     contact: {
       title: 'Kontakt a firemní údaje | SiSi Wrocław',
       description:
@@ -74,6 +81,7 @@ const cs: UI = {
     menu: 'Menu',
     careers: 'Kariéra',
     corporate: 'Pro firmy',
+    privateEvents: 'Soukromé akce',
     reservations: 'Rezervace',
     contact: 'Kontakt',
     terms: 'Pravidla',
@@ -328,6 +336,59 @@ const cs: UI = {
     label: 'Chyba 404',
     title: 'Tato stránka tu není',
     body: 'Vypadá to, že hledaná stránka zmizela jako poslední host za úsvitu. Vraťte se na úvod nebo se podívejte, co hrajeme.',
+  },
+
+  privateEvents: {
+    hero: {
+      eyebrow: 'Soukromé akce v centru Vratislavi',
+      title: 'Soukromé akce v srdci Vratislavi',
+      body: 'Narozeniny, výročí a soukromé oslavy v SiSi, The Cork nebo v celém R32. Vyberte si prostor k exkluzivnímu pronájmu a domluvte s naším týmem bar, catering, hudbu a podobu akce.',
+      ctaPrimary: 'Zeptat se na termín',
+      ctaSecondary: 'Poznat prostory',
+      contactLead: 'Raději si promluvíte?',
+    },
+    occasions: {
+      heading: 'Soukromé oslavy v R32',
+      items: [
+        { title: 'Narozeniny', body: 'Večeře, bar a hudba ve formátu domluveném s naším týmem.' },
+        { title: 'Výročí', body: 'Soukromá večeře nebo večerní oslava ve vybraném prostoru.' },
+        { title: 'Soukromé oslavy', body: 'Akce pro pozvané hosty s cateringem, barem a hudbou.' },
+        { title: 'Exkluzivní pronájem', body: 'SiSi, The Cork nebo celý R32 lze pronajmout exkluzivně.' },
+      ],
+    },
+    pricing: {
+      heading: 'Individuální nabídka',
+      body: 'Cenu stanovujeme individuálně po projednání podrobností akce. Termín potvrdíme smlouvou a zálohou; zbývající částka je splatná před akcí.',
+    },
+    faq: {
+      heading: 'Časté dotazy',
+      items: [
+        { q: 'Jaké soukromé akce můžete uspořádat?', a: 'Pořádáme narozeniny, výročí a další soukromé oslavy.' },
+        { q: 'Lze prostor pronajmout exkluzivně?', a: 'Ano. SiSi, The Cork nebo celý R32 lze pronajmout exkluzivně.' },
+        { q: 'Kolik hostů se do prostor vejde?', a: 'The Cork nabízí až 150 míst k sezení, zatímco SiSi pojme až 500 stojících hostů při bufetovém uspořádání.' },
+        { q: 'Co můžete zajistit pro soukromou oslavu?', a: 'Můžeme zajistit bar, open bar nebo open tab, catering, DJ nebo živou hudbu, šatnu, oddělené zóny, průběžný úklid a organizační podporu.' },
+        { q: 'Lze přinést dort, dekorace nebo vlastního fotografa?', a: 'Dort a dekorace jsou možné po předchozí domluvě. Fotograf vybraný pořadatelem může během akce fotografovat.' },
+        { q: 'Kolik stojí soukromá akce?', a: 'Cenu stanovujeme individuálně po projednání termínu, počtu hostů, prostoru a rozsahu akce.' },
+        { q: 'Jak potvrdím termín?', a: 'Termín potvrdíme smlouvou a zálohou; zbývající částka je splatná před akcí.' },
+      ],
+    },
+    form: {
+      heading: 'Řekněte nám o své oslavě',
+      intro: 'Uveďte plánovaný termín, počet hostů, typ příležitosti a vybraný prostor. Náš tým připraví individuální nabídku.',
+      name: 'Jméno a příjmení',
+      occasion: 'Typ příležitosti',
+      occasionPlaceholder: 'Vyberte příležitost',
+      occasionOptions: {
+        birthday: 'Narozeniny',
+        anniversary: 'Výročí',
+        celebration: 'Soukromá oslava',
+        exclusive: 'Exkluzivní pronájem',
+        other: 'Jiná příležitost',
+      },
+      messagePlaceholder: 'Stručně popište svou oslavu.',
+      success: 'Děkujeme za váš dotaz. Ozveme se s individuální nabídkou.',
+      subject: 'Dotaz na soukromou akci - SiSi Wrocław',
+    },
   },
 
   b2b: {
