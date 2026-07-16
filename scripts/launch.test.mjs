@@ -26,7 +26,12 @@ for (const [name, input, expected] of [
 test('browser storage stays within the disclosed launch inventory', async () => {
   const files = await sourceFiles('src');
   const source = (await Promise.all(files.map((file) => readFile(file, 'utf8')))).join('\n');
+  const legal = await readFile('src/i18n/legal.ts', 'utf8');
   assert.equal(/\bsessionStorage\b/.test(source), false, 'sessionStorage is outside the disclosed launch inventory');
+  assert.match(source, /sisi-cookie-notice/);
+  assert.match(source, /sisi-summer-fri-2026-dismissed/);
+  assert.doesNotMatch(source, /['"]sisi-summer-fri-dismissed['"]/);
+  assert.match(legal, /sisi-summer-fri-2026-dismissed \(localStorage\)/);
 });
 
 test('new menu and corporate surfaces keep audited semantics and contrast tokens', async () => {

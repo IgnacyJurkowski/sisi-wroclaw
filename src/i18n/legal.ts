@@ -104,7 +104,7 @@ const pl_privacy: LegalDoc = {
         'Rozliczenia i obowiązki podatkowe - w zakresie wymaganym przepisami. Podstawa: art. 6 ust. 1 lit. c RODO.',
         'Dochodzenie lub obrona roszczeń. Podstawa: art. 6 ust. 1 lit. f RODO.',
         'Monitoring wizyjny (CCTV) na terenie lokalu - w celu zapewnienia bezpieczeństwa osób i mienia. Podstawa: art. 6 ust. 1 lit. f RODO.',
-        'Pamięć przeglądarki - zob. Polityka cookies. Strona przechowuje wyłącznie informację o zamknięciu komunikatu oraz niezbędny stan formularzy i nawigacji.',
+        'Pamięć przeglądarki - zob. Polityka cookies. Strona przechowuje wyłącznie informacje o zamknięciu komunikatów oraz niezbędny stan formularzy i nawigacji.',
       ],
     },
     {
@@ -170,27 +170,28 @@ const pl_cookies: LegalDoc = {
     {
       heading: '1. Pamięć przeglądarki',
       paragraphs: [
-        'Strona korzysta z pamięci lokalnej przeglądarki (localStorage) wyłącznie po to, aby zapamiętać zamknięcie komunikatu o niezbędnej pamięci. Stan niezbędny do obsługi formularzy i nawigacji jest używany podczas interakcji z tymi elementami.',
+        'Strona korzysta z pamięci lokalnej przeglądarki (localStorage) wyłącznie po to, aby zapamiętać zamknięcie komunikatu o niezbędnej pamięci oraz komunikatu o wakacyjnym zamknięciu w piątki. Stan niezbędny do obsługi formularzy i nawigacji jest używany podczas interakcji z tymi elementami.',
       ],
     },
     {
       heading: '2. Jakie dane przechowujemy',
       paragraphs: ['Obecnie strona wykorzystuje wyłącznie pamięć niezbędną do działania:'],
       items: [
-        'sisi-cookie-notice (localStorage) - przechowuje wyłącznie wartość "dismissed", aby nie wyświetlać ponownie zamkniętego komunikatu.',
+        'sisi-cookie-notice (localStorage) - przechowuje wyłącznie wartość "dismissed", aby nie wyświetlać ponownie zamkniętego komunikatu o niezbędnej pamięci.',
+        'sisi-summer-fri-2026-dismissed (localStorage) - przechowuje wyłącznie wartość "dismissed", aby nie wyświetlać ponownie komunikatu o wakacyjnym zamknięciu w piątki. Wpis jest usuwany po 28 sierpnia 2026 r.',
         'Niezbędny stan formularzy i nawigacji - przechowywany tylko na potrzeby bieżącej interakcji ze stroną.',
       ],
     },
     {
       heading: '3. Cel użycia',
       paragraphs: [
-        'Pamięć opisana powyżej służy wyłącznie obsłudze komunikatu oraz działania formularzy i nawigacji.',
+        'Pamięć opisana powyżej służy wyłącznie obsłudze komunikatów oraz działania formularzy i nawigacji.',
       ],
     },
     {
       heading: '4. Zarządzanie pamięcią',
       items: [
-        'Komunikat wyświetla się przy pierwszej wizycie; jego zamknięcie zapisuje wartość "dismissed".',
+        'Komunikaty wyświetlają się przy pierwszej wizycie; ich zamknięcie zapisuje wartość "dismissed" dla odpowiedniego komunikatu.',
         'Aby ponownie wyświetlić komunikat, usuń dane strony w ustawieniach przeglądarki.',
         'Pamięcią strony można zarządzać w ustawieniach przeglądarki. Ograniczenie pamięci niezbędnej może wpłynąć na działanie strony.',
       ],
@@ -288,7 +289,7 @@ const en_privacy: LegalDoc = {
         'Accounting and tax obligations - to the extent required by law. Basis: Art. 6(1)(c) GDPR.',
         'Establishing or defending claims. Basis: Art. 6(1)(f) GDPR.',
         'Video monitoring (CCTV) on the premises - to ensure the safety of people and property. Basis: Art. 6(1)(f) GDPR.',
-        'Browser storage - see the Cookie Policy. The site stores only notice dismissal and essential form and navigation state.',
+        'Browser storage - see the Cookie Policy. The site stores only notice dismissals and essential form and navigation state.',
       ],
     },
     {
@@ -354,27 +355,28 @@ const en_cookies: LegalDoc = {
     {
       heading: '1. Browser storage',
       paragraphs: [
-        'The site uses browser local storage (localStorage) only to remember that the essential-storage notice was dismissed. State essential to forms and navigation is used while you interact with those controls.',
+        'The site uses browser local storage (localStorage) only to remember that the essential-storage notice and the summer Friday closure notice were dismissed. State essential to forms and navigation is used while you interact with those controls.',
       ],
     },
     {
       heading: '2. What we store',
       paragraphs: ['The site currently uses only storage essential to its operation:'],
       items: [
-        'sisi-cookie-notice (localStorage) - stores only the value "dismissed" so the notice stays hidden after you close it.',
+        'sisi-cookie-notice (localStorage) - stores only the value "dismissed" so the essential-storage notice stays hidden after you close it.',
+        'sisi-summer-fri-2026-dismissed (localStorage) - stores only the value "dismissed" so the summer Friday closure notice stays hidden after you close it. The record is removed after 28 August 2026.',
         'Essential form and navigation state - stored only for the current interaction with the site.',
       ],
     },
     {
       heading: '3. Purpose',
       paragraphs: [
-        'The storage described above is used only for the notice and for form and navigation behavior.',
+        'The storage described above is used only for notices and for form and navigation behavior.',
       ],
     },
     {
       heading: '4. Managing storage',
       items: [
-        'The notice appears on your first visit; dismissing it stores the value "dismissed".',
+        'The notices appear on your first visit; dismissing one stores the value "dismissed" for that notice.',
         'To see the notice again, clear the site data in your browser settings.',
         'You can manage site storage in your browser settings. Restricting essential storage may affect how the site works.',
       ],

@@ -8,6 +8,7 @@ import { localizedPath, eventPath } from '../i18n/routes';
 import { useTranslations } from '../i18n/t';
 import { GENERATED_EVENTS } from './events.generated';
 import { eventOffer } from '../lib/event-offer.mjs';
+import { NIGHTCLUB_OPENING_HOURS } from '../lib/summer-hours.mjs';
 
 const RESERVATION_BASE_URL =
   'https://emenago.com/inner/cart/6619/0519b014958d73fb0d5d2d58c360a661';
@@ -111,7 +112,7 @@ export const COMPANY = {
 
 // "Last updated" date for the legal pages, stored as ISO so each locale can
 // format it in its own language (see i18n/format.ts → formatLongDate).
-export const LEGAL_UPDATED_ISO = '2026-06-24';
+export const LEGAL_UPDATED_ISO = '2026-07-16';
 
 /* Verified B2B / corporate-event facts (source-of-truth). Do NOT imply SiSi
    itself seats 150 - that figure is The Cork's seated capacity. */
@@ -227,9 +228,7 @@ export function nightClubSchema(locale: Locale = 'pl') {
     address: addressLd(),
     geo: venueGeoLd(),
     hasMap: CONTACT.mapsUrl,
-    openingHoursSpecification: [
-      { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Friday', 'Saturday'], opens: '22:00', closes: '04:00' },
-    ],
+    openingHoursSpecification: NIGHTCLUB_OPENING_HOURS.map((hours) => ({ ...hours })),
     sameAs: [CONTACT.instagram, CONTACT.facebook, CONTACT.tripadvisor],
     parentOrganization: { '@id': ENTITY_IDS.organization },
     containedInPlace: { '@id': ENTITY_IDS.eventVenue },
@@ -239,7 +238,7 @@ export function nightClubSchema(locale: Locale = 'pl') {
       target: {
         '@type': 'EntryPoint',
         urlTemplate: reservationDestination(locale),
-        inLanguage: locale,
+        inLanguage: RESERVATION_LOCALES[locale],
         actionPlatform: [
           'http://schema.org/DesktopWebPlatform',
           'http://schema.org/MobileWebPlatform',

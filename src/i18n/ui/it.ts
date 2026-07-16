@@ -21,25 +21,23 @@ const it: UI = {
       ogDescription: 'Cocktail d\'autore, vini polacchi e un Night Menu by The Cork. SiSi Wrocław.',
     },
     careers: {
-      title: 'Lavora con noi - SiSi Wrocław',
+      title: 'Lavora con noi al SiSi Wrocław',
       description: 'Unisciti al team del SiSi Wrocław - cerchiamo barman, personale di sala e un barback.',
       ogDescription: 'Unisciti al team del SiSi Wrocław. Posizioni aperte: barman, cameriere, barback.',
     },
     reservations: {
-      title: 'Prenotazioni - SiSi Wrocław',
+      title: 'Prenota un tavolo al SiSi Wrocław',
       description: 'Prenota un tavolo al SiSi Wrocław. Condizioni di prenotazione e contatto per eventi aziendali.',
       ogDescription: 'Un tavolo al SiSi: l\'intero importo della prenotazione è accreditato al tavolo. Venerdì e sabato dalle 22:00.',
     },
     corporate: {
       title: 'Eventi aziendali - SiSi & The Cork Wrocław',
-      description:
-        'Una location per eventi aziendali nel centro di Breslavia: conferenze, panel, presentazioni, cene, lanci e networking. 663 m², fino a 150 posti a sedere al The Cork, 2 schermi.',
+      description: 'Eventi aziendali nel centro di Breslavia: conferenze, presentazioni, cene e networking. 663 m², fino a 150 posti al The Cork e 2 schermi.',
       ogDescription: 'Conferenze, presentazioni, cene ed eventi aziendali serali nel centro di Breslavia. SiSi & The Cork.',
     },
     privateEvents: {
       title: 'Eventi privati e compleanni a Breslavia | SiSi',
-      description:
-        'Organizza un compleanno, un anniversario o una festa privata al SiSi, al The Cork o nell\'intero R32. Uso esclusivo, bar, catering, musica e proposta personalizzata.',
+      description: "Compleanni, anniversari e feste private al SiSi, The Cork o nell'intero R32. Affitto esclusivo, bar, catering, musica e offerta personalizzata.",
       ogDescription:
         'Organizza un compleanno, un anniversario o una festa privata al SiSi, al The Cork o nell\'intero R32. Uso esclusivo, bar, catering, musica e proposta personalizzata.',
     },
@@ -61,8 +59,8 @@ const it: UI = {
     },
     cookies: {
       title: 'Cookie - SiSi Wrocław',
-      description: 'Informativa sui cookie di SiSi Wrocław - archiviazione essenziale usata per la chiusura dell\'avviso e lo stato dei moduli e della navigazione.',
-      ogDescription: 'Come SiSi Wrocław usa l\'archiviazione essenziale per l\'avviso, i moduli e la navigazione.',
+      description: 'Informativa sui cookie di SiSi Wrocław - archiviazione essenziale usata per la chiusura degli avvisi e lo stato dei moduli e della navigazione.',
+      ogDescription: 'Come SiSi Wrocław usa l\'archiviazione essenziale per gli avvisi, i moduli e la navigazione.',
     },
     notFound: {
       title: '404 - Pagina non trovata | SiSi Wrocław',
@@ -107,11 +105,18 @@ const it: UI = {
   },
 
   cookie: {
-    text: 'Questo sito memorizza esclusivamente la chiusura di questo avviso e lo stato essenziale dei moduli e della navigazione. I dettagli sono disponibili nella nostra {cookies} e nella nostra {privacy}.',
+    text: 'Questo sito memorizza esclusivamente la chiusura degli avvisi e lo stato essenziale dei moduli e della navigazione. I dettagli sono disponibili nella nostra {cookies} e nella nostra {privacy}.',
     cookiesLink: 'informativa sui cookie',
     privacyLink: 'informativa sulla privacy',
     dismiss: 'Ho capito',
     dialogLabel: 'Avviso sull\'archiviazione essenziale',
+  },
+
+  popup: {
+    eyebrow: 'Orari estivi',
+    message: 'Durante l’estate SiSi è chiuso il venerdì, fino al 28 agosto 2026 compreso.',
+    dismiss: 'Ho capito',
+    close: 'Chiudi',
   },
 
   buttons: {
@@ -292,6 +297,7 @@ const it: UI = {
   },
 
   reservationsPage: {
+    externalLocaleNote: 'Il sistema di prenotazione si aprirà in polacco.',
     practicalTitle: 'Informazioni pratiche',
     practicalConditions: [
       'Il costo della prenotazione è di 50 PLN a persona - l\'intero importo è utilizzabile al tavolo con il personale.',

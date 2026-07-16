@@ -5,7 +5,20 @@
 [build.environment]
   NODE_VERSION = "22.12.0"
 
-# Bare host -> final www host in one hop for both protocols.
+# Exact bare roots skip the otherwise separate final / -> /pl/ redirect.
+[[redirects]]
+  from = "http://sisiwroclaw.pl/"
+  to = "https://www.sisiwroclaw.pl/pl/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://sisiwroclaw.pl/"
+  to = "https://www.sisiwroclaw.pl/pl/"
+  status = 301
+  force = true
+
+# Other bare-host paths preserve their locale/path while moving to final www.
 [[redirects]]
   from = "http://sisiwroclaw.pl/*"
   to = "https://www.sisiwroclaw.pl/:splat"

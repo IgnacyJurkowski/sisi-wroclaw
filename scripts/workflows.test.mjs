@@ -42,6 +42,8 @@ test('package scripts expose the complete launch and exploit gates', async () =>
   assert.equal(pkg.scripts['test:security'], 'node scripts/security-browser.mjs');
   assert.equal(pkg.scripts['verify:release'], 'npm test && npm run test:security');
   assert.equal(pkg.scripts['smoke:host'], 'node scripts/smoke-host.mjs');
+  assert.equal(pkg.scripts['test:notices'], 'node scripts/site-notices-browser.mjs');
+  assert.equal(pkg.scripts['test:build'], 'node scripts/check-build.mjs && npm run test:notices');
 });
 
 test('clean installs declare the Node build types used by Astro', async () => {
@@ -58,20 +60,40 @@ test('Netlify production builds use the exact audited Node runtime', async () =>
   assert.doesNotMatch(source, /^\s*NODE_VERSION\s*=\s*"22"\s*$/m);
 });
 
-test('Netlify redirects both bare protocols directly to the final www host', async () => {
+test('Netlify orders exact bare roots before wildcard host redirects', async () => {
   const source = await readFile('netlify.toml', 'utf8');
   const redirects = netlifyRedirects(source);
-  const expected = ['http:', 'https:'].map((protocol) => ({
-    from: `${protocol}//sisiwroclaw.pl/*`,
-    to: 'https://www.sisiwroclaw.pl/:splat',
-    status: 301,
-    force: true,
-  }));
+  const expected = [
+    {
+      from: 'http://sisiwroclaw.pl/',
+      to: 'https://www.sisiwroclaw.pl/pl/',
+      status: 301,
+      force: true,
+    },
+    {
+      from: 'https://sisiwroclaw.pl/',
+      to: 'https://www.sisiwroclaw.pl/pl/',
+      status: 301,
+      force: true,
+    },
+    {
+      from: 'http://sisiwroclaw.pl/*',
+      to: 'https://www.sisiwroclaw.pl/:splat',
+      status: 301,
+      force: true,
+    },
+    {
+      from: 'https://sisiwroclaw.pl/*',
+      to: 'https://www.sisiwroclaw.pl/:splat',
+      status: 301,
+      force: true,
+    },
+  ];
 
-  assert.deepEqual(redirects.slice(0, 2), expected);
-  assert.equal(redirects.filter(({ from }) => expected.some((rule) => rule.from === from)).length, 2);
+  assert.deepEqual(redirects.slice(0, 4), expected);
+  assert.equal(redirects.filter(({ from }) => expected.some((rule) => rule.from === from)).length, 4);
   assert.equal(redirects.some(({ from }) => from?.startsWith('https://www.sisiwroclaw.pl')), false);
-  assert.equal(redirects[2]?.from, '/');
+  assert.equal(redirects[4]?.from, '/');
 });
 
 test('CI publishes the exact Launch gate / test status on pushes and pull requests', async () => {

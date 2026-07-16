@@ -107,14 +107,29 @@ const emptyEventCopy = {
   it: 'Presto annunceremo nuovi eventi - seguici su Instagram.',
   cs: 'Brzy ohlásíme další akce - sledujte nás na Instagramu.',
 };
-const englishNoticeText = 'This site stores only the dismissal of this notice and essential form and navigation state. Details are in our Cookie Policy and Privacy Policy.';
 const noticeCopy = {
-  pl: 'Ta strona przechowuje wyłącznie informację o zamknięciu tego komunikatu oraz niezbędny stan formularzy i nawigacji. Szczegóły znajdziesz w Polityce cookies oraz Polityce prywatności.',
-  en: englishNoticeText,
-  de: 'Diese Website speichert ausschließlich, dass dieser Hinweis geschlossen wurde, sowie notwendige Formular- und Navigationszustände. Einzelheiten findest du in unserer Cookie-Richtlinie und unserer Datenschutzerklärung.',
-  it: 'Questo sito memorizza esclusivamente la chiusura di questo avviso e lo stato essenziale dei moduli e della navigazione. I dettagli sono disponibili nella nostra informativa sui cookie e nella nostra informativa sulla privacy.',
-  cs: 'Tento web ukládá pouze informaci o zavření tohoto oznámení a nezbytný stav formulářů a navigace. Podrobnosti najdete v našich zásadách používání souborů cookie a zásadách ochrany soukromí.',
+  pl: 'Ta strona przechowuje wyłącznie informacje o zamknięciu komunikatów oraz niezbędny stan formularzy i nawigacji. Szczegóły znajdziesz w Polityce cookies oraz Polityce prywatności.',
+  en: 'This site stores only information that notices were dismissed and essential form and navigation state. Details are in our Cookie Policy and Privacy Policy.',
+  de: 'Diese Website speichert ausschließlich, dass Hinweise geschlossen wurden, sowie notwendige Formular- und Navigationszustände. Einzelheiten findest du in unserer Cookie-Richtlinie und unserer Datenschutzerklärung.',
+  it: 'Questo sito memorizza esclusivamente la chiusura degli avvisi e lo stato essenziale dei moduli e della navigazione. I dettagli sono disponibili nella nostra informativa sui cookie e nella nostra informativa sulla privacy.',
+  cs: 'Tento web ukládá pouze informace o zavření oznámení a nezbytný stav formulářů a navigace. Podrobnosti najdete v našich zásadách používání souborů cookie a zásadách ochrany soukromí.',
 };
+const summerPopupCopy = {
+  pl: 'W wakacje SiSi jest zamknięte w piątki — do 28 sierpnia 2026 r. włącznie.',
+  en: 'During the summer, SiSi is closed on Fridays — through 28 August 2026 inclusive.',
+  de: 'Im Sommer ist SiSi freitags geschlossen — bis einschließlich 28. August 2026.',
+  it: 'Durante l’estate SiSi è chiuso il venerdì, fino al 28 agosto 2026 compreso.',
+  cs: 'Během léta je SiSi v pátek zavřené — až do 28. srpna 2026 včetně.',
+};
+const summerPopupEyebrow = {
+  pl: 'Wakacyjne godziny',
+  en: 'Summer hours',
+  de: 'Sommer-Öffnungszeiten',
+  it: 'Orari estivi',
+  cs: 'Letní otevírací doba',
+};
+const summerPopupDismiss = { pl: 'Rozumiem', en: 'Got it', de: 'Verstanden', it: 'Ho capito', cs: 'Rozumím' };
+const summerPopupClose = { pl: 'Zamknij', en: 'Close', de: 'Schließen', it: 'Chiudi', cs: 'Zavřít' };
 const noticeDismiss = { pl: 'Rozumiem', en: 'Got it', de: 'Verstanden', it: 'Ho capito', cs: 'Rozumím' };
 const noticeDialogLabel = {
   pl: 'Informacja o niezbędnej pamięci',
@@ -124,19 +139,29 @@ const noticeDialogLabel = {
   cs: 'Oznámení o nezbytném ukládání',
 };
 const cookieMeta = {
+  pl: {
+    route: 'polityka-cookies',
+    description: 'Polityka cookies klubu SiSi Wrocław - pamięć niezbędna do zamknięcia komunikatów oraz obsługi formularzy i nawigacji.',
+    ogDescription: 'Jak SiSi Wrocław korzysta z pamięci niezbędnej do obsługi komunikatów, formularzy i nawigacji.',
+  },
+  en: {
+    route: 'cookie-policy',
+    description: 'SiSi Wrocław cookie policy - essential storage used for notice dismissals and form and navigation state.',
+    ogDescription: 'How SiSi Wrocław uses essential storage for notices, forms and navigation.',
+  },
   de: {
     route: 'cookie-richtlinie',
-    description: 'Cookie-Richtlinie von SiSi Wrocław - notwendige Speicherung für das Schließen des Hinweises sowie für Formular- und Navigationszustände.',
-    ogDescription: 'Wie SiSi Wrocław notwendige Speicherung für den Hinweis, Formulare und die Navigation verwendet.',
+    description: 'Cookie-Richtlinie von SiSi Wrocław - notwendige Speicherung für das Schließen von Hinweisen sowie für Formular- und Navigationszustände.',
+    ogDescription: 'Wie SiSi Wrocław notwendige Speicherung für Hinweise, Formulare und die Navigation verwendet.',
   },
   it: {
     route: 'cookie',
-    description: 'Informativa sui cookie di SiSi Wrocław - archiviazione essenziale usata per la chiusura dell\'avviso e lo stato dei moduli e della navigazione.',
-    ogDescription: 'Come SiSi Wrocław usa l\'archiviazione essenziale per l\'avviso, i moduli e la navigazione.',
+    description: 'Informativa sui cookie di SiSi Wrocław - archiviazione essenziale usata per la chiusura degli avvisi e lo stato dei moduli e della navigazione.',
+    ogDescription: 'Come SiSi Wrocław usa l\'archiviazione essenziale per gli avvisi, i moduli e la navigazione.',
   },
   cs: {
     route: 'zasady-cookies',
-    description: 'Zásady používání souborů cookie SiSi Wrocław - nezbytné ukládání informace o zavření oznámení a stavu formulářů a navigace.',
+    description: 'Zásady používání souborů cookie SiSi Wrocław - nezbytné ukládání informací o zavření oznámení a stavu formulářů a navigace.',
     ogDescription: 'Jak SiSi Wrocław používá nezbytné ukládání pro oznámení, formuláře a navigaci.',
   },
 };
@@ -189,6 +214,70 @@ for (const locale of LOCALES) {
   );
 }
 const RESERVATIONS = { pl: 'rezerwacje', en: 'reservations', de: 'reservierungen', it: 'prenotazioni', cs: 'rezervace' };
+const SEARCH_INTENT_META = {
+  pl: {
+    careers: { route: 'kariera', title: 'Praca i kariera – SiSi Wrocław' },
+    reservations: { route: 'rezerwacje', title: 'Rezerwacja stolika – SiSi Wrocław' },
+    corporate: { route: 'eventy-firmowe', description: 'Eventy firmowe w centrum Wrocławia: konferencje, prezentacje, kolacje i networking. 663 m², do 150 miejsc w The Cork i 2 ekrany.' },
+  },
+  en: {
+    careers: { route: 'careers', title: 'Jobs & Careers at SiSi Wrocław' },
+    reservations: { route: 'reservations', title: 'Table Reservations at SiSi Wrocław' },
+    corporate: { route: 'corporate-events', description: 'Corporate events in central Wrocław: conferences, presentations, dinners and networking. 663 m², up to 150 seated guests at The Cork and 2 screens.' },
+  },
+  de: {
+    careers: { route: 'karriere', title: 'Jobs & Karriere im SiSi Wrocław' },
+    reservations: { route: 'reservierungen', title: 'Tischreservierung im SiSi Wrocław' },
+    corporate: { route: 'firmenevents', description: 'Firmenevents im Zentrum von Breslau: Konferenzen, Präsentationen, Dinner und Networking. 663 m², bis zu 150 Sitzplätze im The Cork und 2 Bildschirme.' },
+    privateEvents: { route: 'private-feiern', description: 'Geburtstag, Jubiläum oder private Feier im SiSi, The Cork oder gesamten R32. Exklusive Anmietung, Bar, Catering, Musik und individuelles Angebot.' },
+  },
+  it: {
+    careers: { route: 'lavora-con-noi', title: 'Lavora con noi al SiSi Wrocław' },
+    reservations: { route: 'prenotazioni', title: 'Prenota un tavolo al SiSi Wrocław' },
+    corporate: { route: 'eventi-aziendali', description: 'Eventi aziendali nel centro di Breslavia: conferenze, presentazioni, cene e networking. 663 m², fino a 150 posti al The Cork e 2 schermi.' },
+    privateEvents: { route: 'eventi-privati', description: "Compleanni, anniversari e feste private al SiSi, The Cork o nell'intero R32. Affitto esclusivo, bar, catering, musica e offerta personalizzata." },
+  },
+  cs: {
+    careers: { route: 'kariera', title: 'Práce a kariéra v klubu SiSi Wrocław' },
+    reservations: { route: 'rezervace', title: 'Rezervace stolu v SiSi Wrocław' },
+    corporate: { route: 'firemni-akce', description: 'Firemní akce v centru Vratislavi: konference, prezentace, večeře a networking. 663 m², až 150 míst v The Cork a 2 obrazovky.' },
+  },
+};
+
+for (const [locale, pages] of Object.entries(SEARCH_INTENT_META)) {
+  for (const [name, expected] of Object.entries(pages)) {
+    const html = read(`${locale}/${expected.route}/index.html`);
+    if (expected.title) {
+      const title = html.match(/<title>([^<]*)<\/title>/)?.[1].replaceAll('&amp;', '&') ?? '';
+      assert(`${locale} ${name} title uses approved search-intent copy`, title === expected.title);
+    }
+    if (expected.description) {
+      const description = html.match(/<meta name="description" content="([^"]*)">/)?.[1] ?? '';
+      assert(`${locale} ${name} description uses approved facts`, description === expected.description);
+      assert(`${locale} ${name} description is at most 160 characters`, [...description].length <= 160);
+    }
+  }
+}
+
+const hasCzechReservationLocaleNote = (html) => (
+  /<p(?=\s|>)(?=[^>]*\sclass="res-locale-note"(?=\s|>))(?=[^>]*\sdata-reservation-locale-note(?=\s|=|>))[^>]*>Rezervační systém se otevře v polštině\.<\/p>/.test(html)
+);
+assert(
+  'Czech reservation note matcher rejects prefixed impostor attributes',
+  !hasCzechReservationLocaleNote(
+    '<p data-class="res-locale-note" x-data-reservation-locale-note>Rezervační systém se otevře v polštině.</p>',
+  ),
+);
+const csReservations = read('cs/rezervace/index.html');
+assert(
+  'Czech reservation page discloses the Polish Emenago handoff',
+  hasCzechReservationLocaleNote(csReservations),
+);
+assert('Czech homepage does not show the fallback note', !read('cs/index.html').includes('data-reservation-locale-note'));
+for (const locale of ['pl', 'en', 'de', 'it']) {
+  const route = RESERVATIONS[locale];
+  assert(`${locale} reservation page omits the fallback note`, !read(`${locale}/${route}/index.html`).includes('data-reservation-locale-note'));
+}
 const CONTACTS = { pl: 'kontakt', en: 'contact', de: 'kontakt', it: 'contatti', cs: 'kontakt' };
 const EMENAGO_LOCALES = { pl: 'pl', en: 'en', de: 'de', it: 'it', cs: 'pl' };
 const RESERVATION_SECTION_TITLES = {
@@ -574,6 +663,9 @@ assert('form fallback email remains in HTML', enB2B.includes('href="mailto:event
 // --- essential-storage notice: one truthful dismissal action per locale ---
 for (const locale of LOCALES) {
   const home = read(`${locale}/index.html`);
+  const popupStart = home.indexOf('<div class="sisi-popup"');
+  const popupEnd = home.indexOf('<div id="cookie-banner"', popupStart);
+  const popupMarkup = popupStart >= 0 && popupEnd > popupStart ? home.slice(popupStart, popupEnd) : '';
   const bannerTag = home.match(/<div id="cookie-banner"\s[^>]*>/)?.[0] ?? '';
   const bannerBody = home.match(/<div id="cookie-banner"\s[^>]*>[\s\S]*?<\/div><script\b/)?.[0] ?? '';
   const renderedText = (bannerBody.match(/<p class="cookie-text">([\s\S]*?)<\/p>/)?.[1] ?? '')
@@ -593,6 +685,22 @@ for (const locale of LOCALES) {
     bannerTag.includes(`aria-label="${noticeDialogLabel[locale]}"`),
   );
   assert(`${locale} notice has no accept/reject choice pair`, !home.includes('data-cookie='));
+  assert(`${locale} has one summer-hours popup`, (home.match(/data-summer-popup/g) || []).length === 1);
+  assert(`${locale} has exact summer-hours copy`, home.includes(summerPopupCopy[locale]));
+  assert(
+    `${locale} has exact summer-hours eyebrow`,
+    popupMarkup.includes(`>${summerPopupEyebrow[locale]}</p>`),
+  );
+  assert(
+    `${locale} has exact summer-hours confirmation copy`,
+    popupMarkup.includes(`>${summerPopupDismiss[locale]}</button>`),
+  );
+  assert(
+    `${locale} summer popup is an accessible modal`,
+    home.includes('role="dialog" aria-modal="true"')
+      && (home.match(/data-popup-focus/g) || []).length === 1
+      && home.includes(`aria-label="${summerPopupClose[locale]}"`),
+  );
 }
 for (const [locale, { route, description, ogDescription }] of Object.entries(cookieMeta)) {
   const page = read(`${locale}/${route}/index.html`);
@@ -625,6 +733,12 @@ for (const [locale, routes] of Object.entries(LEGAL_ROUTES)) {
 // --- redirects configured ---
 const toml = readFileSync(join(ROOT, 'netlify.toml'), 'utf8');
 assert('root redirect / -> /pl/', toml.includes('from = "/"') && toml.includes('to = "/pl/"'));
+assert(
+  'exact bare roots precede wildcard redirects and target final Polish homepage',
+  toml.indexOf('from = "http://sisiwroclaw.pl/"') < toml.indexOf('from = "http://sisiwroclaw.pl/*"')
+    && toml.indexOf('from = "https://sisiwroclaw.pl/"') < toml.indexOf('from = "https://sisiwroclaw.pl/*"')
+    && (toml.match(/to = "https:\/\/www\.sisiwroclaw\.pl\/pl\/"/g) || []).length === 2,
+);
 assert('legacy /menu redirect', toml.includes('from = "/menu"'));
 
 // --- generated response policy: exact CSP/security headers + bounded caching ---
@@ -802,8 +916,11 @@ const externalScriptBodies = scripts.map((file) => readFileSync(file, 'utf8'));
 const inlineScriptBodies = htmls.flatMap((file) => executableInlineScripts(readFileSync(file, 'utf8')));
 const executableBuiltText = [...externalScriptBodies, ...inlineScriptBodies].join('\n');
 assert(
-  'rendered pages omit the stacked summer-hours modal and its storage key',
-  !allHtml.includes('data-popup') && !executableBuiltText.includes('sisi-summer-fri-dismissed'),
+  'rendered pages include the time-bounded summer-hours modal and season-specific key',
+  allHtml.includes('data-summer-popup')
+    && executableBuiltText.includes('sisi-summer-fri-2026-dismissed')
+    && executableBuiltText.includes('2026-08-28T22:00:00.000Z')
+    && !/[`'"]sisi-summer-fri-dismissed[`'"]/.test(executableBuiltText),
 );
 assert('build inventory finds external JavaScript', scripts.length > 0);
 assert(
@@ -847,10 +964,23 @@ assert(
 assert('executable build text is non-empty', executableBuiltText.trim().length > 0);
 assert('executable build text excludes JSON-LD payloads', !executableBuiltText.includes('"@context":"https://schema.org"'));
 assert(
-  'notice runtime stores dismissed and removes only the obsolete consent record',
-  ['sisi-cookie-notice', 'sisi-cookie-consent', 'dismissed', 'localStorage.removeItem', 'localStorage.getItem', 'localStorage.setItem']
-    .every((token) => executableBuiltText.includes(token))
+  'notice runtimes use only the disclosed dismissal records and values',
+  [
+    'sisi-cookie-notice',
+    'sisi-summer-fri-2026-dismissed',
+    'dismissed',
+    'localStorage.removeItem',
+    'localStorage.getItem',
+    'localStorage.setItem',
+  ].every((token) => executableBuiltText.includes(token))
     && !/[`'"](?:accepted|rejected)[`'"]/.test(executableBuiltText),
+);
+const popupSourcePath = join(ROOT, 'src/components/Popup.astro');
+const popupSource = existsSync(popupSourcePath) ? readFileSync(popupSourcePath, 'utf8') : '';
+assert(
+  'summer notice storage reads, cleanup, and writes are guarded',
+  /try\s*\{[\s\S]*?localStorage\.removeItem\(SUMMER_FRIDAY_NOTICE\.storageKey\)[\s\S]*?localStorage\.getItem\(SUMMER_FRIDAY_NOTICE\.storageKey\)[\s\S]*?\}\s*catch\s*\{\}/.test(popupSource)
+    && /try\s*\{\s*localStorage\.setItem\(SUMMER_FRIDAY_NOTICE\.storageKey,\s*['"]dismissed['"]\);?\s*\}\s*catch\s*\{\}/.test(popupSource),
 );
 assert(
   'B2B UTM call site passes location.search through the bounded helper',
@@ -881,7 +1011,8 @@ assert(
 );
 assert(
   'storage denial falls back to visible page-local dismissal',
-  /let dismissed = false;[\s\S]*?catch\s*\{\}\s*if\s*\(!dismissed\s*&&\s*banner\)\s*\{[\s\S]*?banner\.hidden\s*=\s*false;[\s\S]*?addEventListener\(['"]click['"][\s\S]*?banner\.hidden\s*=\s*true;/.test(cookieSource),
+  /let dismissed = false;[\s\S]*?catch\s*\{\}[\s\S]*?const reveal\s*=\s*\(\)\s*=>\s*\{\s*if\s*\(!dismissed\s*&&\s*banner\)\s*banner\.hidden\s*=\s*false;\s*\};/.test(cookieSource)
+    && /addEventListener\(['"]click['"][\s\S]*?try\s*\{\s*localStorage\.setItem\(KEY,\s*['"]dismissed['"]\);?\s*\}\s*catch\s*\{\}[\s\S]*?banner\.hidden\s*=\s*true;/.test(cookieSource),
 );
 // Ignore encoded binary asset payloads when checking human-readable claims.
 // The inlined WOFF2 happens to contain `21+` in its base64 bytes.

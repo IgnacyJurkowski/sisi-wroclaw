@@ -21,19 +21,18 @@ const en: UI = {
       ogDescription: 'Signature cocktails, Polish wines and a Night Menu by The Cork. SiSi Wrocław.',
     },
     careers: {
-      title: 'Careers - SiSi Wrocław',
+      title: 'Jobs & Careers at SiSi Wrocław',
       description: 'Join the SiSi Wrocław team - we are hiring bartenders, waiting staff and a barback.',
       ogDescription: 'Join the SiSi Wrocław team. Open roles: bartender, waiter, barback.',
     },
     reservations: {
-      title: 'Reservations - SiSi Wrocław',
+      title: 'Table Reservations at SiSi Wrocław',
       description: 'Book a table at SiSi Wrocław. Reservation terms and a contact for corporate events.',
       ogDescription: 'A table at SiSi: the full reservation amount is credited at your table. Fridays and Saturdays from 22:00.',
     },
     corporate: {
       title: 'Corporate Events - SiSi & The Cork Wrocław',
-      description:
-        'A corporate-event venue in central Wrocław: conferences, panels, presentations, dinners, launches and networking. 663 m², up to 150 seated guests at The Cork, 2 screens.',
+      description: 'Corporate events in central Wrocław: conferences, presentations, dinners and networking. 663 m², up to 150 seated guests at The Cork and 2 screens.',
       ogDescription: 'Conferences, presentations, dinners and evening corporate events in central Wrocław. SiSi & The Cork.',
     },
     privateEvents: {
@@ -61,8 +60,8 @@ const en: UI = {
     },
     cookies: {
       title: 'Cookie Policy - SiSi Wrocław',
-      description: 'SiSi Wrocław cookie policy - essential storage used for notice dismissal and form and navigation state.',
-      ogDescription: 'How SiSi Wrocław uses essential storage for the notice, forms and navigation.',
+      description: 'SiSi Wrocław cookie policy - essential storage used for notice dismissals and form and navigation state.',
+      ogDescription: 'How SiSi Wrocław uses essential storage for notices, forms and navigation.',
     },
     notFound: {
       title: '404 - Page not found | SiSi Wrocław',
@@ -107,11 +106,18 @@ const en: UI = {
   },
 
   cookie: {
-    text: 'This site stores only the dismissal of this notice and essential form and navigation state. Details are in our {cookies} and {privacy}.',
+    text: 'This site stores only information that notices were dismissed and essential form and navigation state. Details are in our {cookies} and {privacy}.',
     cookiesLink: 'Cookie Policy',
     privacyLink: 'Privacy Policy',
     dismiss: 'Got it',
     dialogLabel: 'Essential storage notice',
+  },
+
+  popup: {
+    eyebrow: 'Summer hours',
+    message: 'During the summer, SiSi is closed on Fridays — through 28 August 2026 inclusive.',
+    dismiss: 'Got it',
+    close: 'Close',
   },
 
   buttons: {
@@ -292,6 +298,7 @@ const en: UI = {
   },
 
   reservationsPage: {
+    externalLocaleNote: 'The reservation system will open in Polish.',
     practicalTitle: 'Practical information',
     practicalConditions: [
       'The reservation fee is PLN 50 per person - the full amount can be spent at your table with our staff.',

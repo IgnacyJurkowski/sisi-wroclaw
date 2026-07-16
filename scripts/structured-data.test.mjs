@@ -34,6 +34,25 @@ test('event offers state only a verified numeric entry price', () => {
   assert.equal(eventOffer('30'), undefined);
   assert.equal(eventOffer(null), undefined);
 });
+test('reservation action language matches the verified provider flow', async () => {
+  const server = await createServer({ server: { middlewareMode: true }, appType: 'custom', logLevel: 'silent' });
+  try {
+    const { nightClubSchema } = await server.ssrLoadModule('/src/data/site.ts');
+    const actual = ['pl', 'en', 'de', 'it', 'cs'].map((locale) => {
+      const target = nightClubSchema(locale).potentialAction.target;
+      return [locale, target.urlTemplate.split('/').at(-1), target.inLanguage];
+    });
+    assert.deepEqual(actual, [
+      ['pl', 'pl', 'pl'],
+      ['en', 'en', 'en'],
+      ['de', 'de', 'de'],
+      ['it', 'it', 'it'],
+      ['cs', 'pl', 'pl'],
+    ]);
+  } finally {
+    await server.close();
+  }
+});
 test('structured data uses the final origin and attaches only verified event offers', async () => {
   const server = await createServer({ server: { middlewareMode: true }, appType: 'custom', logLevel: 'silent' });
   try {
@@ -57,6 +76,25 @@ test('structured data uses the final origin and attaches only verified event off
     const organization = organizationSchema();
     const eventVenue = eventVenueSchema();
     const nightClub = nightClubSchema('en');
+    assert.deepEqual(nightClub.openingHoursSpecification, [
+      { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Saturday', opens: '22:00', closes: '04:00' },
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: 'Friday',
+        opens: '00:00',
+        closes: '00:00',
+        validFrom: '2026-07-17',
+        validThrough: '2026-08-28',
+      },
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: 'Friday',
+        opens: '22:00',
+        closes: '04:00',
+        validFrom: '2026-08-29',
+      },
+    ]);
+    assert.equal(eventVenue.openingHoursSpecification, undefined);
     const entityGraph = entityGraphSchema('en');
     const graph = [entityGraph, priced];
     const serialized = JSON.stringify(graph);
