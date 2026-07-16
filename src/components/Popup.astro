@@ -49,61 +49,136 @@ const sun = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2
     isSummerFridayNoticeActive,
   } from '../lib/summer-hours.mjs';
 
+  const MAX_TIMER_DELAY = 2_147_000_000;
+  const OPEN_DELAY = 550;
   const root = document.querySelector<HTMLElement>('[data-summer-popup]');
   if (root) {
+    const popup = root;
+    const cutoffIso = SUMMER_FRIDAY_NOTICE.cutoffIso;
+    const cutoffMs = Date.parse(cutoffIso);
+    const closeControls = [...popup.querySelectorAll<HTMLElement>('[data-popup-close]')];
+    let openTimer: number | undefined;
+    let cutoffTimer: number | undefined;
+    let lastFocus: HTMLElement | null = null;
+
     const announce = (open: boolean) => {
-      root.dataset.noticeState = open ? 'open' : 'resolved';
+      popup.dataset.noticeState = open ? 'open' : 'resolved';
       document.dispatchEvent(new CustomEvent(SUMMER_FRIDAY_NOTICE.resolvedEvent, { detail: { open } }));
     };
-    const active = isSummerFridayNoticeActive();
+
+    function clearOpenTimer() {
+      if (openTimer === undefined) return;
+      window.clearTimeout(openTimer);
+      openTimer = undefined;
+    }
+
+    function clearCutoffTimer() {
+      if (cutoffTimer === undefined) return;
+      window.clearTimeout(cutoffTimer);
+      cutoffTimer = undefined;
+    }
+
+    function removeExpiredRecord() {
+      try { localStorage.removeItem(SUMMER_FRIDAY_NOTICE.storageKey); } catch {}
+    }
+
+    function removeInteractionListeners() {
+      document.removeEventListener('keydown', onKey);
+      closeControls.forEach((element) => element.removeEventListener('click', dismiss));
+    }
+
+    function resolve(restoreFocus = false, keepCutoffTimer = false) {
+      const wasOpen = popup.dataset.noticeState === 'open';
+      popup.hidden = true;
+      clearOpenTimer();
+      removeInteractionListeners();
+      if (!keepCutoffTimer) clearCutoffTimer();
+      if (popup.dataset.noticeState !== 'resolved') announce(false);
+      if (restoreFocus && wasOpen) lastFocus?.focus?.();
+    }
+
+    function expire() {
+      removeExpiredRecord();
+      resolve(true);
+    }
+
+    function dismiss() {
+      if (!isSummerFridayNoticeActive(Date.now(), cutoffIso)) {
+        expire();
+        return;
+      }
+      try { localStorage.setItem(SUMMER_FRIDAY_NOTICE.storageKey, 'dismissed'); } catch {}
+      resolve(true, true);
+    }
+
+    function onKey(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        dismiss();
+        return;
+      }
+      if (event.key !== 'Tab') return;
+      const controls = [...popup.querySelectorAll<HTMLElement>('button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])')]
+        .filter((element) => !element.hidden);
+      const first = controls[0];
+      const last = controls.at(-1);
+      if (!first || !last) return;
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+
+    function open() {
+      openTimer = undefined;
+      if (popup.dataset.noticeState !== 'pending') return;
+      if (!isSummerFridayNoticeActive(Date.now(), cutoffIso)) {
+        expire();
+        return;
+      }
+      lastFocus = document.activeElement as HTMLElement;
+      popup.hidden = false;
+      announce(true);
+      popup.querySelector<HTMLElement>('[data-popup-focus]')?.focus();
+      document.addEventListener('keydown', onKey);
+    }
+
+    function scheduleCutoff() {
+      clearCutoffTimer();
+      const remaining = cutoffMs - Date.now();
+      if (!Number.isFinite(cutoffMs) || remaining <= 0) {
+        expire();
+        return;
+      }
+      cutoffTimer = window.setTimeout(() => {
+        cutoffTimer = undefined;
+        if (isSummerFridayNoticeActive(Date.now(), cutoffIso)) scheduleCutoff();
+        else expire();
+      }, Math.min(remaining, MAX_TIMER_DELAY));
+    }
+
+    const active = isSummerFridayNoticeActive(Date.now(), cutoffIso);
     let dismissed = false;
     try {
       if (!active) localStorage.removeItem(SUMMER_FRIDAY_NOTICE.storageKey);
       else dismissed = localStorage.getItem(SUMMER_FRIDAY_NOTICE.storageKey) === 'dismissed';
     } catch {}
 
-    if (!active || dismissed) {
-      announce(false);
+    if (!active) {
+      resolve();
     } else {
-      let lastFocus: HTMLElement | null = null;
-      const focusable = () => [...root.querySelectorAll<HTMLElement>('button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])')]
-        .filter((element) => !element.hidden);
-      const close = () => {
-        root.hidden = true;
-        document.removeEventListener('keydown', onKey);
-        try { localStorage.setItem(SUMMER_FRIDAY_NOTICE.storageKey, 'dismissed'); } catch {}
-        announce(false);
-        lastFocus?.focus?.();
-      };
-      const onKey = (event: KeyboardEvent) => {
-        if (event.key === 'Escape') {
-          event.preventDefault();
-          close();
-          return;
+      scheduleCutoff();
+      if (popup.dataset.noticeState === 'pending') {
+        if (dismissed) {
+          resolve(false, true);
+        } else {
+          closeControls.forEach((element) => element.addEventListener('click', dismiss));
+          openTimer = window.setTimeout(open, OPEN_DELAY);
         }
-        if (event.key !== 'Tab') return;
-        const controls = focusable();
-        const first = controls[0];
-        const last = controls.at(-1);
-        if (!first || !last) return;
-        if (event.shiftKey && document.activeElement === first) {
-          event.preventDefault();
-          last.focus();
-        } else if (!event.shiftKey && document.activeElement === last) {
-          event.preventDefault();
-          first.focus();
-        }
-      };
-      const open = () => {
-        if (root.dataset.noticeState !== 'pending') return;
-        lastFocus = document.activeElement as HTMLElement;
-        root.hidden = false;
-        announce(true);
-        root.querySelector<HTMLElement>('[data-popup-focus]')?.focus();
-        document.addEventListener('keydown', onKey);
-      };
-      root.querySelectorAll('[data-popup-close]').forEach((element) => element.addEventListener('click', close));
-      window.setTimeout(open, 550);
+      }
     }
   }
 </script>

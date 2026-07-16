@@ -56,6 +56,26 @@ async function contextAt(browser, nowMs, options = {}) {
   return context;
 }
 
+async function clockPageAt(browser, nowMs) {
+  const context = await browser.newContext();
+  const page = await context.newPage();
+  await page.clock.install({ time: nowMs - 5_000 });
+  await page.clock.pauseAt(nowMs);
+  await context.addInitScript(() => {
+    const nativeSetItem = Storage.prototype.setItem;
+    globalThis.__summerNoticeStorageWrites = [];
+    Storage.prototype.setItem = function setItem(key, value) {
+      globalThis.__summerNoticeStorageWrites.push([key, value]);
+      return nativeSetItem.call(this, key, value);
+    };
+  });
+  return { context, page };
+}
+
+async function summerNoticeWrites(page) {
+  return page.evaluate((key) => globalThis.__summerNoticeStorageWrites.filter(([storedKey]) => storedKey === key), KEY);
+}
+
 async function verifyFreshVisitor(browser, origin) {
   const context = await contextAt(browser, BEFORE_CUTOFF);
   const page = await context.newPage();
@@ -137,6 +157,73 @@ async function verifyShortViewport(browser, origin) {
   await context.close();
 }
 
+async function verifyDelayedOpenCannotCrossCutoff(browser, origin) {
+  const { context, page } = await clockPageAt(browser, AT_CUTOFF - 250);
+  await page.goto(`${origin}/pl/`, { waitUntil: 'load' });
+  const popup = page.locator('[data-summer-popup]');
+  const banner = page.locator('#cookie-banner');
+
+  await page.clock.fastForward(600);
+  assert.equal(await popup.isVisible(), false, 'delayed callback opened stale summer copy after cutoff');
+  await banner.waitFor({ state: 'visible' });
+  assert.equal(await popup.getAttribute('data-notice-state'), 'resolved');
+  assert.equal(await page.evaluate((key) => localStorage.getItem(key), KEY), null);
+  assert.deepEqual(await summerNoticeWrites(page), []);
+  await context.close();
+}
+
+async function verifyOpenPopupExpiresAtCutoff(browser, origin) {
+  const { context, page } = await clockPageAt(browser, AT_CUTOFF - 1_000);
+  await page.goto(`${origin}/pl/`, { waitUntil: 'load' });
+  const restoreTarget = page.locator('.nav-logo');
+  await restoreTarget.focus();
+  const popup = page.locator('[data-summer-popup]');
+  const banner = page.locator('#cookie-banner');
+
+  await page.clock.runFor(600);
+  assert.equal(await popup.isVisible(), true, 'summer popup did not open before cutoff');
+  assert.equal(await banner.isVisible(), false, 'storage notice stacked before cutoff');
+  await page.clock.runFor(400);
+  await popup.waitFor({ state: 'hidden' });
+  await banner.waitFor({ state: 'visible' });
+  assert.equal(
+    await restoreTarget.evaluate((element) => document.activeElement === element),
+    true,
+    'cutoff dismissal did not restore the previously focused control',
+  );
+  assert.equal(await page.evaluate((key) => localStorage.getItem(key), KEY), null);
+  assert.deepEqual(await summerNoticeWrites(page), []);
+  await context.close();
+}
+
+async function verifyExpiredManualDismissalDoesNotPersist(browser, origin) {
+  const { context, page } = await clockPageAt(browser, AT_CUTOFF - 1_000);
+  await page.goto(`${origin}/en/`, { waitUntil: 'load' });
+  const popup = page.locator('[data-summer-popup]');
+  const banner = page.locator('#cookie-banner');
+
+  await page.clock.runFor(600);
+  assert.equal(await popup.isVisible(), true, 'summer popup did not open before manual cutoff race');
+  await page.clock.setSystemTime(AT_CUTOFF);
+  await page.locator('[data-popup-focus]').click();
+  await popup.waitFor({ state: 'hidden' });
+  await banner.waitFor({ state: 'visible' });
+  assert.equal(await page.evaluate((key) => localStorage.getItem(key), KEY), null);
+  assert.deepEqual(await summerNoticeWrites(page), []);
+  await context.close();
+}
+
+async function verifyCutoffTransitions(browser, origin) {
+  const results = await Promise.allSettled([
+    verifyDelayedOpenCannotCrossCutoff(browser, origin),
+    verifyOpenPopupExpiresAtCutoff(browser, origin),
+    verifyExpiredManualDismissalDoesNotPersist(browser, origin),
+  ]);
+  const failures = results.filter(({ status }) => status === 'rejected').map(({ reason }) => reason);
+  if (failures.length === 1) throw failures[0];
+  if (failures.length > 1) throw new AggregateError(failures, 'summer cutoff transition regressions failed');
+}
+
 async function verifyExpiry(browser, origin) {
   const context = await contextAt(browser, AT_CUTOFF);
   const page = await context.newPage();
@@ -163,6 +250,7 @@ try {
   await verifyFreshVisitor(browser, origin);
   await verifyStorageDenial(browser, origin);
   await verifyShortViewport(browser, origin);
+  await verifyCutoffTransitions(browser, origin);
   await verifyExpiry(browser, origin);
   console.log('PASS summer and essential-storage notices are sequenced and time-bounded');
 } finally {
