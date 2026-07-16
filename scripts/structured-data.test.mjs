@@ -57,6 +57,25 @@ test('structured data uses the final origin and attaches only verified event off
     const organization = organizationSchema();
     const eventVenue = eventVenueSchema();
     const nightClub = nightClubSchema('en');
+    assert.deepEqual(nightClub.openingHoursSpecification, [
+      { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Saturday', opens: '22:00', closes: '04:00' },
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: 'Friday',
+        opens: '00:00',
+        closes: '00:00',
+        validFrom: '2026-07-17',
+        validThrough: '2026-08-28',
+      },
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: 'Friday',
+        opens: '22:00',
+        closes: '04:00',
+        validFrom: '2026-08-29',
+      },
+    ]);
+    assert.equal(eventVenue.openingHoursSpecification, undefined);
     const entityGraph = entityGraphSchema('en');
     const graph = [entityGraph, priced];
     const serialized = JSON.stringify(graph);
