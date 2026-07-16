@@ -21,25 +21,23 @@ const it: UI = {
       ogDescription: 'Cocktail d\'autore, vini polacchi e un Night Menu by The Cork. SiSi Wrocław.',
     },
     careers: {
-      title: 'Lavora con noi - SiSi Wrocław',
+      title: 'Lavora con noi al SiSi Wrocław',
       description: 'Unisciti al team del SiSi Wrocław - cerchiamo barman, personale di sala e un barback.',
       ogDescription: 'Unisciti al team del SiSi Wrocław. Posizioni aperte: barman, cameriere, barback.',
     },
     reservations: {
-      title: 'Prenotazioni - SiSi Wrocław',
+      title: 'Prenota un tavolo al SiSi Wrocław',
       description: 'Prenota un tavolo al SiSi Wrocław. Condizioni di prenotazione e contatto per eventi aziendali.',
       ogDescription: 'Un tavolo al SiSi: l\'intero importo della prenotazione è accreditato al tavolo. Venerdì e sabato dalle 22:00.',
     },
     corporate: {
       title: 'Eventi aziendali - SiSi & The Cork Wrocław',
-      description:
-        'Una location per eventi aziendali nel centro di Breslavia: conferenze, panel, presentazioni, cene, lanci e networking. 663 m², fino a 150 posti a sedere al The Cork, 2 schermi.',
+      description: 'Eventi aziendali nel centro di Breslavia: conferenze, presentazioni, cene e networking. 663 m², fino a 150 posti al The Cork e 2 schermi.',
       ogDescription: 'Conferenze, presentazioni, cene ed eventi aziendali serali nel centro di Breslavia. SiSi & The Cork.',
     },
     privateEvents: {
       title: 'Eventi privati e compleanni a Breslavia | SiSi',
-      description:
-        'Organizza un compleanno, un anniversario o una festa privata al SiSi, al The Cork o nell\'intero R32. Uso esclusivo, bar, catering, musica e proposta personalizzata.',
+      description: "Compleanni, anniversari e feste private al SiSi, The Cork o nell'intero R32. Affitto esclusivo, bar, catering, musica e offerta personalizzata.",
       ogDescription:
         'Organizza un compleanno, un anniversario o una festa privata al SiSi, al The Cork o nell\'intero R32. Uso esclusivo, bar, catering, musica e proposta personalizzata.',
     },
@@ -299,6 +297,7 @@ const it: UI = {
   },
 
   reservationsPage: {
+    externalLocaleNote: 'Il sistema di prenotazione si aprirà in polacco.',
     practicalTitle: 'Informazioni pratiche',
     practicalConditions: [
       'Il costo della prenotazione è di 50 PLN a persona - l\'intero importo è utilizzabile al tavolo con il personale.',

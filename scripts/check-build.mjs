@@ -214,6 +214,61 @@ for (const locale of LOCALES) {
   );
 }
 const RESERVATIONS = { pl: 'rezerwacje', en: 'reservations', de: 'reservierungen', it: 'prenotazioni', cs: 'rezervace' };
+const SEARCH_INTENT_META = {
+  pl: {
+    careers: { route: 'kariera', title: 'Praca i kariera – SiSi Wrocław' },
+    reservations: { route: 'rezerwacje', title: 'Rezerwacja stolika – SiSi Wrocław' },
+    corporate: { route: 'eventy-firmowe', description: 'Eventy firmowe w centrum Wrocławia: konferencje, prezentacje, kolacje i networking. 663 m², do 150 miejsc w The Cork i 2 ekrany.' },
+  },
+  en: {
+    careers: { route: 'careers', title: 'Jobs & Careers at SiSi Wrocław' },
+    reservations: { route: 'reservations', title: 'Table Reservations at SiSi Wrocław' },
+    corporate: { route: 'corporate-events', description: 'Corporate events in central Wrocław: conferences, presentations, dinners and networking. 663 m², up to 150 seated guests at The Cork and 2 screens.' },
+  },
+  de: {
+    careers: { route: 'karriere', title: 'Jobs & Karriere im SiSi Wrocław' },
+    reservations: { route: 'reservierungen', title: 'Tischreservierung im SiSi Wrocław' },
+    corporate: { route: 'firmenevents', description: 'Firmenevents im Zentrum von Breslau: Konferenzen, Präsentationen, Dinner und Networking. 663 m², bis zu 150 Sitzplätze im The Cork und 2 Bildschirme.' },
+    privateEvents: { route: 'private-feiern', description: 'Geburtstag, Jubiläum oder private Feier im SiSi, The Cork oder gesamten R32. Exklusive Anmietung, Bar, Catering, Musik und individuelles Angebot.' },
+  },
+  it: {
+    careers: { route: 'lavora-con-noi', title: 'Lavora con noi al SiSi Wrocław' },
+    reservations: { route: 'prenotazioni', title: 'Prenota un tavolo al SiSi Wrocław' },
+    corporate: { route: 'eventi-aziendali', description: 'Eventi aziendali nel centro di Breslavia: conferenze, presentazioni, cene e networking. 663 m², fino a 150 posti al The Cork e 2 schermi.' },
+    privateEvents: { route: 'eventi-privati', description: "Compleanni, anniversari e feste private al SiSi, The Cork o nell'intero R32. Affitto esclusivo, bar, catering, musica e offerta personalizzata." },
+  },
+  cs: {
+    careers: { route: 'kariera', title: 'Práce a kariéra v klubu SiSi Wrocław' },
+    reservations: { route: 'rezervace', title: 'Rezervace stolu v SiSi Wrocław' },
+    corporate: { route: 'firemni-akce', description: 'Firemní akce v centru Vratislavi: konference, prezentace, večeře a networking. 663 m², až 150 míst v The Cork a 2 obrazovky.' },
+  },
+};
+
+for (const [locale, pages] of Object.entries(SEARCH_INTENT_META)) {
+  for (const [name, expected] of Object.entries(pages)) {
+    const html = read(`${locale}/${expected.route}/index.html`);
+    if (expected.title) {
+      const title = html.match(/<title>([^<]*)<\/title>/)?.[1].replaceAll('&amp;', '&') ?? '';
+      assert(`${locale} ${name} title uses approved search-intent copy`, title === expected.title);
+    }
+    if (expected.description) {
+      const description = html.match(/<meta name="description" content="([^"]*)">/)?.[1] ?? '';
+      assert(`${locale} ${name} description uses approved facts`, description === expected.description);
+      assert(`${locale} ${name} description is at most 160 characters`, [...description].length <= 160);
+    }
+  }
+}
+
+const csReservations = read('cs/rezervace/index.html');
+assert(
+  'Czech reservation page discloses the Polish Emenago handoff',
+  /<p\b(?=[^>]*\bclass="res-locale-note")(?=[^>]*\bdata-reservation-locale-note(?:\s|=|>))[^>]*>Rezervační systém se otevře v polštině\.<\/p>/.test(csReservations),
+);
+assert('Czech homepage does not show the fallback note', !read('cs/index.html').includes('data-reservation-locale-note'));
+for (const locale of ['pl', 'en', 'de', 'it']) {
+  const route = RESERVATIONS[locale];
+  assert(`${locale} reservation page omits the fallback note`, !read(`${locale}/${route}/index.html`).includes('data-reservation-locale-note'));
+}
 const CONTACTS = { pl: 'kontakt', en: 'contact', de: 'kontakt', it: 'contatti', cs: 'kontakt' };
 const EMENAGO_LOCALES = { pl: 'pl', en: 'en', de: 'de', it: 'it', cs: 'pl' };
 const RESERVATION_SECTION_TITLES = {

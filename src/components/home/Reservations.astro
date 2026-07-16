@@ -3,8 +3,12 @@ import { reservationUrl, CONTACT } from '../../data/site';
 import { type Locale } from '../../i18n/config';
 import { useTranslations } from '../../i18n/t';
 
-interface Props { locale: Locale; headingLevel?: 'h1' | 'h2' }
-const { locale, headingLevel = 'h2' } = Astro.props;
+interface Props {
+  locale: Locale;
+  headingLevel?: 'h1' | 'h2';
+  showLocaleFallback?: boolean;
+}
+const { locale, headingLevel = 'h2', showLocaleFallback = false } = Astro.props;
 const t = useTranslations(locale);
 const Heading = headingLevel;
 ---
@@ -17,6 +21,9 @@ const Heading = headingLevel;
       <p class="res-body">{t.reservationsHome.body}</p>
       <p class="res-terms-line">{t.reservationsHome.terms}</p>
       <a href={reservationUrl('reservations_section', locale)} class="btn-cta res-cta" rel="noopener" target="_blank">{t.buttons.reserveOnline}</a>
+      {showLocaleFallback && locale === 'cs' && (
+        <p class="res-locale-note" data-reservation-locale-note>{t.reservationsPage.externalLocaleNote}</p>
+      )}
       <p class="res-reassure">{t.reservationsHome.reassure}</p>
     </div>
 
@@ -82,6 +89,12 @@ const Heading = headingLevel;
   .res-reassure {
     margin-top: 18px; font-size: 12px; letter-spacing: 0.03em;
     color: rgba(39, 7, 15, 0.7);
+  }
+  .res-locale-note {
+    margin: 10px 0 0;
+    font-size: 12px;
+    line-height: 1.5;
+    color: rgba(39, 7, 15, 0.72);
   }
 
   /* The info panel becomes a solid deep-wine card - a crisp anchor on the cream

@@ -21,19 +21,18 @@ const cs: UI = {
       ogDescription: 'Autorské koktejly, polská vína a Night Menu by The Cork. SiSi Wrocław.',
     },
     careers: {
-      title: 'Kariéra - SiSi Wrocław',
+      title: 'Práce a kariéra v klubu SiSi Wrocław',
       description: 'Přidejte se k týmu SiSi Wrocław - hledáme barmany, obsluhu a barbacka.',
       ogDescription: 'Přidejte se k týmu SiSi Wrocław. Volné pozice: barman, číšník, barback.',
     },
     reservations: {
-      title: 'Rezervace - SiSi Wrocław',
+      title: 'Rezervace stolu v SiSi Wrocław',
       description: 'Rezervujte si stůl v SiSi Wrocław. Podmínky rezervace a kontakt pro firemní akce.',
       ogDescription: 'Stůl v SiSi: celá částka rezervace k útratě u stolu. Pátky a soboty od 22:00.',
     },
     corporate: {
       title: 'Firemní akce - SiSi & The Cork Wrocław',
-      description:
-        'Prostor pro firemní akce v centru Vratislavi: konference, panely, prezentace, večeře, uvedení produktů a networking. 663 m², až 150 míst k sezení v The Cork, 2 obrazovky.',
+      description: 'Firemní akce v centru Vratislavi: konference, prezentace, večeře a networking. 663 m², až 150 míst v The Cork a 2 obrazovky.',
       ogDescription: 'Konference, prezentace, večeře a večerní firemní akce v centru Vratislavi. SiSi & The Cork.',
     },
     privateEvents: {
@@ -299,6 +298,7 @@ const cs: UI = {
   },
 
   reservationsPage: {
+    externalLocaleNote: 'Rezervační systém se otevře v polštině.',
     practicalTitle: 'Praktické informace',
     practicalConditions: [
       'Cena rezervace je 50 PLN na osobu - celou částku lze utratit u stolu u obsluhy.',

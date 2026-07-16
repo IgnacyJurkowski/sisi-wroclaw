@@ -23,19 +23,18 @@ const pl = {
       ogDescription: 'Autorskie koktajle, polskie wina i Night Menu by The Cork. Karta SiSi Wrocław.',
     },
     careers: {
-      title: 'Kariera - SiSi Wrocław',
+      title: 'Praca i kariera – SiSi Wrocław',
       description: 'Dołącz do zespołu SiSi Wrocław - szukamy barmana, kelnerki i barbacka.',
       ogDescription: 'Dołącz do zespołu SiSi Wrocław. Otwarte rekrutacje: barman, kelnerka, barback.',
     },
     reservations: {
-      title: 'Rezerwacje - SiSi Wrocław',
+      title: 'Rezerwacja stolika – SiSi Wrocław',
       description: 'Zarezerwuj stolik w SiSi Wrocław. Warunki rezerwacji i kontakt do eventów firmowych.',
       ogDescription: 'Stolik w SiSi: cała kwota rezerwacji do wykorzystania przy stoliku. Piątki i soboty od 22:00.',
     },
     corporate: {
       title: 'Eventy firmowe - SiSi & The Cork Wrocław',
-      description:
-        'Przestrzeń na eventy firmowe w centrum Wrocławia: konferencje, panele, prezentacje, kolacje, premiery i networking. 663 m², do 150 miejsc siedzących w The Cork, 2 ekrany.',
+      description: 'Eventy firmowe w centrum Wrocławia: konferencje, prezentacje, kolacje i networking. 663 m², do 150 miejsc w The Cork i 2 ekrany.',
       ogDescription: 'Konferencje, prezentacje, kolacje i wieczorne eventy firmowe w centrum Wrocławia. SiSi & The Cork.',
     },
     privateEvents: {
@@ -302,6 +301,7 @@ const pl = {
   },
 
   reservationsPage: {
+    externalLocaleNote: 'System rezerwacji otworzy się po polsku.',
     practicalTitle: 'Informacje praktyczne',
     practicalConditions: [
       'Koszt rezerwacji wynosi 50 zł od osoby - cała kwota jest do wykorzystania przy stoliku u obsługi.',

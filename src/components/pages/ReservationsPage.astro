@@ -18,7 +18,7 @@ const t = useTranslations(locale);
   ogDescription={t.meta.reservations.ogDescription}
 >
   <div class="res-page">
-    <Reservations locale={locale} headingLevel="h1" />
+    <Reservations locale={locale} headingLevel="h1" showLocaleFallback />
 
     <section class="res-details" data-reveal>
       <div class="res-details-grid">
