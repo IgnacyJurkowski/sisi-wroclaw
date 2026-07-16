@@ -661,7 +661,11 @@ const eventCount = existsSync(eventsDir)
   ? readdirSync(eventsDir).filter((e) => statSync(join(eventsDir, e)).isDirectory()).length
   : 0;
 assert('sitemap.xml built', exists('sitemap.xml'));
-assert(`sitemap urls = 55 base + ${eventCount} events x5`, (read('sitemap.xml').match(/<loc>/g) || []).length === 55 + eventCount * 5);
+const sitemapBaseCount = eventCount > 0 ? 55 : 50;
+assert(
+  `sitemap urls = ${sitemapBaseCount} base + ${eventCount} events x5`,
+  (read('sitemap.xml').match(/<loc>/g) || []).length === sitemapBaseCount + eventCount * 5,
+);
 
 function inventory(dir) {
   let out = [];
@@ -841,19 +845,26 @@ assert(
     && !existsSync(join(DIST, 'events/2026-07-17-sisi-fridays.webp')),
 );
 assert('no stale June event routes', !existsSync(join(DIST, 'pl/wydarzenia/2026-06-26-friday-at-sisi/index.html')));
-// The home shows the empty-event copy only while there is nothing to list;
-// once staff publish an event in Drive it renders the lineup instead. So this
-// invariant applies to the zero-event build only - the same reason eventCount
-// is derived dynamically above (publishing an event must never fail CI).
+// While Drive has no real event, keep every empty-calendar entry point out of
+// the public journey. The components and sitemap restore automatically once a
+// validated event is published, so a future sync must not require code edits.
 if (eventCount === 0) {
+  const sitemap = read('sitemap.xml');
   for (const locale of LOCALES) {
     const home = read(`${locale}/index.html`);
-    const eventOutlineCtas = home.match(new RegExp(
-      `<a\\b(?=[^>]*href="/${locale}/${EVENT_ROUTES[locale]}/")(?=[^>]*class="btn-outline")[^>]*>`,
-      'g',
-    )) ?? [];
-    assert(`${locale} home has empty event state`, home.includes(emptyEventCopy[locale]));
-    assert(`${locale} home hides event CTAs while the event feed is empty`, eventOutlineCtas.length === 0);
+    const eventHref = `/${locale}/${EVENT_ROUTES[locale]}/`;
+    assert(
+      `${locale} home omits the empty event block and placeholder copy`,
+      !home.includes('<section id="wydarzenia"') && !home.includes(emptyEventCopy[locale]),
+    );
+    assert(
+      `${locale} shared navigation omits the empty event hub`,
+      !home.includes(`href="${eventHref}"`),
+    );
+    assert(
+      `${locale} sitemap omits the empty event hub`,
+      !sitemap.includes(`<loc>${CANONICAL_ORIGIN}${eventHref}</loc>`),
+    );
   }
 }
 assert('no leaked {tokens} in html', leaked.length === 0);

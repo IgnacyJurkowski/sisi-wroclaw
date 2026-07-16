@@ -1,7 +1,7 @@
 ---
 import Logo from './Logo.astro';
 import SocialIcon from './SocialIcon.astro';
-import { CONTACT } from '../data/site';
+import { CONTACT, EVENTS } from '../data/site';
 import { type Locale } from '../i18n/config';
 import { NAV_KEYS, FOOTER_LEGAL_KEYS, localizedPath } from '../i18n/routes';
 import { useTranslations } from '../i18n/t';
@@ -10,7 +10,9 @@ interface Props { locale: Locale }
 const { locale } = Astro.props;
 const t = useTranslations(locale);
 
-const pages = NAV_KEYS.map((k) => ({ href: localizedPath(k, locale), label: t.nav[k] }));
+const pages = NAV_KEYS
+  .filter((key) => key !== 'events' || EVENTS.length > 0)
+  .map((key) => ({ href: localizedPath(key, locale), label: t.nav[key] }));
 const legal = FOOTER_LEGAL_KEYS.map((k) => ({ href: localizedPath(k, locale), label: t.nav[k] }));
 const homeHref = localizedPath('home', locale);
 ---

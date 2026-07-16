@@ -8,8 +8,9 @@ import { EVENTS } from '../data/site';
 export const GET: APIRoute = ({ site }) => {
   const origin = (site?.href ?? 'https://www.sisiwroclaw.pl/').replace(/\/$/, '');
   const abs = (p: string) => origin + p;
+  const publicRouteKeys = ROUTE_KEYS.filter((key) => key !== 'events' || EVENTS.length > 0);
 
-  const urls = ROUTE_KEYS.flatMap((key) =>
+  const urls = publicRouteKeys.flatMap((key) =>
     LOCALES.map((locale) => {
       const alts = LOCALES.map(
         (l) => `<xhtml:link rel="alternate" hreflang="${l}" href="${abs(localizedPath(key, l))}"/>`,
