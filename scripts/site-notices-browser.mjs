@@ -157,13 +157,16 @@ async function verifyShortViewport(browser, origin) {
   await context.close();
 }
 
-async function verifyDelayedOpenCannotCrossCutoff(browser, origin) {
-  const { context, page } = await clockPageAt(browser, AT_CUTOFF - 250);
+async function verifyDelayedOpenRechecksCutoff(browser, origin) {
+  const { context, page } = await clockPageAt(browser, AT_CUTOFF - 1_000);
   await page.goto(`${origin}/pl/`, { waitUntil: 'load' });
   const popup = page.locator('[data-summer-popup]');
   const banner = page.locator('#cookie-banner');
 
-  await page.clock.fastForward(600);
+  assert.equal(await popup.isVisible(), false, 'summer popup opened before its delayed callback');
+  assert.equal(await banner.isVisible(), false, 'storage notice appeared before the summer notice resolved');
+  await page.clock.setSystemTime(AT_CUTOFF);
+  await page.clock.runFor(600);
   assert.equal(await popup.isVisible(), false, 'delayed callback opened stale summer copy after cutoff');
   await banner.waitFor({ state: 'visible' });
   assert.equal(await popup.getAttribute('data-notice-state'), 'resolved');
@@ -215,7 +218,7 @@ async function verifyExpiredManualDismissalDoesNotPersist(browser, origin) {
 
 async function verifyCutoffTransitions(browser, origin) {
   const results = await Promise.allSettled([
-    verifyDelayedOpenCannotCrossCutoff(browser, origin),
+    verifyDelayedOpenRechecksCutoff(browser, origin),
     verifyOpenPopupExpiresAtCutoff(browser, origin),
     verifyExpiredManualDismissalDoesNotPersist(browser, origin),
   ]);
