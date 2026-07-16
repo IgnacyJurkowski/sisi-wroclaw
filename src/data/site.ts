@@ -238,7 +238,7 @@ export function nightClubSchema(locale: Locale = 'pl') {
       target: {
         '@type': 'EntryPoint',
         urlTemplate: reservationDestination(locale),
-        inLanguage: locale,
+        inLanguage: RESERVATION_LOCALES[locale],
         actionPlatform: [
           'http://schema.org/DesktopWebPlatform',
           'http://schema.org/MobileWebPlatform',
