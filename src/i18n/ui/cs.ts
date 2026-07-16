@@ -61,7 +61,7 @@ const cs: UI = {
     },
     cookies: {
       title: 'Zásady cookies - SiSi Wrocław',
-      description: 'Zásady používání souborů cookie SiSi Wrocław - nezbytné ukládání informace o zavření oznámení a stavu formulářů a navigace.',
+      description: 'Zásady používání souborů cookie SiSi Wrocław - nezbytné ukládání informací o zavření oznámení a stavu formulářů a navigace.',
       ogDescription: 'Jak SiSi Wrocław používá nezbytné ukládání pro oznámení, formuláře a navigaci.',
     },
     notFound: {
@@ -107,11 +107,18 @@ const cs: UI = {
   },
 
   cookie: {
-    text: 'Tento web ukládá pouze informaci o zavření tohoto oznámení a nezbytný stav formulářů a navigace. Podrobnosti najdete v našich {cookies} a {privacy}.',
+    text: 'Tento web ukládá pouze informace o zavření oznámení a nezbytný stav formulářů a navigace. Podrobnosti najdete v našich {cookies} a {privacy}.',
     cookiesLink: 'zásadách používání souborů cookie',
     privacyLink: 'zásadách ochrany soukromí',
     dismiss: 'Rozumím',
     dialogLabel: 'Oznámení o nezbytném ukládání',
+  },
+
+  popup: {
+    eyebrow: 'Letní otevírací doba',
+    message: 'Během léta je SiSi v pátek zavřené — až do 28. srpna 2026 včetně.',
+    dismiss: 'Rozumím',
+    close: 'Zavřít',
   },
 
   buttons: {

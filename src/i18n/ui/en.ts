@@ -61,8 +61,8 @@ const en: UI = {
     },
     cookies: {
       title: 'Cookie Policy - SiSi Wrocław',
-      description: 'SiSi Wrocław cookie policy - essential storage used for notice dismissal and form and navigation state.',
-      ogDescription: 'How SiSi Wrocław uses essential storage for the notice, forms and navigation.',
+      description: 'SiSi Wrocław cookie policy - essential storage used for notice dismissals and form and navigation state.',
+      ogDescription: 'How SiSi Wrocław uses essential storage for notices, forms and navigation.',
     },
     notFound: {
       title: '404 - Page not found | SiSi Wrocław',
@@ -107,11 +107,18 @@ const en: UI = {
   },
 
   cookie: {
-    text: 'This site stores only the dismissal of this notice and essential form and navigation state. Details are in our {cookies} and {privacy}.',
+    text: 'This site stores only information that notices were dismissed and essential form and navigation state. Details are in our {cookies} and {privacy}.',
     cookiesLink: 'Cookie Policy',
     privacyLink: 'Privacy Policy',
     dismiss: 'Got it',
     dialogLabel: 'Essential storage notice',
+  },
+
+  popup: {
+    eyebrow: 'Summer hours',
+    message: 'During the summer, SiSi is closed on Fridays — through 28 August 2026 inclusive.',
+    dismiss: 'Got it',
+    close: 'Close',
   },
 
   buttons: {

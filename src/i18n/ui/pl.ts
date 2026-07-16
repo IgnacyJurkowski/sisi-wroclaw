@@ -63,8 +63,8 @@ const pl = {
     },
     cookies: {
       title: 'Polityka cookies - SiSi Wrocław',
-      description: 'Polityka cookies klubu SiSi Wrocław - pamięć niezbędna do zamknięcia komunikatu oraz obsługi formularzy i nawigacji.',
-      ogDescription: 'Jak SiSi Wrocław korzysta z pamięci niezbędnej do obsługi komunikatu, formularzy i nawigacji.',
+      description: 'Polityka cookies klubu SiSi Wrocław - pamięć niezbędna do zamknięcia komunikatów oraz obsługi formularzy i nawigacji.',
+      ogDescription: 'Jak SiSi Wrocław korzysta z pamięci niezbędnej do obsługi komunikatów, formularzy i nawigacji.',
     },
     notFound: {
       title: '404 - Nie znaleziono strony | SiSi Wrocław',
@@ -110,11 +110,18 @@ const pl = {
 
   cookie: {
     // {cookies} and {privacy} are replaced with links to the policy pages.
-    text: 'Ta strona przechowuje wyłącznie informację o zamknięciu tego komunikatu oraz niezbędny stan formularzy i nawigacji. Szczegóły znajdziesz w {cookies} oraz {privacy}.',
+    text: 'Ta strona przechowuje wyłącznie informacje o zamknięciu komunikatów oraz niezbędny stan formularzy i nawigacji. Szczegóły znajdziesz w {cookies} oraz {privacy}.',
     cookiesLink: 'Polityce cookies',
     privacyLink: 'Polityce prywatności',
     dismiss: 'Rozumiem',
     dialogLabel: 'Informacja o niezbędnej pamięci',
+  },
+
+  popup: {
+    eyebrow: 'Wakacyjne godziny',
+    message: 'W wakacje SiSi jest zamknięte w piątki — do 28 sierpnia 2026 r. włącznie.',
+    dismiss: 'Rozumiem',
+    close: 'Zamknij',
   },
 
   buttons: {

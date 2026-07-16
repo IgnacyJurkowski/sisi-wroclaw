@@ -3,6 +3,7 @@ import '../styles/global.css';
 import Logo from '../components/Logo.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import Popup from '../components/Popup.astro';
 import CookieBanner from '../components/CookieBanner.astro';
 import Particles from '../components/Particles.astro';
 import { BUSINESS, entityGraphSchema } from '../data/site';
@@ -137,6 +138,7 @@ const robotsContent = robotsDirective({
       <slot />
     </main>
     <Footer locale={locale} />
+    <Popup locale={locale} />
     <CookieBanner locale={locale} />
     <script>import '../scripts/nav.ts';</script>
     <script>import '../scripts/scroll-animations.ts';</script>

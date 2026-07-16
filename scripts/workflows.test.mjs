@@ -42,6 +42,8 @@ test('package scripts expose the complete launch and exploit gates', async () =>
   assert.equal(pkg.scripts['test:security'], 'node scripts/security-browser.mjs');
   assert.equal(pkg.scripts['verify:release'], 'npm test && npm run test:security');
   assert.equal(pkg.scripts['smoke:host'], 'node scripts/smoke-host.mjs');
+  assert.equal(pkg.scripts['test:notices'], 'node scripts/site-notices-browser.mjs');
+  assert.equal(pkg.scripts['test:build'], 'node scripts/check-build.mjs && npm run test:notices');
 });
 
 test('clean installs declare the Node build types used by Astro', async () => {

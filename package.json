@@ -17,7 +17,8 @@
     "smoke:host": "node scripts/smoke-host.mjs",
     "test:unit": "node --test scripts/*.test.mjs scripts/events-sync/*.test.mjs",
     "build:check": "npm run build && node scripts/check-build.mjs",
-    "test:build": "node scripts/check-build.mjs"
+    "test:notices": "node scripts/site-notices-browser.mjs",
+    "test:build": "node scripts/check-build.mjs && npm run test:notices"
   },
   "dependencies": {
     "astro": "^7.0.1"

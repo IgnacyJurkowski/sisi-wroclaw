@@ -107,14 +107,21 @@ const emptyEventCopy = {
   it: 'Presto annunceremo nuovi eventi - seguici su Instagram.',
   cs: 'Brzy ohlásíme další akce - sledujte nás na Instagramu.',
 };
-const englishNoticeText = 'This site stores only the dismissal of this notice and essential form and navigation state. Details are in our Cookie Policy and Privacy Policy.';
 const noticeCopy = {
-  pl: 'Ta strona przechowuje wyłącznie informację o zamknięciu tego komunikatu oraz niezbędny stan formularzy i nawigacji. Szczegóły znajdziesz w Polityce cookies oraz Polityce prywatności.',
-  en: englishNoticeText,
-  de: 'Diese Website speichert ausschließlich, dass dieser Hinweis geschlossen wurde, sowie notwendige Formular- und Navigationszustände. Einzelheiten findest du in unserer Cookie-Richtlinie und unserer Datenschutzerklärung.',
-  it: 'Questo sito memorizza esclusivamente la chiusura di questo avviso e lo stato essenziale dei moduli e della navigazione. I dettagli sono disponibili nella nostra informativa sui cookie e nella nostra informativa sulla privacy.',
-  cs: 'Tento web ukládá pouze informaci o zavření tohoto oznámení a nezbytný stav formulářů a navigace. Podrobnosti najdete v našich zásadách používání souborů cookie a zásadách ochrany soukromí.',
+  pl: 'Ta strona przechowuje wyłącznie informacje o zamknięciu komunikatów oraz niezbędny stan formularzy i nawigacji. Szczegóły znajdziesz w Polityce cookies oraz Polityce prywatności.',
+  en: 'This site stores only information that notices were dismissed and essential form and navigation state. Details are in our Cookie Policy and Privacy Policy.',
+  de: 'Diese Website speichert ausschließlich, dass Hinweise geschlossen wurden, sowie notwendige Formular- und Navigationszustände. Einzelheiten findest du in unserer Cookie-Richtlinie und unserer Datenschutzerklärung.',
+  it: 'Questo sito memorizza esclusivamente la chiusura degli avvisi e lo stato essenziale dei moduli e della navigazione. I dettagli sono disponibili nella nostra informativa sui cookie e nella nostra informativa sulla privacy.',
+  cs: 'Tento web ukládá pouze informace o zavření oznámení a nezbytný stav formulářů a navigace. Podrobnosti najdete v našich zásadách používání souborů cookie a zásadách ochrany soukromí.',
 };
+const summerPopupCopy = {
+  pl: 'W wakacje SiSi jest zamknięte w piątki — do 28 sierpnia 2026 r. włącznie.',
+  en: 'During the summer, SiSi is closed on Fridays — through 28 August 2026 inclusive.',
+  de: 'Im Sommer ist SiSi freitags geschlossen — bis einschließlich 28. August 2026.',
+  it: 'Durante l’estate SiSi è chiuso il venerdì, fino al 28 agosto 2026 compreso.',
+  cs: 'Během léta je SiSi v pátek zavřené — až do 28. srpna 2026 včetně.',
+};
+const summerPopupClose = { pl: 'Zamknij', en: 'Close', de: 'Schließen', it: 'Chiudi', cs: 'Zavřít' };
 const noticeDismiss = { pl: 'Rozumiem', en: 'Got it', de: 'Verstanden', it: 'Ho capito', cs: 'Rozumím' };
 const noticeDialogLabel = {
   pl: 'Informacja o niezbędnej pamięci',
@@ -124,19 +131,29 @@ const noticeDialogLabel = {
   cs: 'Oznámení o nezbytném ukládání',
 };
 const cookieMeta = {
+  pl: {
+    route: 'polityka-cookies',
+    description: 'Polityka cookies klubu SiSi Wrocław - pamięć niezbędna do zamknięcia komunikatów oraz obsługi formularzy i nawigacji.',
+    ogDescription: 'Jak SiSi Wrocław korzysta z pamięci niezbędnej do obsługi komunikatów, formularzy i nawigacji.',
+  },
+  en: {
+    route: 'cookie-policy',
+    description: 'SiSi Wrocław cookie policy - essential storage used for notice dismissals and form and navigation state.',
+    ogDescription: 'How SiSi Wrocław uses essential storage for notices, forms and navigation.',
+  },
   de: {
     route: 'cookie-richtlinie',
-    description: 'Cookie-Richtlinie von SiSi Wrocław - notwendige Speicherung für das Schließen des Hinweises sowie für Formular- und Navigationszustände.',
-    ogDescription: 'Wie SiSi Wrocław notwendige Speicherung für den Hinweis, Formulare und die Navigation verwendet.',
+    description: 'Cookie-Richtlinie von SiSi Wrocław - notwendige Speicherung für das Schließen von Hinweisen sowie für Formular- und Navigationszustände.',
+    ogDescription: 'Wie SiSi Wrocław notwendige Speicherung für Hinweise, Formulare und die Navigation verwendet.',
   },
   it: {
     route: 'cookie',
-    description: 'Informativa sui cookie di SiSi Wrocław - archiviazione essenziale usata per la chiusura dell\'avviso e lo stato dei moduli e della navigazione.',
-    ogDescription: 'Come SiSi Wrocław usa l\'archiviazione essenziale per l\'avviso, i moduli e la navigazione.',
+    description: 'Informativa sui cookie di SiSi Wrocław - archiviazione essenziale usata per la chiusura degli avvisi e lo stato dei moduli e della navigazione.',
+    ogDescription: 'Come SiSi Wrocław usa l\'archiviazione essenziale per gli avvisi, i moduli e la navigazione.',
   },
   cs: {
     route: 'zasady-cookies',
-    description: 'Zásady používání souborů cookie SiSi Wrocław - nezbytné ukládání informace o zavření oznámení a stavu formulářů a navigace.',
+    description: 'Zásady používání souborů cookie SiSi Wrocław - nezbytné ukládání informací o zavření oznámení a stavu formulářů a navigace.',
     ogDescription: 'Jak SiSi Wrocław používá nezbytné ukládání pro oznámení, formuláře a navigaci.',
   },
 };
@@ -593,6 +610,14 @@ for (const locale of LOCALES) {
     bannerTag.includes(`aria-label="${noticeDialogLabel[locale]}"`),
   );
   assert(`${locale} notice has no accept/reject choice pair`, !home.includes('data-cookie='));
+  assert(`${locale} has one summer-hours popup`, (home.match(/data-summer-popup/g) || []).length === 1);
+  assert(`${locale} has exact summer-hours copy`, home.includes(summerPopupCopy[locale]));
+  assert(
+    `${locale} summer popup is an accessible modal`,
+    home.includes('role="dialog" aria-modal="true"')
+      && (home.match(/data-popup-focus/g) || []).length === 1
+      && home.includes(`aria-label="${summerPopupClose[locale]}"`),
+  );
 }
 for (const [locale, { route, description, ogDescription }] of Object.entries(cookieMeta)) {
   const page = read(`${locale}/${route}/index.html`);
@@ -802,8 +827,11 @@ const externalScriptBodies = scripts.map((file) => readFileSync(file, 'utf8'));
 const inlineScriptBodies = htmls.flatMap((file) => executableInlineScripts(readFileSync(file, 'utf8')));
 const executableBuiltText = [...externalScriptBodies, ...inlineScriptBodies].join('\n');
 assert(
-  'rendered pages omit the stacked summer-hours modal and its storage key',
-  !allHtml.includes('data-popup') && !executableBuiltText.includes('sisi-summer-fri-dismissed'),
+  'rendered pages include the time-bounded summer-hours modal and season-specific key',
+  allHtml.includes('data-summer-popup')
+    && executableBuiltText.includes('sisi-summer-fri-2026-dismissed')
+    && executableBuiltText.includes('2026-08-28T22:00:00.000Z')
+    && !/[`'"]sisi-summer-fri-dismissed[`'"]/.test(executableBuiltText),
 );
 assert('build inventory finds external JavaScript', scripts.length > 0);
 assert(
@@ -847,10 +875,23 @@ assert(
 assert('executable build text is non-empty', executableBuiltText.trim().length > 0);
 assert('executable build text excludes JSON-LD payloads', !executableBuiltText.includes('"@context":"https://schema.org"'));
 assert(
-  'notice runtime stores dismissed and removes only the obsolete consent record',
-  ['sisi-cookie-notice', 'sisi-cookie-consent', 'dismissed', 'localStorage.removeItem', 'localStorage.getItem', 'localStorage.setItem']
-    .every((token) => executableBuiltText.includes(token))
+  'notice runtimes use only the disclosed dismissal records and values',
+  [
+    'sisi-cookie-notice',
+    'sisi-summer-fri-2026-dismissed',
+    'dismissed',
+    'localStorage.removeItem',
+    'localStorage.getItem',
+    'localStorage.setItem',
+  ].every((token) => executableBuiltText.includes(token))
     && !/[`'"](?:accepted|rejected)[`'"]/.test(executableBuiltText),
+);
+const popupSourcePath = join(ROOT, 'src/components/Popup.astro');
+const popupSource = existsSync(popupSourcePath) ? readFileSync(popupSourcePath, 'utf8') : '';
+assert(
+  'summer notice storage reads, cleanup, and writes are guarded',
+  /try\s*\{[\s\S]*?localStorage\.removeItem\(SUMMER_FRIDAY_NOTICE\.storageKey\)[\s\S]*?localStorage\.getItem\(SUMMER_FRIDAY_NOTICE\.storageKey\)[\s\S]*?\}\s*catch\s*\{\}/.test(popupSource)
+    && /try\s*\{\s*localStorage\.setItem\(SUMMER_FRIDAY_NOTICE\.storageKey,\s*['"]dismissed['"]\);?\s*\}\s*catch\s*\{\}/.test(popupSource),
 );
 assert(
   'B2B UTM call site passes location.search through the bounded helper',
@@ -881,7 +922,8 @@ assert(
 );
 assert(
   'storage denial falls back to visible page-local dismissal',
-  /let dismissed = false;[\s\S]*?catch\s*\{\}\s*if\s*\(!dismissed\s*&&\s*banner\)\s*\{[\s\S]*?banner\.hidden\s*=\s*false;[\s\S]*?addEventListener\(['"]click['"][\s\S]*?banner\.hidden\s*=\s*true;/.test(cookieSource),
+  /let dismissed = false;[\s\S]*?catch\s*\{\}[\s\S]*?const reveal\s*=\s*\(\)\s*=>\s*\{\s*if\s*\(!dismissed\s*&&\s*banner\)\s*banner\.hidden\s*=\s*false;\s*\};/.test(cookieSource)
+    && /addEventListener\(['"]click['"][\s\S]*?try\s*\{\s*localStorage\.setItem\(KEY,\s*['"]dismissed['"]\);?\s*\}\s*catch\s*\{\}[\s\S]*?banner\.hidden\s*=\s*true;/.test(cookieSource),
 );
 // Ignore encoded binary asset payloads when checking human-readable claims.
 // The inlined WOFF2 happens to contain `21+` in its base64 bytes.

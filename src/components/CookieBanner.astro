@@ -1,7 +1,7 @@
 ---
-// Essential-storage notice. The only persistent site record remembers that the
-// visitor dismissed this notice. It renders hidden to avoid a flash for return
-// visits; fixed positioning prevents layout shifts when it is revealed.
+// Essential-storage notice. The site has two disclosed persistent dismissal
+// records, both strictly necessary for notice behavior. It renders hidden to
+// avoid a flash for return visits; fixed positioning prevents layout shifts.
 import { type Locale } from '../i18n/config';
 import { localizedPath } from '../i18n/routes';
 import { useTranslations } from '../i18n/t';
@@ -25,20 +25,43 @@ const privacyHref = localizedPath('privacy', locale);
 </div>
 
 <script>
+  import { SUMMER_FRIDAY_NOTICE } from '../lib/summer-hours.mjs';
+
   const KEY = 'sisi-cookie-notice';
   const LEGACY_KEY = 'sisi-cookie-consent';
   const banner = document.getElementById('cookie-banner');
+  const popup = document.querySelector<HTMLElement>('[data-summer-popup]');
   let dismissed = false;
   try {
     localStorage.removeItem(LEGACY_KEY);
     dismissed = localStorage.getItem(KEY) === 'dismissed';
   } catch {}
 
-  if (!dismissed && banner) {
-    banner.hidden = false;
-    banner.querySelector('[data-cookie-dismiss]')?.addEventListener('click', () => {
-      try { localStorage.setItem(KEY, 'dismissed'); } catch {}
-      banner.hidden = true;
-    });
+  const reveal = () => {
+    if (!dismissed && banner) banner.hidden = false;
+  };
+  banner?.querySelector('[data-cookie-dismiss]')?.addEventListener('click', () => {
+    try { localStorage.setItem(KEY, 'dismissed'); } catch {}
+    banner.hidden = true;
+  });
+
+  if (!popup || popup.dataset.noticeState === 'resolved') {
+    reveal();
+  } else {
+    const onResolved = (event: Event) => {
+      const open = (event as CustomEvent<{ open?: boolean }>).detail?.open;
+      if (open === false) {
+        document.removeEventListener(SUMMER_FRIDAY_NOTICE.resolvedEvent, onResolved);
+        reveal();
+      }
+    };
+    document.addEventListener(SUMMER_FRIDAY_NOTICE.resolvedEvent, onResolved);
+    window.setTimeout(() => {
+      if (popup.dataset.noticeState === 'pending' && popup.hidden) {
+        popup.dataset.noticeState = 'resolved';
+        document.removeEventListener(SUMMER_FRIDAY_NOTICE.resolvedEvent, onResolved);
+        reveal();
+      }
+    }, 2_000);
   }
 </script>

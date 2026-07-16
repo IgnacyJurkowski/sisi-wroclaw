@@ -61,8 +61,8 @@ const it: UI = {
     },
     cookies: {
       title: 'Cookie - SiSi Wrocław',
-      description: 'Informativa sui cookie di SiSi Wrocław - archiviazione essenziale usata per la chiusura dell\'avviso e lo stato dei moduli e della navigazione.',
-      ogDescription: 'Come SiSi Wrocław usa l\'archiviazione essenziale per l\'avviso, i moduli e la navigazione.',
+      description: 'Informativa sui cookie di SiSi Wrocław - archiviazione essenziale usata per la chiusura degli avvisi e lo stato dei moduli e della navigazione.',
+      ogDescription: 'Come SiSi Wrocław usa l\'archiviazione essenziale per gli avvisi, i moduli e la navigazione.',
     },
     notFound: {
       title: '404 - Pagina non trovata | SiSi Wrocław',
@@ -107,11 +107,18 @@ const it: UI = {
   },
 
   cookie: {
-    text: 'Questo sito memorizza esclusivamente la chiusura di questo avviso e lo stato essenziale dei moduli e della navigazione. I dettagli sono disponibili nella nostra {cookies} e nella nostra {privacy}.',
+    text: 'Questo sito memorizza esclusivamente la chiusura degli avvisi e lo stato essenziale dei moduli e della navigazione. I dettagli sono disponibili nella nostra {cookies} e nella nostra {privacy}.',
     cookiesLink: 'informativa sui cookie',
     privacyLink: 'informativa sulla privacy',
     dismiss: 'Ho capito',
     dialogLabel: 'Avviso sull\'archiviazione essenziale',
+  },
+
+  popup: {
+    eyebrow: 'Orari estivi',
+    message: 'Durante l’estate SiSi è chiuso il venerdì, fino al 28 agosto 2026 compreso.',
+    dismiss: 'Ho capito',
+    close: 'Chiudi',
   },
 
   buttons: {

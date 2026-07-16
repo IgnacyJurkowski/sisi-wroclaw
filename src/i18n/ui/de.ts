@@ -62,8 +62,8 @@ const de: UI = {
     },
     cookies: {
       title: 'Cookie-Richtlinie - SiSi Wrocław',
-      description: 'Cookie-Richtlinie von SiSi Wrocław - notwendige Speicherung für das Schließen des Hinweises sowie für Formular- und Navigationszustände.',
-      ogDescription: 'Wie SiSi Wrocław notwendige Speicherung für den Hinweis, Formulare und die Navigation verwendet.',
+      description: 'Cookie-Richtlinie von SiSi Wrocław - notwendige Speicherung für das Schließen von Hinweisen sowie für Formular- und Navigationszustände.',
+      ogDescription: 'Wie SiSi Wrocław notwendige Speicherung für Hinweise, Formulare und die Navigation verwendet.',
     },
     notFound: {
       title: '404 - Seite nicht gefunden | SiSi Wrocław',
@@ -108,11 +108,18 @@ const de: UI = {
   },
 
   cookie: {
-    text: 'Diese Website speichert ausschließlich, dass dieser Hinweis geschlossen wurde, sowie notwendige Formular- und Navigationszustände. Einzelheiten findest du in unserer {cookies} und unserer {privacy}.',
+    text: 'Diese Website speichert ausschließlich, dass Hinweise geschlossen wurden, sowie notwendige Formular- und Navigationszustände. Einzelheiten findest du in unserer {cookies} und unserer {privacy}.',
     cookiesLink: 'Cookie-Richtlinie',
     privacyLink: 'Datenschutzerklärung',
     dismiss: 'Verstanden',
     dialogLabel: 'Hinweis zur notwendigen Speicherung',
+  },
+
+  popup: {
+    eyebrow: 'Sommer-Öffnungszeiten',
+    message: 'Im Sommer ist SiSi freitags geschlossen — bis einschließlich 28. August 2026.',
+    dismiss: 'Verstanden',
+    close: 'Schließen',
   },
 
   buttons: {
