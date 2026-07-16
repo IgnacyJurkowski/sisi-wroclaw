@@ -733,6 +733,12 @@ for (const [locale, routes] of Object.entries(LEGAL_ROUTES)) {
 // --- redirects configured ---
 const toml = readFileSync(join(ROOT, 'netlify.toml'), 'utf8');
 assert('root redirect / -> /pl/', toml.includes('from = "/"') && toml.includes('to = "/pl/"'));
+assert(
+  'exact bare roots precede wildcard redirects and target final Polish homepage',
+  toml.indexOf('from = "http://sisiwroclaw.pl/"') < toml.indexOf('from = "http://sisiwroclaw.pl/*"')
+    && toml.indexOf('from = "https://sisiwroclaw.pl/"') < toml.indexOf('from = "https://sisiwroclaw.pl/*"')
+    && (toml.match(/to = "https:\/\/www\.sisiwroclaw\.pl\/pl\/"/g) || []).length === 2,
+);
 assert('legacy /menu redirect', toml.includes('from = "/menu"'));
 
 // --- generated response policy: exact CSP/security headers + bounded caching ---
