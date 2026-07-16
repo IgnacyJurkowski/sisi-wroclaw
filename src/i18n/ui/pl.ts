@@ -287,18 +287,21 @@ const pl = {
   },
 
   reservationsPage: {
-    conditionsTitle: 'Warunki rezerwacji',
-    conditions: [
+    practicalTitle: 'Informacje praktyczne',
+    practicalConditions: [
       'Koszt rezerwacji wynosi 50 zł od osoby - cała kwota jest do wykorzystania przy stoliku u obsługi.',
       'W piątki wstęp do klubu dla osób z rezerwacją jest bezpłatny.',
       'W soboty do rezerwacji doliczany jest wstęp w wysokości 30 zł od osoby.',
+      'Rezerwację należy odebrać w godzinach 22:00-23:30. W przypadku spóźnienia powyżej 30 minut stolik może zostać przekazany innym gościom.',
+      'Wstęp do lokalu mają osoby posiadające ważny dokument tożsamości.',
+      'W lokalu obowiązuje selekcja oraz dress code w stylu smart casual. Obsługa zastrzega sobie prawo odmowy wstępu bez podania przyczyny, również osobom z rezerwacją (wpłacona kwota zostaje wówczas zwrócona).',
+    ],
+    conditionsTitle: 'Warunki rezerwacji',
+    conditions: [
       'Podczas rezerwacji można wybrać pozycje z menu, które będą czekały na gości na start.',
       'Dostępne są również specjalne pakiety w promocyjnych cenach.',
       'Po dokonaniu rezerwacji prosimy o oczekiwanie na jej akceptację i przesłanie szczegółowych warunków.',
       'Warunkiem potwierdzenia rezerwacji jest przedpłata.',
-      'Rezerwację należy odebrać w godzinach 22:00-23:30. W przypadku spóźnienia powyżej 30 minut stolik może zostać przekazany innym gościom.',
-      'Wstęp do lokalu mają osoby posiadające ważny dokument tożsamości.',
-      'W lokalu obowiązuje selekcja oraz dress code w stylu smart casual. Obsługa zastrzega sobie prawo odmowy wstępu bez podania przyczyny, również osobom z rezerwacją (wpłacona kwota zostaje wówczas zwrócona).',
     ],
     note: 'Ceny mogą ulec zmianie podczas imprez specjalnych. Szczegółowe warunki są każdorazowo potwierdzane podczas rezerwacji.',
   },

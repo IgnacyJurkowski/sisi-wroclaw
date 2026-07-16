@@ -284,18 +284,21 @@ const cs: UI = {
   },
 
   reservationsPage: {
-    conditionsTitle: 'Podmínky rezervace',
-    conditions: [
+    practicalTitle: 'Praktické informace',
+    practicalConditions: [
       'Cena rezervace je 50 PLN na osobu - celou částku lze utratit u stolu u obsluhy.',
       'V pátek je vstup pro hosty s rezervací zdarma.',
       'V sobotu se k rezervaci připočítává vstup 30 PLN na osobu.',
+      'Rezervaci je třeba vyzvednout mezi 22:00 a 23:30. Při zpoždění delším než 30 minut může být stůl přenechán jiným hostům.',
+      'Vstup je vyhrazen hostům s platným dokladem totožnosti.',
+      'Platí výběr u vstupu a dress code smart casual. Obsluha si vyhrazuje právo odepřít vstup bez udání důvodu, i hostům s rezervací (zaplacená částka se v takovém případě vrací).',
+    ],
+    conditionsTitle: 'Podmínky rezervace',
+    conditions: [
       'Při rezervaci si můžete předvybrat položky z menu, které budou na hosty čekat po příchodu.',
       'K dispozici jsou také speciální balíčky za zvýhodněné ceny.',
       'Po rezervaci prosím vyčkejte na potvrzení a zaslání podrobných podmínek.',
       'Rezervace se potvrzuje platbou předem.',
-      'Rezervaci je třeba vyzvednout mezi 22:00 a 23:30. Při zpoždění delším než 30 minut může být stůl přenechán jiným hostům.',
-      'Vstup je vyhrazen hostům s platným dokladem totožnosti.',
-      'Platí výběr u vstupu a dress code smart casual. Obsluha si vyhrazuje právo odepřít vstup bez udání důvodu, i hostům s rezervací (zaplacená částka se v takovém případě vrací).',
     ],
     note: 'Ceny se mohou během speciálních akcí měnit. Podrobné podmínky jsou potvrzovány při každé rezervaci.',
   },

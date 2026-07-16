@@ -160,6 +160,17 @@ for (const locale of LOCALES) {
 const RESERVATIONS = { pl: 'rezerwacje', en: 'reservations', de: 'reservierungen', it: 'prenotazioni', cs: 'rezervace' };
 const CONTACTS = { pl: 'kontakt', en: 'contact', de: 'kontakt', it: 'contatti', cs: 'kontakt' };
 const EMENAGO_LOCALES = { pl: 'pl', en: 'en', de: 'de', it: 'it', cs: 'pl' };
+const RESERVATION_SECTION_TITLES = {
+  pl: { practical: 'Informacje praktyczne', terms: 'Warunki rezerwacji' },
+  en: { practical: 'Practical information', terms: 'Reservation terms' },
+  de: { practical: 'Praktische Informationen', terms: 'Reservierungsbedingungen' },
+  it: { practical: 'Informazioni pratiche', terms: 'Condizioni di prenotazione' },
+  cs: { practical: 'Praktické informace', terms: 'Podmínky rezervace' },
+};
+const reservationSection = (html, section) => html.match(
+  new RegExp(`<article\\b(?=[^>]*\\bdata-reservation-section="${section}")[^>]*>([\\s\\S]*?)<\\/article>`),
+)?.[1] ?? '';
+const renderedListItemCount = (html) => html.match(/<li\b/g)?.length ?? 0;
 for (const locale of LOCALES) {
   const home = read(`${locale}/index.html`);
   const internalPath = `/${locale}/${RESERVATIONS[locale]}/`;
@@ -181,6 +192,21 @@ for (const locale of LOCALES) {
     `${locale} reservation page uses the verified Google Maps place`,
     reservationPage.split(MAPS_HREF).length - 1 === 2
       && !reservationPage.includes('query=Rze%C5%BAnicza'),
+  );
+  const practicalSection = reservationSection(reservationPage, 'practical');
+  const termsSection = reservationSection(reservationPage, 'terms');
+  assert(
+    `${locale} reservation facts are split into practical information and reservation terms`,
+    Boolean(practicalSection && termsSection)
+      && reservationPage.split('data-reservation-section=').length - 1 === 2
+      && reservationPage.indexOf('data-reservation-section="practical"')
+        < reservationPage.indexOf('data-reservation-section="terms"')
+      && practicalSection.includes(`>${RESERVATION_SECTION_TITLES[locale].practical}</h2>`)
+      && termsSection.includes(`>${RESERVATION_SECTION_TITLES[locale].terms}</h2>`)
+      && renderedListItemCount(practicalSection) === 6
+      && renderedListItemCount(termsSection) === 4
+      && !practicalSection.includes('class="res-terms-note"')
+      && termsSection.split('class="res-terms-note"').length - 1 === 1,
   );
 
   const contactPage = read(`${locale}/${CONTACTS[locale]}/index.html`);

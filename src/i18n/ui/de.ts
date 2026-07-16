@@ -285,18 +285,21 @@ const de: UI = {
   },
 
   reservationsPage: {
-    conditionsTitle: 'Reservierungsbedingungen',
-    conditions: [
+    practicalTitle: 'Praktische Informationen',
+    practicalConditions: [
       'Die Reservierungsgebühr beträgt 50 PLN pro Person - der gesamte Betrag kann am Tisch beim Service eingelöst werden.',
       'Freitags ist der Eintritt für Gäste mit Reservierung kostenlos.',
       'Samstags wird ein Eintritt von 30 PLN pro Person zur Reservierung hinzugerechnet.',
+      'Reservierungen sind zwischen 22:00 und 23:30 Uhr einzulösen. Bei mehr als 30 Minuten Verspätung kann der Tisch an andere Gäste vergeben werden.',
+      'Einlass nur für Gäste mit gültigem Ausweis.',
+      'Es gelten eine Türauswahl und ein Smart-Casual-Dresscode. Das Team behält sich vor, den Einlass ohne Angabe von Gründen zu verweigern, auch bei Gästen mit Reservierung (der gezahlte Betrag wird dann erstattet).',
+    ],
+    conditionsTitle: 'Reservierungsbedingungen',
+    conditions: [
       'Bei der Reservierung kannst du Menüpunkte vorauswählen, die bei Ankunft für deine Gäste bereitstehen.',
       'Außerdem sind spezielle Pakete zu Aktionspreisen verfügbar.',
       'Bitte warte nach der Reservierung auf die Bestätigung und die Zusendung der detaillierten Bedingungen.',
       'Die Reservierung wird durch eine Vorauszahlung bestätigt.',
-      'Reservierungen sind zwischen 22:00 und 23:30 Uhr einzulösen. Bei mehr als 30 Minuten Verspätung kann der Tisch an andere Gäste vergeben werden.',
-      'Einlass nur für Gäste mit gültigem Ausweis.',
-      'Es gelten eine Türauswahl und ein Smart-Casual-Dresscode. Das Team behält sich vor, den Einlass ohne Angabe von Gründen zu verweigern, auch bei Gästen mit Reservierung (der gezahlte Betrag wird dann erstattet).',
     ],
     note: 'Bei Sonderveranstaltungen können sich die Preise ändern. Die genauen Bedingungen werden bei jeder Reservierung bestätigt.',
   },

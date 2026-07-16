@@ -284,18 +284,21 @@ const en: UI = {
   },
 
   reservationsPage: {
-    conditionsTitle: 'Reservation terms',
-    conditions: [
+    practicalTitle: 'Practical information',
+    practicalConditions: [
       'The reservation fee is PLN 50 per person - the full amount can be spent at your table with our staff.',
       'On Fridays, entry is free for guests with a reservation.',
       'On Saturdays, an entry fee of PLN 30 per person is added to the reservation.',
+      'Reservations must be claimed between 22:00 and 23:30. If you are more than 30 minutes late, the table may be released to other guests.',
+      'Entry is restricted to guests with valid ID.',
+      'A door selection policy and a smart-casual dress code apply. Staff reserve the right to refuse entry without giving a reason, including to guests with a reservation (the amount paid is then refunded).',
+    ],
+    conditionsTitle: 'Reservation terms',
+    conditions: [
       'When booking, you can pre-select menu items to be ready for your guests on arrival.',
       'Special packages at promotional prices are also available.',
       'After booking, please wait for confirmation and the detailed terms to be sent to you.',
       'A reservation is confirmed by prepayment.',
-      'Reservations must be claimed between 22:00 and 23:30. If you are more than 30 minutes late, the table may be released to other guests.',
-      'Entry is restricted to guests with valid ID.',
-      'A door selection policy and a smart-casual dress code apply. Staff reserve the right to refuse entry without giving a reason, including to guests with a reservation (the amount paid is then refunded).',
     ],
     note: 'Prices may change during special events. The detailed terms are confirmed each time you book.',
   },

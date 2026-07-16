@@ -284,18 +284,21 @@ const it: UI = {
   },
 
   reservationsPage: {
-    conditionsTitle: 'Condizioni di prenotazione',
-    conditions: [
+    practicalTitle: 'Informazioni pratiche',
+    practicalConditions: [
       'Il costo della prenotazione è di 50 PLN a persona - l\'intero importo è utilizzabile al tavolo con il personale.',
       'Il venerdì l\'ingresso è gratuito per gli ospiti con prenotazione.',
       'Il sabato alla prenotazione si aggiunge un ingresso di 30 PLN a persona.',
+      'La prenotazione va ritirata tra le 22:00 e le 23:30. In caso di ritardo superiore a 30 minuti, il tavolo può essere assegnato ad altri ospiti.',
+      'L\'ingresso è riservato agli ospiti con documento valido.',
+      'Si applicano una selezione all\'ingresso e un dress code smart casual. Il personale si riserva di rifiutare l\'ingresso senza fornire motivazioni, anche agli ospiti con prenotazione (in tal caso l\'importo versato viene rimborsato).',
+    ],
+    conditionsTitle: 'Condizioni di prenotazione',
+    conditions: [
       'Al momento della prenotazione puoi pre-selezionare piatti del menu che attenderanno gli ospiti all\'arrivo.',
       'Sono disponibili anche pacchetti speciali a prezzi promozionali.',
       'Dopo la prenotazione, attendi la conferma e l\'invio delle condizioni dettagliate.',
       'La prenotazione si conferma con un pagamento anticipato.',
-      'La prenotazione va ritirata tra le 22:00 e le 23:30. In caso di ritardo superiore a 30 minuti, il tavolo può essere assegnato ad altri ospiti.',
-      'L\'ingresso è riservato agli ospiti con documento valido.',
-      'Si applicano una selezione all\'ingresso e un dress code smart casual. Il personale si riserva di rifiutare l\'ingresso senza fornire motivazioni, anche agli ospiti con prenotazione (in tal caso l\'importo versato viene rimborsato).',
     ],
     note: 'I prezzi possono variare durante gli eventi speciali. Le condizioni dettagliate vengono confermate a ogni prenotazione.',
   },
