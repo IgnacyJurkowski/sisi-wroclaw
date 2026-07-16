@@ -26,7 +26,7 @@ const sun = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2
   .sisi-popup { position: fixed; inset: 0; z-index: 200; display: flex; align-items: center; justify-content: center; padding: 20px; }
   .sisi-popup[hidden] { display: none; }
   .sisi-popup-backdrop { position: absolute; inset: 0; background: rgba(10, 2, 5, 0.62); backdrop-filter: blur(5px); }
-  .sisi-popup-card { position: relative; z-index: 1; width: 100%; max-width: 400px; padding: 42px 36px 34px; text-align: center; background: rgba(28, 6, 13, 0.94); backdrop-filter: blur(16px); border-color: rgba(237, 219, 194, 0.18); }
+  .sisi-popup-card { position: relative; z-index: 1; width: 100%; max-width: 400px; max-height: calc(100vh - 40px); max-height: calc(100dvh - 40px); overflow-y: auto; overscroll-behavior: contain; padding: 42px 36px 34px; text-align: center; background: rgba(28, 6, 13, 0.94); backdrop-filter: blur(16px); border-color: rgba(237, 219, 194, 0.18); }
   .sisi-popup-x { position: absolute; top: 12px; right: 12px; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; color: var(--text-faint); border-radius: 8px; transition: color 150ms ease, background 150ms ease; }
   .sisi-popup-x:hover { color: var(--cream); background: rgba(237, 219, 194, 0.08); }
   .sisi-popup-x:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }

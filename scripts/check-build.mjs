@@ -121,6 +121,14 @@ const summerPopupCopy = {
   it: 'Durante l’estate SiSi è chiuso il venerdì, fino al 28 agosto 2026 compreso.',
   cs: 'Během léta je SiSi v pátek zavřené — až do 28. srpna 2026 včetně.',
 };
+const summerPopupEyebrow = {
+  pl: 'Wakacyjne godziny',
+  en: 'Summer hours',
+  de: 'Sommer-Öffnungszeiten',
+  it: 'Orari estivi',
+  cs: 'Letní otevírací doba',
+};
+const summerPopupDismiss = { pl: 'Rozumiem', en: 'Got it', de: 'Verstanden', it: 'Ho capito', cs: 'Rozumím' };
 const summerPopupClose = { pl: 'Zamknij', en: 'Close', de: 'Schließen', it: 'Chiudi', cs: 'Zavřít' };
 const noticeDismiss = { pl: 'Rozumiem', en: 'Got it', de: 'Verstanden', it: 'Ho capito', cs: 'Rozumím' };
 const noticeDialogLabel = {
@@ -591,6 +599,9 @@ assert('form fallback email remains in HTML', enB2B.includes('href="mailto:event
 // --- essential-storage notice: one truthful dismissal action per locale ---
 for (const locale of LOCALES) {
   const home = read(`${locale}/index.html`);
+  const popupStart = home.indexOf('<div class="sisi-popup"');
+  const popupEnd = home.indexOf('<div id="cookie-banner"', popupStart);
+  const popupMarkup = popupStart >= 0 && popupEnd > popupStart ? home.slice(popupStart, popupEnd) : '';
   const bannerTag = home.match(/<div id="cookie-banner"\s[^>]*>/)?.[0] ?? '';
   const bannerBody = home.match(/<div id="cookie-banner"\s[^>]*>[\s\S]*?<\/div><script\b/)?.[0] ?? '';
   const renderedText = (bannerBody.match(/<p class="cookie-text">([\s\S]*?)<\/p>/)?.[1] ?? '')
@@ -612,6 +623,14 @@ for (const locale of LOCALES) {
   assert(`${locale} notice has no accept/reject choice pair`, !home.includes('data-cookie='));
   assert(`${locale} has one summer-hours popup`, (home.match(/data-summer-popup/g) || []).length === 1);
   assert(`${locale} has exact summer-hours copy`, home.includes(summerPopupCopy[locale]));
+  assert(
+    `${locale} has exact summer-hours eyebrow`,
+    popupMarkup.includes(`>${summerPopupEyebrow[locale]}</p>`),
+  );
+  assert(
+    `${locale} has exact summer-hours confirmation copy`,
+    popupMarkup.includes(`>${summerPopupDismiss[locale]}</button>`),
+  );
   assert(
     `${locale} summer popup is an accessible modal`,
     home.includes('role="dialog" aria-modal="true"')

@@ -50,8 +50,8 @@ async function stop(child) {
   }
 }
 
-async function contextAt(browser, nowMs) {
-  const context = await browser.newContext();
+async function contextAt(browser, nowMs, options = {}) {
+  const context = await browser.newContext(options);
   await context.addInitScript((value) => { Date.now = () => value; }, nowMs);
   return context;
 }
@@ -60,6 +60,9 @@ async function verifyFreshVisitor(browser, origin) {
   const context = await contextAt(browser, BEFORE_CUTOFF);
   const page = await context.newPage();
   await page.goto(`${origin}/pl/`, { waitUntil: 'load' });
+  const restoreTarget = page.locator('.nav-logo');
+  await restoreTarget.focus();
+  assert.equal(await restoreTarget.evaluate((element) => document.activeElement === element), true);
   const popup = page.locator('[data-summer-popup]');
   const banner = page.locator('#cookie-banner');
   await popup.waitFor({ state: 'visible' });
@@ -70,6 +73,11 @@ async function verifyFreshVisitor(browser, origin) {
   await page.keyboard.press('Escape');
   await popup.waitFor({ state: 'hidden' });
   await banner.waitFor({ state: 'visible' });
+  assert.equal(
+    await restoreTarget.evaluate((element) => document.activeElement === element),
+    true,
+    'popup dismissal did not restore the previously focused control',
+  );
   assert.equal(await page.evaluate((key) => localStorage.getItem(key), KEY), 'dismissed');
   await page.reload({ waitUntil: 'load' });
   assert.equal(await popup.isVisible(), false, 'dismissed popup returned on reload');
@@ -90,10 +98,42 @@ async function verifyStorageDenial(browser, origin) {
   const page = await context.newPage();
   await page.goto(`${origin}/en/`, { waitUntil: 'load' });
   const popup = page.locator('[data-summer-popup]');
+  const banner = page.locator('#cookie-banner');
   await popup.waitFor({ state: 'visible' });
+  assert.equal(await banner.isVisible(), false, 'storage notice stacked when storage access was denied');
   await page.locator('[data-popup-focus]').click();
   await popup.waitFor({ state: 'hidden' });
-  await page.locator('#cookie-banner').waitFor({ state: 'visible' });
+  await banner.waitFor({ state: 'visible' });
+  await context.close();
+}
+
+async function verifyShortViewport(browser, origin) {
+  const viewport = { width: 667, height: 240 };
+  const context = await contextAt(browser, BEFORE_CUTOFF, { viewport });
+  const page = await context.newPage();
+  await page.goto(`${origin}/pl/`, { waitUntil: 'load' });
+  const popup = page.locator('[data-summer-popup]');
+  const dialog = popup.getByRole('dialog');
+  const close = popup.locator('.sisi-popup-x');
+  const confirm = popup.locator('[data-popup-focus]');
+  await popup.waitFor({ state: 'visible' });
+
+  const scrollState = await dialog.evaluate((element) => ({
+    clientHeight: element.clientHeight,
+    scrollHeight: element.scrollHeight,
+    overflowY: getComputedStyle(element).overflowY,
+  }));
+  assert.equal(scrollState.overflowY, 'auto', 'short popup dialog is not vertically scrollable');
+  assert.ok(scrollState.scrollHeight > scrollState.clientHeight, 'short popup dialog does not expose overflow');
+
+  for (const [name, control] of [['close', close], ['confirmation', confirm]]) {
+    await control.scrollIntoViewIfNeeded();
+    const box = await control.boundingBox();
+    assert.ok(
+      box && box.y >= 0 && box.y + box.height <= viewport.height,
+      `${name} control cannot be brought into the short viewport`,
+    );
+  }
   await context.close();
 }
 
@@ -122,6 +162,7 @@ try {
   browser = await chromium.launch({ executablePath: CHROME_PATH, headless: true });
   await verifyFreshVisitor(browser, origin);
   await verifyStorageDenial(browser, origin);
+  await verifyShortViewport(browser, origin);
   await verifyExpiry(browser, origin);
   console.log('PASS summer and essential-storage notices are sequenced and time-bounded');
 } finally {
