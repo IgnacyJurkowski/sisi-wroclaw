@@ -259,10 +259,19 @@ for (const [locale, pages] of Object.entries(SEARCH_INTENT_META)) {
   }
 }
 
+const hasCzechReservationLocaleNote = (html) => (
+  /<p(?=\s|>)(?=[^>]*\sclass="res-locale-note"(?=\s|>))(?=[^>]*\sdata-reservation-locale-note(?=\s|=|>))[^>]*>Rezervační systém se otevře v polštině\.<\/p>/.test(html)
+);
+assert(
+  'Czech reservation note matcher rejects prefixed impostor attributes',
+  !hasCzechReservationLocaleNote(
+    '<p data-class="res-locale-note" x-data-reservation-locale-note>Rezervační systém se otevře v polštině.</p>',
+  ),
+);
 const csReservations = read('cs/rezervace/index.html');
 assert(
   'Czech reservation page discloses the Polish Emenago handoff',
-  /<p\b(?=[^>]*\bclass="res-locale-note")(?=[^>]*\bdata-reservation-locale-note(?:\s|=|>))[^>]*>Rezervační systém se otevře v polštině\.<\/p>/.test(csReservations),
+  hasCzechReservationLocaleNote(csReservations),
 );
 assert('Czech homepage does not show the fallback note', !read('cs/index.html').includes('data-reservation-locale-note'));
 for (const locale of ['pl', 'en', 'de', 'it']) {
