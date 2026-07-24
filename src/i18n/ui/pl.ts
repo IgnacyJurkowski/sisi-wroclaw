@@ -343,6 +343,8 @@ const pl = {
     // Shown on DE/IT/CS legal pages, which display the English text on purpose.
     englishFallbackNote:
       'Treść prawna jest tu prezentowana w języku angielskim. Wiążąca pozostaje polska wersja językowa.',
+    withdrawButton: 'Wycofaj zgodę na analitykę',
+    withdrawDone: 'Zgoda została wycofana. Analityka działa teraz wyłącznie w trybie anonimowym.',
   },
 
   notFound: {

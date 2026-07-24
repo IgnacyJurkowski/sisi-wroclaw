@@ -338,6 +338,8 @@ const en: UI = {
       'This translation is provided for convenience only. In case of any discrepancy, the Polish version prevails.',
     englishFallbackNote:
       'The legal text below is provided in English. The legally binding version is the Polish original.',
+    withdrawButton: 'Withdraw analytics consent',
+    withdrawDone: 'Consent withdrawn. Analytics now runs in anonymous mode only.',
   },
 
   notFound: {

@@ -338,6 +338,8 @@ const de: UI = {
       'Diese Übersetzung dient nur der Bequemlichkeit. Bei Abweichungen ist die polnische Fassung maßgeblich.',
     englishFallbackNote:
       'Die folgenden rechtlichen Texte werden bewusst auf Englisch angezeigt, da derzeit keine deutsche Übersetzung vorliegt. Verbindlich ist ausschließlich die polnische Fassung.',
+    withdrawButton: 'Einwilligung in die Analytik widerrufen',
+    withdrawDone: 'Die Einwilligung wurde widerrufen. Die Analytik läuft jetzt nur noch anonym.',
   },
 
   notFound: {

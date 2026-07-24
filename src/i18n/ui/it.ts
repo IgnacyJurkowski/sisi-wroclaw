@@ -337,6 +337,8 @@ const it: UI = {
       'Questa traduzione è fornita solo per comodità. In caso di discrepanze prevale la versione polacca.',
     englishFallbackNote:
       'I testi legali qui sotto sono mostrati intenzionalmente in inglese, poiché al momento non è disponibile una traduzione italiana. Fa fede esclusivamente la versione polacca.',
+    withdrawButton: 'Revoca il consenso all\'analitica',
+    withdrawDone: 'Consenso revocato. L\'analitica ora funziona solo in modalità anonima.',
   },
 
   notFound: {

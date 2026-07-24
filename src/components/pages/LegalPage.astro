@@ -54,6 +54,30 @@ const meta = t.meta[legalKey];
         </Fragment>
       ))}
     </div>
+    {legalKey === 'cookies' && (
+      <div class="legal-withdraw">
+        <button type="button" class="btn-cta cookie-btn" data-consent-withdraw>{t.legal.withdrawButton}</button>
+        <p data-consent-withdraw-done hidden>{t.legal.withdrawDone}</p>
+      </div>
+    )}
     <p class="legal-meta">{t.legal.updatedLabel} {formatLongDate(LEGAL_UPDATED_ISO, locale)}</p>
   </div>
 </Base>
+
+<script>
+  import {
+    CONSENT_DENIED,
+    CONSENT_EVENT,
+    safeLocalStorage,
+    writeConsent,
+  } from '../../lib/consent.mjs';
+
+  const button = document.querySelector<HTMLButtonElement>('[data-consent-withdraw]');
+  button?.addEventListener('click', () => {
+    writeConsent(safeLocalStorage(), CONSENT_DENIED);
+    document.dispatchEvent(new CustomEvent(CONSENT_EVENT, { detail: { value: CONSENT_DENIED } }));
+    button.disabled = true;
+    const done = document.querySelector<HTMLElement>('[data-consent-withdraw-done]');
+    if (done) done.hidden = false;
+  });
+</script>
