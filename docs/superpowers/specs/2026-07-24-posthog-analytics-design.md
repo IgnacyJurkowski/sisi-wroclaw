@@ -2,7 +2,7 @@
 
 - **Date:** 2026-07-24
 - **Status:** Approved (owner sign-off in session)
-- **Scope:** Wire PostHog (EU cloud, project 218919 "Default project") into the site for session recording and conversion tracking, without weakening the launch-hardened CSP, storage-disclosure gates, or PageSpeed budget.
+- **Scope:** Wire PostHog (EU cloud, project 231773 "SiSi Wrocław" — dedicated project, owner decision 2026-07-24) into the site for session recording and conversion tracking, without weakening the launch-hardened CSP, storage-disclosure gates, or PageSpeed budget.
 
 ## Goal
 
@@ -41,7 +41,7 @@ Event-engagement tracking (event detail views, ticket links) is explicitly out o
   - Base SDK imported from `posthog-js/dist/module.no-external` — this build cannot load remote code at all (PostHog's documented CSP-strict path; there is no `disable_external_dependency_loading` config flag).
   - `person_profiles: 'identified_only'` — all visitors stay anonymous (no logins exist).
   - `session_recording: { maskAllInputs: true }` (explicit, matches PostHog default).
-- `TOKEN` is the public project API key `phc_oLoNUCSdjqTiUrtPTfeiAYYUHFUWcA4ZieZEypzed4SF` (EU project 218919), hardcoded as a constant with a comment noting it is publishable, not secret.
+- `TOKEN` is the public project API key `phc_xGAJevJfPpYyrixXMnpJb43nDCz2fVHpnJBbaoDyNgeu` (EU project 231773 "SiSi Wrocław"), hardcoded as a constant with a comment noting it is publishable, not secret.
 - **Proxy rule** in `netlify.toml`, appended after the existing `[[redirects]]` blocks (their bare-root ordering is pinned by check-build) and before `[[headers]]`:
 
   ```toml
@@ -129,7 +129,7 @@ Gate philosophy is "disclosure and code change in lockstep"; both sides move tog
 ## Success criteria
 
 1. Production CSP string is byte-identical to today's pinned value.
-2. Anonymous `$pageview` + the three conversion event types arrive in PostHog project 218919 from production traffic, with zero analytics browser storage before consent.
+2. Anonymous `$pageview` + the three conversion event types arrive in PostHog project 231773 from production traffic, with zero analytics browser storage before consent.
 3. Session recordings appear only for visitors who clicked Accept; inputs masked.
 4. Withdraw control clears consent and stops recording.
 5. "Launch gate / test" passes on the PR; PageSpeed stays 100/100 on the Netlify preview.
