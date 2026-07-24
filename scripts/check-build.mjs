@@ -108,11 +108,11 @@ const emptyEventCopy = {
   cs: 'Brzy ohlásíme další akce - sledujte nás na Instagramu.',
 };
 const noticeCopy = {
-  pl: 'Ta strona przechowuje wyłącznie informacje o zamknięciu komunikatów oraz niezbędny stan formularzy i nawigacji. Szczegóły znajdziesz w Polityce cookies oraz Polityce prywatności.',
-  en: 'This site stores only information that notices were dismissed and essential form and navigation state. Details are in our Cookie Policy and Privacy Policy.',
-  de: 'Diese Website speichert ausschließlich, dass Hinweise geschlossen wurden, sowie notwendige Formular- und Navigationszustände. Einzelheiten findest du in unserer Cookie-Richtlinie und unserer Datenschutzerklärung.',
-  it: 'Questo sito memorizza esclusivamente la chiusura degli avvisi e lo stato essenziale dei moduli e della navigazione. I dettagli sono disponibili nella nostra informativa sui cookie e nella nostra informativa sulla privacy.',
-  cs: 'Tento web ukládá pouze informace o zavření oznámení a nezbytný stav formulářů a navigace. Podrobnosti najdete v našich zásadách používání souborů cookie a zásadách ochrany soukromí.',
+  pl: 'Za Twoją zgodą używamy analityki PostHog (statystyki odwiedzin i nagrania sesji), aby ulepszać stronę. Bez zgody zbieramy wyłącznie anonimowe statystyki, bez zapisu w pamięci przeglądarki. Szczegóły znajdziesz w Polityce cookies oraz Polityce prywatności.',
+  en: 'With your consent we use PostHog analytics (visit statistics and session recordings) to improve the site. Without consent we collect only anonymous statistics, with nothing stored in your browser. Details are in our Cookie Policy and Privacy Policy.',
+  de: 'Mit deiner Einwilligung nutzen wir PostHog-Analytik (Besuchsstatistiken und Sitzungsaufzeichnungen), um die Website zu verbessern. Ohne Einwilligung erheben wir nur anonyme Statistiken, ohne etwas im Browser zu speichern. Einzelheiten findest du in unserer Cookie-Richtlinie und unserer Datenschutzerklärung.',
+  it: 'Con il tuo consenso utilizziamo l\'analitica PostHog (statistiche delle visite e registrazioni delle sessioni) per migliorare il sito. Senza consenso raccogliamo solo statistiche anonime, senza salvare nulla nel browser. I dettagli sono disponibili nella nostra informativa sui cookie e nella nostra informativa sulla privacy.',
+  cs: 'S vaším souhlasem používáme analytiku PostHog (statistiky návštěv a nahrávky relací) ke zlepšování webu. Bez souhlasu sbíráme pouze anonymní statistiky, bez ukládání do prohlížeče. Podrobnosti najdete v našich zásadách používání souborů cookie a zásadách ochrany soukromí.',
 };
 const summerPopupCopy = {
   pl: 'W wakacje SiSi jest zamknięte w piątki — do 28 sierpnia 2026 r. włącznie.',
@@ -130,13 +130,14 @@ const summerPopupEyebrow = {
 };
 const summerPopupDismiss = { pl: 'Rozumiem', en: 'Got it', de: 'Verstanden', it: 'Ho capito', cs: 'Rozumím' };
 const summerPopupClose = { pl: 'Zamknij', en: 'Close', de: 'Schließen', it: 'Chiudi', cs: 'Zavřít' };
-const noticeDismiss = { pl: 'Rozumiem', en: 'Got it', de: 'Verstanden', it: 'Ho capito', cs: 'Rozumím' };
-const noticeDialogLabel = {
-  pl: 'Informacja o niezbędnej pamięci',
-  en: 'Essential storage notice',
-  de: 'Hinweis zur notwendigen Speicherung',
-  it: 'Avviso sull\'archiviazione essenziale',
-  cs: 'Oznámení o nezbytném ukládání',
+const consentAcceptLabel = { pl: 'Zgadzam się', en: 'Accept', de: 'Einverstanden', it: 'Accetto', cs: 'Souhlasím' };
+const consentDeclineLabel = { pl: 'Odmawiam', en: 'Decline', de: 'Ablehnen', it: 'Rifiuto', cs: 'Odmítám' };
+const consentDialogLabel = {
+  pl: 'Zgoda na analitykę',
+  en: 'Analytics consent',
+  de: 'Einwilligung in die Analytik',
+  it: 'Consenso all\'analitica',
+  cs: 'Souhlas s analytikou',
 };
 const cookieMeta = {
   pl: {
@@ -660,7 +661,7 @@ assert('localized form messages use a data attribute', /<form\b[^>]*data-message
 assert('form fallback phone remains in HTML', enB2B.includes('href="tel:+48514032930"'));
 assert('form fallback email remains in HTML', enB2B.includes('href="mailto:events@r32.com.pl"'));
 
-// --- essential-storage notice: one truthful dismissal action per locale ---
+// --- consent banner: PostHog analytics accept/decline choice per locale ---
 for (const locale of LOCALES) {
   const home = read(`${locale}/index.html`);
   const popupStart = home.indexOf('<div class="sisi-popup"');
@@ -670,21 +671,28 @@ for (const locale of LOCALES) {
   const bannerBody = home.match(/<div id="cookie-banner"\s[^>]*>[\s\S]*?<\/div><script\b/)?.[0] ?? '';
   const renderedText = (bannerBody.match(/<p class="cookie-text">([\s\S]*?)<\/p>/)?.[1] ?? '')
     .replace(/<[^>]+>/g, '');
-  assert(`${locale} notice has exact essential-storage text`, renderedText === noticeCopy[locale]);
+  assert(`${locale} consent banner has the exact PostHog consent copy`, renderedText === noticeCopy[locale]);
   assert(
-    `${locale} notice has one localized dismissal button`,
-    (home.match(/<button\b[^>]*data-cookie-dismiss[^>]*>/g) || []).length === 1
-      && home.includes(`>${noticeDismiss[locale]}</button>`),
+    `${locale} consent banner has exactly one accept and one decline button, both localized`,
+    (home.match(/<button\b[^>]*data-consent-accept[^>]*>/g) || []).length === 1
+      && (home.match(/<button\b[^>]*data-consent-decline[^>]*>/g) || []).length === 1
+      && home.includes(`>${consentAcceptLabel[locale]}</button>`)
+      && home.includes(`>${consentDeclineLabel[locale]}</button>`),
   );
   assert(
-    `${locale} notice language-of-parts marker is correct`,
+    `${locale} consent banner language-of-parts marker is correct`,
     !/\blang=/.test(bannerTag),
   );
   assert(
-    `${locale} notice dialog label is localized`,
-    bannerTag.includes(`aria-label="${noticeDialogLabel[locale]}"`),
+    `${locale} consent banner dialog label is localized`,
+    bannerTag.includes(`aria-label="${consentDialogLabel[locale]}"`),
   );
-  assert(`${locale} notice has no accept/reject choice pair`, !home.includes('data-cookie='));
+  assert(
+    `${locale} consent banner offers the accept/decline pair and drops the legacy dismiss-only control`,
+    home.includes('data-consent-accept')
+      && home.includes('data-consent-decline')
+      && !home.includes('data-cookie-dismiss'),
+  );
   assert(`${locale} has one summer-hours popup`, (home.match(/data-summer-popup/g) || []).length === 1);
   assert(`${locale} has exact summer-hours copy`, home.includes(summerPopupCopy[locale]));
   assert(
@@ -916,7 +924,13 @@ assert(
   'robots.txt names the final-host sitemap',
   robotsSource.includes(`Sitemap: ${CANONICAL_ORIGIN}/sitemap.xml`) && !robotsSource.includes(BARE_ORIGIN),
 );
-const externalScriptBodies = scripts.map((file) => readFileSync(file, 'utf8'));
+// posthog-* chunks are third-party vendor payloads (astro.config manualChunks);
+// the strict first-party storage/claims scans exclude them, with their own
+// assertions below.
+const isPosthogChunk = (file) => (file.split(sep).pop() ?? '').startsWith('posthog');
+const posthogScripts = scripts.filter(isPosthogChunk);
+const firstPartyScripts = scripts.filter((file) => !isPosthogChunk(file));
+const externalScriptBodies = firstPartyScripts.map((file) => readFileSync(file, 'utf8'));
 const inlineScriptBodies = htmls.flatMap((file) => executableInlineScripts(readFileSync(file, 'utf8')));
 const executableBuiltText = [...externalScriptBodies, ...inlineScriptBodies].join('\n');
 assert(
@@ -968,9 +982,12 @@ assert(
 assert('executable build text is non-empty', executableBuiltText.trim().length > 0);
 assert('executable build text excludes JSON-LD payloads', !executableBuiltText.includes('"@context":"https://schema.org"'));
 assert(
-  'notice runtimes use only the disclosed dismissal records and values',
+  'notice and consent runtimes use only the disclosed records and values',
   [
-    'sisi-cookie-notice',
+    'sisi-cookie-notice', // legacy cleanup only
+    'sisi-analytics-consent',
+    'granted',
+    'denied',
     'sisi-summer-fri-2026-dismissed',
     'dismissed',
     'localStorage.removeItem',
@@ -978,6 +995,12 @@ assert(
     'localStorage.setItem',
   ].every((token) => executableBuiltText.includes(token))
     && !/[`'"](?:accepted|rejected)[`'"]/.test(executableBuiltText),
+);
+assert('posthog vendor code is isolated into posthog-* chunks', posthogScripts.length >= 1);
+assert(
+  'first-party runtime initializes posthog through the /ph proxy',
+  executableBuiltText.includes('phc_oLoNUCSdjqTiUrtPTfeiAYYUHFUWcA4ZieZEypzed4SF')
+    && /api_host\s*:\s*["']\/ph["']/.test(executableBuiltText),
 );
 const popupSourcePath = join(ROOT, 'src/components/Popup.astro');
 const popupSource = existsSync(popupSourcePath) ? readFileSync(popupSourcePath, 'utf8') : '';
@@ -999,24 +1022,30 @@ assert(
 );
 assert('B2B AJAX posts to the current path', /fetch\(\s*location\.pathname\b/.test(executableBuiltText));
 const cookieSource = readFileSync(join(ROOT, 'src/components/CookieBanner.astro'), 'utf8');
+const consentSource = readFileSync(join(ROOT, 'src/lib/consent.mjs'), 'utf8');
 assert(
-  'notice storage read and legacy removal are guarded',
-  /try\s*\{[\s\S]*?localStorage\.removeItem\(LEGACY_KEY\);[\s\S]*?localStorage\.getItem\(KEY\)[\s\S]*?\}\s*catch\s*\{\}/.test(cookieSource),
+  'consent reads and writes are guarded',
+  /try\s*\{[\s\S]*?storage\.getItem\(CONSENT_KEY\)[\s\S]*?\}\s*catch/.test(consentSource)
+    && /try\s*\{[\s\S]*?storage\.setItem\(CONSENT_KEY,\s*value\)[\s\S]*?\}\s*catch/.test(consentSource),
 );
 assert(
-  'notice storage write is guarded',
-  /try\s*\{\s*localStorage\.setItem\(KEY,\s*['"]dismissed['"]\);?\s*\}\s*catch\s*\{\}/.test(cookieSource),
+  'legacy notice keys are removal-only',
+  consentSource.includes("'sisi-cookie-notice'")
+    && consentSource.includes("'sisi-cookie-consent'")
+    && /removeItem\(key\)/.test(consentSource)
+    && !/(?:getItem|setItem)\(\s*['"]sisi-cookie-(?:notice|consent)['"]/.test(cookieSource + consentSource),
 );
 assert(
-  'obsolete consent key is removal-only',
-  (cookieSource.match(/sisi-cookie-consent/g) || []).length === 1
-    && cookieSource.includes('localStorage.removeItem(LEGACY_KEY)')
-    && !/localStorage\.(?:getItem|setItem)\(LEGACY_KEY/.test(cookieSource),
+  'banner decisions ride the consent module, not raw storage',
+  cookieSource.includes('writeConsent(storage, value)')
+    && cookieSource.includes('readConsent(storage)')
+    && !/localStorage\.(?:getItem|setItem)\(/.test(cookieSource),
 );
 assert(
-  'storage denial falls back to visible page-local dismissal',
-  /let dismissed = false;[\s\S]*?catch\s*\{\}[\s\S]*?const reveal\s*=\s*\(\)\s*=>\s*\{\s*if\s*\(!dismissed\s*&&\s*banner\)\s*banner\.hidden\s*=\s*false;\s*\};/.test(cookieSource)
-    && /addEventListener\(['"]click['"][\s\S]*?try\s*\{\s*localStorage\.setItem\(KEY,\s*['"]dismissed['"]\);?\s*\}\s*catch\s*\{\}[\s\S]*?banner\.hidden\s*=\s*true;/.test(cookieSource),
+  'storage denial falls back to page-local consent decision',
+  /decided = true;[\s\S]*?banner\.hidden = true;/.test(cookieSource)
+    && cookieSource.includes('data-consent-accept')
+    && cookieSource.includes('data-consent-decline'),
 );
 // Ignore encoded binary asset payloads when checking human-readable claims.
 // The inlined WOFF2 happens to contain `21+` in its base64 bytes.
