@@ -671,7 +671,7 @@ for (const locale of LOCALES) {
   const bannerBody = home.match(/<div id="cookie-banner"\s[^>]*>[\s\S]*?<\/div><script\b/)?.[0] ?? '';
   const renderedText = (bannerBody.match(/<p class="cookie-text">([\s\S]*?)<\/p>/)?.[1] ?? '')
     .replace(/<[^>]+>/g, '');
-  assert(`${locale} consent banner has the exact PostHog consent copy`, renderedText === noticeCopy[locale]);
+  assert(`${locale} consent banner has the exact PostHog consent copy`, renderedText === noticeCopy[locale].replaceAll("'", '&#39;'));
   assert(
     `${locale} consent banner has exactly one accept and one decline button, both localized`,
     (home.match(/<button\b[^>]*data-consent-accept[^>]*>/g) || []).length === 1
