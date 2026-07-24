@@ -740,6 +740,10 @@ assert(
     && (toml.match(/to = "https:\/\/www\.sisiwroclaw\.pl\/pl\/"/g) || []).length === 2,
 );
 assert('legacy /menu redirect', toml.includes('from = "/menu"'));
+assert(
+  'posthog reverse proxy rides the same-origin /ph path',
+  /from = "\/ph\/\*"\s*\n\s*to = "https:\/\/eu\.i\.posthog\.com\/:splat"\s*\n\s*status = 200\s*\n\s*force = true/.test(toml),
+);
 
 // --- generated response policy: exact CSP/security headers + bounded caching ---
 const headersOutput = exists('_headers') ? read('_headers') : '';
