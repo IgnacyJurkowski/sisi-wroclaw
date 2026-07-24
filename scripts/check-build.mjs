@@ -981,6 +981,10 @@ assert(
 );
 assert('executable build text is non-empty', executableBuiltText.trim().length > 0);
 assert('executable build text excludes JSON-LD payloads', !executableBuiltText.includes('"@context":"https://schema.org"'));
+// Vite's dynamic-import preload helper embeds Promise.allSettled-style
+// status strings (`fulfilled`/`rejected`); they are bundler infrastructure,
+// not consent values, so they are excised before the consent-literal ban.
+const consentScanText = executableBuiltText.replace(/status\s*(?::\s*|===\s*)[`'"](?:fulfilled|rejected)[`'"]/g, '');
 assert(
   'notice and consent runtimes use only the disclosed records and values',
   [
@@ -994,13 +998,13 @@ assert(
     'localStorage.getItem',
     'localStorage.setItem',
   ].every((token) => executableBuiltText.includes(token))
-    && !/[`'"](?:accepted|rejected)[`'"]/.test(executableBuiltText),
+    && !/[`'"](?:accepted|rejected)[`'"]/.test(consentScanText),
 );
 assert('posthog vendor code is isolated into posthog-* chunks', posthogScripts.length >= 1);
 assert(
   'first-party runtime initializes posthog through the /ph proxy',
   executableBuiltText.includes('phc_oLoNUCSdjqTiUrtPTfeiAYYUHFUWcA4ZieZEypzed4SF')
-    && /api_host\s*:\s*["']\/ph["']/.test(executableBuiltText),
+    && /api_host\s*:\s*[`"']\/ph[`"']/.test(executableBuiltText),
 );
 const popupSourcePath = join(ROOT, 'src/components/Popup.astro');
 const popupSource = existsSync(popupSourcePath) ? readFileSync(popupSourcePath, 'utf8') : '';
