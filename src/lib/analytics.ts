@@ -1,32 +1,37 @@
-/* Consent-aware analytics hook.
+/* Consent-aware analytics hook, backed by PostHog
+   (bootstrap: src/scripts/analytics-init.ts; spec:
+   docs/superpowers/specs/2026-07-24-posthog-analytics-design.md).
 
-   No analytics provider is installed (the cookie policy states the site uses no
-   analytics/marketing cookies). This module is the single, typed place to wire
-   one in later. `track()` is a documented no-op until then.
+   Anonymous, storage-free capture is always on; persistent storage and
+   session replay exist only after consent (see CookieBanner).
 
-   Rules when an analytics system + valid consent exist:
-   - Fire only AFTER the visitor has consented (see CookieBanner).
-   - NEVER include PII: no contact names, emails, phones, company names, or the
-     enquiry message body. Only non-PII context (event_type, cta_location, …). */
+   Rules:
+   - track() must be safe to call at any time: never throws, silently drops
+     events if PostHog is unavailable.
+   - NEVER include PII: no contact names, emails, phones, company names, or
+     the enquiry message body. Only non-PII context (form, cta_location, …). */
+import posthog from 'posthog-js/dist/module.no-external';
 
 export type AnalyticsEvent =
-  | 'b2b_page_view'
-  | 'b2b_enquiry_start'
-  | 'b2b_enquiry_submit'
-  | 'b2b_enquiry_success'
-  | 'b2b_phone_click'
-  | 'b2b_email_click'
-  | 'b2b_case_study_open'
-  | 'locale_change';
+  | 'reservation_cta_click'
+  | 'phone_click'
+  | 'email_click'
+  | 'enquiry_submit'
+  | 'enquiry_success';
 
 export interface AnalyticsPayload {
   event: AnalyticsEvent;
   locale?: string;
   page?: string;
-  /** Non-PII context only (e.g. event_type category, cta_location). */
+  /** Non-PII context only (e.g. form name, cta_location). */
   [key: string]: string | number | undefined;
 }
 
-export function track(_payload: AnalyticsPayload): void {
-  // Intentionally a no-op until an analytics system with valid consent exists.
+export function track(payload: AnalyticsPayload): void {
+  try {
+    const { event, ...properties } = payload;
+    posthog.capture(event, properties);
+  } catch {
+    /* Analytics must never break the page. */
+  }
 }

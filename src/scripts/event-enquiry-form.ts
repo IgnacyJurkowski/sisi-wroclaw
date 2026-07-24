@@ -1,4 +1,5 @@
 import { campaignAttribution } from '../lib/attribution.mjs';
+import { track } from '../lib/analytics';
 
 function initEventEnquiryForm(form: HTMLFormElement): void {
   const messages = JSON.parse(form.getAttribute('data-messages') || '{}') as Record<string, string>;
@@ -78,6 +79,13 @@ function initEventEnquiryForm(form: HTMLFormElement): void {
     if (failBox) failBox.hidden = true;
     if (!validate()) return;
 
+    // Non-PII form identifier for analytics (e.g. Netlify form name).
+    const formName =
+      form.getAttribute('name') ||
+      form.querySelector<HTMLInputElement>('input[name="form-name"]')?.value ||
+      'enquiry';
+    track({ event: 'enquiry_submit', form: formName, page: location.pathname });
+
     submit.disabled = true;
     submit.textContent = messages.sending;
     const data = new URLSearchParams();
@@ -90,6 +98,7 @@ function initEventEnquiryForm(form: HTMLFormElement): void {
     })
       .then((response) => {
         if (!response.ok) throw new Error('bad status');
+        track({ event: 'enquiry_success', form: formName, page: location.pathname });
         form.reset();
         if (okBox) {
           okBox.hidden = false;
