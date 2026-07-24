@@ -18,8 +18,8 @@ import {
   safeLocalStorage,
 } from '../lib/consent.mjs';
 
-// Public project API key (EU project 218919) - publishable, not a secret.
-const POSTHOG_TOKEN = 'phc_oLoNUCSdjqTiUrtPTfeiAYYUHFUWcA4ZieZEypzed4SF';
+// Public project API key (EU project 231773 "SiSi Wrocław") - publishable, not a secret.
+const POSTHOG_TOKEN = 'phc_xGAJevJfPpYyrixXMnpJb43nDCz2fVHpnJBbaoDyNgeu';
 
 // Tracks the latest known consent decision so a slow-resolving import in
 // enableConsentedMode() can't re-enable recording after a withdrawal that

@@ -8,6 +8,8 @@
 
 **Tech Stack:** Astro 7 (static), posthog-js 1.407.x, Netlify redirects/proxy, `node:test`, playwright-core browser gate.
 
+> **Post-execution note (2026-07-24):** after this plan was executed, the owner chose a dedicated PostHog project — **231773 "SiSi Wrocław"**, token `phc_xGAJevJfPpYyrixXMnpJb43nDCz2fVHpnJBbaoDyNgeu` — superseding every `218919` / `phc_oLoN…` mention below.
+
 ## Global Constraints
 
 - **Local Node is 20; `astro build`/`astro check` need ≥22.** Locally run ONLY `npm run test:unit`. The full gate (`npm test`) runs in CI ("Launch gate / test") on push/PR — expect check-build/browser assertions to be exercised there, not locally.
