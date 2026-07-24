@@ -36,20 +36,24 @@ Event-engagement tracking (event detail views, ticket links) is explicitly out o
 
 - Add dependency `posthog-js`. New `src/scripts/analytics-init.ts`, imported from `Base.astro` the same way as `nav.ts` (`<script>import '../scripts/analytics-init.ts';</script>`), so Astro emits it as a deferred same-origin `/assets/*` module. No inline scripts; the permitted-bootstrap hash mechanism is untouched.
 - `posthog.init(TOKEN, …)` with:
-  - `api_host: '/ph'` — reverse-proxied path, so `connect-src 'self'` still holds.
+  - `api_host: '/ph'` — reverse-proxied relative path, so `connect-src 'self'` still holds; `ui_host: 'https://eu.posthog.com'` supplies the absolute PostHog UI origin (documented requirement when `api_host` is relative).
   - `persistence: 'memory'`, `disable_session_recording: true` at boot (pre-consent posture).
-  - `disable_external_dependency_loading: true` — PostHog must never fetch remote scripts.
+  - Base SDK imported from `posthog-js/dist/module.no-external` — this build cannot load remote code at all (PostHog's documented CSP-strict path; there is no `disable_external_dependency_loading` config flag).
   - `person_profiles: 'identified_only'` — all visitors stay anonymous (no logins exist).
   - `session_recording: { maskAllInputs: true }` (explicit, matches PostHog default).
 - `TOKEN` is the public project API key `phc_oLoNUCSdjqTiUrtPTfeiAYYUHFUWcA4ZieZEypzed4SF` (EU project 218919), hardcoded as a constant with a comment noting it is publishable, not secret.
-- **Proxy rule** in `public/_redirects`, placed above the locale/host rules:
+- **Proxy rule** in `netlify.toml`, appended after the existing `[[redirects]]` blocks (their bare-root ordering is pinned by check-build) and before `[[headers]]`:
 
-  ```
-  /ph/*  https://eu.i.posthog.com/:splat  200!
+  ```toml
+  [[redirects]]
+    from = "/ph/*"
+    to = "https://eu.i.posthog.com/:splat"
+    status = 200
+    force = true
   ```
 
-  One rule covers ingestion, flags/remote config, and replay ingestion. No `eu-assets` static rule is needed because external dependency loading is disabled.
-- **Session-replay recorder** (`posthog-js/dist/recorder`) is a lazy `import()` — Vite code-splits it into its own same-origin chunk, fetched only when consent is granted (and loaded before `startSessionRecording()` is called). Day-one payload stays small; everything executable remains build-reviewed and content-addressed.
+  One rule covers ingestion, flags/remote config, and replay ingestion. No `eu-assets` static rules are needed because the no-external build never requests remote scripts.
+- **Session-replay recorder** (`posthog-js/dist/posthog-recorder`) is a lazy `import()` — Vite code-splits it into its own same-origin chunk, fetched only when consent is granted (and loaded before `startSessionRecording()` is called). Day-one payload stays small; everything executable remains build-reviewed and content-addressed.
 - The pinned CSP string in `generate-headers.mjs`/`check-build.mjs` remains **byte-identical**.
 
 ### 2. Consent
@@ -61,7 +65,7 @@ Event-engagement tracking (event detail views, ticket links) is explicitly out o
 - **Accept:** write `'granted'`; `posthog.set_config({ persistence: 'localStorage+cookie' })`; lazy-load recorder chunk; `startSessionRecording()`.
 - **Decline / ignore:** write `'denied'` (decline only); analytics stays memory-only anonymous; recording never starts.
 - **Returning visitor with `'granted'`:** analytics-init reads consent at boot and starts in persistent mode with recording on (recorder chunk loaded before start).
-- **Withdrawal:** a small control on the existing cookie-policy page (`routeKey === 'cookies'`, all 5 locales) that clears the key, calls `posthog.stopSessionRecording()`, reverts persistence to memory, and clears PostHog's stored entries via `posthog.reset()`. No new pages (page-count gate unchanged: 57 + 5×events).
+- **Withdrawal:** a small control on the existing cookie-policy page (`routeKey === 'cookies'`, all 5 locales) that stores `'denied'` (so the banner doesn't re-prompt), calls `posthog.stopSessionRecording()`, reverts persistence to memory, and clears PostHog's stored entries via `posthog.reset()`. No new pages (page-count gate unchanged: 57 + 5×events).
 
 ### 3. Events
 
@@ -98,8 +102,8 @@ Gate philosophy is "disclosure and code change in lockstep"; both sides move tog
   - The `\bsessionStorage\b` src-wide ban is rescoped to exclude `src/i18n/legal.ts` only (the disclosure text must name it), with a companion assertion that legal.ts does disclose PostHog's sessionStorage entries. First-party runtime code under `src/` remains banned from using sessionStorage.
 - **`scripts/check-build.mjs`:**
   - Isolate `posthog-js` into a named vendor chunk (Vite `manualChunks` in `astro.config.mjs`) and exclude that chunk from the notice-runtime storage-token scan; the scan (including the `accepted|rejected` ban) still covers all first-party executable text.
-  - New assertions: `_redirects` contains the `/ph` proxy rule; built first-party JS contains `sisi-analytics-consent`, `granted`, `denied`; pinned CSP assertion unchanged and still passing byte-identically.
-- **`src/i18n/legal.ts` (all 5 locales — pl, en, de, it, cs):**
+  - New assertions: `netlify.toml` contains the `/ph` proxy rule; built first-party JS contains `sisi-analytics-consent`, `granted`, `denied`; pinned CSP assertion unchanged and still passing byte-identically.
+- **`src/i18n/legal.ts` (pl + en documents — de/it/cs legal pages intentionally render the English text with the repo's existing fallback banner, so no new locale docs):**
   - Cookie policy: new analytics section — processor PostHog (EU cloud, EU-hosted), what runs without consent (anonymous, storage-free statistics), what Accept enables (session recording + persistent entries), the concrete storage entries (`sisi-analytics-consent`; post-consent `ph_*` localStorage + cookie and PostHog sessionStorage session/window entries), retention periods (cookie lifetime and recording retention, pinned to current PostHog-documented values during implementation), and how to withdraw (cookie-policy page control).
   - Privacy policy: analytics + session-recording purposes, legal bases (consent for storage/recording; legitimate interest for storage-free anonymous statistics), link to PostHog's privacy policy.
   - Banner copy `t.cookie.*` in all 5 locales: consent question + Accept + Decline labels.
