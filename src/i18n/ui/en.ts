@@ -106,11 +106,12 @@ const en: UI = {
   },
 
   cookie: {
-    text: 'This site stores only information that notices were dismissed and essential form and navigation state. Details are in our {cookies} and {privacy}.',
+    text: 'With your consent we use PostHog analytics (visit statistics and session recordings) to improve the site. Without consent we collect only anonymous statistics, with nothing stored in your browser. Details are in our {cookies} and {privacy}.',
     cookiesLink: 'Cookie Policy',
     privacyLink: 'Privacy Policy',
-    dismiss: 'Got it',
-    dialogLabel: 'Essential storage notice',
+    accept: 'Accept',
+    decline: 'Decline',
+    dialogLabel: 'Analytics consent',
   },
 
   popup: {

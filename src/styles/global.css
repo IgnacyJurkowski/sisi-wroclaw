@@ -573,6 +573,16 @@ footer::before {
 .cookie-text a { color: var(--cream); text-decoration: underline; text-underline-offset: 3px; }
 .cookie-actions { display: flex; gap: 10px; flex-shrink: 0; }
 .cookie-btn { padding: 10px 18px; font-size: 11px; }
+/* Decline: quiet ghost variant of the consent CTA. */
+.cookie-btn-ghost {
+  background: transparent;
+  border: 1px solid rgba(237, 219, 194, 0.4);
+  color: var(--cream);
+}
+.cookie-btn-ghost:hover {
+  background: transparent;
+  border-color: var(--cream);
+}
 @media (max-width: 560px) {
   .cookie-banner { padding: 16px; gap: 14px; }
   .cookie-actions { width: 100%; }

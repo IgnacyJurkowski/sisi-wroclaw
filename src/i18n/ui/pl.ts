@@ -109,11 +109,12 @@ const pl = {
 
   cookie: {
     // {cookies} and {privacy} are replaced with links to the policy pages.
-    text: 'Ta strona przechowuje wyłącznie informacje o zamknięciu komunikatów oraz niezbędny stan formularzy i nawigacji. Szczegóły znajdziesz w {cookies} oraz {privacy}.',
+    text: 'Za Twoją zgodą używamy analityki PostHog (statystyki odwiedzin i nagrania sesji), aby ulepszać stronę. Bez zgody zbieramy wyłącznie anonimowe statystyki, bez zapisu w pamięci przeglądarki. Szczegóły znajdziesz w {cookies} oraz {privacy}.',
     cookiesLink: 'Polityce cookies',
     privacyLink: 'Polityce prywatności',
-    dismiss: 'Rozumiem',
-    dialogLabel: 'Informacja o niezbędnej pamięci',
+    accept: 'Zgadzam się',
+    decline: 'Odmawiam',
+    dialogLabel: 'Zgoda na analitykę',
   },
 
   popup: {

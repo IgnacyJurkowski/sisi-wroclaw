@@ -1,7 +1,8 @@
 ---
-// Essential-storage notice. The site has two disclosed persistent dismissal
-// records, both strictly necessary for notice behavior. It renders hidden to
-// avoid a flash for return visits; fixed positioning prevents layout shifts.
+// Analytics-consent banner. Anonymous, storage-free analytics always runs;
+// this dialog only decides persistent storage + session replay (PostHog).
+// It renders hidden to avoid a flash for return visits; fixed positioning
+// prevents layout shifts. Decision store: src/lib/consent.mjs.
 import { type Locale } from '../i18n/config';
 import { localizedPath } from '../i18n/routes';
 import { useTranslations } from '../i18n/t';
@@ -20,30 +21,42 @@ const privacyHref = localizedPath('privacy', locale);
      aria-label={t.cookie.dialogLabel} hidden>
   <p class="cookie-text">{parts[0]}<a href={cookiesHref}>{t.cookie.cookiesLink}</a>{parts[1]}<a href={privacyHref}>{t.cookie.privacyLink}</a>{parts[2]}</p>
   <div class="cookie-actions">
-    <button type="button" class="btn-cta cookie-btn" data-cookie-dismiss>{t.cookie.dismiss}</button>
+    <button type="button" class="btn-cta cookie-btn" data-consent-accept>{t.cookie.accept}</button>
+    <button type="button" class="btn-cta cookie-btn cookie-btn-ghost" data-consent-decline>{t.cookie.decline}</button>
   </div>
 </div>
 
 <script>
   import { SUMMER_FRIDAY_NOTICE } from '../lib/summer-hours.mjs';
+  import {
+    CONSENT_DENIED,
+    CONSENT_EVENT,
+    CONSENT_GRANTED,
+    readConsent,
+    removeLegacyKeys,
+    safeLocalStorage,
+    writeConsent,
+  } from '../lib/consent.mjs';
 
-  const KEY = 'sisi-cookie-notice';
-  const LEGACY_KEY = 'sisi-cookie-consent';
   const banner = document.getElementById('cookie-banner');
   const popup = document.querySelector<HTMLElement>('[data-summer-popup]');
-  let dismissed = false;
-  try {
-    localStorage.removeItem(LEGACY_KEY);
-    dismissed = localStorage.getItem(KEY) === 'dismissed';
-  } catch {}
+  const storage = safeLocalStorage();
+  removeLegacyKeys(storage);
+  let decided = readConsent(storage) !== null;
 
   const reveal = () => {
-    if (!dismissed && banner) banner.hidden = false;
+    if (!decided && banner) banner.hidden = false;
   };
-  banner?.querySelector('[data-cookie-dismiss]')?.addEventListener('click', () => {
-    try { localStorage.setItem(KEY, 'dismissed'); } catch {}
-    banner.hidden = true;
-  });
+  const decide = (value: string) => {
+    // Storage denial still hides the banner for this page view (page-local
+    // fallback); the site simply asks again on the next visit.
+    writeConsent(storage, value);
+    decided = true;
+    if (banner) banner.hidden = true;
+    document.dispatchEvent(new CustomEvent(CONSENT_EVENT, { detail: { value } }));
+  };
+  banner?.querySelector('[data-consent-accept]')?.addEventListener('click', () => decide(CONSENT_GRANTED));
+  banner?.querySelector('[data-consent-decline]')?.addEventListener('click', () => decide(CONSENT_DENIED));
 
   if (!popup || popup.dataset.noticeState === 'resolved') {
     reveal();

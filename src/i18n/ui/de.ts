@@ -106,11 +106,12 @@ const de: UI = {
   },
 
   cookie: {
-    text: 'Diese Website speichert ausschließlich, dass Hinweise geschlossen wurden, sowie notwendige Formular- und Navigationszustände. Einzelheiten findest du in unserer {cookies} und unserer {privacy}.',
+    text: 'Mit deiner Einwilligung nutzen wir PostHog-Analytik (Besuchsstatistiken und Sitzungsaufzeichnungen), um die Website zu verbessern. Ohne Einwilligung erheben wir nur anonyme Statistiken, ohne etwas im Browser zu speichern. Einzelheiten findest du in unserer {cookies} und unserer {privacy}.',
     cookiesLink: 'Cookie-Richtlinie',
     privacyLink: 'Datenschutzerklärung',
-    dismiss: 'Verstanden',
-    dialogLabel: 'Hinweis zur notwendigen Speicherung',
+    accept: 'Einverstanden',
+    decline: 'Ablehnen',
+    dialogLabel: 'Einwilligung in die Analytik',
   },
 
   popup: {
