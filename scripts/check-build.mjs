@@ -1003,7 +1003,7 @@ assert(
 assert('posthog vendor code is isolated into posthog-* chunks', posthogScripts.length >= 1);
 assert(
   'first-party runtime initializes posthog through the /ph proxy',
-  executableBuiltText.includes('phc_oLoNUCSdjqTiUrtPTfeiAYYUHFUWcA4ZieZEypzed4SF')
+  executableBuiltText.includes('phc_xGAJevJfPpYyrixXMnpJb43nDCz2fVHpnJBbaoDyNgeu')
     && /api_host\s*:\s*[`"']\/ph[`"']/.test(executableBuiltText),
 );
 const popupSourcePath = join(ROOT, 'src/components/Popup.astro');
