@@ -31,6 +31,17 @@ export default defineConfig({
       assetsInlineLimit: 0,
       cssMinify: 'lightningcss',
       cssTarget: ['chrome79', 'firefox78', 'safari12', 'edge88', 'ios12'],
+      rollupOptions: {
+        output: {
+          // Deterministic vendor chunks: check-build scans first-party code
+          // strictly and skips posthog-* payloads; the recorder stays its own
+          // chunk so it only downloads after analytics consent.
+          manualChunks(id) {
+            if (!id.includes('node_modules/posthog-js/')) return undefined;
+            return id.includes('posthog-recorder') ? 'posthog-recorder' : 'posthog';
+          },
+        },
+      },
     },
   },
 });

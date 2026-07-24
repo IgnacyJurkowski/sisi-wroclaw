@@ -104,7 +104,7 @@ const pl_privacy: LegalDoc = {
         'Rozliczenia i obowiązki podatkowe - w zakresie wymaganym przepisami. Podstawa: art. 6 ust. 1 lit. c RODO.',
         'Dochodzenie lub obrona roszczeń. Podstawa: art. 6 ust. 1 lit. f RODO.',
         'Monitoring wizyjny (CCTV) na terenie lokalu - w celu zapewnienia bezpieczeństwa osób i mienia. Podstawa: art. 6 ust. 1 lit. f RODO.',
-        'Pamięć przeglądarki - zob. Polityka cookies. Strona przechowuje wyłącznie informacje o zamknięciu komunikatów oraz niezbędny stan formularzy i nawigacji.',
+        'Pamięć przeglądarki i analityka - zob. Polityka cookies. Strona przechowuje decyzje dotyczące komunikatów i zgody, niezbędny stan formularzy i nawigacji, a po wyrażeniu zgody identyfikatory analityczne PostHog (statystyki odwiedzin i nagrania sesji; podstawa prawna: zgoda - art. 6 ust. 1 lit. a RODO; anonimowe statystyki bez zapisu w przeglądarce: prawnie uzasadniony interes - art. 6 ust. 1 lit. f RODO).',
       ],
     },
     {
@@ -170,35 +170,47 @@ const pl_cookies: LegalDoc = {
     {
       heading: '1. Pamięć przeglądarki',
       paragraphs: [
-        'Strona korzysta z pamięci lokalnej przeglądarki (localStorage) wyłącznie po to, aby zapamiętać zamknięcie komunikatu o niezbędnej pamięci oraz komunikatu o wakacyjnym zamknięciu w piątki. Stan niezbędny do obsługi formularzy i nawigacji jest używany podczas interakcji z tymi elementami.',
+        'Strona korzysta z pamięci przeglądarki w dwóch celach: aby zapamiętać Twoje decyzje dotyczące komunikatów i zgody na analitykę oraz - wyłącznie po wyrażeniu zgody - do działania analityki PostHog opisanej poniżej. Stan niezbędny do obsługi formularzy i nawigacji jest używany podczas interakcji z tymi elementami.',
       ],
     },
     {
-      heading: '2. Jakie dane przechowujemy',
-      paragraphs: ['Obecnie strona wykorzystuje wyłącznie pamięć niezbędną do działania:'],
+      heading: '2. Analityka PostHog',
+      paragraphs: [
+        'Za Twoją zgodą korzystamy z narzędzia analitycznego PostHog (PostHog Inc.; dane przetwarzane na serwerach w Unii Europejskiej), które mierzy odwiedziny i konwersje (np. kliknięcia rezerwacji) oraz nagrywa sesje - ruch kursora i interakcje ze stroną; pola formularzy są maskowane.',
+        'Bez zgody analityka działa wyłącznie w trybie anonimowym: zdarzenia nie są łączone z żadnym identyfikatorem zapisanym w Twojej przeglądarce i nic nie jest zapisywane w jej pamięci. Nagrywanie sesji jest wtedy wyłączone.',
+        'Zgodę można wycofać w każdej chwili przyciskiem na tej stronie; wycofanie zatrzymuje nagrywanie i usuwa identyfikatory analityczne z przeglądarki.',
+      ],
+    },
+    {
+      heading: '3. Jakie dane przechowujemy',
+      paragraphs: ['Pamięć niezbędna do działania strony:'],
       items: [
-        'sisi-cookie-notice (localStorage) - przechowuje wyłącznie wartość "dismissed", aby nie wyświetlać ponownie zamkniętego komunikatu o niezbędnej pamięci.',
+        'sisi-analytics-consent (localStorage) - przechowuje wartość "granted" albo "denied", czyli Twoją decyzję dotyczącą analityki.',
         'sisi-summer-fri-2026-dismissed (localStorage) - przechowuje wyłącznie wartość "dismissed", aby nie wyświetlać ponownie komunikatu o wakacyjnym zamknięciu w piątki. Wpis jest usuwany po 28 sierpnia 2026 r.',
         'Niezbędny stan formularzy i nawigacji - przechowywany tylko na potrzeby bieżącej interakcji ze stroną.',
       ],
     },
     {
-      heading: '3. Cel użycia',
-      paragraphs: [
-        'Pamięć opisana powyżej służy wyłącznie obsłudze komunikatów oraz działania formularzy i nawigacji.',
+      heading: '4. Pamięć zapisywana po wyrażeniu zgody',
+      paragraphs: ['Po kliknięciu "Zgadzam się" narzędzie PostHog zapisuje:'],
+      items: [
+        'ph_..._posthog (localStorage oraz cookie, do 365 dni) - identyfikator przeglądarki i sesji oraz ustawienia analityki.',
+        'Wpisy sesyjne PostHog (sessionStorage) - identyfikatory bieżącej sesji i okna, usuwane po zamknięciu karty.',
       ],
     },
     {
-      heading: '4. Zarządzanie pamięcią',
+      heading: '5. Zarządzanie pamięcią',
       items: [
-        'Komunikaty wyświetlają się przy pierwszej wizycie; ich zamknięcie zapisuje wartość "dismissed" dla odpowiedniego komunikatu.',
-        'Aby ponownie wyświetlić komunikat, usuń dane strony w ustawieniach przeglądarki.',
+        'Komunikat o zgodzie wyświetla się do czasu podjęcia decyzji; wybór zapisuje wartość "granted" albo "denied".',
+        'Zgodę można wycofać przyciskiem "Wycofaj zgodę na analitykę" na tej stronie.',
         'Pamięcią strony można zarządzać w ustawieniach przeglądarki. Ograniczenie pamięci niezbędnej może wpłynąć na działanie strony.',
       ],
     },
     {
-      heading: '5. Więcej informacji',
-      paragraphs: ['Zasady przetwarzania danych osobowych opisane są w Polityce prywatności.'],
+      heading: '6. Więcej informacji',
+      paragraphs: [
+        'Zasady przetwarzania danych osobowych opisane są w Polityce prywatności. Informacje o prywatności PostHog: https://posthog.com/privacy.',
+      ],
     },
   ],
 };
@@ -289,7 +301,7 @@ const en_privacy: LegalDoc = {
         'Accounting and tax obligations - to the extent required by law. Basis: Art. 6(1)(c) GDPR.',
         'Establishing or defending claims. Basis: Art. 6(1)(f) GDPR.',
         'Video monitoring (CCTV) on the premises - to ensure the safety of people and property. Basis: Art. 6(1)(f) GDPR.',
-        'Browser storage - see the Cookie Policy. The site stores only notice dismissals and essential form and navigation state.',
+        'Browser storage and analytics - see the Cookie Policy. The site stores notice and consent decisions, essential form and navigation state and, after consent, PostHog analytics identifiers (visit statistics and session recordings; legal basis: consent - Art. 6(1)(a) GDPR; anonymous statistics with no browser storage: legitimate interest - Art. 6(1)(f) GDPR).',
       ],
     },
     {
@@ -355,35 +367,47 @@ const en_cookies: LegalDoc = {
     {
       heading: '1. Browser storage',
       paragraphs: [
-        'The site uses browser local storage (localStorage) only to remember that the essential-storage notice and the summer Friday closure notice were dismissed. State essential to forms and navigation is used while you interact with those controls.',
+        'The site uses browser storage for two purposes: to remember your decisions about notices and analytics consent, and - only after you consent - for the PostHog analytics described below. State essential to forms and navigation is used while you interact with those controls.',
       ],
     },
     {
-      heading: '2. What we store',
-      paragraphs: ['The site currently uses only storage essential to its operation:'],
+      heading: '2. PostHog analytics',
+      paragraphs: [
+        'With your consent we use the PostHog analytics tool (PostHog Inc.; data processed on servers in the European Union) to measure visits and conversions (e.g. reservation clicks) and to record sessions - cursor movement and interactions with the page; form fields are masked.',
+        'Without consent, analytics runs in anonymous mode only: events are not linked to any identifier stored in your browser and nothing is written to browser storage. Session recording stays off.',
+        'You can withdraw consent at any time with the button on this page; withdrawal stops recording and removes analytics identifiers from your browser.',
+      ],
+    },
+    {
+      heading: '3. What we store',
+      paragraphs: ['Storage essential to the site:'],
       items: [
-        'sisi-cookie-notice (localStorage) - stores only the value "dismissed" so the essential-storage notice stays hidden after you close it.',
+        'sisi-analytics-consent (localStorage) - stores the value "granted" or "denied", i.e. your analytics decision.',
         'sisi-summer-fri-2026-dismissed (localStorage) - stores only the value "dismissed" so the summer Friday closure notice stays hidden after you close it. The record is removed after 28 August 2026.',
         'Essential form and navigation state - stored only for the current interaction with the site.',
       ],
     },
     {
-      heading: '3. Purpose',
-      paragraphs: [
-        'The storage described above is used only for notices and for form and navigation behavior.',
+      heading: '4. Storage written after consent',
+      paragraphs: ['After you click "Accept", PostHog stores:'],
+      items: [
+        'ph_..._posthog (localStorage and a cookie, up to 365 days) - browser and session identifier plus analytics settings.',
+        'PostHog session entries (sessionStorage) - identifiers for the current session and window, removed when the tab closes.',
       ],
     },
     {
-      heading: '4. Managing storage',
+      heading: '5. Managing storage',
       items: [
-        'The notices appear on your first visit; dismissing one stores the value "dismissed" for that notice.',
-        'To see the notice again, clear the site data in your browser settings.',
+        'The consent notice appears until you make a decision; your choice stores the value "granted" or "denied".',
+        'You can withdraw consent with the "Withdraw analytics consent" button on this page.',
         'You can manage site storage in your browser settings. Restricting essential storage may affect how the site works.',
       ],
     },
     {
-      heading: '5. More information',
-      paragraphs: ['How personal data is processed is described in the Privacy Policy.'],
+      heading: '6. More information',
+      paragraphs: [
+        'How personal data is processed is described in the Privacy Policy. PostHog privacy information: https://posthog.com/privacy.',
+      ],
     },
   ],
 };

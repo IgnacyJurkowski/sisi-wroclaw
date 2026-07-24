@@ -106,11 +106,12 @@ const en: UI = {
   },
 
   cookie: {
-    text: 'This site stores only information that notices were dismissed and essential form and navigation state. Details are in our {cookies} and {privacy}.',
+    text: 'With your consent we use PostHog analytics (visit statistics and session recordings) to improve the site. Without consent we collect only anonymous statistics, with nothing stored in your browser. Details are in our {cookies} and {privacy}.',
     cookiesLink: 'Cookie Policy',
     privacyLink: 'Privacy Policy',
-    dismiss: 'Got it',
-    dialogLabel: 'Essential storage notice',
+    accept: 'Accept',
+    decline: 'Decline',
+    dialogLabel: 'Analytics consent',
   },
 
   popup: {
@@ -337,6 +338,8 @@ const en: UI = {
       'This translation is provided for convenience only. In case of any discrepancy, the Polish version prevails.',
     englishFallbackNote:
       'The legal text below is provided in English. The legally binding version is the Polish original.',
+    withdrawButton: 'Withdraw analytics consent',
+    withdrawDone: 'Consent withdrawn. Analytics now runs in anonymous mode only.',
   },
 
   notFound: {

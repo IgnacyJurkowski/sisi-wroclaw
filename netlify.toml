@@ -72,6 +72,14 @@
   to = "/pl/polityka-cookies/"
   status = 301
 
+# PostHog reverse proxy: analytics rides the canonical origin so the CSP can
+# stay connect-src 'self' and ad blockers cannot separate it from the site.
+[[redirects]]
+  from = "/ph/*"
+  to = "https://eu.i.posthog.com/:splat"
+  status = 200
+  force = true
+
 # Correct MIME types for ES modules and Framer CMS data
 [[headers]]
   for = "/**/*.mjs"

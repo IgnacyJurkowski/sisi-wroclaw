@@ -109,11 +109,12 @@ const pl = {
 
   cookie: {
     // {cookies} and {privacy} are replaced with links to the policy pages.
-    text: 'Ta strona przechowuje wyłącznie informacje o zamknięciu komunikatów oraz niezbędny stan formularzy i nawigacji. Szczegóły znajdziesz w {cookies} oraz {privacy}.',
+    text: 'Za Twoją zgodą używamy analityki PostHog (statystyki odwiedzin i nagrania sesji), aby ulepszać stronę. Bez zgody zbieramy wyłącznie anonimowe statystyki, bez zapisu w pamięci przeglądarki. Szczegóły znajdziesz w {cookies} oraz {privacy}.',
     cookiesLink: 'Polityce cookies',
     privacyLink: 'Polityce prywatności',
-    dismiss: 'Rozumiem',
-    dialogLabel: 'Informacja o niezbędnej pamięci',
+    accept: 'Zgadzam się',
+    decline: 'Odmawiam',
+    dialogLabel: 'Zgoda na analitykę',
   },
 
   popup: {
@@ -342,6 +343,8 @@ const pl = {
     // Shown on DE/IT/CS legal pages, which display the English text on purpose.
     englishFallbackNote:
       'Treść prawna jest tu prezentowana w języku angielskim. Wiążąca pozostaje polska wersja językowa.',
+    withdrawButton: 'Wycofaj zgodę na analitykę',
+    withdrawDone: 'Zgoda została wycofana. Analityka działa teraz wyłącznie w trybie anonimowym.',
   },
 
   notFound: {

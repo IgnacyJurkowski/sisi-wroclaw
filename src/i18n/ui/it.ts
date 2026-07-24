@@ -105,11 +105,12 @@ const it: UI = {
   },
 
   cookie: {
-    text: 'Questo sito memorizza esclusivamente la chiusura degli avvisi e lo stato essenziale dei moduli e della navigazione. I dettagli sono disponibili nella nostra {cookies} e nella nostra {privacy}.',
+    text: 'Con il tuo consenso utilizziamo l\'analitica PostHog (statistiche delle visite e registrazioni delle sessioni) per migliorare il sito. Senza consenso raccogliamo solo statistiche anonime, senza salvare nulla nel browser. I dettagli sono disponibili nella nostra {cookies} e nella nostra {privacy}.',
     cookiesLink: 'informativa sui cookie',
     privacyLink: 'informativa sulla privacy',
-    dismiss: 'Ho capito',
-    dialogLabel: 'Avviso sull\'archiviazione essenziale',
+    accept: 'Accetto',
+    decline: 'Rifiuto',
+    dialogLabel: 'Consenso all\'analitica',
   },
 
   popup: {
@@ -336,6 +337,8 @@ const it: UI = {
       'Questa traduzione è fornita solo per comodità. In caso di discrepanze prevale la versione polacca.',
     englishFallbackNote:
       'I testi legali qui sotto sono mostrati intenzionalmente in inglese, poiché al momento non è disponibile una traduzione italiana. Fa fede esclusivamente la versione polacca.',
+    withdrawButton: 'Revoca il consenso all\'analitica',
+    withdrawDone: 'Consenso revocato. L\'analitica ora funziona solo in modalità anonima.',
   },
 
   notFound: {

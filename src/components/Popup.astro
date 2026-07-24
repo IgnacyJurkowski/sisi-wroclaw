@@ -146,6 +146,10 @@ const sun = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2
       document.addEventListener('keydown', onKey);
     }
 
+    function scheduleOpen() {
+      openTimer = window.setTimeout(open, OPEN_DELAY);
+    }
+
     function scheduleCutoff() {
       clearCutoffTimer();
       const remaining = cutoffMs - Date.now();
@@ -176,7 +180,12 @@ const sun = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2
           resolve(false, true);
         } else {
           closeControls.forEach((element) => element.addEventListener('click', dismiss));
-          openTimer = window.setTimeout(open, OPEN_DELAY);
+          // Schedule the reveal from window load, not script eval: heavy module
+          // graphs (e.g. the analytics chunk) can hold the load event back past
+          // OPEN_DELAY, and the popup must not open mid-load or it steals focus
+          // from whatever the visitor focused while the page was still settling.
+          if (document.readyState === 'complete') scheduleOpen();
+          else window.addEventListener('load', scheduleOpen, { once: true });
         }
       }
     }

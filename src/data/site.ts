@@ -112,7 +112,7 @@ export const COMPANY = {
 
 // "Last updated" date for the legal pages, stored as ISO so each locale can
 // format it in its own language (see i18n/format.ts → formatLongDate).
-export const LEGAL_UPDATED_ISO = '2026-07-16';
+export const LEGAL_UPDATED_ISO = '2026-07-24';
 
 /* Verified B2B / corporate-event facts (source-of-truth). Do NOT imply SiSi
    itself seats 150 - that figure is The Cork's seated capacity. */

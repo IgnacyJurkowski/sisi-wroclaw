@@ -106,11 +106,12 @@ const cs: UI = {
   },
 
   cookie: {
-    text: 'Tento web ukládá pouze informace o zavření oznámení a nezbytný stav formulářů a navigace. Podrobnosti najdete v našich {cookies} a {privacy}.',
+    text: 'S vaším souhlasem používáme analytiku PostHog (statistiky návštěv a nahrávky relací) ke zlepšování webu. Bez souhlasu sbíráme pouze anonymní statistiky, bez ukládání do prohlížeče. Podrobnosti najdete v našich {cookies} a {privacy}.',
     cookiesLink: 'zásadách používání souborů cookie',
     privacyLink: 'zásadách ochrany soukromí',
-    dismiss: 'Rozumím',
-    dialogLabel: 'Oznámení o nezbytném ukládání',
+    accept: 'Souhlasím',
+    decline: 'Odmítám',
+    dialogLabel: 'Souhlas s analytikou',
   },
 
   popup: {
@@ -337,6 +338,8 @@ const cs: UI = {
       'Tento překlad je poskytován pouze pro pohodlí. V případě rozporu je rozhodující polská verze.',
     englishFallbackNote:
       'Právní texty níže jsou záměrně zobrazeny v angličtině, protože český překlad zatím není k dispozici. Závazná je výhradně polská verze.',
+    withdrawButton: 'Odvolat souhlas s analytikou',
+    withdrawDone: 'Souhlas byl odvolán. Analytika nyní běží pouze anonymně.',
   },
 
   notFound: {

@@ -105,6 +105,78 @@ async function verifyFreshVisitor(browser, origin) {
   await context.close();
 }
 
+async function verifyConsentChoices(browser, origin) {
+  for (const [selector, expected] of [
+    ['[data-consent-accept]', 'granted'],
+    ['[data-consent-decline]', 'denied'],
+  ]) {
+    const context = await contextAt(browser, BEFORE_CUTOFF);
+    const page = await context.newPage();
+    await page.goto(`${origin}/pl/`, { waitUntil: 'load' });
+    const popup = page.locator('[data-summer-popup]');
+    const banner = page.locator('#cookie-banner');
+    await popup.waitFor({ state: 'visible' });
+    await page.keyboard.press('Escape'); // resolve the summer popup first
+    await popup.waitFor({ state: 'hidden' });
+    await banner.waitFor({ state: 'visible' });
+    await page.locator(selector).click();
+    await banner.waitFor({ state: 'hidden' });
+    assert.equal(
+      await page.evaluate(() => localStorage.getItem('sisi-analytics-consent')),
+      expected,
+      `consent decision ${expected} was not persisted`,
+    );
+    await page.reload({ waitUntil: 'load' });
+    assert.equal(await banner.isVisible(), false, `consent banner returned after ${expected}`);
+    await context.close();
+  }
+}
+
+async function verifyNoAnalyticsStorageBeforeConsent(browser, origin) {
+  const context = await contextAt(browser, BEFORE_CUTOFF);
+  const page = await context.newPage();
+  await page.goto(`${origin}/pl/`, { waitUntil: 'load' });
+  await page.waitForTimeout(1_500); // give posthog init time to (wrongly) write
+  const state = await page.evaluate(() => ({
+    local: Object.keys(localStorage).filter((key) => key.startsWith('ph_')),
+    session: Object.keys(sessionStorage).filter((key) => key.startsWith('ph_')),
+    cookies: document.cookie,
+  }));
+  assert.deepEqual(state.local, [], 'posthog wrote localStorage before consent');
+  assert.deepEqual(state.session, [], 'posthog wrote sessionStorage before consent');
+  assert.equal(/ph_/.test(state.cookies), false, 'posthog wrote a cookie before consent');
+  await context.close();
+}
+
+async function verifyWithdrawControl(browser, origin) {
+  const context = await contextAt(browser, BEFORE_CUTOFF);
+  const page = await context.newPage();
+  await page.goto(`${origin}/pl/`, { waitUntil: 'load' });
+  const popup = page.locator('[data-summer-popup]');
+  const banner = page.locator('#cookie-banner');
+  await popup.waitFor({ state: 'visible' });
+  await page.keyboard.press('Escape');
+  await popup.waitFor({ state: 'hidden' });
+  await banner.waitFor({ state: 'visible' });
+  await page.locator('[data-consent-accept]').click();
+  await banner.waitFor({ state: 'hidden' });
+  await page.goto(`${origin}/pl/polityka-cookies/`, { waitUntil: 'load' });
+  await page.locator('[data-consent-withdraw]').click();
+  await page.locator('[data-consent-withdraw-done]').waitFor({ state: 'visible' });
+  assert.equal(
+    await page.evaluate(() => localStorage.getItem('sisi-analytics-consent')),
+    'denied',
+    'withdrawal did not store the denied decision',
+  );
+  assert.deepEqual(
+    await page.evaluate(() => Object.keys(localStorage).filter((key) => key.startsWith('ph_'))),
+    [],
+    'posthog identifiers survived withdrawal',
+  );
+  assert.equal(await page.evaluate(() => /ph_/.test(document.cookie)), false, 'posthog cookie survived withdrawal');
+  await context.close();
+}
+
 async function verifyStorageDenial(browser, origin) {
   const context = await contextAt(browser, BEFORE_CUTOFF);
   await context.addInitScript(() => {
@@ -251,11 +323,14 @@ try {
   await waitForServer(origin, preview);
   browser = await chromium.launch({ executablePath: CHROME_PATH, headless: true });
   await verifyFreshVisitor(browser, origin);
+  await verifyConsentChoices(browser, origin);
+  await verifyNoAnalyticsStorageBeforeConsent(browser, origin);
+  await verifyWithdrawControl(browser, origin);
   await verifyStorageDenial(browser, origin);
   await verifyShortViewport(browser, origin);
   await verifyCutoffTransitions(browser, origin);
   await verifyExpiry(browser, origin);
-  console.log('PASS summer and essential-storage notices are sequenced and time-bounded');
+  console.log('PASS summer, consent, and withdrawal notices are sequenced, disclosed, and time-bounded');
 } finally {
   if (browser) await browser.close();
   await stop(preview);
