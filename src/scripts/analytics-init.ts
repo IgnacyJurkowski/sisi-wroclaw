@@ -11,6 +11,7 @@
    affect the page. */
 import posthog from 'posthog-js/dist/module.no-external';
 import {
+  CONSENT_DENIED,
   CONSENT_EVENT,
   CONSENT_GRANTED,
   readConsent,
@@ -20,11 +21,17 @@ import {
 // Public project API key (EU project 218919) - publishable, not a secret.
 const POSTHOG_TOKEN = 'phc_oLoNUCSdjqTiUrtPTfeiAYYUHFUWcA4ZieZEypzed4SF';
 
+// Tracks the latest known consent decision so a slow-resolving import in
+// enableConsentedMode() can't re-enable recording after a withdrawal that
+// happened while it was in flight.
+let currentConsent: string | null = null;
+
 async function enableConsentedMode(): Promise<void> {
   try {
     // Registers the replay recorder before recording starts; kept a separate
     // chunk by astro.config.mjs manualChunks so it downloads only on consent.
     await import('posthog-js/dist/posthog-recorder');
+    if (currentConsent !== CONSENT_GRANTED) return;
     posthog.set_config({ persistence: 'localStorage+cookie' });
     posthog.startSessionRecording();
   } catch {}
@@ -48,10 +55,12 @@ try {
     person_profiles: 'identified_only',
     session_recording: { maskAllInputs: true },
   });
-  if (readConsent(safeLocalStorage()) === CONSENT_GRANTED) void enableConsentedMode();
+  currentConsent = readConsent(safeLocalStorage());
+  if (currentConsent === CONSENT_GRANTED) void enableConsentedMode();
   document.addEventListener(CONSENT_EVENT, (event) => {
     const value = (event as CustomEvent<{ value?: string }>).detail?.value;
-    if (value === CONSENT_GRANTED) void enableConsentedMode();
+    currentConsent = value === CONSENT_GRANTED ? CONSENT_GRANTED : CONSENT_DENIED;
+    if (currentConsent === CONSENT_GRANTED) void enableConsentedMode();
     else disableConsentedMode();
   });
 } catch {}

@@ -173,6 +173,7 @@ async function verifyWithdrawControl(browser, origin) {
     [],
     'posthog identifiers survived withdrawal',
   );
+  assert.equal(await page.evaluate(() => /ph_/.test(document.cookie)), false, 'posthog cookie survived withdrawal');
   await context.close();
 }
 

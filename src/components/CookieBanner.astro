@@ -57,6 +57,12 @@ const privacyHref = localizedPath('privacy', locale);
   };
   banner?.querySelector('[data-consent-accept]')?.addEventListener('click', () => decide(CONSENT_GRANTED));
   banner?.querySelector('[data-consent-decline]')?.addEventListener('click', () => decide(CONSENT_DENIED));
+  // Same-page withdrawal (e.g. the cookie-policy page's withdraw control)
+  // dispatches this event too; decide() firing it back at itself is harmless.
+  document.addEventListener(CONSENT_EVENT, () => {
+    decided = true;
+    if (banner) banner.hidden = true;
+  });
 
   if (!popup || popup.dataset.noticeState === 'resolved') {
     reveal();
