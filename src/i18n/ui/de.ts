@@ -196,7 +196,7 @@ const de: UI = {
     title: 'Tisch reservieren',
     body: 'Die Online-Buchung dauert nur einen Moment, und der volle Reservierungsbetrag wird am Tisch angerechnet. Freitags ist der Eintritt mit Reservierung frei.',
     reassure: 'Wir bestätigen deine Reservierung und senden dir die Details, sobald sie angenommen ist',
-    terms: 'Eine Tischreservierung kostet 50 zł pro Person, am Tisch anrechenbar; samstags gilt ein zusätzlicher Eintritt von 30 zł pro Person.',
+    terms: 'Eine Tischreservierung kostet 50 zł pro Person, am Tisch anrechenbar; samstags gilt ein zusätzlicher Eintritt von 40 zł pro Person.',
     info: {
       hours: 'Zeiten',
       address: 'Adresse',
@@ -301,7 +301,7 @@ const de: UI = {
     externalLocaleNote: 'Das Reservierungssystem wird auf Polnisch geöffnet.',
     practicalTitle: 'Praktische Informationen',
     practicalConditions: [
-      'Die Reservierungsgebühr beträgt 40 PLN pro Person - der gesamte Betrag kann am Tisch beim Service eingelöst werden.',
+      'Die Reservierungsgebühr beträgt 50 PLN pro Person - der gesamte Betrag kann am Tisch beim Service eingelöst werden.',
       'Freitags ist der Eintritt für Gäste mit Reservierung kostenlos.',
       'Samstags wird ein Eintritt von 40 PLN pro Person zur Reservierung hinzugerechnet.',
       'Reservierungen sind zwischen 22:00 und 23:00 Uhr einzulösen. Bei mehr als 30 Minuten Verspätung kann der Tisch an andere Gäste vergeben werden.',

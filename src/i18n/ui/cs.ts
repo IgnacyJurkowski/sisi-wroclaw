@@ -196,7 +196,7 @@ const cs: UI = {
     title: 'Rezervovat stůl',
     body: 'Online rezervace zabere chvíli a celá částka rezervace je k útratě u stolu. V pátek je vstup s rezervací zdarma.',
     reassure: 'Potvrzení a podrobnosti posíláme po schválení rezervace',
-    terms: 'Rezervace stolu je 50 zł za osobu k útratě u stolu; v sobotu se účtuje vstupné navíc 30 zł za osobu.',
+    terms: 'Rezervace stolu je 50 zł za osobu k útratě u stolu; v sobotu se účtuje vstupné navíc 40 zł za osobu.',
     info: {
       hours: 'Otevírací doba',
       address: 'Adresa',
@@ -301,7 +301,7 @@ const cs: UI = {
     externalLocaleNote: 'Rezervační systém se otevře v polštině.',
     practicalTitle: 'Praktické informace',
     practicalConditions: [
-      'Cena rezervace je 40 PLN na osobu - celou částku lze utratit u stolu u obsluhy.',
+      'Cena rezervace je 50 PLN na osobu - celou částku lze utratit u stolu u obsluhy.',
       'V pátek je vstup pro hosty s rezervací zdarma.',
       'V sobotu se k rezervaci připočítává vstup 40 PLN na osobu.',
       'Rezervaci je třeba vyzvednout mezi 22:00 a 23:00. Při zpoždění delším než 30 minut může být stůl přenechán jiným hostům.',
