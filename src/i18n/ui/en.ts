@@ -193,7 +193,6 @@ const en: UI = {
   },
 
   reservationsHome: {
-    eyebrow: 'Reservations',
     title: 'Book a table',
     body: 'Booking online takes a moment, and the full reservation amount is credited at your table. On Fridays entry is free with a reservation.',
     reassure: 'We confirm your booking and send the details once it is accepted',
@@ -302,10 +301,10 @@ const en: UI = {
     externalLocaleNote: 'The reservation system will open in Polish.',
     practicalTitle: 'Practical information',
     practicalConditions: [
-      'The reservation fee is PLN 50 per person - the full amount can be spent at your table with our staff.',
+      'The reservation fee is PLN 40 per person - the full amount can be spent at your table with our staff.',
       'On Fridays, entry is free for guests with a reservation.',
-      'On Saturdays, an entry fee of PLN 30 per person is added to the reservation.',
-      'Reservations must be claimed between 22:00 and 23:30. If you are more than 30 minutes late, the table may be released to other guests.',
+      'On Saturdays, an entry fee of PLN 40 per person is added to the reservation.',
+      'Reservations must be claimed between 22:00 and 23:00. If you are more than 30 minutes late, the table may be released to other guests.',
       'Entry is restricted to guests with valid ID.',
       'A door selection policy and a smart-casual dress code apply. Staff reserve the right to refuse entry without giving a reason, including to guests with a reservation (the amount paid is then refunded).',
     ],

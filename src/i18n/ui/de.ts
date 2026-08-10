@@ -193,7 +193,6 @@ const de: UI = {
   },
 
   reservationsHome: {
-    eyebrow: 'Reservierungen',
     title: 'Tisch reservieren',
     body: 'Die Online-Buchung dauert nur einen Moment, und der volle Reservierungsbetrag wird am Tisch angerechnet. Freitags ist der Eintritt mit Reservierung frei.',
     reassure: 'Wir bestätigen deine Reservierung und senden dir die Details, sobald sie angenommen ist',
@@ -302,10 +301,10 @@ const de: UI = {
     externalLocaleNote: 'Das Reservierungssystem wird auf Polnisch geöffnet.',
     practicalTitle: 'Praktische Informationen',
     practicalConditions: [
-      'Die Reservierungsgebühr beträgt 50 PLN pro Person - der gesamte Betrag kann am Tisch beim Service eingelöst werden.',
+      'Die Reservierungsgebühr beträgt 40 PLN pro Person - der gesamte Betrag kann am Tisch beim Service eingelöst werden.',
       'Freitags ist der Eintritt für Gäste mit Reservierung kostenlos.',
-      'Samstags wird ein Eintritt von 30 PLN pro Person zur Reservierung hinzugerechnet.',
-      'Reservierungen sind zwischen 22:00 und 23:30 Uhr einzulösen. Bei mehr als 30 Minuten Verspätung kann der Tisch an andere Gäste vergeben werden.',
+      'Samstags wird ein Eintritt von 40 PLN pro Person zur Reservierung hinzugerechnet.',
+      'Reservierungen sind zwischen 22:00 und 23:00 Uhr einzulösen. Bei mehr als 30 Minuten Verspätung kann der Tisch an andere Gäste vergeben werden.',
       'Einlass nur für Gäste mit gültigem Ausweis.',
       'Es gelten eine Türauswahl und ein Smart-Casual-Dresscode. Das Team behält sich vor, den Einlass ohne Angabe von Gründen zu verweigern, auch bei Gästen mit Reservierung (der gezahlte Betrag wird dann erstattet).',
     ],
