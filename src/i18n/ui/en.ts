@@ -196,7 +196,7 @@ const en: UI = {
     title: 'Book a table',
     body: 'Booking online takes a moment, and the full reservation amount is credited at your table. On Fridays entry is free with a reservation.',
     reassure: 'We confirm your booking and send the details once it is accepted',
-    terms: 'A table reservation is 50 zł per person, credited at your table; on Saturdays a 30 zł per-person entry applies.',
+    terms: 'A table reservation is 50 zł per person, credited at your table; on Saturdays a 40 zł per-person entry applies.',
     info: {
       hours: 'Hours',
       address: 'Address',
@@ -301,7 +301,7 @@ const en: UI = {
     externalLocaleNote: 'The reservation system will open in Polish.',
     practicalTitle: 'Practical information',
     practicalConditions: [
-      'The reservation fee is PLN 40 per person - the full amount can be spent at your table with our staff.',
+      'The reservation fee is PLN 50 per person - the full amount can be spent at your table with our staff.',
       'On Fridays, entry is free for guests with a reservation.',
       'On Saturdays, an entry fee of PLN 40 per person is added to the reservation.',
       'Reservations must be claimed between 22:00 and 23:00. If you are more than 30 minutes late, the table may be released to other guests.',
