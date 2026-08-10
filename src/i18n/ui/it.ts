@@ -192,7 +192,6 @@ const it: UI = {
   },
 
   reservationsHome: {
-    eyebrow: 'Prenotazioni',
     title: 'Prenota un tavolo',
     body: 'Prenotare online richiede un attimo e l\'intero importo della prenotazione è accreditato al tavolo. Il venerdì, con la prenotazione, l\'ingresso è gratuito.',
     reassure: 'Confermiamo la prenotazione e inviamo i dettagli dopo l\'accettazione',
@@ -301,10 +300,10 @@ const it: UI = {
     externalLocaleNote: 'Il sistema di prenotazione si aprirà in polacco.',
     practicalTitle: 'Informazioni pratiche',
     practicalConditions: [
-      'Il costo della prenotazione è di 50 PLN a persona - l\'intero importo è utilizzabile al tavolo con il personale.',
+      'Il costo della prenotazione è di 40 PLN a persona - l\'intero importo è utilizzabile al tavolo con il personale.',
       'Il venerdì l\'ingresso è gratuito per gli ospiti con prenotazione.',
-      'Il sabato alla prenotazione si aggiunge un ingresso di 30 PLN a persona.',
-      'La prenotazione va ritirata tra le 22:00 e le 23:30. In caso di ritardo superiore a 30 minuti, il tavolo può essere assegnato ad altri ospiti.',
+      'Il sabato alla prenotazione si aggiunge un ingresso di 40 PLN a persona.',
+      'La prenotazione va ritirata tra le 22:00 e le 23:00. In caso di ritardo superiore a 30 minuti, il tavolo può essere assegnato ad altri ospiti.',
       'L\'ingresso è riservato agli ospiti con documento valido.',
       'Si applicano una selezione all\'ingresso e un dress code smart casual. Il personale si riserva di rifiutare l\'ingresso senza fornire motivazioni, anche agli ospiti con prenotazione (in tal caso l\'importo versato viene rimborsato).',
     ],

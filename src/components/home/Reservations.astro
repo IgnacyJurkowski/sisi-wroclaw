@@ -16,7 +16,6 @@ const Heading = headingLevel;
 <section id="rezerwacja" class="reservations">
   <div class="container res-grid">
     <div class="res-pitch" data-reveal>
-      <span class="page-label">{t.reservationsHome.eyebrow}</span>
       <Heading class="display res-title">{t.reservationsHome.title}</Heading>
       <p class="res-body">{t.reservationsHome.body}</p>
       <p class="res-terms-line">{t.reservationsHome.terms}</p>
@@ -29,19 +28,31 @@ const Heading = headingLevel;
 
     <aside class="sisi-card res-info" data-reveal>
       <div class="res-row">
-        <span class="res-k">{t.reservationsHome.info.hours}</span>
+        <span class="res-k">
+          <svg class="res-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          {t.reservationsHome.info.hours}
+        </span>
         <span class="res-v">{t.common.hoursDays}<br />{CONTACT.hours}</span>
       </div>
       <div class="res-row">
-        <span class="res-k">{t.reservationsHome.info.address}</span>
+        <span class="res-k">
+          <svg class="res-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          {t.reservationsHome.info.address}
+        </span>
         <span class="res-v"><a href={CONTACT.mapsUrl} rel="noopener" target="_blank">{CONTACT.address}</a></span>
       </div>
       <div class="res-row">
-        <span class="res-k">{t.reservationsHome.info.reservations}</span>
+        <span class="res-k">
+          <svg class="res-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          {t.reservationsHome.info.reservations}
+        </span>
         <span class="res-v"><a href={CONTACT.phoneHref}>{CONTACT.phone}</a></span>
       </div>
       <div class="res-row">
-        <span class="res-k">{t.reservationsHome.info.corporate}</span>
+        <span class="res-k">
+          <svg class="res-icon" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+          {t.reservationsHome.info.corporate}
+        </span>
         <span class="res-v">
           <a href={CONTACT.eventsPhoneHref}>{CONTACT.eventsPhone}</a>
           <a href={`mailto:${CONTACT.eventsEmail}`}>{CONTACT.eventsEmail}</a>
@@ -60,7 +71,6 @@ const Heading = headingLevel;
     background: var(--cream);
     color: #27060f;
   }
-  .res-pitch .page-label { color: #9c2742; }
   .res-grid {
     display: grid;
     grid-template-columns: 1.1fr 0.9fr;
@@ -112,8 +122,14 @@ const Heading = headingLevel;
   }
   .res-row:last-child { border-bottom: none; }
   .res-k {
+    display: inline-flex; align-items: center; gap: 7px;
     font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em;
     color: var(--text-faint); white-space: nowrap; padding-top: 3px;
+  }
+  .res-icon {
+    width: 14px; height: 14px; flex-shrink: 0;
+    fill: none; stroke: var(--gold); stroke-width: 2;
+    stroke-linecap: round; stroke-linejoin: round;
   }
   .res-v {
     font-size: 14px; color: var(--cream); text-align: right;

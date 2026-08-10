@@ -193,7 +193,6 @@ const cs: UI = {
   },
 
   reservationsHome: {
-    eyebrow: 'Rezervace',
     title: 'Rezervovat stůl',
     body: 'Online rezervace zabere chvíli a celá částka rezervace je k útratě u stolu. V pátek je vstup s rezervací zdarma.',
     reassure: 'Potvrzení a podrobnosti posíláme po schválení rezervace',
@@ -302,10 +301,10 @@ const cs: UI = {
     externalLocaleNote: 'Rezervační systém se otevře v polštině.',
     practicalTitle: 'Praktické informace',
     practicalConditions: [
-      'Cena rezervace je 50 PLN na osobu - celou částku lze utratit u stolu u obsluhy.',
+      'Cena rezervace je 40 PLN na osobu - celou částku lze utratit u stolu u obsluhy.',
       'V pátek je vstup pro hosty s rezervací zdarma.',
-      'V sobotu se k rezervaci připočítává vstup 30 PLN na osobu.',
-      'Rezervaci je třeba vyzvednout mezi 22:00 a 23:30. Při zpoždění delším než 30 minut může být stůl přenechán jiným hostům.',
+      'V sobotu se k rezervaci připočítává vstup 40 PLN na osobu.',
+      'Rezervaci je třeba vyzvednout mezi 22:00 a 23:00. Při zpoždění delším než 30 minut může být stůl přenechán jiným hostům.',
       'Vstup je vyhrazen hostům s platným dokladem totožnosti.',
       'Platí výběr u vstupu a dress code smart casual. Obsluha si vyhrazuje právo odepřít vstup bez udání důvodu, i hostům s rezervací (zaplacená částka se v takovém případě vrací).',
     ],
