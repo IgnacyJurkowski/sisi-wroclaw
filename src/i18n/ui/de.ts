@@ -251,7 +251,7 @@ const de: UI = {
     nonAlcSub: { cocktails: 'Alkoholfreie Cocktails', spirits: 'Alkoholfreie Spirituosen' },
     pourNote: 'Portion 4 cl',
     bottledNote: 'Alle Flaschen 330 ml.',
-    wineLead: 'Wir setzen auf polnische Weingüter — eine Auswahl heimischer Weine von aromatischen Weißweinen über charaktervollen Orange- und Roséwein bis zu eleganten Rotweinen. Alle Weine servieren wir glasweise und in der Flasche.',
+    wineLead: 'Wir setzen auf polnische Weingüter — eine Auswahl heimischer Weine von aromatischen Weißweinen über charaktervollen Orange- und Roséwein bis zu eleganten Rotweinen. Ausgewählte Weine servieren wir glasweise.',
     champagneNote: 'Ein Glas (125 ml) gibt es nur für G. H. Mumm Grand Cordon und Perrier-Jouët Grand Brut. Alle anderen Champagner servieren wir ausschließlich in der Flasche.',
     ctaText: 'Möchtest du einen Tisch reservieren und vorbestellen? Melde dich bei uns.',
   },

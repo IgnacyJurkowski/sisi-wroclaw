@@ -251,7 +251,7 @@ const en: UI = {
     nonAlcSub: { cocktails: 'Mocktails', spirits: 'Alcohol-free spirits' },
     pourNote: 'Serving 4 cl',
     bottledNote: 'All bottles 330 ml.',
-    wineLead: 'We champion Polish vineyards — a selection of homegrown wines from aromatic whites, through characterful orange and rosé, to elegant reds. Every wine is served by the glass and the bottle.',
+    wineLead: 'We champion Polish vineyards — a selection of homegrown wines from aromatic whites, through characterful orange and rosé, to elegant reds. Selected wines are served by the glass.',
     champagneNote: 'A 125 ml glass is available only for G. H. Mumm Grand Cordon and Perrier-Jouët Grand Brut. All other champagnes are served by the bottle only.',
     ctaText: 'Want to book a table and pre-order? Get in touch.',
   },

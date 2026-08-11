@@ -254,7 +254,7 @@ const pl = {
     nonAlcSub: { cocktails: 'Koktajle 0%', spirits: 'Alkohole 0%' },
     pourNote: 'Porcja 4 cl',
     bottledNote: 'Wszystkie butelki 330 ml.',
-    wineLead: 'Stawiamy na polskie winnice — selekcję rodzimych win od aromatycznych bieli, przez charakterne wino pomarańczowe i rosé, po eleganckie czerwienie. Wszystkie wina serwujemy na kieliszki i butelki.',
+    wineLead: 'Stawiamy na polskie winnice — selekcję rodzimych win od aromatycznych bieli, przez charakterne wino pomarańczowe i rosé, po eleganckie czerwienie. Wybrane wina serwujemy na kieliszki.',
     champagneNote: 'Kieliszek (125 ml) dostępny tylko dla G. H. Mumm Grand Cordon i Perrier-Jouët Grand Brut. Pozostałe szampany serwujemy wyłącznie w butelkach.',
     ctaText: 'Chcesz zarezerwować stolik i zamówić z wyprzedzeniem? Skontaktuj się z nami.',
   },
