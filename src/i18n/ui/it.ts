@@ -250,7 +250,7 @@ const it: UI = {
     nonAlcSub: { cocktails: 'Mocktail', spirits: 'Distillati analcolici' },
     pourNote: 'Porzione 4 cl',
     bottledNote: 'Tutte le bottiglie 330 ml.',
-    wineLead: 'Puntiamo sulle cantine polacche — una selezione di vini autoctoni, dai bianchi aromatici, passando per arancione e rosé di carattere, fino agli eleganti rossi. Serviamo tutti i vini al calice e in bottiglia.',
+    wineLead: 'Puntiamo sulle cantine polacche — una selezione di vini autoctoni, dai bianchi aromatici, passando per arancione e rosé di carattere, fino agli eleganti rossi. Serviamo al calice una selezione di vini.',
     champagneNote: 'Il calice (125 ml) è disponibile solo per G. H. Mumm Grand Cordon e Perrier-Jouët Grand Brut. Tutti gli altri champagne sono serviti solo in bottiglia.',
     ctaText: 'Vuoi prenotare un tavolo e ordinare in anticipo? Contattaci.',
   },

@@ -251,7 +251,7 @@ const cs: UI = {
     nonAlcSub: { cocktails: 'Nealko koktejly', spirits: 'Nealko lihoviny' },
     pourNote: 'Porce 4 cl',
     bottledNote: 'Všechny lahve 330 ml.',
-    wineLead: 'Sázíme na polská vinařství — výběr domácích vín od aromatických bílých, přes výrazné oranžové a rosé, až po elegantní červená. Všechna vína podáváme po sklenici i v lahvi.',
+    wineLead: 'Sázíme na polská vinařství — výběr domácích vín od aromatických bílých, přes výrazné oranžové a rosé, až po elegantní červená. Vybraná vína podáváme po sklenici.',
     champagneNote: 'Sklenka (125 ml) je k dispozici pouze pro G. H. Mumm Grand Cordon a Perrier-Jouët Grand Brut. Ostatní šampaňské podáváme výhradně v lahvích.',
     ctaText: 'Chcete rezervovat stůl a objednat předem? Ozvěte se nám.',
   },
