@@ -1,30 +1,44 @@
 ---
 /*
- * Particles — the site's living backdrop: a field of soft cream/gold circles
- * drifting up through the wine, like light motes or champagne bubbles in a dark
- * club. Pure CSS, no JS, no library. It sits fixed behind everything
- * (z-index:-1) and shows through every transparent section below the hero, so
- * the page never reads as flat wine.
+ * Particles — the site's backdrop: a field of soft cream/gold circles suspended
+ * in the wine, like motes of light in a dark club. Pure CSS, no JS, no library.
+ * It sits fixed behind everything (z-index:-1) and shows through every
+ * transparent section below the hero, so the page never reads as flat wine.
  *
  * Each layer is a seamless SVG tile, generated here at build time by a seeded
  * RNG (so the field is identical on every page and reproducible build-to-build)
- * and repeated across the viewport. The layer element is exactly the viewport
- * plus one tile tall, so drifting it by one tile height loops forever with no
- * seam — and the browser only ever rasterizes about a viewport's worth of
- * pixels per layer.
+ * and repeated across the viewport.
  *
- * This replaced a box-shadow starfield, where each layer painted the entire
- * 2560x2000 field (plus a duplicate offset by the tile height) whether or not
- * it was on screen: eight layers came to ~82 Mpx of continuously composited
- * texture to fill a ~1.4 Mpx viewport, which measured ~10x the frame cost of
- * the rest of the page and made the site lag on integrated graphics. Same look,
- * roughly a viewport of paint per layer instead of 58 viewports.
+ * THE FIELD DOES NOT MOVE, and that is the whole point of its shape. A
+ * full-window layer that animates costs a full-window redraw every frame for as
+ * long as the page is open, and the browser pays that bill once per animated
+ * layer. Eight of them made the site unusable on a desktop while a phone
+ * shrugged it off, because the cost scales with the window. Measured on the
+ * built site (Chromium, software rasteriser, home page, no scrolling):
  *
- * Motion is two compositor-only properties: a transform (the drift) and opacity
- * (a staggered twinkle). The field starts frozen and only begins to move once
- * the page has finished loading (Base.astro adds html.bg-live after load +
- * idle), so it never inflates mobile Speed Index. Reduced motion keeps it
- * frozen.
+ *     window        eight drifting layers      still
+ *     390x844               60 fps            60 fps
+ *     1440x900              15 fps            60 fps
+ *     1920x1080             12 fps            60 fps
+ *     2560x1440              6 fps            60 fps
+ *     3840x2160            4.3 fps            60 fps
+ *
+ * The animated property makes no difference: one layer costs the same ~50 ms a
+ * frame at 1440p whether it animates transform or opacity. There is no cheap
+ * way to animate a plate this size, and no amount of tuning the texture helps —
+ * pre-rasterising the tiles to PNG, dropping the tile size, adding or removing
+ * will-change and contain, and stepping the animation were all measured and all
+ * changed nothing. Two earlier attempts at this backdrop (a box-shadow
+ * starfield, then these tiles drifting) each cut the constant and left the
+ * shape, so the site still lagged.
+ *
+ * Standing still, the eight tiles paint once into the page's own layer and are
+ * never touched again: no promoted layers, no compositor texture, and every
+ * page holds 60 fps up to 4K with the glass panels intact.
+ *
+ * When motion comes back it has to come from a small number of small boxes, not
+ * from these plates. html.bg-live (added after load + idle by Base.astro) stays
+ * in place as the gate for it.
  */
 type Rand = () => number;
 function rng(seed: number): Rand {
@@ -122,61 +136,26 @@ const vars = LAYERS.map((l) => `--img-${l.key}:${tiles[l.key]}; --t-${l.key}:${l
       var(--bg);
   }
 
-  /* Each layer is the viewport plus one tile tall and repeats its own tile, so
-     a one-tile drift loops seamlessly while the rasterized area stays close to
-     the viewport. --lo is the layer's dim point, so big orbs pulse gently and
-     sparks flicker hard. No will-change: the animations promote these to
-     compositor layers on their own, and pinning eight oversized textures for
-     the life of the page was part of what made this expensive. */
+  /* Each layer is exactly the viewport and repeats its own tile. Nothing here
+     animates, so all eight paint once into the page's own layer: the compositor
+     holds no texture for the backdrop and does no per-frame work for it. If you
+     ever attach an animation to .cir, read the table above first - it puts a
+     full-window layer back on the compositor and the desktop cost comes back
+     with it. */
   .cir {
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
+    height: 100%;
     background-repeat: repeat;
   }
-  .cir.lg  { height: calc(100% + var(--t-lg));  background-image: var(--img-lg);  background-size: var(--t-lg) var(--t-lg);   --lo: 0.65; }
-  .cir.orb { height: calc(100% + var(--t-orb)); background-image: var(--img-orb); background-size: var(--t-orb) var(--t-orb); --lo: 0.6; }
-  .cir.bg  { height: calc(100% + var(--t-bg));  background-image: var(--img-bg);  background-size: var(--t-bg) var(--t-bg);   --lo: 0.5; }
-  .cir.md  { height: calc(100% + var(--t-md));  background-image: var(--img-md);  background-size: var(--t-md) var(--t-md);   --lo: 0.4; }
-  .cir.sm  { height: calc(100% + var(--t-sm));  background-image: var(--img-sm);  background-size: var(--t-sm) var(--t-sm);   --lo: 0.35; }
-  .cir.spA { height: calc(100% + var(--t-spA)); background-image: var(--img-spA); background-size: var(--t-spA) var(--t-spA); --lo: 0.1; }
-  .cir.spB { height: calc(100% + var(--t-spB)); background-image: var(--img-spB); background-size: var(--t-spB) var(--t-spB); --lo: 0.12; }
-  /* The cross-current drifts the other way, so its slack tile sits above. */
-  .cir.dn  {
-    top: calc(-1 * var(--t-dn));
-    height: calc(100% + var(--t-dn));
-    background-image: var(--img-dn);
-    background-size: var(--t-dn) var(--t-dn);
-    --lo: 0.3;
-  }
-
-  /* Motion switches on only once html.bg-live is set (post-load, see
-     Base.astro). Durations are the original field's speeds re-expressed for the
-     shorter loop, so the drift reads at exactly the same pace as before. */
-  html.bg-live .cir.sm  { animation: up   36s linear infinite, tw 7s   ease-in-out infinite; }
-  html.bg-live .cir.md  { animation: up   56s linear infinite, tw 9s   ease-in-out infinite -3s; }
-  html.bg-live .cir.bg  { animation: up   80s linear infinite, tw 11s  ease-in-out infinite -5s; }
-  html.bg-live .cir.orb { animation: upLg 144s linear infinite, tw 15s ease-in-out infinite; }
-  html.bg-live .cir.lg  { animation: upLg 192s linear infinite, tw 19s ease-in-out infinite -4s; }
-  html.bg-live .cir.spA { animation: up   28s linear infinite, tw 3.2s ease-in-out infinite; }
-  html.bg-live .cir.spB { animation: up   33s linear infinite, tw 4.6s ease-in-out infinite -1.6s; }
-  html.bg-live .cir.dn  { animation: down 52s linear infinite, tw 8s   ease-in-out infinite -2s; }
-
-  @media (prefers-reduced-motion: reduce) {
-    html.bg-live .cir { animation: none; }
-  }
-
-  @keyframes up {
-    from { transform: translateY(0); }
-    to   { transform: translateY(-800px); }
-  }
-  @keyframes upLg {
-    from { transform: translateY(0); }
-    to   { transform: translateY(-1200px); }
-  }
-  @keyframes down {
-    from { transform: translateY(0); }
-    to   { transform: translateY(800px); }
-  }
+  .cir.lg  { background-image: var(--img-lg);  background-size: var(--t-lg) var(--t-lg); }
+  .cir.orb { background-image: var(--img-orb); background-size: var(--t-orb) var(--t-orb); }
+  .cir.bg  { background-image: var(--img-bg);  background-size: var(--t-bg) var(--t-bg); }
+  .cir.md  { background-image: var(--img-md);  background-size: var(--t-md) var(--t-md); }
+  .cir.sm  { background-image: var(--img-sm);  background-size: var(--t-sm) var(--t-sm); }
+  .cir.spA { background-image: var(--img-spA); background-size: var(--t-spA) var(--t-spA); }
+  .cir.spB { background-image: var(--img-spB); background-size: var(--t-spB) var(--t-spB); }
+  .cir.dn  { background-image: var(--img-dn);  background-size: var(--t-dn) var(--t-dn); }
 </style>
