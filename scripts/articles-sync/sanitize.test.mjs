@@ -134,3 +134,9 @@ test('residualRisk ignores prose that merely talks about markup', () => {
   assert.deepEqual(residualRisk(clean('<p>Kod javascript: oraz onclick= w tekscie.</p>').html), []);
   assert.deepEqual(residualRisk('<p onclick="x()">a</p>'), ['inline event handler']);
 });
+
+test('folds a trailing-dot FQDN onto the canonical host', () => {
+  const { html } = clean('<p><a href="https://sisiwroclaw.pl./pl/menu/">menu</a></p>');
+  assert.ok(html.includes('href="https://www.sisiwroclaw.pl/pl/menu/"'));
+  assert.equal(html.includes('noopener'), false, 'our own host was treated as external');
+});
