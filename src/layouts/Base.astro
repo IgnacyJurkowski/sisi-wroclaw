@@ -27,6 +27,10 @@ interface Props {
   ogDescription?: string;
   /** above-the-fold hero image to preload (the LCP-area visual) */
   preloadImage?: string;
+  /** srcset/sizes of that image, so the preload scanner picks the same
+      candidate the <img> will - otherwise a narrow viewport fetches both. */
+  preloadImageSrcset?: string;
+  preloadImageSizes?: string;
   /** social-share image; path is resolved against the site origin */
   ogImage?: string;
   /** Open Graph object type - blog articles publish as 'article'. */
@@ -50,6 +54,8 @@ const {
   ogTitle,
   ogDescription,
   preloadImage,
+  preloadImageSrcset,
+  preloadImageSizes,
   // Absolute Framer CDN URL so the social card resolves (HTTP 200) on every host,
   // including the deploy preview. The site-relative form 404s until sisiwroclaw.pl
   // points at this build, and the CDN serves this asset as .png (the local .webp
@@ -94,7 +100,14 @@ const robotsContent = robotsDirective({
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {preloadImage && (
-      <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />
+      <link
+        rel="preload"
+        as="image"
+        href={preloadImage}
+        imagesrcset={preloadImageSrcset}
+        imagesizes={preloadImageSizes}
+        fetchpriority="high"
+      />
     )}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />

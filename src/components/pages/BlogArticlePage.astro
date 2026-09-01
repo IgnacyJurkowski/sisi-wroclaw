@@ -13,6 +13,7 @@ const t = useTranslations(locale);
 const reading = interpolate(t.blogPage.readingTime, { minutes: String(article.readingMinutes) });
 const metaTitle = `${article.title} | SiSi Wrocław`;
 const updated = article.updatedAt && article.updatedAt !== article.publishedAt ? article.updatedAt : undefined;
+const HERO_SIZES = '(max-width: 920px) 92vw, 880px';
 ---
 
 <Base
@@ -29,6 +30,8 @@ const updated = article.updatedAt && article.updatedAt !== article.publishedAt ?
   publishedTime={article.publishedAt}
   modifiedTime={article.updatedAt ?? article.publishedAt}
   preloadImage={article.img}
+  preloadImageSrcset={article.imgSrcset}
+  preloadImageSizes={HERO_SIZES}
   schema={articleSchema(article, locale)}
 >
   <article class="ba">
@@ -55,7 +58,7 @@ const updated = article.updatedAt && article.updatedAt !== article.publishedAt ?
         <img
           src={article.img}
           srcset={article.imgSrcset}
-          sizes="(max-width: 920px) 92vw, 880px"
+          sizes={HERO_SIZES}
           width={article.imgWidth}
           height={article.imgHeight}
           alt={article.title}

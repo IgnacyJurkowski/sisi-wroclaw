@@ -93,6 +93,7 @@ export function articleSchema(article: ArticleItem, locale: Locale): Record<stri
   const posting: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
+    '@id': `${url}#article`,
     headline: article.title,
     description: article.description,
     inLanguage: locale,
@@ -144,8 +145,11 @@ export function blogSchema(articles: ArticleItem[], locale: Locale): Record<stri
       url: absolute(localizedPath('blog', locale)),
       inLanguage: locale,
       publisher: { '@id': `${BUSINESS.url}/#nightclub` },
+      // Same @id as the node the article page emits, so the two describe one
+      // entity rather than two unlinked ones.
       blogPost: articles.map((article) => ({
         '@type': 'BlogPosting',
+        '@id': `${absolute(articlePath(article.slug, locale))}#article`,
         headline: article.title,
         url: absolute(articlePath(article.slug, locale)),
         datePublished: article.publishedAt,
