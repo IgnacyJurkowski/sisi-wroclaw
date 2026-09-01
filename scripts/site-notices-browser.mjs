@@ -79,10 +79,29 @@ async function summerNoticeWrites(page) {
 async function verifyFreshVisitor(browser, origin) {
   const context = await contextAt(browser, BEFORE_CUTOFF);
   const page = await context.newPage();
-  await page.goto(`${origin}/pl/`, { waitUntil: 'load' });
+  // The popup opens OPEN_DELAY after the window load event, precisely so it
+  // cannot steal focus from a visitor who is interacting while the page still
+  // settles - which is what this case asserts. Hold the preloaded font (a
+  // load-blocking request) until that focus has landed, so the ordering is
+  // fixed here rather than left to how fast the runner services the two CDP
+  // round-trips below; a loaded runner that takes longer than OPEN_DELAY used
+  // to open the popup first and fail the sequencing that follows.
+  let releaseFont = () => {};
+  const fontHeld = new Promise((resolve) => { releaseFont = resolve; });
+  let fontRequests = 0;
+  await page.route('**/*.woff2', async (route) => {
+    fontRequests += 1;
+    await fontHeld;
+    await route.continue();
+  });
+  await page.goto(`${origin}/pl/`, { waitUntil: 'domcontentloaded' });
   const restoreTarget = page.locator('.nav-logo');
   await restoreTarget.focus();
   assert.equal(await restoreTarget.evaluate((element) => document.activeElement === element), true);
+  assert.ok(fontRequests > 0, 'no load-blocking font request to hold; the popup ordering would race');
+  assert.equal(await page.evaluate(() => document.readyState), 'interactive');
+  releaseFont();
+  await page.waitForLoadState('load');
   const popup = page.locator('[data-summer-popup]');
   const banner = page.locator('#cookie-banner');
   await popup.waitFor({ state: 'visible' });
