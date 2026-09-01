@@ -118,11 +118,11 @@ const emptyBlogCopy = {
   cs: 'První příspěvky se objeví brzy.',
 };
 const noticeCopy = {
-  pl: 'Za Twoją zgodą używamy analityki PostHog (statystyki odwiedzin i nagrania sesji), aby ulepszać stronę. Bez zgody zbieramy wyłącznie anonimowe statystyki, bez zapisu w pamięci przeglądarki. Szczegóły znajdziesz w Polityce cookies oraz Polityce prywatności.',
-  en: 'With your consent we use PostHog analytics (visit statistics and session recordings) to improve the site. Without consent we collect only anonymous statistics, with nothing stored in your browser. Details are in our Cookie Policy and Privacy Policy.',
-  de: 'Mit deiner Einwilligung nutzen wir PostHog-Analytik (Besuchsstatistiken und Sitzungsaufzeichnungen), um die Website zu verbessern. Ohne Einwilligung erheben wir nur anonyme Statistiken, ohne etwas im Browser zu speichern. Einzelheiten findest du in unserer Cookie-Richtlinie und unserer Datenschutzerklärung.',
-  it: 'Con il tuo consenso utilizziamo l\'analitica PostHog (statistiche delle visite e registrazioni delle sessioni) per migliorare il sito. Senza consenso raccogliamo solo statistiche anonime, senza salvare nulla nel browser. I dettagli sono disponibili nella nostra informativa sui cookie e nella nostra informativa sulla privacy.',
-  cs: 'S vaším souhlasem používáme analytiku PostHog (statistiky návštěv a nahrávky relací) ke zlepšování webu. Bez souhlasu sbíráme pouze anonymní statistiky, bez ukládání do prohlížeče. Podrobnosti najdete v našich zásadách používání souborů cookie a zásadách ochrany soukromí.',
+  pl: 'Za Twoją zgodą używamy analityki PostHog i Google Analytics (statystyki odwiedzin i nagrania sesji), aby ulepszać stronę. Bez zgody zbieramy wyłącznie anonimowe statystyki, bez zapisu w pamięci przeglądarki. Szczegóły znajdziesz w Polityce cookies oraz Polityce prywatności.',
+  en: 'With your consent we use PostHog and Google Analytics (visit statistics and session recordings) to improve the site. Without consent we collect only anonymous statistics, with nothing stored in your browser. Details are in our Cookie Policy and Privacy Policy.',
+  de: 'Mit deiner Einwilligung nutzen wir PostHog und Google Analytics (Besuchsstatistiken und Sitzungsaufzeichnungen), um die Website zu verbessern. Ohne Einwilligung erheben wir nur anonyme Statistiken, ohne etwas im Browser zu speichern. Einzelheiten findest du in unserer Cookie-Richtlinie und unserer Datenschutzerklärung.',
+  it: 'Con il tuo consenso utilizziamo PostHog e Google Analytics (statistiche delle visite e registrazioni delle sessioni) per migliorare il sito. Senza consenso raccogliamo solo statistiche anonime, senza salvare nulla nel browser. I dettagli sono disponibili nella nostra informativa sui cookie e nella nostra informativa sulla privacy.',
+  cs: 'S vaším souhlasem používáme analytiku PostHog a Google Analytics (statistiky návštěv a nahrávky relací) ke zlepšování webu. Bez souhlasu sbíráme pouze anonymní statistiky, bez ukládání do prohlížeče. Podrobnosti najdete v našich zásadách používání souborů cookie a zásadách ochrany soukromí.',
 };
 const consentAcceptLabel = { pl: 'Zgadzam się', en: 'Accept', de: 'Einverstanden', it: 'Accetto', cs: 'Souhlasím' };
 const consentDeclineLabel = { pl: 'Odmawiam', en: 'Decline', de: 'Ablehnen', it: 'Rifiuto', cs: 'Odmítám' };
@@ -740,12 +740,14 @@ try {
 const bootstrapHash = "'sha256-/x7W7R75k8Roq0WaVRQX9blP4OufE5xbAdzklGxsgpw='";
 const expectedCsp = [
   "default-src 'self'",
-  `script-src 'self' ${bootstrapHash}`,
+  `script-src 'self' ${bootstrapHash} https://www.googletagmanager.com`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: https:",
   "font-src 'self' data:",
   "media-src 'self'",
-  "connect-src 'self'",
+  // Google Analytics 4: gtag.js is fetched from googletagmanager and reports to
+  // the google-analytics collectors; nothing else third-party is permitted.
+  "connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com",
   "form-action 'self'",
   "base-uri 'self'",
   "object-src 'none'",

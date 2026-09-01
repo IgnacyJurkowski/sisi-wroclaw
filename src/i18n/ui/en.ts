@@ -113,7 +113,7 @@ const en: UI = {
   },
 
   cookie: {
-    text: 'With your consent we use PostHog analytics (visit statistics and session recordings) to improve the site. Without consent we collect only anonymous statistics, with nothing stored in your browser. Details are in our {cookies} and {privacy}.',
+    text: 'With your consent we use PostHog and Google Analytics (visit statistics and session recordings) to improve the site. Without consent we collect only anonymous statistics, with nothing stored in your browser. Details are in our {cookies} and {privacy}.',
     cookiesLink: 'Cookie Policy',
     privacyLink: 'Privacy Policy',
     accept: 'Accept',

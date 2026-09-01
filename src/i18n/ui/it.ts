@@ -112,7 +112,7 @@ const it: UI = {
   },
 
   cookie: {
-    text: 'Con il tuo consenso utilizziamo l\'analitica PostHog (statistiche delle visite e registrazioni delle sessioni) per migliorare il sito. Senza consenso raccogliamo solo statistiche anonime, senza salvare nulla nel browser. I dettagli sono disponibili nella nostra {cookies} e nella nostra {privacy}.',
+    text: 'Con il tuo consenso utilizziamo PostHog e Google Analytics (statistiche delle visite e registrazioni delle sessioni) per migliorare il sito. Senza consenso raccogliamo solo statistiche anonime, senza salvare nulla nel browser. I dettagli sono disponibili nella nostra {cookies} e nella nostra {privacy}.',
     cookiesLink: 'informativa sui cookie',
     privacyLink: 'informativa sulla privacy',
     accept: 'Accetto',

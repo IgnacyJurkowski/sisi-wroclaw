@@ -104,7 +104,7 @@ const pl_privacy: LegalDoc = {
         'Rozliczenia i obowiązki podatkowe - w zakresie wymaganym przepisami. Podstawa: art. 6 ust. 1 lit. c RODO.',
         'Dochodzenie lub obrona roszczeń. Podstawa: art. 6 ust. 1 lit. f RODO.',
         'Monitoring wizyjny (CCTV) na terenie lokalu - w celu zapewnienia bezpieczeństwa osób i mienia. Podstawa: art. 6 ust. 1 lit. f RODO.',
-        'Pamięć przeglądarki i analityka - zob. Polityka cookies. Strona przechowuje decyzje dotyczące komunikatów i zgody, niezbędny stan formularzy i nawigacji, a po wyrażeniu zgody identyfikatory analityczne PostHog (statystyki odwiedzin i nagrania sesji; podstawa prawna: zgoda - art. 6 ust. 1 lit. a RODO; anonimowe statystyki bez zapisu w przeglądarce: prawnie uzasadniony interes - art. 6 ust. 1 lit. f RODO).',
+        'Pamięć przeglądarki i analityka - zob. Polityka cookies. Strona przechowuje decyzje dotyczące komunikatów i zgody, niezbędny stan formularzy i nawigacji, a po wyrażeniu zgody identyfikatory analityczne PostHog i Google Analytics (statystyki odwiedzin i nagrania sesji; podstawa prawna: zgoda - art. 6 ust. 1 lit. a RODO; anonimowe statystyki bez zapisu w przeglądarce: prawnie uzasadniony interes - art. 6 ust. 1 lit. f RODO).',
       ],
     },
     {
@@ -170,7 +170,7 @@ const pl_cookies: LegalDoc = {
     {
       heading: '1. Pamięć przeglądarki',
       paragraphs: [
-        'Strona korzysta z pamięci przeglądarki w dwóch celach: aby zapamiętać Twoje decyzje dotyczące komunikatów i zgody na analitykę oraz - wyłącznie po wyrażeniu zgody - do działania analityki PostHog opisanej poniżej. Stan niezbędny do obsługi formularzy i nawigacji jest używany podczas interakcji z tymi elementami.',
+        'Strona korzysta z pamięci przeglądarki w dwóch celach: aby zapamiętać Twoje decyzje dotyczące komunikatów i zgody na analitykę oraz - wyłącznie po wyrażeniu zgody - do działania analityki PostHog i Google Analytics opisanej poniżej. Stan niezbędny do obsługi formularzy i nawigacji jest używany podczas interakcji z tymi elementami.',
       ],
     },
     {
@@ -191,10 +191,11 @@ const pl_cookies: LegalDoc = {
     },
     {
       heading: '4. Pamięć zapisywana po wyrażeniu zgody',
-      paragraphs: ['Po kliknięciu "Zgadzam się" narzędzie PostHog zapisuje:'],
+      paragraphs: ['Po kliknięciu "Zgadzam się" narzędzia analityczne zapisują:'],
       items: [
         'ph_..._posthog (localStorage oraz cookie, do 365 dni) - identyfikator przeglądarki i sesji oraz ustawienia analityki.',
         'Wpisy sesyjne PostHog (sessionStorage) - identyfikatory bieżącej sesji i okna, usuwane po zamknięciu karty.',
+        '_ga oraz _ga_G-ZNZDE3DTGP (cookies Google Analytics, do 2 lat) - identyfikator przeglądarki i stan sesji, używane do statystyk odwiedzin. Google LLC może przetwarzać te dane poza EOG. Po wycofaniu zgody przestajemy je wysyłać i usuwamy te cookies.',
       ],
     },
     {
@@ -208,7 +209,7 @@ const pl_cookies: LegalDoc = {
     {
       heading: '6. Więcej informacji',
       paragraphs: [
-        'Zasady przetwarzania danych osobowych opisane są w Polityce prywatności. Informacje o prywatności PostHog: https://posthog.com/privacy.',
+        'Zasady przetwarzania danych osobowych opisane są w Polityce prywatności. Informacje o prywatności PostHog: https://posthog.com/privacy. Informacje o prywatności Google Analytics: https://policies.google.com/privacy.',
       ],
     },
   ],
@@ -300,7 +301,7 @@ const en_privacy: LegalDoc = {
         'Accounting and tax obligations - to the extent required by law. Basis: Art. 6(1)(c) GDPR.',
         'Establishing or defending claims. Basis: Art. 6(1)(f) GDPR.',
         'Video monitoring (CCTV) on the premises - to ensure the safety of people and property. Basis: Art. 6(1)(f) GDPR.',
-        'Browser storage and analytics - see the Cookie Policy. The site stores notice and consent decisions, essential form and navigation state and, after consent, PostHog analytics identifiers (visit statistics and session recordings; legal basis: consent - Art. 6(1)(a) GDPR; anonymous statistics with no browser storage: legitimate interest - Art. 6(1)(f) GDPR).',
+        'Browser storage and analytics - see the Cookie Policy. The site stores notice and consent decisions, essential form and navigation state and, after consent, PostHog and Google Analytics identifiers (visit statistics and session recordings; legal basis: consent - Art. 6(1)(a) GDPR; anonymous statistics with no browser storage: legitimate interest - Art. 6(1)(f) GDPR).',
       ],
     },
     {
@@ -366,7 +367,7 @@ const en_cookies: LegalDoc = {
     {
       heading: '1. Browser storage',
       paragraphs: [
-        'The site uses browser storage for two purposes: to remember your decisions about notices and analytics consent, and - only after you consent - for the PostHog analytics described below. State essential to forms and navigation is used while you interact with those controls.',
+        'The site uses browser storage for two purposes: to remember your decisions about notices and analytics consent, and - only after you consent - for the PostHog and Google Analytics analytics described below. State essential to forms and navigation is used while you interact with those controls.',
       ],
     },
     {
@@ -387,10 +388,11 @@ const en_cookies: LegalDoc = {
     },
     {
       heading: '4. Storage written after consent',
-      paragraphs: ['After you click "Accept", PostHog stores:'],
+      paragraphs: ['After you click "Accept", the analytics tools store:'],
       items: [
         'ph_..._posthog (localStorage and a cookie, up to 365 days) - browser and session identifier plus analytics settings.',
         'PostHog session entries (sessionStorage) - identifiers for the current session and window, removed when the tab closes.',
+        '_ga and _ga_G-ZNZDE3DTGP (Google Analytics cookies, up to 2 years) - browser identifier and session state, used for visit statistics. Google LLC may process this data outside the EEA. Withdrawing consent stops the reporting and deletes these cookies.',
       ],
     },
     {
@@ -404,7 +406,7 @@ const en_cookies: LegalDoc = {
     {
       heading: '6. More information',
       paragraphs: [
-        'How personal data is processed is described in the Privacy Policy. PostHog privacy information: https://posthog.com/privacy.',
+        'How personal data is processed is described in the Privacy Policy. PostHog privacy information: https://posthog.com/privacy. Google Analytics privacy information: https://policies.google.com/privacy.',
       ],
     },
   ],
