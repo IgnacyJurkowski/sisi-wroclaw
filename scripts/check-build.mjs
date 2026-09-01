@@ -64,8 +64,8 @@ const LOCALES = ['pl', 'en', 'de', 'it', 'cs'];
 const PAGE_TITLES = {
   pl: {
     home: 'Klub muzyczny i bar koktajlowy we Wrocławiu | SiSi',
-    menu: 'Karta baru i koktajle | SiSi Wrocław',
-    contact: 'Kontakt i dane firmy | SiSi Wrocław',
+    menu: 'Karta baru i koktajle w SiSi Wrocław – menu klubu',
+    contact: 'Kontakt do klubu SiSi Wrocław – adres i dane firmy',
   },
   en: {
     home: 'Music Club & Cocktail Bar in Wrocław | SiSi',
@@ -211,8 +211,8 @@ for (const locale of LOCALES) {
 const RESERVATIONS = { pl: 'rezerwacje', en: 'reservations', de: 'reservierungen', it: 'prenotazioni', cs: 'rezervace' };
 const SEARCH_INTENT_META = {
   pl: {
-    careers: { route: 'kariera', title: 'Praca i kariera – SiSi Wrocław' },
-    reservations: { route: 'rezerwacje', title: 'Rezerwacja stolika – SiSi Wrocław' },
+    careers: { route: 'kariera', title: 'Praca w klubie SiSi Wrocław – dołącz do zespołu' },
+    reservations: { route: 'rezerwacje', title: 'Rezerwacja stolika w SiSi Wrocław – klub muzyczny' },
     corporate: { route: 'eventy-firmowe', description: 'Eventy firmowe w centrum Wrocławia: konferencje, prezentacje, kolacje i networking. 663 m², do 150 miejsc w The Cork i 2 ekrany.' },
   },
   en: {
@@ -963,6 +963,7 @@ try {
 const allHtml = htmls.map((file) => readFileSync(file, 'utf8')).join('\n');
 const sitemapXml = read('sitemap.xml');
 const robotsSource = readFileSync(join(ROOT, 'public/robots.txt'), 'utf8');
+const llmsSource = readFileSync(join(ROOT, 'public/llms.txt'), 'utf8');
 assert('rendered HTML uses the final www origin', allHtml.includes(CANONICAL_ORIGIN));
 assert('rendered HTML contains no bare absolute origin', !allHtml.includes(BARE_ORIGIN));
 assert('sitemap uses the final www origin', sitemapXml.includes(`<loc>${CANONICAL_ORIGIN}/`));
@@ -970,6 +971,12 @@ assert('sitemap contains no bare absolute origin', !sitemapXml.includes(BARE_ORI
 assert(
   'robots.txt names the final-host sitemap',
   robotsSource.includes(`Sitemap: ${CANONICAL_ORIGIN}/sitemap.xml`) && !robotsSource.includes(BARE_ORIGIN),
+);
+assert(
+  'llms.txt links use the final www origin and carry no unverified claim',
+  llmsSource.includes(CANONICAL_ORIGIN)
+    && !llmsSource.includes(BARE_ORIGIN)
+    && UNVERIFIED_CLAIMS.every(([, pattern]) => !pattern.test(llmsSource)),
 );
 // posthog-* chunks are third-party vendor payloads (astro.config manualChunks);
 // the strict first-party storage/claims scans exclude them, with their own
