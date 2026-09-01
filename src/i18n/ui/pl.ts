@@ -18,22 +18,25 @@ const pl = {
       ogDescription: 'Koncerty, DJ-e i imprezy tematyczne. Nadchodzące wydarzenia i archiwum SiSi Wrocław.',
     },
     menu: {
-      title: 'Karta baru i koktajle | SiSi Wrocław',
-      description: 'Karta baru SiSi Wrocław - autorskie koktajle, polskie wina, piwa belgijskie i Night Menu by The Cork.',
+      title: 'Karta baru i koktajle w SiSi Wrocław – menu klubu',
+      description:
+        'Karta baru SiSi Wrocław: autorskie koktajle, polskie wina, piwa belgijskie i Night Menu by The Cork. Zobacz pełne menu klubu muzycznego przy Rzeźniczej.',
       ogDescription: 'Autorskie koktajle, polskie wina i Night Menu by The Cork. Karta SiSi Wrocław.',
     },
     careers: {
-      title: 'Praca i kariera – SiSi Wrocław',
-      description: 'Dołącz do zespołu SiSi Wrocław - szukamy barmana, kelnerki i barbacka.',
+      title: 'Praca w klubie SiSi Wrocław – dołącz do zespołu',
+      description:
+        'Dołącz do zespołu SiSi Wrocław – szukamy barmana, kelnerki i barbacka. Praca głównie w piątki i soboty, w klubie muzycznym w kompleksie R32 przy Rzeźniczej.',
       ogDescription: 'Dołącz do zespołu SiSi Wrocław. Otwarte rekrutacje: barman, kelnerka, barback.',
     },
     reservations: {
-      title: 'Rezerwacja stolika – SiSi Wrocław',
-      description: 'Zarezerwuj stolik w SiSi Wrocław. Warunki rezerwacji i kontakt do eventów firmowych.',
+      title: 'Rezerwacja stolika w SiSi Wrocław – klub muzyczny',
+      description:
+        'Zarezerwuj stolik w SiSi Wrocław online. Koszt to 50 zł od osoby do wykorzystania przy stoliku. Sprawdź warunki rezerwacji i kontakt do eventów firmowych.',
       ogDescription: 'Stolik w SiSi: cała kwota rezerwacji do wykorzystania przy stoliku. Piątki i soboty od 22:00.',
     },
     corporate: {
-      title: 'Eventy firmowe - SiSi & The Cork Wrocław',
+      title: 'Eventy firmowe we Wrocławiu – SiSi i The Cork',
       description: 'Eventy firmowe w centrum Wrocławia: konferencje, prezentacje, kolacje i networking. 663 m², do 150 miejsc w The Cork i 2 ekrany.',
       ogDescription: 'Konferencje, prezentacje, kolacje i wieczorne eventy firmowe w centrum Wrocławia. SiSi & The Cork.',
     },
@@ -45,7 +48,7 @@ const pl = {
         'Zorganizuj urodziny, rocznicę lub prywatne przyjęcie w SiSi, The Cork albo całym R32. Wynajem na wyłączność, bar, catering, muzyka i indywidualna oferta.',
     },
     contact: {
-      title: 'Kontakt i dane firmy | SiSi Wrocław',
+      title: 'Kontakt do klubu SiSi Wrocław – adres i dane firmy',
       description:
         'Dane kontaktowe i informacje o podmiocie prowadzącym klub SiSi Wrocław - adres, telefon, e-mail oraz dane rejestrowe (NIP, REGON, KRS).',
       ogDescription: 'Dane kontaktowe i rejestrowe klubu SiSi Wrocław.',
@@ -57,17 +60,17 @@ const pl = {
       ogDescription: 'Przewodniki po nocnym życiu Wrocławia i pomysły na wieczór w SiSi.',
     },
     terms: {
-      title: 'Regulamin - SiSi Wrocław',
+      title: 'Regulamin klubu SiSi Wrocław – zasady i rezerwacje',
       description: 'Regulamin klubu SiSi Wrocław - zasady wstępu, rezerwacji stolików, przebywania na terenie lokalu i reklamacji.',
       ogDescription: 'Regulamin klubu SiSi Wrocław - wstęp, rezerwacje, zasady i reklamacje.',
     },
     privacy: {
-      title: 'Polityka prywatności - SiSi Wrocław',
+      title: 'Polityka prywatności SiSi Wrocław – ochrona danych',
       description: 'Polityka prywatności klubu SiSi Wrocław - administrator danych, cele i podstawy prawne przetwarzania oraz prawa wynikające z RODO.',
       ogDescription: 'Jak przetwarzamy dane osobowe w SiSi Wrocław - zgodnie z RODO.',
     },
     cookies: {
-      title: 'Polityka cookies - SiSi Wrocław',
+      title: 'Polityka cookies klubu SiSi Wrocław – informacje',
       description: 'Polityka cookies klubu SiSi Wrocław - pamięć niezbędna do zamknięcia komunikatów oraz obsługi formularzy i nawigacji.',
       ogDescription: 'Jak SiSi Wrocław korzysta z pamięci niezbędnej do obsługi komunikatów, formularzy i nawigacji.',
     },
