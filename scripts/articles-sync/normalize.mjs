@@ -122,6 +122,14 @@ export function normalizeArticle(raw, { locales, canonicalOrigin, bareHosts = []
   if (body.text.length < MIN_TEXT_LENGTH) errors.push(`content too short (${body.text.length} chars)`);
   const risky = residualRisk(body.html);
   if (risky.length) errors.push(`unsafe markup survived sanitising: ${risky.join(', ')}`);
+  // Backstop for the site-wide "no bare origin" gate: if any form still slipped
+  // through the rewrite, skip this row rather than let it fail the whole build.
+  for (const host of bareHosts) {
+    if (new RegExp(`https?://${host.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`, 'i').test(body.html)) {
+      errors.push('bare (non-www) origin survived sanitising');
+      break;
+    }
+  }
 
   const description = collapse(pick(raw, 'meta_description', 'metaDescription', 'description'))
     || excerptFrom(body.text, 155);

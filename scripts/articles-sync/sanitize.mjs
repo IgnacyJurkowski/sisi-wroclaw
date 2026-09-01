@@ -365,8 +365,10 @@ function safeUrl(value, imageOnly, ctx) {
   try {
     const url = new URL(raw);
     // The post-build check forbids the bare (non-www) origin anywhere in the
-    // rendered HTML, so rewrite our own links onto the canonical host.
-    if (ctx.bare.has(url.hostname.toLowerCase())) {
+    // rendered HTML, so rewrite our own links onto the canonical host. The
+    // trailing dot of a fully-qualified form is folded first, or
+    // "https://sisiwroclaw.pl./pl/" would slip past as a foreign host.
+    if (ctx.bare.has(url.hostname.toLowerCase().replace(/\.+$/, ''))) {
       url.hostname = ctx.canonicalHost;
       url.protocol = 'https:';
     }
@@ -379,7 +381,7 @@ function safeUrl(value, imageOnly, ctx) {
 function isExternal(href, ctx) {
   if (!/^https?:/i.test(href)) return false;
   try {
-    return new URL(href).hostname.toLowerCase() !== ctx.canonicalHost;
+    return new URL(href).hostname.toLowerCase().replace(/\.+$/, '') !== ctx.canonicalHost;
   } catch {
     return false;
   }

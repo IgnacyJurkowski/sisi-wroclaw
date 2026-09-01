@@ -112,7 +112,7 @@ const it: UI = {
   },
 
   cookie: {
-    text: 'Con il tuo consenso utilizziamo l\'analitica PostHog (statistiche delle visite e registrazioni delle sessioni) per migliorare il sito. Senza consenso raccogliamo solo statistiche anonime, senza salvare nulla nel browser. I dettagli sono disponibili nella nostra {cookies} e nella nostra {privacy}.',
+    text: 'Con il tuo consenso utilizziamo PostHog e Google Analytics (statistiche delle visite e registrazioni delle sessioni) per migliorare il sito. Senza consenso raccogliamo solo statistiche anonime, senza salvare nulla nel browser. I dettagli sono disponibili nella nostra {cookies} e nella nostra {privacy}.',
     cookiesLink: 'informativa sui cookie',
     privacyLink: 'informativa sulla privacy',
     accept: 'Accetto',
@@ -120,12 +120,6 @@ const it: UI = {
     dialogLabel: 'Consenso all\'analitica',
   },
 
-  popup: {
-    eyebrow: 'Orari estivi',
-    message: 'Durante l’estate SiSi è chiuso il venerdì, fino al 28 agosto 2026 compreso.',
-    dismiss: 'Ho capito',
-    close: 'Chiudi',
-  },
 
   buttons: {
     reserveOnline: 'Prenota online',

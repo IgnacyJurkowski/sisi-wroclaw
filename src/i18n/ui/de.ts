@@ -113,7 +113,7 @@ const de: UI = {
   },
 
   cookie: {
-    text: 'Mit deiner Einwilligung nutzen wir PostHog-Analytik (Besuchsstatistiken und Sitzungsaufzeichnungen), um die Website zu verbessern. Ohne Einwilligung erheben wir nur anonyme Statistiken, ohne etwas im Browser zu speichern. Einzelheiten findest du in unserer {cookies} und unserer {privacy}.',
+    text: 'Mit deiner Einwilligung nutzen wir PostHog und Google Analytics (Besuchsstatistiken und Sitzungsaufzeichnungen), um die Website zu verbessern. Ohne Einwilligung erheben wir nur anonyme Statistiken, ohne etwas im Browser zu speichern. Einzelheiten findest du in unserer {cookies} und unserer {privacy}.',
     cookiesLink: 'Cookie-Richtlinie',
     privacyLink: 'Datenschutzerklärung',
     accept: 'Einverstanden',
@@ -121,12 +121,6 @@ const de: UI = {
     dialogLabel: 'Einwilligung in die Analytik',
   },
 
-  popup: {
-    eyebrow: 'Sommer-Öffnungszeiten',
-    message: 'Im Sommer ist SiSi freitags geschlossen — bis einschließlich 28. August 2026.',
-    dismiss: 'Verstanden',
-    close: 'Schließen',
-  },
 
   buttons: {
     reserveOnline: 'Online buchen',

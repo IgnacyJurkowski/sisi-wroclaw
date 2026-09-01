@@ -5,9 +5,6 @@ import { once } from 'node:events';
 import { chromium } from 'playwright-core';
 
 const CHROME_PATH = '/usr/bin/google-chrome';
-const KEY = 'sisi-summer-fri-2026-dismissed';
-const BEFORE_CUTOFF = Date.parse('2026-08-28T21:59:00.000Z');
-const AT_CUTOFF = Date.parse('2026-08-28T22:00:00.000Z');
 
 async function reservePort() {
   const reservation = createServer();
@@ -50,77 +47,26 @@ async function stop(child) {
   }
 }
 
-async function contextAt(browser, nowMs, options = {}) {
-  const context = await browser.newContext(options);
-  await context.addInitScript((value) => { Date.now = () => value; }, nowMs);
-  return context;
-}
-
-async function clockPageAt(browser, nowMs) {
-  const context = await browser.newContext();
-  const page = await context.newPage();
-  await page.clock.install({ time: nowMs - 5_000 });
-  await page.clock.pauseAt(nowMs);
-  await context.addInitScript(() => {
-    const nativeSetItem = Storage.prototype.setItem;
-    globalThis.__summerNoticeStorageWrites = [];
-    Storage.prototype.setItem = function setItem(key, value) {
-      globalThis.__summerNoticeStorageWrites.push([key, value]);
-      return nativeSetItem.call(this, key, value);
-    };
-  });
-  return { context, page };
-}
-
-async function summerNoticeWrites(page) {
-  return page.evaluate((key) => globalThis.__summerNoticeStorageWrites.filter(([storedKey]) => storedKey === key), KEY);
+async function freshContext(browser, options = {}) {
+  return browser.newContext(options);
 }
 
 async function verifyFreshVisitor(browser, origin) {
-  const context = await contextAt(browser, BEFORE_CUTOFF);
+  const context = await freshContext(browser);
   const page = await context.newPage();
-  // The popup opens OPEN_DELAY after the window load event, precisely so it
-  // cannot steal focus from a visitor who is interacting while the page still
-  // settles - which is what this case asserts. Hold the preloaded font (a
-  // load-blocking request) until that focus has landed, so the ordering is
-  // fixed here rather than left to how fast the runner services the two CDP
-  // round-trips below; a loaded runner that takes longer than OPEN_DELAY used
-  // to open the popup first and fail the sequencing that follows.
-  let releaseFont = () => {};
-  const fontHeld = new Promise((resolve) => { releaseFont = resolve; });
-  let fontRequests = 0;
-  await page.route('**/*.woff2', async (route) => {
-    fontRequests += 1;
-    await fontHeld;
-    await route.continue();
-  });
-  await page.goto(`${origin}/pl/`, { waitUntil: 'domcontentloaded' });
-  const restoreTarget = page.locator('.nav-logo');
-  await restoreTarget.focus();
-  assert.equal(await restoreTarget.evaluate((element) => document.activeElement === element), true);
-  assert.ok(fontRequests > 0, 'no load-blocking font request to hold; the popup ordering would race');
-  assert.equal(await page.evaluate(() => document.readyState), 'interactive');
-  releaseFont();
-  await page.waitForLoadState('load');
-  const popup = page.locator('[data-summer-popup]');
+  await page.goto(`${origin}/pl/`, { waitUntil: 'load' });
+
+  // Nothing queues ahead of it now that the seasonal notice is retired, so a
+  // first-time visitor sees the consent banner straight away - and it stays
+  // gone once they have decided.
   const banner = page.locator('#cookie-banner');
-  await popup.waitFor({ state: 'visible' });
-  assert.equal(await banner.isVisible(), false, 'storage notice stacked under summer popup');
-  assert.equal(await page.evaluate(() => document.activeElement?.hasAttribute('data-popup-focus')), true);
-  await page.keyboard.press('Tab');
-  assert.equal(await page.evaluate(() => document.activeElement?.getAttribute('aria-label')), 'Zamknij');
-  await page.keyboard.press('Escape');
-  await popup.waitFor({ state: 'hidden' });
   await banner.waitFor({ state: 'visible' });
-  assert.equal(
-    await restoreTarget.evaluate((element) => document.activeElement === element),
-    true,
-    'popup dismissal did not restore the previously focused control',
-  );
-  assert.equal(await page.evaluate((key) => localStorage.getItem(key), KEY), 'dismissed');
+  assert.equal(await page.locator('[data-summer-popup]').count(), 0, 'retired seasonal popup is still rendered');
+
+  await page.locator('[data-consent-decline]').click();
+  await banner.waitFor({ state: 'hidden' });
   await page.reload({ waitUntil: 'load' });
-  assert.equal(await popup.isVisible(), false, 'dismissed popup returned on reload');
-  assert.equal(await banner.isVisible(), true, 'storage notice did not resume after dismissal');
+  assert.equal(await banner.isVisible(), false, 'consent banner returned after a decision');
   await context.close();
 }
 
@@ -129,14 +75,10 @@ async function verifyConsentChoices(browser, origin) {
     ['[data-consent-accept]', 'granted'],
     ['[data-consent-decline]', 'denied'],
   ]) {
-    const context = await contextAt(browser, BEFORE_CUTOFF);
+    const context = await freshContext(browser);
     const page = await context.newPage();
     await page.goto(`${origin}/pl/`, { waitUntil: 'load' });
-    const popup = page.locator('[data-summer-popup]');
     const banner = page.locator('#cookie-banner');
-    await popup.waitFor({ state: 'visible' });
-    await page.keyboard.press('Escape'); // resolve the summer popup first
-    await popup.waitFor({ state: 'hidden' });
     await banner.waitFor({ state: 'visible' });
     await page.locator(selector).click();
     await banner.waitFor({ state: 'hidden' });
@@ -152,7 +94,7 @@ async function verifyConsentChoices(browser, origin) {
 }
 
 async function verifyNoAnalyticsStorageBeforeConsent(browser, origin) {
-  const context = await contextAt(browser, BEFORE_CUTOFF);
+  const context = await freshContext(browser);
   const page = await context.newPage();
   await page.goto(`${origin}/pl/`, { waitUntil: 'load' });
   await page.waitForTimeout(1_500); // give posthog init time to (wrongly) write
@@ -168,14 +110,10 @@ async function verifyNoAnalyticsStorageBeforeConsent(browser, origin) {
 }
 
 async function verifyWithdrawControl(browser, origin) {
-  const context = await contextAt(browser, BEFORE_CUTOFF);
+  const context = await freshContext(browser);
   const page = await context.newPage();
   await page.goto(`${origin}/pl/`, { waitUntil: 'load' });
-  const popup = page.locator('[data-summer-popup]');
   const banner = page.locator('#cookie-banner');
-  await popup.waitFor({ state: 'visible' });
-  await page.keyboard.press('Escape');
-  await popup.waitFor({ state: 'hidden' });
   await banner.waitFor({ state: 'visible' });
   await page.locator('[data-consent-accept]').click();
   await banner.waitFor({ state: 'hidden' });
@@ -197,7 +135,7 @@ async function verifyWithdrawControl(browser, origin) {
 }
 
 async function verifyStorageDenial(browser, origin) {
-  const context = await contextAt(browser, BEFORE_CUTOFF);
+  const context = await freshContext(browser);
   await context.addInitScript(() => {
     for (const method of ['getItem', 'setItem', 'removeItem']) {
       Object.defineProperty(Storage.prototype, method, {
@@ -208,125 +146,12 @@ async function verifyStorageDenial(browser, origin) {
   });
   const page = await context.newPage();
   await page.goto(`${origin}/en/`, { waitUntil: 'load' });
-  const popup = page.locator('[data-summer-popup]');
+  // Denied storage must still let the visitor decide; the banner just returns
+  // on the next visit because nothing could be remembered.
   const banner = page.locator('#cookie-banner');
-  await popup.waitFor({ state: 'visible' });
-  assert.equal(await banner.isVisible(), false, 'storage notice stacked when storage access was denied');
-  await page.locator('[data-popup-focus]').click();
-  await popup.waitFor({ state: 'hidden' });
   await banner.waitFor({ state: 'visible' });
-  await context.close();
-}
-
-async function verifyShortViewport(browser, origin) {
-  const viewport = { width: 667, height: 240 };
-  const context = await contextAt(browser, BEFORE_CUTOFF, { viewport });
-  const page = await context.newPage();
-  await page.goto(`${origin}/pl/`, { waitUntil: 'load' });
-  const popup = page.locator('[data-summer-popup]');
-  const dialog = popup.getByRole('dialog');
-  const close = popup.locator('.sisi-popup-x');
-  const confirm = popup.locator('[data-popup-focus]');
-  await popup.waitFor({ state: 'visible' });
-
-  const scrollState = await dialog.evaluate((element) => ({
-    clientHeight: element.clientHeight,
-    scrollHeight: element.scrollHeight,
-    overflowY: getComputedStyle(element).overflowY,
-  }));
-  assert.equal(scrollState.overflowY, 'auto', 'short popup dialog is not vertically scrollable');
-  assert.ok(scrollState.scrollHeight > scrollState.clientHeight, 'short popup dialog does not expose overflow');
-
-  for (const [name, control] of [['close', close], ['confirmation', confirm]]) {
-    await control.scrollIntoViewIfNeeded();
-    const box = await control.boundingBox();
-    assert.ok(
-      box && box.y >= 0 && box.y + box.height <= viewport.height,
-      `${name} control cannot be brought into the short viewport`,
-    );
-  }
-  await context.close();
-}
-
-async function verifyDelayedOpenRechecksCutoff(browser, origin) {
-  const { context, page } = await clockPageAt(browser, AT_CUTOFF - 1_000);
-  await page.goto(`${origin}/pl/`, { waitUntil: 'load' });
-  const popup = page.locator('[data-summer-popup]');
-  const banner = page.locator('#cookie-banner');
-
-  assert.equal(await popup.isVisible(), false, 'summer popup opened before its delayed callback');
-  assert.equal(await banner.isVisible(), false, 'storage notice appeared before the summer notice resolved');
-  await page.clock.setSystemTime(AT_CUTOFF);
-  await page.clock.runFor(600);
-  assert.equal(await popup.isVisible(), false, 'delayed callback opened stale summer copy after cutoff');
-  await banner.waitFor({ state: 'visible' });
-  assert.equal(await popup.getAttribute('data-notice-state'), 'resolved');
-  assert.equal(await page.evaluate((key) => localStorage.getItem(key), KEY), null);
-  assert.deepEqual(await summerNoticeWrites(page), []);
-  await context.close();
-}
-
-async function verifyOpenPopupExpiresAtCutoff(browser, origin) {
-  const { context, page } = await clockPageAt(browser, AT_CUTOFF - 1_000);
-  await page.goto(`${origin}/pl/`, { waitUntil: 'load' });
-  const restoreTarget = page.locator('.nav-logo');
-  await restoreTarget.focus();
-  const popup = page.locator('[data-summer-popup]');
-  const banner = page.locator('#cookie-banner');
-
-  await page.clock.runFor(600);
-  assert.equal(await popup.isVisible(), true, 'summer popup did not open before cutoff');
-  assert.equal(await banner.isVisible(), false, 'storage notice stacked before cutoff');
-  await page.clock.runFor(400);
-  await popup.waitFor({ state: 'hidden' });
-  await banner.waitFor({ state: 'visible' });
-  assert.equal(
-    await restoreTarget.evaluate((element) => document.activeElement === element),
-    true,
-    'cutoff dismissal did not restore the previously focused control',
-  );
-  assert.equal(await page.evaluate((key) => localStorage.getItem(key), KEY), null);
-  assert.deepEqual(await summerNoticeWrites(page), []);
-  await context.close();
-}
-
-async function verifyExpiredManualDismissalDoesNotPersist(browser, origin) {
-  const { context, page } = await clockPageAt(browser, AT_CUTOFF - 1_000);
-  await page.goto(`${origin}/en/`, { waitUntil: 'load' });
-  const popup = page.locator('[data-summer-popup]');
-  const banner = page.locator('#cookie-banner');
-
-  await page.clock.runFor(600);
-  assert.equal(await popup.isVisible(), true, 'summer popup did not open before manual cutoff race');
-  await page.clock.setSystemTime(AT_CUTOFF);
-  await page.locator('[data-popup-focus]').click();
-  await popup.waitFor({ state: 'hidden' });
-  await banner.waitFor({ state: 'visible' });
-  assert.equal(await page.evaluate((key) => localStorage.getItem(key), KEY), null);
-  assert.deepEqual(await summerNoticeWrites(page), []);
-  await context.close();
-}
-
-async function verifyCutoffTransitions(browser, origin) {
-  const results = await Promise.allSettled([
-    verifyDelayedOpenRechecksCutoff(browser, origin),
-    verifyOpenPopupExpiresAtCutoff(browser, origin),
-    verifyExpiredManualDismissalDoesNotPersist(browser, origin),
-  ]);
-  const failures = results.filter(({ status }) => status === 'rejected').map(({ reason }) => reason);
-  if (failures.length === 1) throw failures[0];
-  if (failures.length > 1) throw new AggregateError(failures, 'summer cutoff transition regressions failed');
-}
-
-async function verifyExpiry(browser, origin) {
-  const context = await contextAt(browser, AT_CUTOFF);
-  const page = await context.newPage();
-  await page.goto(`${origin}/pl/`, { waitUntil: 'load' });
-  assert.equal(await page.locator('[data-summer-popup]').isVisible(), false);
-  await page.locator('#cookie-banner').waitFor({ state: 'visible' });
-  await page.evaluate((key) => localStorage.setItem(key, 'dismissed'), KEY);
-  await page.reload({ waitUntil: 'load' });
-  assert.equal(await page.evaluate((key) => localStorage.getItem(key), KEY), null);
+  await page.locator('[data-consent-decline]').click();
+  await banner.waitFor({ state: 'hidden' });
   await context.close();
 }
 
@@ -346,10 +171,7 @@ try {
   await verifyNoAnalyticsStorageBeforeConsent(browser, origin);
   await verifyWithdrawControl(browser, origin);
   await verifyStorageDenial(browser, origin);
-  await verifyShortViewport(browser, origin);
-  await verifyCutoffTransitions(browser, origin);
-  await verifyExpiry(browser, origin);
-  console.log('PASS summer, consent, and withdrawal notices are sequenced, disclosed, and time-bounded');
+  console.log('PASS consent and withdrawal notices are disclosed, guarded, and remembered');
 } finally {
   if (browser) await browser.close();
   await stop(preview);

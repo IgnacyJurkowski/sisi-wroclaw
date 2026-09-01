@@ -118,28 +118,12 @@ const emptyBlogCopy = {
   cs: 'První příspěvky se objeví brzy.',
 };
 const noticeCopy = {
-  pl: 'Za Twoją zgodą używamy analityki PostHog (statystyki odwiedzin i nagrania sesji), aby ulepszać stronę. Bez zgody zbieramy wyłącznie anonimowe statystyki, bez zapisu w pamięci przeglądarki. Szczegóły znajdziesz w Polityce cookies oraz Polityce prywatności.',
-  en: 'With your consent we use PostHog analytics (visit statistics and session recordings) to improve the site. Without consent we collect only anonymous statistics, with nothing stored in your browser. Details are in our Cookie Policy and Privacy Policy.',
-  de: 'Mit deiner Einwilligung nutzen wir PostHog-Analytik (Besuchsstatistiken und Sitzungsaufzeichnungen), um die Website zu verbessern. Ohne Einwilligung erheben wir nur anonyme Statistiken, ohne etwas im Browser zu speichern. Einzelheiten findest du in unserer Cookie-Richtlinie und unserer Datenschutzerklärung.',
-  it: 'Con il tuo consenso utilizziamo l\'analitica PostHog (statistiche delle visite e registrazioni delle sessioni) per migliorare il sito. Senza consenso raccogliamo solo statistiche anonime, senza salvare nulla nel browser. I dettagli sono disponibili nella nostra informativa sui cookie e nella nostra informativa sulla privacy.',
-  cs: 'S vaším souhlasem používáme analytiku PostHog (statistiky návštěv a nahrávky relací) ke zlepšování webu. Bez souhlasu sbíráme pouze anonymní statistiky, bez ukládání do prohlížeče. Podrobnosti najdete v našich zásadách používání souborů cookie a zásadách ochrany soukromí.',
+  pl: 'Za Twoją zgodą używamy analityki PostHog i Google Analytics (statystyki odwiedzin i nagrania sesji), aby ulepszać stronę. Bez zgody zbieramy wyłącznie anonimowe statystyki, bez zapisu w pamięci przeglądarki. Szczegóły znajdziesz w Polityce cookies oraz Polityce prywatności.',
+  en: 'With your consent we use PostHog and Google Analytics (visit statistics and session recordings) to improve the site. Without consent we collect only anonymous statistics, with nothing stored in your browser. Details are in our Cookie Policy and Privacy Policy.',
+  de: 'Mit deiner Einwilligung nutzen wir PostHog und Google Analytics (Besuchsstatistiken und Sitzungsaufzeichnungen), um die Website zu verbessern. Ohne Einwilligung erheben wir nur anonyme Statistiken, ohne etwas im Browser zu speichern. Einzelheiten findest du in unserer Cookie-Richtlinie und unserer Datenschutzerklärung.',
+  it: 'Con il tuo consenso utilizziamo PostHog e Google Analytics (statistiche delle visite e registrazioni delle sessioni) per migliorare il sito. Senza consenso raccogliamo solo statistiche anonime, senza salvare nulla nel browser. I dettagli sono disponibili nella nostra informativa sui cookie e nella nostra informativa sulla privacy.',
+  cs: 'S vaším souhlasem používáme analytiku PostHog a Google Analytics (statistiky návštěv a nahrávky relací) ke zlepšování webu. Bez souhlasu sbíráme pouze anonymní statistiky, bez ukládání do prohlížeče. Podrobnosti najdete v našich zásadách používání souborů cookie a zásadách ochrany soukromí.',
 };
-const summerPopupCopy = {
-  pl: 'W wakacje SiSi jest zamknięte w piątki — do 28 sierpnia 2026 r. włącznie.',
-  en: 'During the summer, SiSi is closed on Fridays — through 28 August 2026 inclusive.',
-  de: 'Im Sommer ist SiSi freitags geschlossen — bis einschließlich 28. August 2026.',
-  it: 'Durante l’estate SiSi è chiuso il venerdì, fino al 28 agosto 2026 compreso.',
-  cs: 'Během léta je SiSi v pátek zavřené — až do 28. srpna 2026 včetně.',
-};
-const summerPopupEyebrow = {
-  pl: 'Wakacyjne godziny',
-  en: 'Summer hours',
-  de: 'Sommer-Öffnungszeiten',
-  it: 'Orari estivi',
-  cs: 'Letní otevírací doba',
-};
-const summerPopupDismiss = { pl: 'Rozumiem', en: 'Got it', de: 'Verstanden', it: 'Ho capito', cs: 'Rozumím' };
-const summerPopupClose = { pl: 'Zamknij', en: 'Close', de: 'Schließen', it: 'Chiudi', cs: 'Zavřít' };
 const consentAcceptLabel = { pl: 'Zgadzam się', en: 'Accept', de: 'Einverstanden', it: 'Accetto', cs: 'Souhlasím' };
 const consentDeclineLabel = { pl: 'Odmawiam', en: 'Decline', de: 'Ablehnen', it: 'Rifiuto', cs: 'Odmítám' };
 const consentDialogLabel = {
@@ -674,9 +658,6 @@ assert('form fallback email remains in HTML', enB2B.includes('href="mailto:event
 // --- consent banner: PostHog analytics accept/decline choice per locale ---
 for (const locale of LOCALES) {
   const home = read(`${locale}/index.html`);
-  const popupStart = home.indexOf('<div class="sisi-popup"');
-  const popupEnd = home.indexOf('<div id="cookie-banner"', popupStart);
-  const popupMarkup = popupStart >= 0 && popupEnd > popupStart ? home.slice(popupStart, popupEnd) : '';
   const bannerTag = home.match(/<div id="cookie-banner"\s[^>]*>/)?.[0] ?? '';
   const bannerBody = home.match(/<div id="cookie-banner"\s[^>]*>[\s\S]*?<\/div><script\b/)?.[0] ?? '';
   const renderedText = (bannerBody.match(/<p class="cookie-text">([\s\S]*?)<\/p>/)?.[1] ?? '')
@@ -702,22 +683,6 @@ for (const locale of LOCALES) {
     home.includes('data-consent-accept')
       && home.includes('data-consent-decline')
       && !home.includes('data-cookie-dismiss'),
-  );
-  assert(`${locale} has one summer-hours popup`, (home.match(/data-summer-popup/g) || []).length === 1);
-  assert(`${locale} has exact summer-hours copy`, home.includes(summerPopupCopy[locale]));
-  assert(
-    `${locale} has exact summer-hours eyebrow`,
-    popupMarkup.includes(`>${summerPopupEyebrow[locale]}</p>`),
-  );
-  assert(
-    `${locale} has exact summer-hours confirmation copy`,
-    popupMarkup.includes(`>${summerPopupDismiss[locale]}</button>`),
-  );
-  assert(
-    `${locale} summer popup is an accessible modal`,
-    home.includes('role="dialog" aria-modal="true"')
-      && (home.match(/data-popup-focus/g) || []).length === 1
-      && home.includes(`aria-label="${summerPopupClose[locale]}"`),
   );
 }
 for (const [locale, { route, description, ogDescription }] of Object.entries(cookieMeta)) {
@@ -775,12 +740,14 @@ try {
 const bootstrapHash = "'sha256-/x7W7R75k8Roq0WaVRQX9blP4OufE5xbAdzklGxsgpw='";
 const expectedCsp = [
   "default-src 'self'",
-  `script-src 'self' ${bootstrapHash}`,
+  `script-src 'self' ${bootstrapHash} https://www.googletagmanager.com`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: https:",
   "font-src 'self' data:",
   "media-src 'self'",
-  "connect-src 'self'",
+  // Google Analytics 4: gtag.js is fetched from googletagmanager and reports to
+  // the google-analytics collectors; nothing else third-party is permitted.
+  "connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com",
   "form-action 'self'",
   "base-uri 'self'",
   "object-src 'none'",
@@ -1014,11 +981,11 @@ const externalScriptBodies = firstPartyScripts.map((file) => readFileSync(file, 
 const inlineScriptBodies = htmls.flatMap((file) => executableInlineScripts(readFileSync(file, 'utf8')));
 const executableBuiltText = [...externalScriptBodies, ...inlineScriptBodies].join('\n');
 assert(
-  'rendered pages include the time-bounded summer-hours modal and season-specific key',
-  allHtml.includes('data-summer-popup')
-    && executableBuiltText.includes('sisi-summer-fri-2026-dismissed')
-    && executableBuiltText.includes('2026-08-28T22:00:00.000Z')
-    && !/[`'"]sisi-summer-fri-dismissed[`'"]/.test(executableBuiltText),
+  'the retired summer-hours notice leaves nothing behind in the rendered site',
+  !allHtml.includes('data-summer-popup')
+    && !allHtml.includes('sisi-summer-fri')
+    && !executableBuiltText.includes('sisi-summer-fri')
+    && !executableBuiltText.includes('2026-08-28T22:00:00.000Z'),
 );
 assert('build inventory finds external JavaScript', scripts.length > 0);
 assert(
@@ -1067,16 +1034,19 @@ assert('executable build text excludes JSON-LD payloads', !executableBuiltText.i
 const consentScanText = executableBuiltText.replace(/status\s*(?::\s*|===\s*)[`'"](?:fulfilled|rejected)[`'"]/g, '');
 assert(
   'notice and consent runtimes use only the disclosed records and values',
+  // First-party storage now goes through the consent module's safeLocalStorage
+  // handle rather than direct localStorage.* calls (those literals remain only
+  // inside the excluded PostHog chunk), so the inventory asserts on the handle
+  // and the accessors it uses.
   [
     'sisi-cookie-notice', // legacy cleanup only
     'sisi-analytics-consent',
     'granted',
     'denied',
-    'sisi-summer-fri-2026-dismissed',
-    'dismissed',
-    'localStorage.removeItem',
-    'localStorage.getItem',
-    'localStorage.setItem',
+    'globalThis.localStorage',
+    'removeItem',
+    'getItem',
+    'setItem',
   ].every((token) => executableBuiltText.includes(token))
     && !/[`'"](?:accepted|rejected)[`'"]/.test(consentScanText),
 );
@@ -1085,13 +1055,6 @@ assert(
   'first-party runtime initializes posthog through the /ph proxy',
   executableBuiltText.includes('phc_xGAJevJfPpYyrixXMnpJb43nDCz2fVHpnJBbaoDyNgeu')
     && /api_host\s*:\s*[`"']\/ph[`"']/.test(executableBuiltText),
-);
-const popupSourcePath = join(ROOT, 'src/components/Popup.astro');
-const popupSource = existsSync(popupSourcePath) ? readFileSync(popupSourcePath, 'utf8') : '';
-assert(
-  'summer notice storage reads, cleanup, and writes are guarded',
-  /try\s*\{[\s\S]*?localStorage\.removeItem\(SUMMER_FRIDAY_NOTICE\.storageKey\)[\s\S]*?localStorage\.getItem\(SUMMER_FRIDAY_NOTICE\.storageKey\)[\s\S]*?\}\s*catch\s*\{\}/.test(popupSource)
-    && /try\s*\{\s*localStorage\.setItem\(SUMMER_FRIDAY_NOTICE\.storageKey,\s*['"]dismissed['"]\);?\s*\}\s*catch\s*\{\}/.test(popupSource),
 );
 assert(
   'B2B UTM call site passes location.search through the bounded helper',

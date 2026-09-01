@@ -116,7 +116,7 @@ const pl = {
 
   cookie: {
     // {cookies} and {privacy} are replaced with links to the policy pages.
-    text: 'Za Twoją zgodą używamy analityki PostHog (statystyki odwiedzin i nagrania sesji), aby ulepszać stronę. Bez zgody zbieramy wyłącznie anonimowe statystyki, bez zapisu w pamięci przeglądarki. Szczegóły znajdziesz w {cookies} oraz {privacy}.',
+    text: 'Za Twoją zgodą używamy analityki PostHog i Google Analytics (statystyki odwiedzin i nagrania sesji), aby ulepszać stronę. Bez zgody zbieramy wyłącznie anonimowe statystyki, bez zapisu w pamięci przeglądarki. Szczegóły znajdziesz w {cookies} oraz {privacy}.',
     cookiesLink: 'Polityce cookies',
     privacyLink: 'Polityce prywatności',
     accept: 'Zgadzam się',
@@ -124,12 +124,6 @@ const pl = {
     dialogLabel: 'Zgoda na analitykę',
   },
 
-  popup: {
-    eyebrow: 'Wakacyjne godziny',
-    message: 'W wakacje SiSi jest zamknięte w piątki — do 28 sierpnia 2026 r. włącznie.',
-    dismiss: 'Rozumiem',
-    close: 'Zamknij',
-  },
 
   buttons: {
     reserveOnline: 'Zarezerwuj online',

@@ -113,7 +113,7 @@ const cs: UI = {
   },
 
   cookie: {
-    text: 'S vaším souhlasem používáme analytiku PostHog (statistiky návštěv a nahrávky relací) ke zlepšování webu. Bez souhlasu sbíráme pouze anonymní statistiky, bez ukládání do prohlížeče. Podrobnosti najdete v našich {cookies} a {privacy}.',
+    text: 'S vaším souhlasem používáme analytiku PostHog a Google Analytics (statistiky návštěv a nahrávky relací) ke zlepšování webu. Bez souhlasu sbíráme pouze anonymní statistiky, bez ukládání do prohlížeče. Podrobnosti najdete v našich {cookies} a {privacy}.',
     cookiesLink: 'zásadách používání souborů cookie',
     privacyLink: 'zásadách ochrany soukromí',
     accept: 'Souhlasím',
@@ -121,12 +121,6 @@ const cs: UI = {
     dialogLabel: 'Souhlas s analytikou',
   },
 
-  popup: {
-    eyebrow: 'Letní otevírací doba',
-    message: 'Během léta je SiSi v pátek zavřené — až do 28. srpna 2026 včetně.',
-    dismiss: 'Rozumím',
-    close: 'Zavřít',
-  },
 
   buttons: {
     reserveOnline: 'Rezervovat online',

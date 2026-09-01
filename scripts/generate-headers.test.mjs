@@ -112,12 +112,14 @@ test('renders the complete launch policy without wildcard CORS', () => {
   const rules = headerPolicy.parseHeaderRules(output);
   const policy = [
     "default-src 'self'",
-    `script-src 'self' ${BOOTSTRAP_HASH}`,
+    // Google Analytics 4 is the only third-party origin in the policy: gtag.js
+    // is fetched from googletagmanager and reports to the GA collectors.
+    `script-src 'self' ${BOOTSTRAP_HASH} https://www.googletagmanager.com`,
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: https:",
     "font-src 'self' data:",
     "media-src 'self'",
-    "connect-src 'self'",
+    "connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com",
     "form-action 'self'",
     "base-uri 'self'",
     "object-src 'none'",
