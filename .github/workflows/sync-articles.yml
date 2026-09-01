@@ -1,0 +1,86 @@
+name: Sync blog articles from BabyLoveGrowth
+
+# Pulls the BabyLoveGrowth article feed into src/data/articles.generated.ts +
+# public/blog/, builds + tests as a gate, then commits and triggers a Netlify
+# rebuild. New articles publish on their own; nobody touches git.
+#
+# Secrets: BABYLOVEGROWTH_API_KEY (integration key), EVENT_SYNC_DEPLOY_KEY (the
+# repo's content-sync deploy key, shared with the events sync), and
+# NETLIFY_DEPLOY_HOOK.
+
+on:
+  schedule:
+    # Hourly at :23 - off the hour, where GitHub's best-effort scheduler is most
+    # heavily delayed. The vendor publishes a few articles a week, so an hourly
+    # pull is far more often than needed; use "Run workflow" for an instant sync.
+    - cron: '23 * * * *'
+  workflow_dispatch: {}
+
+# Never let two syncs (cron + manual) race each other or a human push.
+concurrency:
+  group: sync-articles
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          ssh-key: ${{ secrets.EVENT_SYNC_DEPLOY_KEY }}
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22.12.0'
+          cache: npm
+
+      - run: npm ci
+
+      # Read-only API pull. On the bad-row policy (more than half the fetches
+      # failing / an empty feed while articles are published / a >50% drop) the
+      # script exits non-zero, so the job stops here and the last-good committed
+      # file stays untouched.
+      - name: Sync articles from BabyLoveGrowth
+        id: sync
+        env:
+          BABYLOVEGROWTH_API_KEY: ${{ secrets.BABYLOVEGROWTH_API_KEY }}
+        run: |
+          node scripts/sync-articles.mjs
+          if [ -n "$(git status --porcelain src/data/articles.generated.ts public/blog)" ]; then
+            echo 'changed=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'changed=false' >> "$GITHUB_OUTPUT"
+            echo 'No article changes; nothing to publish.'
+          fi
+
+      # Build gate: never push a generated commit that breaks the site build.
+      # Skipped when the sync produced nothing, so the ~23 idle runs a day cost
+      # an API pull rather than a full build and browser suite.
+      - name: Build + test
+        if: steps.sync.outputs.changed == 'true'
+        run: npm test
+
+      - name: Commit, push, and deploy
+        if: steps.sync.outputs.changed == 'true'
+        env:
+          NETLIFY_DEPLOY_HOOK: ${{ secrets.NETLIFY_DEPLOY_HOOK }}
+        run: |
+          git config user.name "sisi-articles-bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/data/articles.generated.ts
+          # public/blog exists only once an article has a usable hero image, and
+          # naming a path that matches nothing aborts git add; -A also stages
+          # deletions when a sync pruned the last image.
+          if [ -n "$(git status --porcelain -- public/blog)" ]; then
+            git add -A -- public/blog
+          fi
+          git commit -m "chore(blog): sync articles from BabyLoveGrowth"
+          git pull --rebase --autostash origin main
+          # Re-test the exact rebased commit so concurrent main changes cannot
+          # bypass the release gate before the protected-branch push.
+          npm test
+          git push
+          curl --fail-with-body --silent --show-error -X POST "$NETLIFY_DEPLOY_HOOK"

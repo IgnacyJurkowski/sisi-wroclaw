@@ -47,6 +47,12 @@ const it: UI = {
         'Contatti e informazioni societarie del SiSi Wrocław - indirizzo, telefono, e-mail e dati di registro (NIP, REGON, KRS).',
       ogDescription: 'Contatti e dati societari del SiSi Wrocław.',
     },
+    blog: {
+      title: 'Blog | SiSi Wrocław',
+      description:
+        'Il blog di SiSi Wrocław - guide alla vita notturna di Breslavia, idee per la serata e appunti direttamente dal club in via Rzeźnicza.',
+      ogDescription: 'Guide alla vita notturna di Breslavia e idee per una serata al SiSi.',
+    },
     terms: {
       title: 'Regolamento - SiSi Wrocław',
       description: 'Regolamento del SiSi Wrocław - ingresso, prenotazione dei tavoli, comportamento nel locale e reclami.',
@@ -82,6 +88,7 @@ const it: UI = {
     privateEvents: 'Eventi privati',
     reservations: 'Prenotazioni',
     contact: 'Contatti',
+    blog: 'Blog',
     terms: 'Regolamento',
     privacy: 'Privacy',
     cookies: 'Cookie',
@@ -221,6 +228,19 @@ const it: UI = {
     finished: 'Evento concluso',
     freeEntry: 'Ingresso libero',
     entry: 'Ingresso',
+  },
+
+  blogPage: {
+    label: 'Dal blog',
+    title: 'Blog',
+    subtitle: 'Guide alla vita notturna di Breslavia, idee per la serata e appunti direttamente dal club.',
+    empty: 'I primi articoli arriveranno presto.',
+    readMore: 'Continua a leggere',
+    readingTime: '{minutes} min di lettura',
+    back: 'Tutti gli articoli',
+    updated: 'Aggiornato:',
+    faq: 'Domande frequenti',
+    ctaText: 'Stai organizzando una serata al SiSi? Prenota un tavolo in via Rzeźnicza 32-33.',
   },
 
   menuPage: {

@@ -1,0 +1,187 @@
+---
+import Base from '../../layouts/Base.astro';
+import { articleAlternates, articleSchema, type ArticleItem } from '../../data/articles';
+import { type Locale } from '../../i18n/config';
+import { articlePath, localizedPath } from '../../i18n/routes';
+import { formatLongDate } from '../../i18n/format';
+import { useTranslations, interpolate } from '../../i18n/t';
+
+interface Props { locale: Locale; article: ArticleItem }
+const { locale, article } = Astro.props;
+const t = useTranslations(locale);
+
+const reading = interpolate(t.blogPage.readingTime, { minutes: String(article.readingMinutes) });
+const metaTitle = `${article.title} | SiSi Wrocław`;
+const updated = article.updatedAt && article.updatedAt !== article.publishedAt ? article.updatedAt : undefined;
+const HERO_SIZES = '(max-width: 920px) 92vw, 880px';
+---
+
+<Base
+  locale={locale}
+  routeKey="blog"
+  path={articlePath(article.slug, locale)}
+  altPaths={articleAlternates(article.slug)}
+  title={metaTitle}
+  description={article.description}
+  ogTitle={article.title}
+  ogDescription={article.description}
+  ogImage={article.img}
+  ogType="article"
+  publishedTime={article.publishedAt}
+  modifiedTime={article.updatedAt ?? article.publishedAt}
+  preloadImage={article.img}
+  preloadImageSrcset={article.imgSrcset}
+  preloadImageSizes={HERO_SIZES}
+  schema={articleSchema(article, locale)}
+>
+  <article class="ba">
+    <a class="ba-back" href={localizedPath('blog', locale)} data-reveal>
+      <span aria-hidden="true">←</span> {t.blogPage.back}
+    </a>
+
+    <header class="ba-head" data-reveal>
+      <p class="ba-meta">
+        <time datetime={article.publishedAt}>{formatLongDate(article.publishedAt, locale)}</time>
+        <span aria-hidden="true">·</span>
+        <span>{reading}</span>
+      </p>
+      <h1 class="display ba-title">{article.title}</h1>
+      {updated && (
+        <p class="ba-updated">
+          {t.blogPage.updated} <time datetime={updated}>{formatLongDate(updated, locale)}</time>
+        </p>
+      )}
+    </header>
+
+    {article.img && (
+      <div class="ba-hero" data-reveal>
+        <img
+          src={article.img}
+          srcset={article.imgSrcset}
+          sizes={HERO_SIZES}
+          width={article.imgWidth}
+          height={article.imgHeight}
+          alt={article.title}
+          fetchpriority="high"
+        />
+      </div>
+    )}
+
+    {/* Sanitised at sync time: allow-listed tags and attributes only, no
+        scripts, styles or inline handlers (scripts/articles-sync/sanitize.mjs). */}
+    <div class="ba-body" data-reveal set:html={article.html} />
+
+    {article.faq && article.faq.length > 0 && (
+      <section class="ba-faq" data-reveal aria-labelledby="ba-faq-title">
+        <h2 class="display" id="ba-faq-title">{t.blogPage.faq}</h2>
+        <dl>
+          {article.faq.map((entry) => (
+            <div class="ba-faq-item">
+              <dt>{entry.question}</dt>
+              <dd>{entry.answer}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+    )}
+
+    <aside class="ba-cta" data-reveal>
+      <p>{t.blogPage.ctaText}</p>
+      <a href={localizedPath('reservations', locale)} class="btn-cta">{t.buttons.bookTable}</a>
+    </aside>
+  </article>
+</Base>
+
+<style>
+  .ba {
+    max-width: 920px;
+    margin: 0 auto;
+    /* Clear the fixed nav the same way .page-header does on the hub pages. */
+    padding: calc(var(--nav-height) + 2.5rem) 20px 96px;
+  }
+  .ba-back {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--text-dim); text-decoration: none; margin-bottom: 28px;
+    transition: color 200ms ease;
+  }
+  .ba-back:hover { color: var(--cream); }
+  .ba-meta {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+    font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text-mute); margin: 0 0 12px;
+  }
+  .ba-title { font-size: clamp(1.9rem, 5vw, 3rem); line-height: 1.1; }
+  .ba-updated { margin-top: 10px; font-size: 13px; color: var(--text-mute); }
+  .ba-hero {
+    margin-top: 28px; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.08); background: var(--panel);
+  }
+  .ba-hero img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* The body is injected with set:html, so its rules must be :global — scoped
+     hashes are only applied to elements present in this template. */
+  .ba-body {
+    margin-top: 36px;
+    font-size: 17px; line-height: 1.75; color: var(--text-dim);
+    max-width: 68ch;
+  }
+  .ba-body :global(h2) {
+    font-family: 'Cal Sans', system-ui, sans-serif;
+    font-size: clamp(1.35rem, 3vw, 1.8rem); line-height: 1.2;
+    color: var(--cream); margin: 44px 0 14px;
+  }
+  .ba-body :global(h3) {
+    font-size: clamp(1.1rem, 2.4vw, 1.3rem); color: var(--cream); margin: 32px 0 12px;
+  }
+  .ba-body :global(h4) { font-size: 1.05rem; color: var(--cream); margin: 26px 0 10px; }
+  .ba-body :global(p) { margin: 0 0 18px; }
+  .ba-body :global(a) { color: var(--gold); text-underline-offset: 3px; }
+  .ba-body :global(a:hover) { color: var(--cream-hover); }
+  .ba-body :global(strong) { color: var(--cream); }
+  .ba-body :global(ul), .ba-body :global(ol) { margin: 0 0 18px; padding-left: 22px; }
+  .ba-body :global(li) { margin-bottom: 8px; }
+  .ba-body :global(img) { max-width: 100%; height: auto; border-radius: 14px; margin: 24px 0; }
+  .ba-body :global(figure) { margin: 24px 0; }
+  .ba-body :global(figcaption) { font-size: 13px; color: var(--text-mute); margin-top: 8px; }
+  .ba-body :global(blockquote) {
+    margin: 26px 0; padding: 16px 22px;
+    border-left: 2px solid var(--line); color: var(--cream);
+    background: rgba(39, 7, 15, 0.42);
+    border-radius: 0 12px 12px 0;
+  }
+  .ba-body :global(hr) { border: 0; border-top: 1px solid var(--line); margin: 34px 0; }
+  .ba-body :global(code) {
+    font-size: 0.92em; padding: 2px 6px; border-radius: 6px;
+    background: rgba(237, 219, 194, 0.1);
+  }
+  .ba-body :global(pre) { overflow-x: auto; padding: 16px; border-radius: 12px; background: var(--panel); }
+  /* Wide tables scroll inside the column instead of widening the page. */
+  .ba-body :global(table) {
+    display: block; overflow-x: auto; width: 100%;
+    border-collapse: collapse; margin: 24px 0; font-size: 15px;
+  }
+  .ba-body :global(th), .ba-body :global(td) {
+    border: 1px solid var(--line); padding: 10px 14px; text-align: left; vertical-align: top;
+  }
+  .ba-body :global(th) { color: var(--cream); }
+
+  .ba-faq { margin-top: 56px; max-width: 68ch; }
+  .ba-faq h2 { font-size: clamp(1.35rem, 3vw, 1.8rem); text-transform: uppercase; margin-bottom: 18px; }
+  .ba-faq dl { margin: 0; }
+  .ba-faq-item {
+    border-top: 1px solid var(--line);
+    padding: 18px 0;
+  }
+  .ba-faq dt { color: var(--cream); font-size: 16px; margin-bottom: 8px; }
+  .ba-faq dd { margin: 0; color: var(--text-dim); font-size: 16px; line-height: 1.7; }
+
+  .ba-cta {
+    margin-top: 56px; display: flex; flex-wrap: wrap; align-items: center; gap: 20px;
+    background: rgba(39, 7, 15, 0.42);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(237, 219, 194, 0.18);
+    border-radius: 16px; padding: 24px 26px;
+  }
+  .ba-cta p { margin: 0; color: var(--text-dim); font-size: 16px; flex: 1 1 260px; }
+</style>

@@ -48,6 +48,12 @@ const cs: UI = {
         'Kontaktní a firemní údaje SiSi Wrocław - adresa, telefon, e-mail a registrační údaje (NIP, REGON, KRS).',
       ogDescription: 'Kontaktní a firemní údaje SiSi Wrocław.',
     },
+    blog: {
+      title: 'Blog | SiSi Wrocław',
+      description:
+        'Blog SiSi Wrocław - průvodce nočním životem ve Vratislavi, tipy na večer a poznámky přímo z klubu na ulici Rzeźnicza.',
+      ogDescription: 'Průvodce nočním životem ve Vratislavi a tipy na večer v SiSi.',
+    },
     terms: {
       title: 'Pravidla - SiSi Wrocław',
       description: 'Provozní řád SiSi Wrocław - vstup, rezervace stolů, chování v podniku a reklamace.',
@@ -83,6 +89,7 @@ const cs: UI = {
     privateEvents: 'Soukromé akce',
     reservations: 'Rezervace',
     contact: 'Kontakt',
+    blog: 'Blog',
     terms: 'Pravidla',
     privacy: 'Ochrana soukromí',
     cookies: 'Zásady cookies',
@@ -222,6 +229,19 @@ const cs: UI = {
     finished: 'Akce skončila',
     freeEntry: 'Vstup zdarma',
     entry: 'Vstupné',
+  },
+
+  blogPage: {
+    label: 'Z blogu',
+    title: 'Blog',
+    subtitle: 'Průvodce nočním životem ve Vratislavi, tipy na večer a poznámky přímo z klubu.',
+    empty: 'První příspěvky se objeví brzy.',
+    readMore: 'Číst dál',
+    readingTime: '{minutes} min čtení',
+    back: 'Všechny příspěvky',
+    updated: 'Aktualizováno:',
+    faq: 'Časté dotazy',
+    ctaText: 'Plánujete večer v SiSi? Rezervujte si stůl na adrese Rzeźnicza 32-33.',
   },
 
   menuPage: {

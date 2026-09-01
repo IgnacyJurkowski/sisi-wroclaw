@@ -13,6 +13,7 @@ export const ROUTE_KEYS = [
   'corporate',
   'privateEvents',
   'contact',
+  'blog',
   'terms',
   'privacy',
   'cookies',
@@ -29,6 +30,9 @@ export const SLUGS: Record<RouteKey, Record<Locale, string>> = {
   corporate: { pl: 'eventy-firmowe', en: 'corporate-events', de: 'firmenevents', it: 'eventi-aziendali', cs: 'firemni-akce' },
   privateEvents: { pl: 'imprezy-prywatne', en: 'private-events', de: 'private-feiern', it: 'eventi-privati', cs: 'soukrome-akce' },
   contact: { pl: 'kontakt', en: 'contact', de: 'kontakt', it: 'contatti', cs: 'kontakt' },
+  // "blog" is the established loanword in every locale we publish in, so the
+  // article URLs stay stable if an article is later translated.
+  blog: { pl: 'blog', en: 'blog', de: 'blog', it: 'blog', cs: 'blog' },
   terms: { pl: 'regulamin', en: 'terms', de: 'agb', it: 'regolamento', cs: 'pravidla' },
   privacy: { pl: 'polityka-prywatnosci', en: 'privacy-policy', de: 'datenschutz', it: 'privacy', cs: 'ochrana-soukromi' },
   cookies: { pl: 'polityka-cookies', en: 'cookie-policy', de: 'cookie-richtlinie', it: 'cookie', cs: 'zasady-cookies' },
@@ -36,6 +40,10 @@ export const SLUGS: Record<RouteKey, Record<Locale, string>> = {
 
 /** Main navigation links, in order. Reservations is rendered as the CTA. */
 export const NAV_KEYS: RouteKey[] = ['events', 'menu', 'careers', 'privateEvents', 'corporate'];
+
+/** Footer "Pages" column: the nav plus the blog, which is deliberately kept out
+    of the fixed top bar (its five links + CTA already fill the 1120px rail). */
+export const FOOTER_PAGE_KEYS: RouteKey[] = [...NAV_KEYS, 'blog'];
 
 /** Legal/utility links shown in the footer. */
 export const FOOTER_LEGAL_KEYS: RouteKey[] = ['terms', 'privacy', 'cookies', 'contact'];
@@ -60,6 +68,12 @@ export function eventPath(slug: string, locale: Locale): string {
 /** Every locale alternate for one event detail page (hreflang + canonical). */
 export function eventAlternates(slug: string): { locale: Locale; path: string }[] {
   return LOCALES.map((locale) => ({ locale, path: eventPath(slug, locale) }));
+}
+
+/** Localized, trailing-slashed URL for one article, nested under the blog slug,
+    e.g. /pl/blog/najlepsze-kluby-we-wroclawiu/. */
+export function articlePath(slug: string, locale: Locale): string {
+  return `/${locale}/${SLUGS.blog[locale]}/${slug}/`;
 }
 
 /** Legacy pre-i18n Polish paths → route key, used to emit 301 redirects. */

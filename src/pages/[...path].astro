@@ -11,14 +11,19 @@ import CorporatePage from '../components/pages/CorporatePage.astro';
 import PrivateEventsPage from '../components/pages/PrivateEventsPage.astro';
 import LegalPage from '../components/pages/LegalPage.astro';
 import EventDetailPage from '../components/pages/EventDetailPage.astro';
+import BlogPage from '../components/pages/BlogPage.astro';
+import BlogArticlePage from '../components/pages/BlogArticlePage.astro';
 import { EVENTS, type EventItem } from '../data/site';
+import { ARTICLES, type ArticleItem } from '../data/articles';
 
 // One static page per (locale, route) from the central route map, plus one
-// detail page per (locale, event) nested under the localized events slug.
+// detail page per (locale, event) nested under the localized events slug, plus
+// one blog article page per synced article - articles are single-language, so
+// each renders only under the locale matching its languageCode.
 export function getStaticPaths() {
   const paths: {
     params: { path: string };
-    props: { locale: Locale; routeKey: RouteKey; event?: EventItem };
+    props: { locale: Locale; routeKey: RouteKey; event?: EventItem; article?: ArticleItem };
   }[] = [];
   for (const locale of LOCALES) {
     for (const key of ROUTE_KEYS) {
@@ -33,12 +38,19 @@ export function getStaticPaths() {
       });
     }
   }
+  for (const article of ARTICLES) {
+    paths.push({
+      params: { path: `${article.locale}/${SLUGS.blog[article.locale]}/${article.slug}` },
+      props: { locale: article.locale, routeKey: 'blog', article },
+    });
+  }
   return paths;
 }
 
-const { locale, routeKey, event } = Astro.props;
+const { locale, routeKey, event, article } = Astro.props;
 ---
 
+{article && <BlogArticlePage locale={locale} article={article} />}
 {event && <EventDetailPage locale={locale} event={event} />}
 {routeKey === 'home' && <HomePage locale={locale} />}
 {!event && routeKey === 'events' && <EventsPage locale={locale} />}
@@ -48,6 +60,7 @@ const { locale, routeKey, event } = Astro.props;
 {routeKey === 'corporate' && <CorporatePage locale={locale} />}
 {routeKey === 'privateEvents' && <PrivateEventsPage locale={locale} />}
 {routeKey === 'contact' && <ContactPage locale={locale} />}
+{!article && routeKey === 'blog' && <BlogPage locale={locale} />}
 {(routeKey === 'terms' || routeKey === 'privacy' || routeKey === 'cookies') && (
   <LegalPage locale={locale} legalKey={routeKey} />
 )}

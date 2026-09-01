@@ -7,6 +7,9 @@ import { fileURLToPath } from 'node:url';
 import { dirname, extname, join, relative, sep } from 'node:path';
 
 import { cacheAssetInventory, headersForPath, parseHeaderRules } from './generate-headers.mjs';
+// Shared with the content syncs, so a syndicated article carrying one of these
+// claims is skipped at sync time instead of failing this gate for every page.
+import { UNVERIFIED_CLAIMS } from '../src/lib/claims.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = join(ROOT, 'dist');
@@ -106,6 +109,13 @@ const emptyEventCopy = {
   de: 'Weitere Veranstaltungen folgen bald - folge uns auf Instagram.',
   it: 'Presto annunceremo nuovi eventi - seguici su Instagram.',
   cs: 'Brzy ohlásíme další akce - sledujte nás na Instagramu.',
+};
+const emptyBlogCopy = {
+  pl: 'Pierwsze wpisy pojawią się wkrótce.',
+  en: 'The first posts are coming soon.',
+  de: 'Die ersten Beiträge erscheinen bald.',
+  it: 'I primi articoli arriveranno presto.',
+  cs: 'První příspěvky se objeví brzy.',
 };
 const noticeCopy = {
   pl: 'Za Twoją zgodą używamy analityki PostHog (statystyki odwiedzin i nagrania sesji), aby ulepszać stronę. Bez zgody zbieramy wyłącznie anonimowe statystyki, bez zapisu w pamięci przeglądarki. Szczegóły znajdziesz w Polityce cookies oraz Polityce prywatności.',
@@ -857,11 +867,81 @@ const eventCount = existsSync(eventsDir)
   ? readdirSync(eventsDir).filter((e) => statSync(join(eventsDir, e)).isDirectory()).length
   : 0;
 assert('sitemap.xml built', exists('sitemap.xml'));
-const sitemapBaseCount = eventCount > 0 ? 55 : 50;
-assert(
-  `sitemap urls = ${sitemapBaseCount} base + ${eventCount} events x5`,
-  (read('sitemap.xml').match(/<loc>/g) || []).length === sitemapBaseCount + eventCount * 5,
+// Blog articles are single-language: one page (and one sitemap entry) per
+// article, under the locale that wrote it. Counts come from the build so a
+// published article never fails CI and blocks the sync.
+const blogCounts = Object.fromEntries(
+  LOCALES.map((locale) => {
+    const dir = join(DIST, locale, 'blog');
+    const count = existsSync(dir)
+      ? readdirSync(dir).filter((entry) => statSync(join(dir, entry)).isDirectory()).length
+      : 0;
+    return [locale, count];
+  }),
 );
+const articleCount = Object.values(blogCounts).reduce((total, count) => total + count, 0);
+const localesWithArticles = LOCALES.filter((locale) => blogCounts[locale] > 0);
+const sitemapBaseCount = 50 + (eventCount > 0 ? 5 : 0) + localesWithArticles.length;
+assert(
+  `sitemap urls = ${sitemapBaseCount} base + ${eventCount} events x5 + ${articleCount} articles`,
+  (read('sitemap.xml').match(/<loc>/g) || []).length
+    === sitemapBaseCount + eventCount * 5 + articleCount,
+);
+
+// --- blog: hub, linking and per-article SEO ---
+/** The rendered article body, excluding the shared page chrome. */
+function bodyMarkup(html) {
+  const start = html.indexOf('class="ba-body"');
+  const end = html.indexOf('</article>', start);
+  return start < 0 || end < 0 ? '' : html.slice(start, end);
+}
+const blogSitemap = read('sitemap.xml');
+for (const locale of LOCALES) {
+  const hubPath = `${locale}/blog/index.html`;
+  assert(`blog hub builds: /${locale}/blog/`, exists(hubPath));
+  if (!exists(hubPath)) continue;
+
+  const hub = read(hubPath);
+  const hubHref = `/${locale}/blog/`;
+  const linkedFromEveryPage = read(`${locale}/index.html`).includes(`href="${hubHref}"`);
+  const inSitemap = blogSitemap.includes(`<loc>${CANONICAL_ORIGIN}${hubHref}</loc>`);
+
+  if (blogCounts[locale] === 0) {
+    // Same rule as the empty event calendar: never link or index an empty hub.
+    assert(`${locale} empty blog hub shows its empty state`, hub.includes(emptyBlogCopy[locale]));
+    assert(`${locale} shared navigation omits the empty blog hub`, !linkedFromEveryPage);
+    assert(`${locale} sitemap omits the empty blog hub`, !inSitemap);
+    continue;
+  }
+
+  assert(`${locale} blog hub is linked from the shared footer`, linkedFromEveryPage);
+  assert(`${locale} blog hub is listed in the sitemap`, inSitemap);
+  assert(
+    `${locale} blog hub links every published article`,
+    readdirSync(join(DIST, locale, 'blog'))
+      .filter((entry) => statSync(join(DIST, locale, 'blog', entry)).isDirectory())
+      .every((slug) => hub.includes(`href="${hubHref}${slug}/"`)),
+  );
+
+  for (const slug of readdirSync(join(DIST, locale, 'blog')).filter((entry) =>
+    statSync(join(DIST, locale, 'blog', entry)).isDirectory(),
+  )) {
+    const article = read(`${locale}/blog/${slug}/index.html`);
+    const url = `${CANONICAL_ORIGIN}${hubHref}${slug}/`;
+    assert(
+      `${locale}/blog/${slug} carries a self-canonical and BlogPosting data`,
+      article.includes(`rel="canonical" href="${url}"`)
+        && article.includes('"@type":"BlogPosting"')
+        && article.includes('"@type":"BreadcrumbList"'),
+    );
+    const body = bodyMarkup(article);
+    assert(
+      `${locale}/blog/${slug} renders sanitised body markup only`,
+      // A missing marker would make the scan below vacuously pass.
+      body.length > 0 && !/<(?:script|iframe|form)\b/i.test(body),
+    );
+  }
+}
 
 function inventory(dir) {
   let out = [];
@@ -1055,21 +1135,7 @@ assert(
 // The inlined WOFF2 happens to contain `21+` in its base64 bytes.
 const searchableHtml = allHtml.replace(/data:[^;]+;base64,[A-Za-z0-9+/=]+/g, '');
 const leaked = htmls.filter((f) => /\{(privacy|cookies|email|example|legalName|nip|regon)\}/.test(readFileSync(f, 'utf8')));
-const unverifiedRenderedClaims = [
-  // 663 m² and up-to-500 standing are owner-verified (2026-07-14); the remaining
-  // patterns still block unverified age, timing and schema claims in the html.
-  ['over-21 claim', /over[-\s]?21/i],
-  ['21+ claim', /21\+/i],
-  ['Polish over-21 claim', /powyżej 21/i],
-  ['German over-21 claim', /(?:\bab|über) 21/i],
-  ['Italian over-21 claim', /maggiori di 21/i],
-  ['Czech over-21 claim', /(?:\bod|starším) 21/i],
-  ['120-minute claim', /120 minut/i],
-  ['120-minutes claim', /120 minutes/i],
-  ['geo meta tags', /<meta name="geo\./i],
-  ['ICBM coordinate metadata', /<meta name="ICBM"/i],
-  ['InStock availability claim', /\bInStock\b/],
-];
+const unverifiedRenderedClaims = UNVERIFIED_CLAIMS;
 for (const [label, pattern] of unverifiedRenderedClaims) {
   assert(`no ${label} in html`, !pattern.test(searchableHtml));
 }
@@ -1105,7 +1171,11 @@ if (eventCount === 0) {
   }
 }
 assert('no leaked {tokens} in html', leaked.length === 0);
-assert(`html pages = 57 base + ${eventCount} events x5`, htmls.length === 57 + eventCount * 5);
+assert('no synced vendor metadata leaks into the html', !allHtml.includes('heroSource'));
+assert(
+  `html pages = 62 base + ${eventCount} events x5 + ${articleCount} articles`,
+  htmls.length === 62 + eventCount * 5 + articleCount,
+);
 
 // --- report ---
 let failed = 0;

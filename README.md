@@ -29,16 +29,26 @@ A multilingual corporate-events landing page with an enquiry form (Netlify
 Forms) and a case-study model. See **[docs/B2B.md](docs/B2B.md)**, including the
 content checklist for the venue team and how to publish a verified project.
 
+## Blog
+
+SEO articles are written in BabyLoveGrowth and published automatically: an
+hourly GitHub Action pulls the API into `src/data/articles.generated.ts` +
+`public/blog/`, gates on `npm test`, commits, and triggers a Netlify build. See
+**[docs/BLOG.md](docs/BLOG.md)** for the required secrets, the bad-row policy
+and how syndicated HTML is sanitised.
+
 ## Structure
 
 ```
 src/
   i18n/            locale config, route map, dictionaries, formatters, legal
-  data/            site facts (contact, events, venue facts), case studies
+  data/            site facts (contact, events, venue facts), case studies, blog articles
   components/      shared UI, home sections, b2b sections, pages/ (page bodies)
   pages/           [...path].astro (catch-all), index (root redirect), 404, sitemap
   layouts/Base.astro   head/meta/SEO/hreflang/JSON-LD + chrome
 scripts/check-build.mjs   post-build assertions (npm test)
+scripts/sync-events.mjs   Drive -> events.generated.ts (scheduled workflow)
+scripts/sync-articles.mjs BabyLoveGrowth -> articles.generated.ts (scheduled workflow)
 ```
 
 ## Deployment notes
