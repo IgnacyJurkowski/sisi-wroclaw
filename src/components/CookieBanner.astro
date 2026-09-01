@@ -27,7 +27,6 @@ const privacyHref = localizedPath('privacy', locale);
 </div>
 
 <script>
-  import { SUMMER_FRIDAY_NOTICE } from '../lib/summer-hours.mjs';
   import {
     CONSENT_DENIED,
     CONSENT_EVENT,
@@ -39,7 +38,6 @@ const privacyHref = localizedPath('privacy', locale);
   } from '../lib/consent.mjs';
 
   const banner = document.getElementById('cookie-banner');
-  const popup = document.querySelector<HTMLElement>('[data-summer-popup]');
   const storage = safeLocalStorage();
   removeLegacyKeys(storage);
   let decided = readConsent(storage) !== null;
@@ -64,23 +62,7 @@ const privacyHref = localizedPath('privacy', locale);
     if (banner) banner.hidden = true;
   });
 
-  if (!popup || popup.dataset.noticeState === 'resolved') {
-    reveal();
-  } else {
-    const onResolved = (event: Event) => {
-      const open = (event as CustomEvent<{ open?: boolean }>).detail?.open;
-      if (open === false) {
-        document.removeEventListener(SUMMER_FRIDAY_NOTICE.resolvedEvent, onResolved);
-        reveal();
-      }
-    };
-    document.addEventListener(SUMMER_FRIDAY_NOTICE.resolvedEvent, onResolved);
-    window.setTimeout(() => {
-      if (popup.dataset.noticeState === 'pending' && popup.hidden) {
-        popup.dataset.noticeState = 'resolved';
-        document.removeEventListener(SUMMER_FRIDAY_NOTICE.resolvedEvent, onResolved);
-        reveal();
-      }
-    }, 2_000);
-  }
+  // Nothing else queues ahead of the consent banner now that the seasonal
+  // notice is gone, so it reveals as soon as the script runs.
+  reveal();
 </script>

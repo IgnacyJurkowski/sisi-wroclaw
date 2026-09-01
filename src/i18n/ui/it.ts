@@ -120,12 +120,6 @@ const it: UI = {
     dialogLabel: 'Consenso all\'analitica',
   },
 
-  popup: {
-    eyebrow: 'Orari estivi',
-    message: 'Durante l’estate SiSi è chiuso il venerdì, fino al 28 agosto 2026 compreso.',
-    dismiss: 'Ho capito',
-    close: 'Chiudi',
-  },
 
   buttons: {
     reserveOnline: 'Prenota online',

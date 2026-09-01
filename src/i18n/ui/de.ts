@@ -121,12 +121,6 @@ const de: UI = {
     dialogLabel: 'Einwilligung in die Analytik',
   },
 
-  popup: {
-    eyebrow: 'Sommer-Öffnungszeiten',
-    message: 'Im Sommer ist SiSi freitags geschlossen — bis einschließlich 28. August 2026.',
-    dismiss: 'Verstanden',
-    close: 'Schließen',
-  },
 
   buttons: {
     reserveOnline: 'Online buchen',

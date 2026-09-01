@@ -186,7 +186,6 @@ const pl_cookies: LegalDoc = {
       paragraphs: ['Pamięć niezbędna do działania strony:'],
       items: [
         'sisi-analytics-consent (localStorage) - przechowuje wartość "granted" albo "denied", czyli Twoją decyzję dotyczącą analityki.',
-        'sisi-summer-fri-2026-dismissed (localStorage) - przechowuje wyłącznie wartość "dismissed", aby nie wyświetlać ponownie komunikatu o wakacyjnym zamknięciu w piątki. Wpis jest usuwany po 28 sierpnia 2026 r.',
         'Niezbędny stan formularzy i nawigacji - przechowywany tylko na potrzeby bieżącej interakcji ze stroną.',
       ],
     },
@@ -383,7 +382,6 @@ const en_cookies: LegalDoc = {
       paragraphs: ['Storage essential to the site:'],
       items: [
         'sisi-analytics-consent (localStorage) - stores the value "granted" or "denied", i.e. your analytics decision.',
-        'sisi-summer-fri-2026-dismissed (localStorage) - stores only the value "dismissed" so the summer Friday closure notice stays hidden after you close it. The record is removed after 28 August 2026.',
         'Essential form and navigation state - stored only for the current interaction with the site.',
       ],
     },

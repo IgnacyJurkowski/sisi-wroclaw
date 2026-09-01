@@ -121,12 +121,6 @@ const en: UI = {
     dialogLabel: 'Analytics consent',
   },
 
-  popup: {
-    eyebrow: 'Summer hours',
-    message: 'During the summer, SiSi is closed on Fridays — through 28 August 2026 inclusive.',
-    dismiss: 'Got it',
-    close: 'Close',
-  },
 
   buttons: {
     reserveOnline: 'Book online',

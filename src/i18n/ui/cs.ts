@@ -121,12 +121,6 @@ const cs: UI = {
     dialogLabel: 'Souhlas s analytikou',
   },
 
-  popup: {
-    eyebrow: 'Letní otevírací doba',
-    message: 'Během léta je SiSi v pátek zavřené — až do 28. srpna 2026 včetně.',
-    dismiss: 'Rozumím',
-    close: 'Zavřít',
-  },
 
   buttons: {
     reserveOnline: 'Rezervovat online',

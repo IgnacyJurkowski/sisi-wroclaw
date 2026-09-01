@@ -124,12 +124,6 @@ const pl = {
     dialogLabel: 'Zgoda na analitykę',
   },
 
-  popup: {
-    eyebrow: 'Wakacyjne godziny',
-    message: 'W wakacje SiSi jest zamknięte w piątki — do 28 sierpnia 2026 r. włącznie.',
-    dismiss: 'Rozumiem',
-    close: 'Zamknij',
-  },
 
   buttons: {
     reserveOnline: 'Zarezerwuj online',

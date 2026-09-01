@@ -8,7 +8,7 @@ import { localizedPath, eventPath } from '../i18n/routes';
 import { useTranslations } from '../i18n/t';
 import { GENERATED_EVENTS } from './events.generated';
 import { eventOffer } from '../lib/event-offer.mjs';
-import { NIGHTCLUB_OPENING_HOURS } from '../lib/summer-hours.mjs';
+import { NIGHTCLUB_OPENING_HOURS } from '../lib/opening-hours.mjs';
 
 const RESERVATION_BASE_URL =
   'https://emenago.com/inner/cart/6619/0519b014958d73fb0d5d2d58c360a661';
