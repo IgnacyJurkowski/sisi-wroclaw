@@ -15,7 +15,7 @@
     "test:security": "node scripts/security-browser.mjs",
     "verify:release": "npm test && npm run test:security",
     "smoke:host": "node scripts/smoke-host.mjs",
-    "test:unit": "node --test scripts/*.test.mjs scripts/events-sync/*.test.mjs",
+    "test:unit": "node --test scripts/*.test.mjs scripts/events-sync/*.test.mjs scripts/articles-sync/*.test.mjs",
     "build:check": "npm run build && node scripts/check-build.mjs",
     "test:notices": "node scripts/site-notices-browser.mjs",
     "test:build": "node scripts/check-build.mjs && npm run test:notices"

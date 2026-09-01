@@ -1,0 +1,59 @@
+---
+import Base from '../../layouts/Base.astro';
+import ArticleCard from '../ArticleCard.astro';
+import { articlesFor, blogAlternates, blogSchema } from '../../data/articles';
+import { type Locale } from '../../i18n/config';
+import { useTranslations } from '../../i18n/t';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+// Articles are language-specific, so a locale only lists what was written in it.
+const articles = articlesFor(locale);
+---
+
+<Base
+  locale={locale}
+  routeKey="blog"
+  altPaths={blogAlternates()}
+  title={t.meta.blog.title}
+  description={t.meta.blog.description}
+  ogDescription={t.meta.blog.ogDescription}
+  noindex={articles.length === 0}
+  schema={blogSchema(articles, locale)}
+>
+  <div class="page-header" data-reveal>
+    <span class="page-label">{t.blogPage.label}</span>
+    <h1 class="page-title display">{t.blogPage.title}</h1>
+    <p class="page-subtitle">{t.blogPage.subtitle}</p>
+  </div>
+
+  <section class="bl-section" data-reveal>
+    {articles.length > 0 ? (
+      <ul class="bl-grid">
+        {articles.map((article) => (
+          <li><ArticleCard article={article} locale={locale} /></li>
+        ))}
+      </ul>
+    ) : (
+      <p class="bl-empty">{t.blogPage.empty}</p>
+    )}
+  </section>
+</Base>
+
+<style>
+  .bl-section {
+    max-width: var(--maxw);
+    margin: 0 auto 96px;
+    padding-inline: 20px;
+  }
+  .bl-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr));
+    gap: 24px;
+    list-style: none; margin: 0; padding: 0;
+  }
+  .bl-grid > li { display: flex; }
+  .bl-empty { color: var(--text-dim); font-size: 16px; }
+</style>

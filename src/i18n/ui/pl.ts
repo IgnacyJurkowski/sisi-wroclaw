@@ -50,6 +50,12 @@ const pl = {
         'Dane kontaktowe i informacje o podmiocie prowadzącym klub SiSi Wrocław - adres, telefon, e-mail oraz dane rejestrowe (NIP, REGON, KRS).',
       ogDescription: 'Dane kontaktowe i rejestrowe klubu SiSi Wrocław.',
     },
+    blog: {
+      title: 'Blog - SiSi Wrocław',
+      description:
+        'Blog SiSi Wrocław - przewodniki po nocnym życiu Wrocławia, pomysły na wieczór i wskazówki prosto z klubu przy Rzeźniczej.',
+      ogDescription: 'Przewodniki po nocnym życiu Wrocławia i pomysły na wieczór w SiSi.',
+    },
     terms: {
       title: 'Regulamin - SiSi Wrocław',
       description: 'Regulamin klubu SiSi Wrocław - zasady wstępu, rezerwacji stolików, przebywania na terenie lokalu i reklamacji.',
@@ -85,6 +91,7 @@ const pl = {
     privateEvents: 'Imprezy prywatne',
     reservations: 'Rezerwacje',
     contact: 'Kontakt',
+    blog: 'Blog',
     terms: 'Regulamin',
     privacy: 'Polityka prywatności',
     cookies: 'Polityka cookies',
@@ -225,6 +232,20 @@ const pl = {
     finished: 'Wydarzenie zakończone',
     freeEntry: 'Wstęp wolny',
     entry: 'Wstęp',
+  },
+
+  blogPage: {
+    label: 'Z bloga',
+    title: 'Blog',
+    subtitle: 'Przewodniki po nocnym życiu Wrocławia, pomysły na wieczór i wskazówki prosto z klubu.',
+    empty: 'Pierwsze wpisy pojawią się wkrótce.',
+    readMore: 'Czytaj dalej',
+    // {minutes} to szacowany czas czytania wpisu.
+    readingTime: '{minutes} min czytania',
+    back: 'Wszystkie wpisy',
+    updated: 'Aktualizacja:',
+    faq: 'Najczęstsze pytania',
+    ctaText: 'Planujesz wieczór w SiSi? Zarezerwuj stolik przy Rzeźniczej 32-33.',
   },
 
   menuPage: {

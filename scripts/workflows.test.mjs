@@ -44,6 +44,10 @@ test('package scripts expose the complete launch and exploit gates', async () =>
   assert.equal(pkg.scripts['smoke:host'], 'node scripts/smoke-host.mjs');
   assert.equal(pkg.scripts['test:notices'], 'node scripts/site-notices-browser.mjs');
   assert.equal(pkg.scripts['test:build'], 'node scripts/check-build.mjs && npm run test:notices');
+  assert.equal(
+    pkg.scripts['test:unit'],
+    'node --test scripts/*.test.mjs scripts/events-sync/*.test.mjs scripts/articles-sync/*.test.mjs',
+  );
 });
 
 test('clean installs declare the Node build types used by Astro', async () => {
@@ -131,8 +135,27 @@ test('event sync uses the pinned runtime, complete gate, and fail-closed hook', 
   assert.ok(pullIndex >= 0 && pullIndex < postRebaseGateIndex && postRebaseGateIndex < pushIndex);
 });
 
+test('article sync uses the pinned runtime, complete gate, and fail-closed hook', async () => {
+  const source = await workflow('sync-articles');
+  assert.match(source, /^\s{2}contents:\s*read\s*$/m);
+  assert.doesNotMatch(source, /^\s{2}contents:\s*write\s*$/m);
+  assert.match(source, /ssh-key:\s*\$\{\{ secrets\.EVENT_SYNC_DEPLOY_KEY \}\}/);
+  assertNodeGate(source);
+  assertFailClosedHook(source);
+
+  // The API key only ever reaches the sync step's environment, never a shell
+  // command line where it could land in the run log.
+  assert.match(source, /BABYLOVEGROWTH_API_KEY:\s*\$\{\{ secrets\.BABYLOVEGROWTH_API_KEY \}\}/);
+  assert.doesNotMatch(source, /run:[^\n]*secrets\.BABYLOVEGROWTH_API_KEY/);
+
+  const pullIndex = source.indexOf('git pull --rebase --autostash origin main');
+  const postRebaseGateIndex = source.indexOf('npm test', pullIndex);
+  const pushIndex = source.indexOf('git push', pullIndex);
+  assert.ok(pullIndex >= 0 && pullIndex < postRebaseGateIndex && postRebaseGateIndex < pushIndex);
+});
+
 test('workflow dependencies are immutable and legacy launch settings stay absent', async () => {
-  const sources = (await Promise.all(['ci', 'deploy', 'sync-events'].map(workflow))).join('\n');
+  const sources = (await Promise.all(['ci', 'deploy', 'sync-events', 'sync-articles'].map(workflow))).join('\n');
   assert.doesNotMatch(sources, /uses:\s*actions\/(?:checkout|setup-node)@v\d+\b/);
   assert.doesNotMatch(sources, /node-version:\s*['"]?(?:20|22)['"]?\s*$/m);
   assert.doesNotMatch(sources, /curl\s+(?:-s|-fsS)\s+-X POST/);
