@@ -241,7 +241,7 @@ const en: UI = {
     back: 'All posts',
     updated: 'Updated:',
     faq: 'Frequently asked questions',
-    ctaText: 'Planning a night at SiSi? Book a table on Rzeźnicza 32-33.',
+    ctaText: 'Planning a night at SiSi? Book a table at Rzeźnicza 32-33.',
   },
 
   menuPage: {

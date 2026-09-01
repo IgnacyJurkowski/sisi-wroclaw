@@ -934,9 +934,11 @@ for (const locale of LOCALES) {
         && article.includes('"@type":"BlogPosting"')
         && article.includes('"@type":"BreadcrumbList"'),
     );
+    const body = bodyMarkup(article);
     assert(
       `${locale}/blog/${slug} renders sanitised body markup only`,
-      !/<(?:script|iframe|form)\b/i.test(bodyMarkup(article)),
+      // A missing marker would make the scan below vacuously pass.
+      body.length > 0 && !/<(?:script|iframe|form)\b/i.test(body),
     );
   }
 }

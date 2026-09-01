@@ -51,7 +51,7 @@ const cs: UI = {
     blog: {
       title: 'Blog | SiSi Wrocław',
       description:
-        'Blog SiSi Wrocław - průvodce nočním životem ve Vratislavi, tipy na večer a poznámky přímo z klubu v ulici Rzeźnicza.',
+        'Blog SiSi Wrocław - průvodce nočním životem ve Vratislavi, tipy na večer a poznámky přímo z klubu na ulici Rzeźnicza.',
       ogDescription: 'Průvodce nočním životem ve Vratislavi a tipy na večer v SiSi.',
     },
     terms: {
@@ -241,7 +241,7 @@ const cs: UI = {
     back: 'Všechny příspěvky',
     updated: 'Aktualizováno:',
     faq: 'Časté dotazy',
-    ctaText: 'Plánujete večer v SiSi? Rezervujte si stůl v ulici Rzeźnicza 32-33.',
+    ctaText: 'Plánujete večer v SiSi? Rezervujte si stůl na adrese Rzeźnicza 32-33.',
   },
 
   menuPage: {

@@ -152,3 +152,24 @@ test('skips an article whose body was truncated by an unterminated element', () 
   assert.equal(mapped, null);
   assert.ok(errors.some((error) => error.startsWith('truncated body')));
 });
+
+test('the claim guard covers everything the page renders, not just prose', () => {
+  // Each of these lands in the rendered HTML, where check-build would fail the
+  // whole site build - so the article has to be skipped here instead.
+  const inFaq = JSON.stringify({
+    '@type': 'FAQPage',
+    mainEntity: [{ '@type': 'Question', name: 'Kto wejdzie?', acceptedAnswer: { '@type': 'Answer', text: 'Goście 21+.' } }],
+  });
+  assert.equal(normalizeArticle(article({ faqJsonLd: inFaq }), CONTEXT).article, null);
+  assert.equal(normalizeArticle(article({ slug: 'wejscie-over-21' }), CONTEXT).article, null);
+  assert.equal(
+    normalizeArticle(article({ content_html: `${BODY}<img src="https://cdn.test/a.png" alt="over-21 policy">` }), CONTEXT).article,
+    null,
+  );
+  assert.equal(
+    normalizeArticle(article({ jsonLd: JSON.stringify({ keywords: 'kluby, 120 minutes' }) }), CONTEXT).article,
+    null,
+  );
+  // ...while an article with none of them still publishes.
+  assert.ok(normalizeArticle(article(), CONTEXT).article);
+});

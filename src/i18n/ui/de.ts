@@ -51,7 +51,7 @@ const de: UI = {
     blog: {
       title: 'Blog | SiSi Wrocław',
       description:
-        'Der Blog von SiSi Wrocław - Guides zum Breslauer Nachtleben, Ideen für den Abend und Notizen direkt aus dem Club in der Rzeźnicza.',
+        'Der Blog von SiSi Wrocław - Guides zum Breslauer Nachtleben, Ideen für den Abend und Notizen direkt aus dem Club an der Rzeźnicza.',
       ogDescription: 'Guides zum Breslauer Nachtleben und Ideen für einen Abend im SiSi.',
     },
     terms: {
@@ -241,7 +241,7 @@ const de: UI = {
     back: 'Alle Beiträge',
     updated: 'Aktualisiert:',
     faq: 'Häufige Fragen',
-    ctaText: 'Planst du einen Abend im SiSi? Reserviere einen Tisch in der Rzeźnicza 32-33.',
+    ctaText: 'Planst du einen Abend im SiSi? Reserviere einen Tisch an der Rzeźnicza 32-33.',
   },
 
   menuPage: {

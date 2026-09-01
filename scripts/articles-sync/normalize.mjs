@@ -125,13 +125,6 @@ export function normalizeArticle(raw, { locales, canonicalOrigin, bareHosts = []
 
   const description = collapse(pick(raw, 'meta_description', 'metaDescription', 'description'))
     || excerptFrom(body.text, 155);
-  const scanned = [title, description, body.text].filter(Boolean).join('\n');
-  const claims = unverifiedClaims(scanned);
-  if (claims.length) errors.push(`unverified claim: ${claims.join(', ')}`);
-  if (CONTROL.test(scanned)) errors.push('unsafe control character');
-  if (PLACEHOLDER.test(scanned)) errors.push('placeholder-quality content');
-
-  if (errors.length) return { article: null, errors: [...new Set(errors)], warnings };
 
   const heroSource = httpsUrl(pick(raw, 'hero_image_url', 'heroImageUrl', 'coverImageUrl', 'image'));
   if (!heroSource && pick(raw, 'hero_image_url', 'heroImageUrl')) {
@@ -145,6 +138,28 @@ export function normalizeArticle(raw, { locales, canonicalOrigin, bareHosts = []
     (entry) => !body.text.toLowerCase().includes(entry.question.toLowerCase()),
   );
   const keywords = keywordsFrom(pick(raw, 'jsonLd', 'json_ld'));
+
+  // Scan everything this article puts on the page, not just its prose: the
+  // build gate reads the rendered HTML, so a claim hiding in the slug, an
+  // image alt, a link title, an FAQ answer or a keyword would sail past this
+  // guard and then fail `npm test` for the whole site.
+  const scanned = [
+    title,
+    description,
+    slug,
+    body.html,
+    body.text,
+    ...faq.flatMap((entry) => [entry.question, entry.answer]),
+    ...keywords,
+  ]
+    .filter(Boolean)
+    .join('\n');
+  const claims = unverifiedClaims(scanned);
+  if (claims.length) errors.push(`unverified claim: ${claims.join(', ')}`);
+  if (CONTROL.test(scanned)) errors.push('unsafe control character');
+  if (PLACEHOLDER.test(scanned)) errors.push('placeholder-quality content');
+
+  if (errors.length) return { article: null, errors: [...new Set(errors)], warnings };
 
   return {
     article: {
