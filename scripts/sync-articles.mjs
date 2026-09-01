@@ -129,55 +129,92 @@ async function run() {
     response still carries its slug + language, which is enough to re-publish
     exactly what is already committed. */
 function carryOver(summary, previousBySlug, locales) {
-  const locale = localeFor(summary?.languageCode ?? summary?.language_code, locales);
   const slug = normalizeSlug(summary?.slug);
-  if (!locale || !slug) return null;
-  return previousBySlug.get(`${locale}/${slug}`) ?? null;
+  if (!slug) return null;
+
+  const locale = localeFor(summary?.languageCode ?? summary?.language_code ?? summary?.language, locales);
+  const exact = locale ? previousBySlug.get(`${locale}/${slug}`) : undefined;
+  if (exact) return exact;
+
+  // A list response need not carry a language at all, and the committed
+  // locale came from the detail payload we just failed to fetch. Fall back to
+  // the slug when exactly one published article uses it, so a transient fetch
+  // failure can never silently unpublish a live article.
+  const matches = [...previousBySlug.values()].filter((article) => article.slug === slug);
+  return matches.length === 1 ? matches[0] : null;
 }
 
 /** Optimized hero variants for one article, reusing the committed files when
-    the vendor image has not changed (avoids re-encoding on every sync). */
+    the vendor image has not changed (avoids re-encoding on every sync). Any
+    failure here is a bad row, never a failed run: the article publishes
+    without a new image and keeps the one already committed. */
 async function heroImages(article, previous) {
   if (!article.heroSource) return null;
   const base = `${article.locale}-${article.slug}`;
-  const files = IMG_WIDTHS.map((width) => `${base}-${width}.webp`);
+  const committed = await reusableHero(previous, base);
 
-  if (previous?.heroSource === article.heroSource && previous.img && (await allExist(files))) {
-    return {
-      files,
-      fields: { img: previous.img, imgSrcset: previous.imgSrcset, imgWidth: previous.imgWidth, imgHeight: previous.imgHeight },
-    };
-  }
+  if (committed && previous.heroSource === article.heroSource) return committed;
 
-  let source;
   try {
-    source = await downloadImage(article.heroSource);
+    const source = await downloadImage(article.heroSource);
+    await mkdir(IMG_DIR, { recursive: true });
+
+    // resize() never enlarges, so a hero narrower than the widest target comes
+    // back at its own size; name and describe every variant by the width sharp
+    // actually produced, or the srcset would advertise pixels that do not exist.
+    const variants = [];
+    for (const width of IMG_WIDTHS) {
+      const output = await sharp(source)
+        .rotate()
+        .resize({ width, withoutEnlargement: true })
+        .webp({ quality: 80 })
+        .toBuffer({ resolveWithObject: true });
+      const name = `${base}-${output.info.width}.webp`;
+      await writeIfChanged(path.join(IMG_DIR, name), output.data);
+      if (!variants.some((variant) => variant.width === output.info.width)) {
+        variants.push({ name, width: output.info.width, height: output.info.height });
+      }
+    }
+
+    const widest = variants.at(-1);
+    return {
+      files: variants.map((variant) => variant.name),
+      fields: {
+        img: `${IMG_URL_PREFIX}/${widest.name}`,
+        imgSrcset: variants.map((variant) => `${IMG_URL_PREFIX}/${variant.name} ${variant.width}w`).join(', '),
+        imgWidth: widest.width,
+        imgHeight: widest.height,
+      },
+    };
   } catch (error) {
+    // Includes an undecodable image: sharp throwing here must not abort the
+    // run, or one broken hero wedges every article until a human intervenes.
     console.warn(`  hero image failed for ${article.slug}: ${error.message}`);
-    return null;
+    return committed;
   }
+}
 
-  await mkdir(IMG_DIR, { recursive: true });
-  let widest;
-  for (const width of IMG_WIDTHS) {
-    const output = await sharp(source)
-      .rotate()
-      .resize({ width, withoutEnlargement: true })
-      .webp({ quality: 80 })
-      .toBuffer({ resolveWithObject: true });
-    await writeIfChanged(path.join(IMG_DIR, `${base}-${width}.webp`), output.data);
-    widest = output.info;
-  }
+/** The already-committed hero for this article, when its files are still on
+    disk - returned so a transient download failure keeps the published image
+    instead of letting pruneImages() delete it. */
+async function reusableHero(previous, base) {
+  if (!previous?.img) return null;
+  const names = [
+    previous.img,
+    ...String(previous.imgSrcset ?? '')
+      .split(',')
+      .map((entry) => entry.trim().split(/\s+/)[0]),
+  ]
+    .filter(Boolean)
+    .map((url) => url.split('/').pop());
+  const files = [...new Set(names)].filter((name) => name.startsWith(`${base}-`) && name.endsWith('.webp'));
+  if (!files.length || !(await allExist(files))) return null;
 
-  return {
-    files,
-    fields: {
-      img: `${IMG_URL_PREFIX}/${base}-${IMG_WIDTHS.at(-1)}.webp`,
-      imgSrcset: IMG_WIDTHS.map((width) => `${IMG_URL_PREFIX}/${base}-${width}.webp ${width}w`).join(', '),
-      imgWidth: widest?.width,
-      imgHeight: widest?.height,
-    },
-  };
+  const fields = { img: previous.img };
+  if (previous.imgSrcset) fields.imgSrcset = previous.imgSrcset;
+  if (previous.imgWidth) fields.imgWidth = previous.imgWidth;
+  if (previous.imgHeight) fields.imgHeight = previous.imgHeight;
+  return { files, fields };
 }
 
 function renderModule(articles) {

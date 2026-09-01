@@ -104,3 +104,33 @@ test('keeps an opening heading that says something else', () => {
   assert.deepEqual(dropLeadingTitle(body, 'Najlepsze kluby'), body);
   assert.deepEqual(dropLeadingTitle(body, ''), body);
 });
+
+test('rejects backslash-form protocol-relative URLs', () => {
+  // Browsers normalise the backslash, so "/\evil.com" resolves off-site.
+  assert.equal(clean('<p><a href="/\\evil.com">x</a>ok</p>').html, '<p>xok</p>');
+  assert.equal(clean('<p><a href="\\\\evil.com">x</a>ok</p>').html, '<p>xok</p>');
+  assert.ok(clean('<p><a href="/pl/menu/">in</a></p>').html.includes('href="/pl/menu/"'));
+});
+
+test('rewrites our bare origin when an article merely writes it out in prose', () => {
+  // check-build forbids the bare origin anywhere in the rendered HTML, so an
+  // article naming the URL in text would otherwise fail the whole build.
+  const { html } = clean('<p>Zajrzyj na https://sisiwroclaw.pl/pl/menu/ wieczorem.</p>');
+  assert.ok(html.includes('https://www.sisiwroclaw.pl/pl/menu/'));
+  assert.equal(/(^|[^.\w])sisiwroclaw\.pl/.test(html.replace('www.sisiwroclaw.pl', '')), false);
+});
+
+test('a self-closing raw-text tag does not swallow the rest of the body', () => {
+  assert.equal(clean('<p>a</p><script/><p>b</p>').html, '<p>a</p><p>b</p>');
+});
+
+test('an unterminated raw-text element is reported, not silently truncated', () => {
+  const { html, warnings } = clean('<p>a</p><script>evil()');
+  assert.equal(html, '<p>a</p>');
+  assert.ok(warnings.includes('unterminated <script>'));
+});
+
+test('residualRisk ignores prose that merely talks about markup', () => {
+  assert.deepEqual(residualRisk(clean('<p>Kod javascript: oraz onclick= w tekscie.</p>').html), []);
+  assert.deepEqual(residualRisk('<p onclick="x()">a</p>'), ['inline event handler']);
+});

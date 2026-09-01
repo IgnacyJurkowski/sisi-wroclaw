@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import ArticleCard from '../ArticleCard.astro';
-import { articlesFor, blogAlternates, blogSchema } from '../../data/articles';
+import { articlesFor, blogAlternates, blogSchema, hasArticles } from '../../data/articles';
 import { type Locale } from '../../i18n/config';
 import { useTranslations } from '../../i18n/t';
 
@@ -16,7 +16,7 @@ const articles = articlesFor(locale);
 <Base
   locale={locale}
   routeKey="blog"
-  altPaths={blogAlternates()}
+  altPaths={hasArticles(locale) ? blogAlternates() : []}
   title={t.meta.blog.title}
   description={t.meta.blog.description}
   ogDescription={t.meta.blog.ogDescription}

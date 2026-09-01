@@ -143,3 +143,12 @@ test('sorts newest first and keeps one article per locale + slug', () => {
   assert.equal(articles.find((a) => a.locale === 'pl').publishedAt, newer.publishedAt);
   assert.deepEqual(dropped, ['pl/a']);
 });
+
+test('skips an article whose body was truncated by an unterminated element', () => {
+  const { article: mapped, errors } = normalizeArticle(
+    article({ content_html: `${BODY}<script>never closed` }),
+    CONTEXT,
+  );
+  assert.equal(mapped, null);
+  assert.ok(errors.some((error) => error.startsWith('truncated body')));
+});

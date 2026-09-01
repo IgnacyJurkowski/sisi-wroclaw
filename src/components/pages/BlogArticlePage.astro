@@ -25,6 +25,9 @@ const updated = article.updatedAt && article.updatedAt !== article.publishedAt ?
   ogTitle={article.title}
   ogDescription={article.description}
   ogImage={article.img}
+  ogType="article"
+  publishedTime={article.publishedAt}
+  modifiedTime={article.updatedAt ?? article.publishedAt}
   preloadImage={article.img}
   schema={articleSchema(article, locale)}
 >

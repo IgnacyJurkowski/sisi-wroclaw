@@ -18,12 +18,15 @@ export const GET: APIRoute = ({ site }) => {
     // The blog hub only exists where the locale has articles, so its alternates
     // must not point at an empty, noindexed hub.
     const altLocales = key === 'blog' ? LOCALES.filter((locale) => hasArticles(locale)) : LOCALES;
-    const xdefaultLocale = altLocales.includes(DEFAULT_LOCALE) ? DEFAULT_LOCALE : altLocales[0];
     return altLocales.map((locale) => {
       const alts = altLocales
         .map((l) => `<xhtml:link rel="alternate" hreflang="${l}" href="${abs(localizedPath(key, l))}"/>`)
         .join('');
-      const xdefault = `<xhtml:link rel="alternate" hreflang="x-default" href="${abs(localizedPath(key, xdefaultLocale))}"/>`;
+      // Base.astro derives x-default from the same rule (the default locale must
+      // be in the set); the two annotations have to agree for one URL.
+      const xdefault = altLocales.includes(DEFAULT_LOCALE)
+        ? `<xhtml:link rel="alternate" hreflang="x-default" href="${abs(localizedPath(key, DEFAULT_LOCALE))}"/>`
+        : '';
       return `  <url><loc>${abs(localizedPath(key, locale))}</loc>${alts}${xdefault}</url>`;
     });
   });
@@ -46,9 +49,8 @@ export const GET: APIRoute = ({ site }) => {
     const alts = locales
       .map((l) => `<xhtml:link rel="alternate" hreflang="${l}" href="${abs(articlePath(article.slug, l))}"/>`)
       .join('');
-    const xdefaultLocale = locales.includes(DEFAULT_LOCALE) ? DEFAULT_LOCALE : locales[0];
-    const xdefault = locales.length > 1
-      ? `<xhtml:link rel="alternate" hreflang="x-default" href="${abs(articlePath(article.slug, xdefaultLocale))}"/>`
+    const xdefault = locales.includes(DEFAULT_LOCALE)
+      ? `<xhtml:link rel="alternate" hreflang="x-default" href="${abs(articlePath(article.slug, DEFAULT_LOCALE))}"/>`
       : '';
     return `  <url><loc>${abs(articlePath(article.slug, article.locale))}</loc>${alts}${xdefault}</url>`;
   });

@@ -113,6 +113,12 @@ export function normalizeArticle(raw, { locales, canonicalOrigin, bareHosts = []
   warnings.push(...body.warnings);
 
   if (!body.html) errors.push('empty content_html after sanitising');
+  // The sanitiser reports this when a raw-text element never closed, which
+  // means everything after it was discarded - publish nothing rather than a
+  // silently truncated article.
+  for (const warning of body.warnings.filter((w) => w.startsWith('unterminated'))) {
+    errors.push(`truncated body: ${warning}`);
+  }
   if (body.text.length < MIN_TEXT_LENGTH) errors.push(`content too short (${body.text.length} chars)`);
   const risky = residualRisk(body.html);
   if (risky.length) errors.push(`unsafe markup survived sanitising: ${risky.join(', ')}`);

@@ -106,8 +106,12 @@ export function sanitizeArticleHtml(source, { canonicalOrigin, bareHosts = [] } 
 
   const emitText = (value) => {
     if (!value) return;
-    out.push(escapeText(value));
-    text.push(decodeEntities(value));
+    // The post-build gate forbids the bare origin anywhere in the rendered
+    // HTML, including plain prose - an article that merely writes the URL out
+    // would otherwise fail the whole build, not just itself.
+    const normalized = normalizeBareOrigins(value, canonicalHost, bare);
+    out.push(escapeText(normalized));
+    text.push(decodeEntities(normalized));
   };
   const closeTo = (tag) => {
     const depth = open.lastIndexOf(tag);
@@ -162,7 +166,20 @@ export function sanitizeArticleHtml(source, { canonicalOrigin, bareHosts = [] } 
 
     if (DROP_WITH_CONTENT.has(tag.name)) {
       warnings.add(`dropped <${tag.name}>`);
-      cursor = RAW_TEXT.has(tag.name) ? skipRawText(input, tag.end, tag.name) : tag.end;
+      if (!RAW_TEXT.has(tag.name) || tag.selfClosing) {
+        cursor = tag.end;
+        continue;
+      }
+      const raw = skipRawText(input, tag.end, tag.name);
+      // An unterminated raw-text element would swallow the rest of the body.
+      // Report it instead: the sync treats it as a bad row rather than
+      // publishing a silently truncated article.
+      if (raw === null) {
+        warnings.add(`unterminated <${tag.name}>`);
+        cursor = input.length;
+        continue;
+      }
+      cursor = raw;
       continue;
     }
 
@@ -243,12 +260,16 @@ export function readingMinutes(text) {
 /** Anything executable still left in a sanitised body - the sync treats a hit
     as a bad row rather than trusting the sanitiser blindly. */
 export function residualRisk(html) {
+  // Scan tags and attributes only: article prose may legitimately mention
+  // "javascript:" or an onclick handler while discussing code, and rejecting
+  // the article for that would be a false positive.
+  const markup = String(html).replace(/>[^<]*/g, '>');
   const found = [];
-  if (/<\s*script\b/i.test(html)) found.push('<script>');
-  if (/\son[a-z]+\s*=/i.test(html)) found.push('inline event handler');
-  if (/javascript\s*:/i.test(html)) found.push('javascript: URL');
-  if (/<\s*iframe\b/i.test(html)) found.push('<iframe>');
-  if (/\sstyle\s*=/i.test(html)) found.push('inline style');
+  if (/<\s*script\b/i.test(markup)) found.push('<script>');
+  if (/\son[a-z]+\s*=/i.test(markup)) found.push('inline event handler');
+  if (/javascript\s*:/i.test(markup)) found.push('javascript: URL');
+  if (/<\s*iframe\b/i.test(markup)) found.push('<iframe>');
+  if (/\sstyle\s*=/i.test(markup)) found.push('inline style');
   return found;
 }
 
@@ -270,8 +291,16 @@ function readTag(input, start) {
     else if (char === '>') break;
   }
   if (cursor >= input.length) return null;
-  const raw = input.slice(nameStart + match[0].length, cursor).replace(/\/$/, '');
-  return { name, closing, attributes: closing ? new Map() : parseAttributes(raw), end: cursor + 1 };
+  const inner = input.slice(nameStart + match[0].length, cursor);
+  const selfClosing = /\/\s*$/.test(inner);
+  const raw = inner.replace(/\/\s*$/, '');
+  return {
+    name,
+    closing,
+    selfClosing,
+    attributes: closing ? new Map() : parseAttributes(raw),
+    end: cursor + 1,
+  };
 }
 
 function parseAttributes(raw) {
@@ -324,8 +353,10 @@ function safeUrl(value, imageOnly, ctx) {
   const raw = value.replace(URL_NOISE, '').trim();
   if (!raw) return null;
   if (!UNSAFE_SCHEME.test(raw)) {
-    // Relative or fragment URL; protocol-relative is treated as unsafe.
-    if (raw.startsWith('//')) return null;
+    // Relative or fragment URL. Protocol-relative is unsafe, and browsers
+    // normalise a backslash in the authority position, so "/\\evil.com" and
+    // "\\/evil.com" resolve off-site exactly like "//evil.com".
+    if (/^[/\\]{2}/.test(raw)) return null;
     return raw.startsWith('/') || raw.startsWith('#') || raw.startsWith('?') ? raw : null;
   }
   if (!SAFE_SCHEME.test(raw)) return null;
@@ -354,11 +385,11 @@ function isExternal(href, ctx) {
   }
 }
 
+/** End offset just past the matching close tag, or null when there is none. */
 function skipRawText(input, from, tag) {
   const close = new RegExp(`<\\s*/\\s*${tag}\\s*>`, 'i');
-  const rest = input.slice(from);
-  const match = close.exec(rest);
-  return match ? from + match.index + match[0].length : input.length;
+  const match = close.exec(input.slice(from));
+  return match ? from + match.index + match[0].length : null;
 }
 
 /** Drop wrappers left empty by sanitising (e.g. a <p> that only held a script). */
@@ -370,6 +401,16 @@ function collapseEmpty(html) {
     out = next;
   }
   return out.trim();
+}
+
+/** Rewrite http(s)://<bare-host> occurrences onto the canonical www host. */
+function normalizeBareOrigins(value, canonicalHost, bareHosts) {
+  let out = value;
+  for (const host of bareHosts) {
+    const pattern = new RegExp(`https?://${host.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?=[/?#\\s"']|$)`, 'gi');
+    out = out.replace(pattern, `https://${canonicalHost}`);
+  }
+  return out;
 }
 
 function hostOf(origin) {

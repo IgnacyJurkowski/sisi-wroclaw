@@ -36,13 +36,30 @@ export async function getArticle(id) {
   return asArticle(await get(`/v1/articles/${encodeURIComponent(id)}`));
 }
 
-/** Every article summary, paginated until a short page comes back. */
+/** Every article summary. Pagination advances by what the server actually
+    returned, not by what we asked for: a server that caps page size below
+    PAGE_SIZE would otherwise look like the end of the feed on page one and
+    silently drop every article past the cap. A page that adds nothing new
+    (empty, or all-duplicate ids) ends the walk. */
 export async function listAllArticles({ pageSize = PAGE_SIZE, sleep = delay } = {}) {
   const all = [];
+  const seen = new Set();
+  let offset = 0;
+
   for (let page = 0; page < MAX_PAGES; page++) {
-    const batch = await listArticles({ limit: pageSize, offset: page * pageSize });
-    all.push(...batch);
-    if (batch.length < pageSize) return all;
+    const batch = await listArticles({ limit: pageSize, offset });
+    if (!batch.length) return all;
+
+    const fresh = batch.filter((summary) => {
+      const id = articleId(summary) ?? summary?.slug;
+      if (id == null || seen.has(id)) return false;
+      seen.add(id);
+      return true;
+    });
+    all.push(...fresh);
+    if (!fresh.length) return all;
+
+    offset += batch.length;
     await sleep(SPACING_MS);
   }
   console.warn(`Articles sync: stopped paginating at ${MAX_PAGES} pages.`);
@@ -61,6 +78,7 @@ export function articleId(summary) {
 
 /** Fetch a hero image; returns a Buffer, or null when it is not a usable image. */
 export async function downloadImage(url, { fetchImpl = fetch } = {}) {
+  // No API key on this request, so following the CDN's redirects is safe.
   const res = await fetchImpl(url, { signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) });
   if (!res.ok) throw new Error(`hero image ${url} -> ${res.status}`);
   const type = res.headers.get('content-type') || '';
@@ -80,12 +98,19 @@ async function get(path) {
       res = await fetch(`${apiBase()}${path}`, {
         headers: { 'X-API-Key': key, 'Content-Type': 'application/json', Accept: 'application/json' },
         signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+        // fetch only strips Authorization/Cookie across origins, so a redirect
+        // would forward the integration key verbatim to whatever host the
+        // Location names. The endpoint is exact; refuse redirects instead.
+        redirect: 'manual',
       });
     } catch (error) {
       lastError = new Error(`GET ${path} failed: ${error.message}`);
       continue;
     }
 
+    if (res.status >= 300 && res.status < 400) {
+      throw new Error(`GET ${path} -> ${res.status} redirect; refusing to forward the API key`);
+    }
     if (res.ok) {
       try {
         return await res.json();

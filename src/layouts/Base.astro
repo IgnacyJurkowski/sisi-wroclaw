@@ -29,6 +29,11 @@ interface Props {
   preloadImage?: string;
   /** social-share image; path is resolved against the site origin */
   ogImage?: string;
+  /** Open Graph object type - blog articles publish as 'article'. */
+  ogType?: 'website' | 'article';
+  /** ISO timestamps emitted as article:* metadata when ogType is 'article'. */
+  publishedTime?: string;
+  modifiedTime?: string;
   /** keep the page out of the index (utility pages) */
   noindex?: boolean;
   /** extra page-level JSON-LD objects (e.g. Event list) rendered in <head> */
@@ -52,6 +57,9 @@ const {
   // TODO(ignacy): replace with a self-hosted 1200x630 image in /public/og/ once
   // the production domain serves this build.
   ogImage = 'https://framerusercontent.com/images/nBW0AVejCOoiy2Rctqcid0SY6Q.png',
+  ogType = 'website',
+  publishedTime,
+  modifiedTime,
   noindex = false,
   schema = [],
 } = Astro.props;
@@ -105,7 +113,13 @@ const robotsContent = robotsDirective({
     {xDefault && <link rel="alternate" hreflang="x-default" href={xDefault} />}
     <meta property="og:title" content={ogTitle ?? title} />
     <meta property="og:description" content={ogDescription ?? description} />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
+    {ogType === 'article' && publishedTime && (
+      <meta property="article:published_time" content={publishedTime} />
+    )}
+    {ogType === 'article' && modifiedTime && (
+      <meta property="article:modified_time" content={modifiedTime} />
+    )}
     <meta property="og:locale" content={LOCALE_OG[locale]} />
     {hreflangs.filter((h) => h.locale !== locale).map((h) => (
       <meta property="og:locale:alternate" content={LOCALE_OG[h.locale]} />
