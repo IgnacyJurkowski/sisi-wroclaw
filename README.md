@@ -37,6 +37,19 @@ hourly GitHub Action pulls the API into `src/data/articles.generated.ts` +
 **[docs/BLOG.md](docs/BLOG.md)** for the required secrets, the bad-row policy
 and how syndicated HTML is sanitised.
 
+## Backdrop performance
+
+The animated particle field behind every page is one `<canvas>` drawn from a
+Web Worker (`src/components/Particles.astro`, `src/scripts/backdrop/`). See
+**[docs/BACKDROP.md](docs/BACKDROP.md)** for why it is built that way and what
+it replaced. To measure presented frame rate across desktop window sizes:
+
+```bash
+npm run build
+npm run perf:backdrop                      # headless, software-composited lower bound
+npm run perf:backdrop -- --headed --chrome "/path/to/chrome"   # on a real display: expect 60/144/240
+```
+
 ## Structure
 
 ```
