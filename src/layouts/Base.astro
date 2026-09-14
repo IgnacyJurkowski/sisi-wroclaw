@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import Logo from '../components/Logo.astro';
+import '../styles/motion.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import CookieBanner from '../components/CookieBanner.astro';
@@ -149,11 +149,6 @@ const robotsContent = robotsDirective({
     ))}
   </head>
   <body>
-    {/* First-paint intro veil: a wine screen with the mark that lifts on load.
-        Purely decorative and non-blocking (pointer-events off, fades to hidden
-        via a forwards animation, removed entirely for reduced-motion), so it can
-        never trap interaction the way the earlier storage-gated loader did. */}
-    <div class="page-intro" aria-hidden="true"><span class="page-intro__mark"><Logo /></span></div>
     {/* Sits at 40px down the page; an IntersectionObserver toggles the nav's
         scrolled state when it leaves the viewport — no scroll listener reading
         window.scrollY (that read forces a layout flush -> "Forced reflow"). */}
@@ -170,21 +165,6 @@ const robotsContent = robotsDirective({
     <script>import '../scripts/analytics-init.ts';</script>
     <script>import '../scripts/ga-init.ts';</script>
     <script>import '../scripts/conversion-events.ts';</script>
-    {/* Wake the frozen Particles backdrop only after the page is visually
-        complete (load + idle), so its continuous drift/twinkle never inflates
-        mobile Speed Index. Honours prefers-reduced-motion (the field stays
-        still); the CSS in Particles.astro guards this too. */}
-    <script>
-      (function () {
-        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-        var live = function () { document.documentElement.classList.add('bg-live'); };
-        var idle = function () {
-          if ('requestIdleCallback' in window) requestIdleCallback(live, { timeout: 2000 });
-          else setTimeout(live, 200);
-        };
-        if (document.readyState === 'complete') idle();
-        else window.addEventListener('load', idle, { once: true });
-      })();
-    </script>
+    <script>import '../scripts/background-motion';</script>
   </body>
 </html>

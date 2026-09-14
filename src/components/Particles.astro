@@ -1,44 +1,14 @@
 ---
 /*
- * Particles — the site's backdrop: a field of soft cream/gold circles suspended
- * in the wine, like motes of light in a dark club. Pure CSS, no JS, no library.
- * It sits fixed behind everything (z-index:-1) and shows through every
- * transparent section below the hero, so the page never reads as flat wine.
+ * Cream and gold circles drifting through the wine backdrop. The seeded SVG
+ * tiles keep the original field's palette, density and soft bokeh reproducible
+ * across pages. Transform carries each tile through one seamless repeat;
+ * staggered opacity cycles add a gentle shimmer without animated filters.
  *
- * Each layer is a seamless SVG tile, generated here at build time by a seeded
- * RNG (so the field is identical on every page and reproducible build-to-build)
- * and repeated across the viewport.
- *
- * THE FIELD DOES NOT MOVE, and that is the whole point of its shape. A
- * full-window layer that animates costs a full-window redraw every frame for as
- * long as the page is open, and the browser pays that bill once per animated
- * layer. Eight of them made the site unusable on a desktop while a phone
- * shrugged it off, because the cost scales with the window. Measured on the
- * built site (Chromium, software rasteriser, home page, no scrolling):
- *
- *     window        eight drifting layers      still
- *     390x844               60 fps            60 fps
- *     1440x900              15 fps            60 fps
- *     1920x1080             12 fps            60 fps
- *     2560x1440              6 fps            60 fps
- *     3840x2160            4.3 fps            60 fps
- *
- * The animated property makes no difference: one layer costs the same ~50 ms a
- * frame at 1440p whether it animates transform or opacity. There is no cheap
- * way to animate a plate this size, and no amount of tuning the texture helps —
- * pre-rasterising the tiles to PNG, dropping the tile size, adding or removing
- * will-change and contain, and stepping the animation were all measured and all
- * changed nothing. Two earlier attempts at this backdrop (a box-shadow
- * starfield, then these tiles drifting) each cut the constant and left the
- * shape, so the site still lagged.
- *
- * Standing still, the eight tiles paint once into the page's own layer and are
- * never touched again: no promoted layers, no compositor texture, and every
- * page holds 60 fps up to 4K with the glass panels intact.
- *
- * When motion comes back it has to come from a small number of small boxes, not
- * from these plates. html.bg-live (added after load + idle by Base.astro) stays
- * in place as the gate for it.
+ * Motion starts paused. Base.astro owns html.bg-live, including its post-load
+ * start, visibility handling and the visitor's pause choice. Removing that
+ * class pauses the current frame, so resuming does not reset the field.
+ * Reduced-motion visitors keep the still backdrop.
  */
 type Rand = () => number;
 function rng(seed: number): Rand {
@@ -136,26 +106,102 @@ const vars = LAYERS.map((l) => `--img-${l.key}:${tiles[l.key]}; --t-${l.key}:${l
       var(--bg);
   }
 
-  /* Each layer is exactly the viewport and repeats its own tile. Nothing here
-     animates, so all eight paint once into the page's own layer: the compositor
-     holds no texture for the backdrop and does no per-frame work for it. If you
-     ever attach an animation to .cir, read the table above first - it puts a
-     full-window layer back on the compositor and the desktop cost comes back
-     with it. */
+  /* One extra tile fills the space exposed by a complete drift cycle. The
+     gradient backdrop remains still; only the cream/gold layers move. */
   .cir {
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
-    height: 100%;
+    height: calc(100% + var(--tile));
     background-repeat: repeat;
+    background-size: var(--tile) var(--tile);
   }
-  .cir.lg  { background-image: var(--img-lg);  background-size: var(--t-lg) var(--t-lg); }
-  .cir.orb { background-image: var(--img-orb); background-size: var(--t-orb) var(--t-orb); }
-  .cir.bg  { background-image: var(--img-bg);  background-size: var(--t-bg) var(--t-bg); }
-  .cir.md  { background-image: var(--img-md);  background-size: var(--t-md) var(--t-md); }
-  .cir.sm  { background-image: var(--img-sm);  background-size: var(--t-sm) var(--t-sm); }
-  .cir.spA { background-image: var(--img-spA); background-size: var(--t-spA) var(--t-spA); }
-  .cir.spB { background-image: var(--img-spB); background-size: var(--t-spB) var(--t-spB); }
-  .cir.dn  { background-image: var(--img-dn);  background-size: var(--t-dn) var(--t-dn); }
+  .cir.lg {
+    background-image: var(--img-lg);
+    --tile: var(--t-lg);
+    --speed: 192s;
+    --tw-duration: 19s;
+    --tw-delay: -4s;
+    --lo: 0.65;
+  }
+  .cir.orb {
+    background-image: var(--img-orb);
+    --tile: var(--t-orb);
+    --speed: 144s;
+    --tw-duration: 15s;
+    --lo: 0.6;
+  }
+  .cir.bg {
+    background-image: var(--img-bg);
+    --tile: var(--t-bg);
+    --speed: 80s;
+    --tw-duration: 11s;
+    --tw-delay: -5s;
+    --lo: 0.5;
+  }
+  .cir.md {
+    background-image: var(--img-md);
+    --tile: var(--t-md);
+    --speed: 56s;
+    --tw-duration: 9s;
+    --tw-delay: -3s;
+    --lo: 0.4;
+  }
+  .cir.sm {
+    background-image: var(--img-sm);
+    --tile: var(--t-sm);
+    --speed: 36s;
+    --tw-duration: 7s;
+    --lo: 0.35;
+  }
+  .cir.spA {
+    background-image: var(--img-spA);
+    --tile: var(--t-spA);
+    --speed: 28s;
+    --tw-duration: 3.2s;
+    --lo: 0.1;
+  }
+  .cir.spB {
+    background-image: var(--img-spB);
+    --tile: var(--t-spB);
+    --speed: 33s;
+    --tw-duration: 4.6s;
+    --tw-delay: -1.6s;
+    --lo: 0.12;
+  }
+  /* A sparse downward current gives the rising lights depth. */
+  .cir.dn {
+    top: calc(-1 * var(--tile));
+    background-image: var(--img-dn);
+    --tile: var(--t-dn);
+    --drift: var(--tile);
+    --speed: 52s;
+    --tw-duration: 8s;
+    --tw-delay: -2s;
+    --lo: 0.3;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .cir {
+      animation:
+        circle-drift var(--speed) linear infinite,
+        circle-twinkle var(--tw-duration) ease-in-out var(--tw-delay, 0s) infinite;
+      animation-play-state: paused;
+    }
+
+    :global(html.bg-live) .cir {
+      animation-play-state: running;
+    }
+  }
+
+  @keyframes circle-drift {
+    from { transform: translateY(0); }
+    to { transform: translateY(var(--drift, calc(-1 * var(--tile)))); }
+  }
+
+  @keyframes circle-twinkle {
+    0%, 100% { opacity: var(--lo); }
+    50% { opacity: 1; }
+  }
 </style>

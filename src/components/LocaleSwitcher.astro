@@ -14,7 +14,7 @@ const alts = alternates(routeKey);
   <details class="lang-switcher" data-lang-switcher>
     <summary class="lang-current" aria-label={`${t.nav.langLabel}: ${LOCALE_NAMES[locale]}`}>
       <Flag locale={locale} />
-      <svg class="lang-caret" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
+      <svg class="lang-caret" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
     </summary>
     <ul class="lang-dropdown" role="list">
       {alts.map((a) => (

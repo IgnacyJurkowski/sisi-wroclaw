@@ -19,6 +19,13 @@ const pages = FOOTER_PAGE_KEYS
   .map((key) => ({ href: localizedPath(key, locale), label: t.nav[key] }));
 const legal = FOOTER_LEGAL_KEYS.map((k) => ({ href: localizedPath(k, locale), label: t.nav[k] }));
 const homeHref = localizedPath('home', locale);
+const motionLabels = {
+  pl: { pause: 'Wstrzymaj animację tła', resume: 'Wznów animację tła' },
+  en: { pause: 'Pause background animation', resume: 'Resume background animation' },
+  de: { pause: 'Hintergrundanimation pausieren', resume: 'Hintergrundanimation fortsetzen' },
+  it: { pause: 'Metti in pausa lo sfondo', resume: 'Riprendi l’animazione di sfondo' },
+  cs: { pause: 'Pozastavit animaci pozadí', resume: 'Obnovit animaci pozadí' },
+}[locale];
 ---
 
 <footer>
@@ -55,9 +62,29 @@ const homeHref = localizedPath('home', locale);
 
     <div class="footer-bottom">
       <p>{t.footer.rights}</p>
+      <button
+        id="background-motion-toggle"
+        class="background-motion-toggle"
+        type="button"
+        data-pause-label={motionLabels.pause}
+        data-resume-label={motionLabels.resume}
+        hidden
+      >{motionLabels.pause}</button>
       <nav class="footer-legal" aria-label={t.footer.legalHeading}>
         {legal.map((p) => <a href={p.href}>{p.label}</a>)}
       </nav>
     </div>
   </div>
 </footer>
+
+<style>
+  .background-motion-toggle {
+    min-height: 44px; padding: 9px 13px;
+    border: 1px solid var(--line); border-radius: 6px;
+    background: transparent; color: var(--text-dim);
+    font: inherit; font-size: 12px; line-height: 1.4; cursor: pointer;
+  }
+  .background-motion-toggle[hidden] { display: none; }
+  .background-motion-toggle:hover { color: var(--cream); border-color: var(--cream); }
+  .background-motion-toggle:focus-visible { outline: 2px solid var(--cream); outline-offset: 4px; }
+</style>
