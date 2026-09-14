@@ -97,13 +97,16 @@ const {
   }
   .b2b-dp-mode:hover { color: var(--cream); }
   .b2b-dp-mode.is-on { background: rgba(237,219,194,0.12); color: var(--cream); }
+  .b2b-dp-mode:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 
   .b2b-dp-control { position: relative; }
   .b2b-dp-input {
     width: 100%; padding: 11px 64px 11px 13px; border-radius: 9px;
     border: 1px solid var(--line); background: rgba(255,255,255,0.03);
     color: var(--cream); font: inherit; font-size: 14px; cursor: pointer;
+    transition: border-color 150ms ease;
   }
+  .b2b-dp-input:hover { border-color: rgba(237,219,194,0.4); }
   .b2b-dp-input::placeholder { color: var(--text-faint); }
   .b2b-dp-input:focus { outline: 2px solid rgba(237,219,194,0.5); outline-offset: 1px; border-color: transparent; }
   .b2b-dp-input[aria-invalid='true'] { border-color: #c25c74; }
@@ -113,39 +116,71 @@ const {
     width: 22px; height: 22px; display: flex; align-items: center; justify-content: center;
     border: none; background: rgba(237,219,194,0.1); border-radius: 50%; color: var(--cream); cursor: pointer;
   }
+  .b2b-dp-clear[hidden] { display: none; }
   .b2b-dp-clear:hover { background: rgba(237,219,194,0.22); }
+  .b2b-dp-clear:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 
+  /* Popup. The day grid and weekday row are rendered at runtime, so their rules
+     are global on purpose: Astro's scoped selectors never reach injected nodes. */
   .b2b-dp-pop {
-    position: absolute; z-index: 45; top: calc(100% + 6px); left: 0;
-    width: 300px; max-width: calc(100vw - 48px); padding: 12px;
-    background: #2a0a12; border: 1px solid rgba(237,219,194,0.16); border-radius: 12px;
-    box-shadow: 0 18px 44px rgba(0,0,0,0.5);
+    position: absolute; z-index: 45; top: calc(100% + 8px); left: 0;
+    width: 324px; max-width: calc(100vw - 48px); padding: 14px 14px 12px;
+    background: #2a0a12; border: 1px solid rgba(237,219,194,0.16); border-radius: 14px;
+    box-shadow: 0 18px 44px rgba(0,0,0,0.5), 0 1px 0 rgba(237,219,194,0.06) inset;
+    transform-origin: top left;
+    animation: b2b-dp-in 180ms cubic-bezier(0.22, 1, 0.36, 1);
   }
-  .b2b-dp-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .b2b-dp-pop[hidden] { display: none; }
+  @keyframes b2b-dp-in {
+    from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+    to { opacity: 1; transform: none; }
+  }
+  .b2b-dp-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
   .b2b-dp-navbtn {
-    width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
-    border: none; background: transparent; color: var(--cream); border-radius: 8px; cursor: pointer;
+    width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+    border: 1px solid transparent; background: transparent; color: var(--text-dim); border-radius: 9px; cursor: pointer;
+    transition: background 120ms ease, color 120ms ease;
   }
-  .b2b-dp-navbtn:hover { background: rgba(237,219,194,0.12); }
-  .b2b-dp-title { font-size: 14px; font-weight: 600; color: var(--cream); text-transform: capitalize; }
-  .b2b-dp-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-bottom: 4px; }
-  .b2b-dp-weekdays span { text-align: center; font-size: 11px; color: var(--text-faint); padding: 4px 0; text-transform: uppercase; }
-  .b2b-dp-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
-  .b2b-dp-day {
-    aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
-    border: none; background: transparent; color: var(--cream); font: inherit; font-size: 13px;
-    border-radius: 8px; cursor: pointer;
+  .b2b-dp-navbtn:hover { background: rgba(237,219,194,0.1); color: var(--cream); }
+  .b2b-dp-navbtn:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+  .b2b-dp-title { font-size: 14px; font-weight: 600; letter-spacing: 0.01em; color: var(--cream); text-transform: capitalize; }
+  .b2b-dp-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); margin-bottom: 4px; padding-bottom: 6px; border-bottom: 1px solid rgba(237,219,194,0.1); }
+  .b2b-dp-weekdays :global(span) { text-align: center; font-size: 11px; line-height: 1; letter-spacing: 0.02em; color: var(--text-mute); padding: 6px 0; }
+  .b2b-dp-grid { display: grid; grid-template-columns: repeat(7, 1fr); row-gap: 3px; }
+  .b2b-dp-grid :global(.b2b-dp-day) {
+    position: relative; height: 40px; width: 100%; margin: 0; padding: 0;
+    display: flex; align-items: center; justify-content: center;
+    border: none; background: transparent; color: var(--cream); font: inherit; font-size: 13.5px;
+    font-variant-numeric: tabular-nums; border-radius: 9px; cursor: pointer;
+    transition: background 110ms ease, color 110ms ease;
   }
-  .b2b-dp-day:hover:not(:disabled) { background: rgba(237,219,194,0.12); }
-  .b2b-dp-day.is-other { color: var(--text-mute); }
-  .b2b-dp-day:disabled { color: rgba(237,219,194,0.18); cursor: default; }
-  .b2b-dp-day.is-range { background: rgba(251,210,149,0.14); border-radius: 0; }
-  .b2b-dp-day.is-edge { background: var(--cream); color: #1a120b; font-weight: 700; }
-  .b2b-dp-day.is-start { border-top-left-radius: 8px; border-bottom-left-radius: 8px; }
-  .b2b-dp-day.is-end { border-top-right-radius: 8px; border-bottom-right-radius: 8px; }
-  .b2b-dp-day:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
+  .b2b-dp-grid :global(.b2b-dp-day:hover:not(:disabled)) { background: rgba(237,219,194,0.12); }
+  .b2b-dp-grid :global(.b2b-dp-day.is-other) { color: rgba(237,219,194,0.38); }
+  .b2b-dp-grid :global(.b2b-dp-day:disabled) { color: rgba(237,219,194,0.2); cursor: default; }
+  /* Today: a small gold dot under the number, kept on the selected fill too. */
+  .b2b-dp-grid :global(.b2b-dp-day.is-today::after) {
+    content: ''; position: absolute; left: 50%; bottom: 5px; width: 4px; height: 4px;
+    border-radius: 50%; background: var(--gold); transform: translateX(-50%);
+  }
+  .b2b-dp-grid :global(.b2b-dp-day.is-edge.is-today::after) { background: #1a120b; }
+  /* Range band runs edge to edge because the grid has no column gap. */
+  .b2b-dp-grid :global(.b2b-dp-day.is-preview) { background: rgba(251,210,149,0.08); border-radius: 0; }
+  .b2b-dp-grid :global(.b2b-dp-day.is-range) { background: rgba(251,210,149,0.16); border-radius: 0; }
+  .b2b-dp-grid :global(.b2b-dp-day.is-edge) { background: var(--cream); color: #1a120b; font-weight: 600; border-radius: 9px; }
+  .b2b-dp-grid :global(.b2b-dp-day.is-start) { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+  .b2b-dp-grid :global(.b2b-dp-day.is-end) { border-top-left-radius: 0; border-bottom-left-radius: 0; }
+  .b2b-dp-grid :global(.b2b-dp-day.is-start.is-end) { border-radius: 9px; }
+  .b2b-dp-grid :global(.b2b-dp-day.is-preview-start) { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+  .b2b-dp-grid :global(.b2b-dp-day:focus-visible) { outline: 2px solid var(--gold); outline-offset: -2px; z-index: 1; }
 
-  @media (max-width: 640px) { .b2b-dp-pop { width: 280px; } }
+  @media (max-width: 640px) {
+    .b2b-dp-pop { width: 292px; padding: 12px 10px 10px; }
+    .b2b-dp-grid :global(.b2b-dp-day) { height: 38px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .b2b-dp-pop { animation: none; }
+    .b2b-dp-grid :global(.b2b-dp-day), .b2b-dp-navbtn, .b2b-dp-mode, .b2b-dp-input { transition: none; }
+  }
 </style>
 
 <script>
@@ -199,7 +234,7 @@ const {
     // Weekday headers (Mon..Sun).
     const ref = new Date(2024, 0, 1); // a Monday
     let wk = '';
-    for (let i = 0; i < 7; i++) wk += `<span>${fmtWeekday.format(addDays(ref, i))}</span>`;
+    for (let i = 0; i < 7; i++) wk += `<span>${fmtWeekday.format(addDays(ref, i)).replace(/\.$/, '')}</span>`;
     weekdays.innerHTML = wk;
 
     function setMode(m: Mode): void {
@@ -248,6 +283,7 @@ const {
         const other = d.getMonth() !== view.getMonth();
         const cls = ['b2b-dp-day'];
         if (other) cls.push('is-other');
+        if (sameDay(d, today)) cls.push('is-today');
         let inRange = false, isStart = false, isEnd = false, isSel = false;
         if (mode === 'range' && start && end) {
           if (d >= start && d <= end) inRange = true;
@@ -266,6 +302,16 @@ const {
         html += `<button type="button" class="${cls.join(' ')}" role="gridcell" data-iso="${iso(d)}" tabindex="${tab}"${disabled ? ' disabled aria-disabled="true"' : ''}${(isSel || isStart || isEnd) ? ' aria-selected="true"' : ''}>${d.getDate()}</button>`;
       }
       grid!.innerHTML = html;
+    }
+
+    // Range mode: while only the start is picked, tint the days up to the hovered one.
+    function previewTo(target: Date | null): void {
+      const active = mode === 'range' && start && !end && target && target > start;
+      grid!.querySelectorAll<HTMLButtonElement>('[data-iso]').forEach((btn) => {
+        const d = new Date(btn.getAttribute('data-iso') + 'T00:00:00');
+        btn.classList.toggle('is-preview', !!active && d > start! && d <= target!);
+        btn.classList.toggle('is-preview-start', !!active && sameDay(d, start));
+      });
     }
 
     function focusDay(): void {
@@ -363,6 +409,12 @@ const {
       if (!btn || btn.disabled) return;
       pick(new Date(btn.getAttribute('data-iso') + 'T00:00:00'));
     });
+
+    grid.addEventListener('mouseover', (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-iso]');
+      previewTo(btn && !btn.disabled ? new Date(btn.getAttribute('data-iso') + 'T00:00:00') : null);
+    });
+    grid.addEventListener('mouseleave', () => previewTo(null));
 
     grid.addEventListener('keydown', (e: KeyboardEvent) => {
       switch (e.key) {

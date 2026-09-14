@@ -10,6 +10,11 @@ import DatePicker from '../DatePicker.astro';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const t = useTranslations(locale);
+// Netlify keeps one field-label set per form name, captured from the first page it parses.
+// Register the form from the Polish page only, and submit Polish option labels, so the
+// notification emails read in Polish whichever language the visitor used.
+const registersNetlifyForm = locale === 'pl';
+const plForm = useTranslations('pl').b2b.form;
 const f = t.b2b.form;
 const cta = t.b2b.finalCta;
 const privacyHref = localizedPath('privacy', locale);
@@ -38,8 +43,8 @@ const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
       class="b2b-form sisi-card"
       name="b2b-enquiry"
       method="POST"
-      data-netlify="true"
-      netlify-honeypot="bot-field"
+      data-netlify={registersNetlifyForm ? "true" : undefined}
+      netlify-honeypot={registersNetlifyForm ? "bot-field" : undefined}
       data-messages={formMessages}
       data-required-fields="company,contact_person,email,event_type,guests,preferred_date,message"
       data-event-enquiry-form
@@ -48,7 +53,7 @@ const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
       data-reveal
     >
       <input type="hidden" name="form-name" value="b2b-enquiry" />
-      <input type="hidden" name="subject" value="Corporate event enquiry - SiSi Wrocław" />
+      <input type="hidden" name="subject" value="Zapytanie o event firmowy - SiSi Wrocław" />
       <input type="hidden" name="locale" value={locale} />
       <input type="hidden" name="page" data-field-page value="" />
       <input type="hidden" name="utm" data-field-utm value="" />
@@ -96,7 +101,7 @@ const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
             placeholder={f.eventTypePlaceholder}
             labelledby="lbl-b2b-type"
             describedby="err-event_type"
-            options={eventTypeKeys.map((k) => ({ value: k, label: f.eventTypeOptions[k] }))}
+            options={eventTypeKeys.map((k) => ({ value: plForm.eventTypeOptions[k], label: f.eventTypeOptions[k] }))}
           />
           <p class="b2b-field-error" id="err-event_type" data-error-for="event_type" hidden></p>
         </div>
@@ -131,7 +136,8 @@ const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
             clear={f.dateClear}
           />
           <label class="b2b-check">
-            <input type="checkbox" name="date_flexible" value="yes" data-field-flexible /> {f.dateFlexible}
+            <input type="checkbox" name="date_flexible" value="yes" data-field-flexible />
+            <span>{f.dateFlexible}</span>
           </label>
           <p class="b2b-field-error" id="err-preferred_date" data-error-for="preferred_date" hidden></p>
         </div>
@@ -143,7 +149,7 @@ const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
             name="space"
             placeholder={f.spacePlaceholder}
             labelledby="lbl-b2b-space"
-            options={spaceKeys.map((k) => ({ value: k, label: f.spaceOptions[k] }))}
+            options={spaceKeys.map((k) => ({ value: plForm.spaceOptions[k], label: f.spaceOptions[k] }))}
           />
         </div>
 
@@ -212,13 +218,14 @@ const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
     color: var(--cream); font: inherit; font-size: 14px;
   }
   .b2b-field textarea { resize: vertical; }
+  .b2b-field input:not([type='checkbox']):hover, .b2b-field textarea:hover { border-color: rgba(237,219,194,0.4); }
+  .b2b-field input, .b2b-field textarea { transition: border-color 150ms ease; }
   .b2b-field input:focus, .b2b-field select:focus, .b2b-field textarea:focus {
     outline: 2px solid rgba(237,219,194,0.5); outline-offset: 1px; border-color: transparent;
   }
   .b2b-field [aria-invalid='true'] { border-color: #c25c74; }
-  .b2b-check { flex-direction: row !important; align-items: center; gap: 11px; font-size: 13px; line-height: 1.5; color: var(--text-faint); cursor: pointer; }
-  /* Consent text wraps, so keep its tick aligned to the first line, not centred. */
-  .b2b-consent { align-items: flex-start; }
+  .b2b-check { display: flex; flex-direction: row; align-items: flex-start; gap: 11px; font-size: 13px; line-height: 1.5; color: var(--text-faint); cursor: pointer; }
+  .b2b-check > span { min-width: 0; }
   /* Custom tick: hide the native box and draw our own. */
   .b2b-check input[type="checkbox"] {
     appearance: none; -webkit-appearance: none;
@@ -227,7 +234,8 @@ const spaceKeys = ['cork', 'sisi', 'both', 'unsure'] as const;
     background: rgba(255,255,255,0.03); cursor: pointer; position: relative;
     transition: background 150ms ease, border-color 150ms ease;
   }
-  .b2b-consent input[type="checkbox"] { margin-top: 1px; }
+  /* Centre the 18px box on the first 19.5px text line so wrapped consent copy stays aligned. */
+  .b2b-check input[type="checkbox"] { margin-top: calc((1.5em - 18px) / 2); }
   .b2b-check input[type="checkbox"]:hover { border-color: rgba(237,219,194,0.4); }
   .b2b-check input[type="checkbox"]:checked { background: var(--cream); border-color: var(--cream); }
   .b2b-check input[type="checkbox"]:checked::after {

@@ -14,6 +14,15 @@ const reading = interpolate(t.blogPage.readingTime, { minutes: String(article.re
 const metaTitle = `${article.title} | SiSi Wrocław`;
 const updated = article.updatedAt && article.updatedAt !== article.publishedAt ? article.updatedAt : undefined;
 const HERO_SIZES = '(max-width: 920px) 92vw, 880px';
+
+// The vendor repeats the hero image as the first paragraph of the body. The
+// page already renders it above the article, so drop that leading copy only.
+function withoutLeadingHero(html: string, heroSource?: string): string {
+  if (!heroSource) return html;
+  const src = heroSource.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return html.replace(new RegExp(`^\\s*<(p|figure)>\\s*<img\\b[^>]*\\bsrc="${src}"[^>]*>\\s*</\\1>\\s*`), '');
+}
+const bodyHtml = withoutLeadingHero(article.html, article.heroSource);
 ---
 
 <Base
@@ -69,7 +78,7 @@ const HERO_SIZES = '(max-width: 920px) 92vw, 880px';
 
     {/* Sanitised at sync time: allow-listed tags and attributes only, no
         scripts, styles or inline handlers (scripts/articles-sync/sanitize.mjs). */}
-    <div class="ba-body" data-reveal set:html={article.html} />
+    <div class="ba-body" data-reveal set:html={bodyHtml} />
 
     {article.faq && article.faq.length > 0 && (
       <section class="ba-faq" data-reveal aria-labelledby="ba-faq-title">

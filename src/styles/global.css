@@ -258,7 +258,8 @@ footer {
   background: rgba(28, 10, 17, 0.55);
   backdrop-filter: blur(10px);
   border-top: 1px solid rgba(237, 219, 194, 0.18);
-  margin-top: 120px;
+  /* Sections carry their own 80-96px bottom padding; this only tops it up. */
+  margin-top: 40px;
 }
 /* hairline cream highlight that fades at the edges */
 footer::before {
@@ -570,7 +571,11 @@ footer::before {
 }
 
 /* === LEGAL / LONG-FORM CONTENT === */
-.legal { max-width: 760px; margin: 0 auto; padding: 0 32px 96px; color: var(--text-dim); }
+/* Legal + contact text shares the page-header's left edge: the wrapper spans the
+   site width and the reading column is capped inside it. */
+.legal { max-width: var(--maxw); margin: 0 auto; padding: 0 32px 96px; color: var(--text-dim); }
+.legal > * { max-width: 720px; }
+.legal > .contact-cols { max-width: 920px; }
 .legal h2 {
   font-family: var(--font-display); color: var(--cream);
   font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.01em;

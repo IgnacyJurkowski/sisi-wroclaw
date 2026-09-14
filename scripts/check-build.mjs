@@ -563,11 +563,14 @@ for (const locale of LOCALES) {
   const requiredFields = ['name', 'email', 'occasion', 'guests', 'preferred_date', 'message', 'consent'];
 
   assert(`${locale} has exactly one private-enquiry form`, forms.length === 1);
+  // Netlify keeps one label set per form name from the first page it parses, so only the
+  // Polish page registers the form; other locales still POST to it by form-name.
+  const registersForm = locale === 'pl';
   assert(
-    `${locale} private form has Netlify POST and honeypot attributes`,
+    `${locale} private form has Netlify POST attributes ${registersForm ? 'and registers' : 'without registering'} the form`,
     openTag.includes('method="POST"')
-      && openTag.includes('data-netlify="true"')
-      && openTag.includes('netlify-honeypot="bot-field"')
+      && openTag.includes('data-netlify="true"') === registersForm
+      && openTag.includes('netlify-honeypot="bot-field"') === registersForm
       && openTag.includes('data-private-events-form'),
   );
   assert(
@@ -611,11 +614,12 @@ for (const locale of LOCALES) {
   const errorStatus = form.match(/<div class="b2b-form-status b2b-status-error"[\s\S]*?<\/div>/)?.[0] ?? '';
 
   assert(`${locale} has exactly one b2b-enquiry form`, forms.length === 1);
+  const registersForm = locale === 'pl';
   assert(
-    `${locale} form has Netlify POST and honeypot attributes`,
+    `${locale} form has Netlify POST attributes ${registersForm ? 'and registers' : 'without registering'} the form`,
     openTag.includes('method="POST"')
-      && openTag.includes('data-netlify="true"')
-      && openTag.includes('netlify-honeypot="bot-field"'),
+      && openTag.includes('data-netlify="true"') === registersForm
+      && openTag.includes('netlify-honeypot="bot-field"') === registersForm,
   );
   assert(
     `${locale} form has the static form-name detector`,
@@ -632,9 +636,10 @@ for (const locale of LOCALES) {
 }
 assert('form required indicator (*)', enB2B.includes('class="req"'));
 assert('form hidden locale field', enB2B.includes('name="locale" value="en"'));
-assert('form honeypot', enB2B.includes('netlify-honeypot="bot-field"'));
+const plB2B = b2bPages.pl;
+assert('form honeypot registered from the Polish page', plB2B.includes('netlify-honeypot="bot-field"'));
 assert('form consent required', /name="consent"[^>]*required/.test(enB2B));
-assert('form netlify-enabled', enB2B.includes('data-netlify="true"'));
+assert('form netlify-enabled from the Polish page', plB2B.includes('data-netlify="true"'));
 assert('form name and POST method preserved', /<form[^>]*name="b2b-enquiry"[^>]*method="POST"/.test(enB2B));
 assert('form-name field preserved', enB2B.includes('name="form-name" value="b2b-enquiry"'));
 const enB2BForm = enB2B.match(/<form\b[^>]*data-b2b-form[^>]*>[\s\S]*?<\/form>/)?.[0] ?? '';

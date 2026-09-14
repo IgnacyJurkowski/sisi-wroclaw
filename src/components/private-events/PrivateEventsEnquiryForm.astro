@@ -10,6 +10,11 @@ import NumberStepper from '../NumberStepper.astro';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const t = useTranslations(locale);
+// Netlify keeps one field-label set per form name, captured from the first page it parses.
+// Register the form from the Polish page only, and submit Polish option labels, so the
+// notification emails read in Polish whichever language the visitor used.
+const registersNetlifyForm = locale === 'pl';
+const plForm = useTranslations('pl').privateEvents.form;
 const f = t.privateEvents.form;
 const shared = t.b2b.form;
 const privacyHref = localizedPath('privacy', locale);
@@ -35,8 +40,8 @@ const occasionKeys = ['birthday', 'anniversary', 'celebration', 'exclusive', 'ot
       class="private-form sisi-card"
       name="private-enquiry"
       method="POST"
-      data-netlify="true"
-      netlify-honeypot="bot-field"
+      data-netlify={registersNetlifyForm ? "true" : undefined}
+      netlify-honeypot={registersNetlifyForm ? "bot-field" : undefined}
       data-messages={formMessages}
       data-required-fields="name,email,occasion,guests,preferred_date,message"
       data-event-enquiry-form
@@ -83,7 +88,7 @@ const occasionKeys = ['birthday', 'anniversary', 'celebration', 'exclusive', 'ot
             placeholder={f.occasionPlaceholder}
             labelledby="lbl-private-occasion"
             describedby="private-err-occasion"
-            options={occasionKeys.map((key) => ({ value: key, label: f.occasionOptions[key] }))}
+            options={occasionKeys.map((key) => ({ value: plForm.occasionOptions[key], label: f.occasionOptions[key] }))}
           />
           <p class="private-field-error" id="private-err-occasion" data-error-for="occasion" hidden></p>
         </div>
@@ -179,12 +184,14 @@ const occasionKeys = ['birthday', 'anniversary', 'celebration', 'exclusive', 'ot
     color: var(--cream); font: inherit; font-size: 14px;
   }
   .private-field textarea { resize: vertical; }
+  .private-field input:not([type='checkbox']):hover, .private-field textarea:hover { border-color: rgba(237,219,194,0.4); }
+  .private-field input, .private-field textarea { transition: border-color 150ms ease; }
   .private-field input:focus, .private-field select:focus, .private-field textarea:focus {
     outline: 2px solid rgba(237,219,194,0.5); outline-offset: 1px; border-color: transparent;
   }
   .private-field [aria-invalid='true'] { border-color: #c25c74; }
-  .private-check { flex-direction: row !important; align-items: center; gap: 11px; font-size: 13px; line-height: 1.5; color: var(--text-faint); cursor: pointer; }
-  .private-consent { align-items: flex-start; }
+  .private-check { display: flex; flex-direction: row; align-items: flex-start; gap: 11px; font-size: 13px; line-height: 1.5; color: var(--text-faint); cursor: pointer; }
+  .private-check > span { min-width: 0; }
   .private-check input[type='checkbox'] {
     appearance: none; -webkit-appearance: none;
     flex-shrink: 0; width: 18px; height: 18px; margin: 0; padding: 0;
@@ -192,7 +199,8 @@ const occasionKeys = ['birthday', 'anniversary', 'celebration', 'exclusive', 'ot
     background: rgba(255,255,255,0.03); cursor: pointer; position: relative;
     transition: background 150ms ease, border-color 150ms ease;
   }
-  .private-consent input[type='checkbox'] { margin-top: 1px; }
+  /* Centre the 18px box on the first 19.5px text line so wrapped consent copy stays aligned. */
+  .private-check input[type='checkbox'] { margin-top: calc((1.5em - 18px) / 2); }
   .private-check input[type='checkbox']:hover { border-color: rgba(237,219,194,0.4); }
   .private-check input[type='checkbox']:checked { background: var(--cream); border-color: var(--cream); }
   .private-check input[type='checkbox']:checked::after {
