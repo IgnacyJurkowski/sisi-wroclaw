@@ -25,6 +25,20 @@ export default defineConfig({
   // now carries a single unprefixed declaration; the prefixing is the build's job.
   vite: {
     css: { transformer: 'lightningcss' },
+    // The backdrop's Web Worker (src/scripts/backdrop/worker.ts) is bundled as
+    // a classic script so every browser that has workers can run it, and it is
+    // named like every other emitted asset: content-addressed under /assets/,
+    // which the generated immutable cache policy and check-build both require.
+    worker: {
+      format: 'iife',
+      rollupOptions: {
+        output: {
+          entryFileNames: 'assets/[name].[hash].js',
+          chunkFileNames: 'assets/[name].[hash].js',
+          assetFileNames: 'assets/[name].[hash][extname]',
+        },
+      },
+    },
     build: {
       // CSP permits one exact pre-paint bootstrap only. Everything Astro/Vite
       // processes must remain a same-origin file rather than inline code.
