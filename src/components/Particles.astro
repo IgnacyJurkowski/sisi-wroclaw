@@ -92,4 +92,7 @@ const vars = tiles
   .circles:not([data-backdrop='tiles']) > :global(canvas) {
     opacity: 1;
   }
+  @media (prefers-reduced-motion: reduce) {
+    .tiles, .circles > :global(canvas) { transition: none; }
+  }
 </style>

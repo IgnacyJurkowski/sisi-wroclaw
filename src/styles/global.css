@@ -388,7 +388,7 @@ footer::before {
 .menu-fold-summary::-webkit-details-marker { display: none; }
 .menu-fold-icon {
   width: 24px; height: 24px; flex-shrink: 0;
-  fill: none; stroke: var(--gold); stroke-width: 1.7;
+  color: var(--gold); fill: none; stroke: currentColor; stroke-width: 1.5;
   stroke-linecap: round; stroke-linejoin: round;
 }
 .menu-fold-title {
@@ -463,28 +463,6 @@ footer::before {
   font-size: 13px; line-height: 1.6; color: var(--text-dim);
   margin-bottom: 28px;
 }
-
-/* === PAGE INTRO (first-paint veil) === */
-/* A brief wine veil carrying the mark, lifting on load. Purely decorative, so it
-   is built to never block: pointer-events stay off and it fades to hidden via a
-   forwards animation (no JS, no storage - unlike the old loader that once blocked
-   the nav). prefers-reduced-motion removes it outright. */
-.page-intro {
-  position: fixed; inset: 0; z-index: 9999;
-  display: grid; place-items: center;
-  background: var(--bg);
-  pointer-events: none;
-  animation: page-intro-veil 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.14s both;
-}
-.page-intro__mark {
-  display: block;
-  opacity: 0; transform: translateY(10px) scale(0.985);
-  animation: page-intro-mark 0.36s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-.page-intro__mark svg { height: 40px; width: auto; }
-@keyframes page-intro-mark { to { opacity: 1; transform: none; } }
-@keyframes page-intro-veil { to { opacity: 0; visibility: hidden; } }
-@media (prefers-reduced-motion: reduce) { .page-intro { display: none; } }
 
 /* === RESPONSIVE === */
 @media (max-width: 1100px) {

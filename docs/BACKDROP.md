@@ -118,7 +118,19 @@ page (60, 120, 144, 240...). Add `--uncapped` to see how far above it the
 machine could go, `--viewports 3840x2160@2` for a 4K monitor at 200 % scaling,
 and `--pages /pl/menu/` to look at the glass-heaviest page.
 
-### Sandbox results
+### Motion controls
+
+`src/scripts/background-motion.ts` owns the load/idle gate, reduced-motion
+preference, page visibility and the footer's saved pause choice. The canvas
+bootstrap observes its `html.bg-live` state. A paused or reduced-motion visit
+keeps the static tiles without starting a worker; resuming creates the renderer
+once. Pausing an active renderer freezes its current frame, including across
+page lifecycle changes.
+
+### Earlier sandbox results
+
+These measurements predate the hero and menu redesign in #25. They describe
+the rendering comparison at that time, not a benchmark of the current site.
 
 Software compositing, Chromium 141 headless, uncapped, 3 s windows (uncapped
 runs leave the harness's own frame counter spinning on the main thread, so

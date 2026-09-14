@@ -135,26 +135,25 @@ function setup(host: HTMLElement): void {
     if (!worker()) mainThread();
   }
 
-  /* motion waits for load + idle: the drift is a nicety, never a load cost */
-  const openGate = () => {
-    gateOpen = true;
+  // The shared controller owns load/idle, visibility, reduced motion and the
+  // footer's persisted pause preference. Observe its gate instead of running
+  // a second controller that could restart a user-paused canvas.
+  const syncGate = () => {
+    gateOpen = document.documentElement.classList.contains('bg-live');
+    if (gateOpen && !reduce.matches && !booted) boot();
     apply();
   };
-  const whenIdle = () => {
-    if (typeof window.requestIdleCallback === 'function') window.requestIdleCallback(openGate, { timeout: 2000 });
-    else window.setTimeout(openGate, 200);
-  };
-  if (document.readyState === 'complete') whenIdle();
-  else window.addEventListener('load', whenIdle, { once: true });
-
-  document.addEventListener('visibilitychange', apply);
-
-  const onReduce = () => {
-    if (!reduce.matches) boot();
+  new MutationObserver(syncGate).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['class'],
+  });
+  document.addEventListener('visibilitychange', syncGate);
+  window.addEventListener('pageshow', syncGate);
+  window.addEventListener('pagehide', () => {
+    gateOpen = false;
     apply();
-  };
-  if (typeof reduce.addEventListener === 'function') reduce.addEventListener('change', onReduce);
-  else (reduce as unknown as { addListener(listener: () => void): void }).addListener(onReduce);
+  });
+  reduce.addEventListener('change', syncGate);
 
   /* size and pixel ratio: debounced, and only forwarded when they changed */
   let timer = 0;
@@ -179,5 +178,5 @@ function setup(host: HTMLElement): void {
   }
   watchDpr();
 
-  if (!reduce.matches) boot();
+  syncGate();
 }
