@@ -1,0 +1,35 @@
+/* SiSi motion retained after review: opening and document transitions.
+   Photos and buttons stay still; menus own their local motion styles. */
+:root {
+  --motion-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Text fades in without moving. Photo galleries have no reveal hooks. */
+.js [data-reveal],
+.js [data-reveal-group] > * {
+  transform: none;
+  will-change: auto;
+  transition: opacity 600ms ease;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .nav-links a:focus-visible::after { transform: scaleX(1); }
+
+  /* Native document transitions keep ordinary links, history, analytics and
+     page scripts intact. Browsers without support keep normal navigation. */
+  @view-transition { navigation: auto; }
+  #main-nav { view-transition-name: site-navigation; }
+  ::view-transition-old(root) { animation: page-out 220ms ease both; }
+  ::view-transition-new(root) { animation: page-in 360ms var(--motion-out) both; }
+  ::view-transition-old(site-navigation),
+  ::view-transition-new(site-navigation) { animation: nav-dissolve 220ms ease both; }
+  ::view-transition-old(site-navigation) { animation-direction: reverse; }
+  @keyframes page-out { to { opacity: 0; transform: translateY(-8px); } }
+  @keyframes page-in { from { opacity: 0; transform: translateY(14px); } }
+  @keyframes nav-dissolve { from { opacity: 0; } to { opacity: 1; } }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-cta, .nav-cta, .btn-outline { transition: none; }
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none; }
+}

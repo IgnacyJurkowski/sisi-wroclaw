@@ -8,14 +8,33 @@ const { locale, hasUpcomingEvents } = Astro.props;
 const t = useTranslations(locale);
 const eventsHref = localizedPath('events', locale);
 const reservationsHref = localizedPath('reservations', locale);
+const filmLabels = {
+  pl: { pause: 'Wstrzymaj film', play: 'Odtwórz film' },
+  en: { pause: 'Pause video', play: 'Play video' },
+  de: { pause: 'Video pausieren', play: 'Video abspielen' },
+  it: { pause: 'Metti in pausa il video', play: 'Riproduci il video' },
+  cs: { pause: 'Pozastavit video', play: 'Přehrát video' },
+}[locale];
 ---
 
 <section id="start" class="hero">
-  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-bg" aria-hidden="true">
+    <video
+      class="hero-film"
+      muted loop playsinline preload="none"
+      disablepictureinpicture
+      tabindex="-1"
+      data-desktop-src="/video/hero-night-hq-desktop.mp4"
+      data-mobile-src="/video/hero-night-hq-mobile.mp4"
+    ></video>
+  </div>
   <div class="hero-scrim" aria-hidden="true"></div>
 
   <div class="hero-content">
-    <h1 class="display hero-title" data-hero>{t.hero.titleLine1}<br />{t.hero.titleLine2}</h1>
+    <h1 class="display hero-title" data-hero>
+      <span class="hero-title-line"><span>{t.hero.titleLine1}</span></span>
+      <span class="hero-title-line"><span>{t.hero.titleLine2}</span></span>
+    </h1>
     <p class="hero-descriptor" data-hero>{t.hero.descriptor}</p>
     <div class="hero-actions" data-hero>
       <a href={reservationsHref} class="btn-cta">{t.nav.reservations}</a>
@@ -25,16 +44,34 @@ const reservationsHref = localizedPath('reservations', locale);
 
   <a href="#ewolucja-onas" class="hero-scroll" aria-label={t.hero.discover}>
     <span>{t.hero.discover}</span>
-    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <path d="M6 9l6 6 6-6" />
     </svg>
   </a>
+
+  <button
+    class="hero-film-toggle"
+    type="button"
+    aria-label={filmLabels.pause}
+    data-pause-label={filmLabels.pause}
+    data-play-label={filmLabels.play}
+    hidden
+  >
+    <svg class="film-pause" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+      <path d="M7 5h3v14H7zm7 0h3v14h-3z" />
+    </svg>
+    <svg class="film-play" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+      <path d="m8 5 11 7-11 7z" />
+    </svg>
+  </button>
 </section>
+
+<script>import '../../scripts/hero-film';</script>
 
 <style>
   .hero {
     position: relative;
-    min-height: 100svh;
+    min-height: max(600px, 100svh);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -43,19 +80,20 @@ const reservationsHref = localizedPath('reservations', locale);
     overflow: hidden;
   }
   .hero-bg {
-    position: absolute; left: 0; right: 0; top: -15%; height: 130%;
+    position: absolute; inset: 0;
     background: url('/framerusercontent.com/images/nBW0AVejCOoiy2Rctqcid0SY6Q.webp') center/cover no-repeat;
-    /* Dissolve the photo's bottom edge so the hero hands off to the circle
-       field behind it. Stops account for the -15%/130% parallax overscan, so
-       the fade lands near the visible bottom of the section. mask unprefixed
-       on purpose (Lightning CSS adds -webkit-mask from browserslist). */
-    mask-image: linear-gradient(to bottom, #000 70%, transparent 95%);
+    /* Keep the existing photograph visible until the first video frame plays. */
+    mask-image: linear-gradient(to bottom, #000 74%, transparent 100%);
   }
+  .hero-film {
+    width: 100%; height: 100%; object-fit: cover;
+    opacity: 0;
+    transition: opacity 900ms ease;
+  }
+  .hero-film.is-ready { opacity: 1; }
   .hero-scrim {
     position: absolute; inset: 0;
-    /* Darkens the top/middle for title legibility, then fades to nothing at the
-       bottom (was near-opaque wine) so it never covers the sparkle hand-off. */
-    background: linear-gradient(180deg, rgba(39,6,15,0.55) 0%, rgba(39,6,15,0.3) 50%, rgba(39,6,15,0) 100%);
+    background: linear-gradient(180deg, rgba(23,4,9,0.5) 0%, rgba(23,4,9,0.38) 45%, rgba(39,6,15,0.12) 78%, transparent 100%);
   }
   .hero-content { position: relative; z-index: 2; padding: 0 24px; }
   .hero-title {
@@ -79,6 +117,16 @@ const reservationsHref = localizedPath('reservations', locale);
     display: flex; gap: 16px; justify-content: center;
     margin-top: 28px; flex-wrap: wrap;
   }
+  .hero-title-line { display: block; overflow: clip; padding-block: 0.04em; margin-block: -0.04em; }
+  .hero-title-line > span { display: block; }
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-title-line > span { animation: hero-line-in 850ms cubic-bezier(0.16, 1, 0.3, 1) 100ms both; }
+    .hero-title-line:nth-child(2) > span { animation-delay: 220ms; }
+    .hero-descriptor { animation: hero-detail-in 600ms ease 360ms both; }
+    .hero-actions { animation: hero-detail-in 600ms ease 480ms both; }
+  }
+  @keyframes hero-line-in { from { transform: translateY(105%); } to { transform: translateY(0); } }
+  @keyframes hero-detail-in { from { opacity: 0; } to { opacity: 1; } }
   .hero-scroll {
     position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
     z-index: 2;
@@ -88,8 +136,27 @@ const reservationsHref = localizedPath('reservations', locale);
     min-width: 48px; padding: 10px 18px;
     font-size: 11px; font-weight: 600; letter-spacing: 0.22em;
     color: var(--text-faint);
-    animation: bob 2.4s ease-in-out infinite;
+    animation: bob 2.4s ease-in-out 2;
   }
   @keyframes bob { 0%,100% { transform: translate(-50%,0); } 50% { transform: translate(-50%,8px); } }
-  @media (prefers-reduced-motion: reduce) { .hero-scroll { animation: none; } }
+  .hero-film-toggle {
+    position: absolute; right: 32px; bottom: 34px; z-index: 2;
+    display: grid; place-items: center;
+    width: 48px; height: 48px; padding: 0;
+    border: 1px solid rgba(237,219,194,0.35); border-radius: 50%;
+    background: rgba(23,4,9,0.65); color: var(--cream); cursor: pointer;
+    transition: background-color 180ms ease, border-color 180ms ease;
+  }
+  .hero-film-toggle[hidden], .film-play { display: none; }
+  .hero-film-toggle[data-paused] .film-pause { display: none; }
+  .hero-film-toggle[data-paused] .film-play { display: block; }
+  .hero-film-toggle:hover { background: rgba(23,4,9,0.9); border-color: var(--cream); }
+  .hero-film-toggle:focus-visible { outline: 2px solid var(--cream); outline-offset: 5px; }
+  @media (max-width: 600px) {
+    .hero-film-toggle { right: 20px; bottom: 34px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-scroll { animation: none; }
+    .hero-film, .hero-film-toggle { display: none; transition: none; }
+  }
 </style>

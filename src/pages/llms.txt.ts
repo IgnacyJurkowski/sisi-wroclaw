@@ -3,6 +3,7 @@ import { LOCALES, DEFAULT_LOCALE, LOCALE_NAMES, TIMEZONE, type Locale } from '..
 import { localizedPath, eventPath, articlePath, type RouteKey } from '../i18n/routes';
 import { BUSINESS, CONTACT, COMPANY, VENUE_FACTS, EVENTS, splitEvents } from '../data/site';
 import { articlesFor } from '../data/articles';
+import { SECTIONS as FOOD_SECTIONS } from '../data/food-menu';
 import { DICTS } from '../i18n/ui';
 
 /* Build-time /llms.txt (llmstxt.org): one map of the site for LLMs and AI
@@ -89,8 +90,8 @@ SiSi shares the R32 complex with The Cork, a restaurant that also hosts corporat
 - Adres: ${CONTACT.address} - kompleks R32. ${pl.r32.body}
 - Otwarte: ${pl.common.hoursDays}, ${CONTACT.hours} (${TIMEZONE}).
 - Rezerwacje: ${pl.reservationsHome.terms}
-- Bar: ${pl.menuTeaser.tabs[0].body} ${pl.menuTeaser.tabs[1].body}
-- Night Menu: ${pl.menuTeaser.tabs[2].body}
+- Bar: ${pl.menuPage.subtitle}
+- Night Menu by The Cork: ${FOOD_SECTIONS.flatMap((section) => section.dishes.map((dish) => dish.name.pl)).join(', ')}.
 - Eventy: ${pl.homeB2B.body} Powierzchnia ${VENUE_FACTS.areaSqm} m², do ${VENUE_FACTS.theCorkSeated} miejsc siedzących w The Cork, do ${VENUE_FACTS.standingBuffet} osób w formule stojącej i ${VENUE_FACTS.presentationScreens} ekrany prezentacyjne.
 - Kontakt: ${CONTACT.phone}, ${CONTACT.email}; eventy ${CONTACT.eventsPhone}, ${CONTACT.eventsEmail}.
 - Podmiot prowadzący: ${COMPANY.legalName} (NIP ${COMPANY.nip}, KRS ${COMPANY.krs}).

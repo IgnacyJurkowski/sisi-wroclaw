@@ -58,3 +58,32 @@ const reservationsHref = localizedPath('reservations', locale);
     <a href={CONTACT.tripadvisor} class="social-icon" rel="noopener" target="_blank" aria-label="Tripadvisor"><SocialIcon name="tripadvisor" /></a>
   </div>
 </div>
+
+<style>
+  /* The floating glass bar settles toward the top once content passes under
+     it. Keep its width constant so destinations never shift sideways. */
+  #main-nav {
+    transition:
+      transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
+      background 420ms ease,
+      border-color 420ms ease,
+      box-shadow 420ms ease;
+  }
+
+  #main-nav.nav-scrolled {
+    transform: translate(-50%, -3px);
+    background: rgba(39, 7, 15, 0.76);
+    border-color: rgba(237, 219, 194, 0.23);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.24);
+  }
+
+  #mobile-menu {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #main-nav { transition: none; }
+    #main-nav.nav-scrolled { transform: translateX(-50%); }
+  }
+</style>
