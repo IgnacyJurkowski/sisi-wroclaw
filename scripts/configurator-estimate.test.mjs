@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { capacityNotice, decorTablesCost, estimate, formatMinutes, formatZl, parsePrice, recommendSpace, sisiNightFee, toMinutes } from '../src/lib/configurator-estimate.mjs';
+import { capacityNotice, decorTablesCost, estimate, formatMinutes, formatZl, parsePrice, recommendSpace, sisiBlockedOn, sisiNightFee, toMinutes } from '../src/lib/configurator-estimate.mjs';
 
 test('parsePrice reads the menu price labels as published', () => {
   assert.equal(parsePrice('49 zł'), 49);
@@ -131,12 +131,24 @@ test('recommendSpace: standing groups go to SiSi in the evening and to R32 by da
   assert.equal(recommendSpace({ guests: 20, seating: '', startMin: null, endMin: null }, RULES), null);
 });
 
-test('sisiNightFee charges the owner-set Friday and Saturday hire fees only', () => {
-  const fees = { 5: 5000, 6: 15000 };
+test('sisiNightFee charges the owner-set Friday hire fee only', () => {
+  const fees = { 5: 5000 };
   assert.equal(sisiNightFee('2026-09-18', fees), 5000); // Friday
-  assert.equal(sisiNightFee('2026-09-19', fees), 15000); // Saturday
+  assert.equal(sisiNightFee('2026-09-19', fees), 0); // Saturday: blocked, not priced
   assert.equal(sisiNightFee('2026-09-20', fees), 0); // Sunday
   assert.equal(sisiNightFee('', fees), 0);
+});
+
+test('sisiBlockedOn: Saturday is the club night, SiSi cannot be hired', () => {
+  assert.equal(sisiBlockedOn('2026-09-19', [6]), true);
+  assert.equal(sisiBlockedOn('2026-09-18', [6]), false);
+  assert.equal(sisiBlockedOn('', [6]), false);
+});
+
+test('recommendSpace: on a blocked day only The Cork is proposed, or nothing above its seats', () => {
+  assert.deepEqual(recommendSpace({ guests: 60, seating: 'standing', startMin: 20 * 60, endMin: 26 * 60, sisiBlocked: true }, RULES), { key: 'cork', reasons: ['standing', 'sisiBlocked'] });
+  assert.deepEqual(recommendSpace({ guests: 22, seating: 'seated', startMin: 18 * 60, endMin: 23 * 60, sisiBlocked: true }, RULES), { key: 'cork', reasons: ['seated', 'sisiBlocked'] });
+  assert.equal(recommendSpace({ guests: 200, seating: 'standing', startMin: 20 * 60, endMin: 26 * 60, sisiBlocked: true }, RULES), null);
 });
 
 test('decorTablesCost multiplies the per-table price by the tables the group needs', () => {

@@ -705,8 +705,8 @@ for (const locale of LOCALES) {
   // (src/data/cork-configurator.mjs). '0 zł' is the empty state of the estimate.
   const menuHtml = read(`${locale}/menu/index.html`);
   const menuPrices = new Set((menuHtml.match(/\b\d+ zł/g) || []));
-  // ... plus the SiSi club-night hire fees the owner set the same day (Friday 5000, Saturday 15000).
-  const OWNER_EVENT_PRICES = new Set(['38 zł', '35 zł', '0 zł', '5000 zł', '15000 zł']);
+  // ... plus the SiSi Friday hire fee the owner set the same day (5000 zł; Saturdays are blocked, not priced).
+  const OWNER_EVENT_PRICES = new Set(['38 zł', '35 zł', '0 zł', '5000 zł']);
   const corkPrices = new Set(corkPriceLabels());
   const configuratorPrices = [...new Set(form.match(/\b\d+ zł/g) || [])]
     .filter((price) => !OWNER_EVENT_PRICES.has(price) && !corkPrices.has(price));

@@ -156,15 +156,17 @@ export function formatMinutes(minutes) {
  * The Cork seats up to `seatedTheCork` and closes at `closeMin`; the whole R32
  * takes up to `standingR32` standing; SiSi is the club for the evening.
  * Returns { key, reasons } where reasons are keys the UI turns into words.
- * @param {{ guests: number, seating: 'seated'|'standing'|'mixed'|'', startMin: number|null, endMin: number|null }} input
+ * @param {{ guests: number, seating: 'seated'|'standing'|'mixed'|'', startMin: number|null, endMin: number|null, sisiBlocked?: boolean }} input
  * @param {{ seatedTheCork: number, standingR32: number, closeMin: number, eveningFromMin?: number }} rules
  * @returns {{ key: 'sisi'|'cork'|'r32', reasons: string[] } | null}
  */
-export function recommendSpace({ guests, seating, startMin, endMin }, rules) {
+export function recommendSpace({ guests, seating, startMin, endMin, sisiBlocked = false }, rules) {
   const g = Math.max(0, Math.floor(Number(guests) || 0));
   if (!g || !seating) return null;
   const evening = rules.eveningFromMin ?? 19 * 60;
   const runsPastClose = endMin !== null && endMin !== undefined && endMin > rules.closeMin;
+  // A day on which SiSi cannot be hired leaves The Cork alone (R32 includes SiSi).
+  if (sisiBlocked) return g > rules.seatedTheCork ? null : { key: 'cork', reasons: [seating, 'sisiBlocked'] };
   if (g > rules.standingR32) return { key: 'r32', reasons: ['overStanding'] };
   if (seating === 'mixed') return { key: 'r32', reasons: ['mixed'] };
   if (seating === 'seated') {
@@ -187,6 +189,13 @@ export function sisiNightFee(isoDate, fees) {
   const d = new Date(`${String(isoDate).slice(0, 10)}T00:00:00`);
   if (Number.isNaN(d.getTime())) return 0;
   return Number(fees?.[d.getDay()]) || 0;
+}
+
+/** True when SiSi cannot be hired on that date (weekday list, 0 = Sunday). */
+export function sisiBlockedOn(isoDate, blockedDays) {
+  const d = new Date(`${String(isoDate).slice(0, 10)}T00:00:00`);
+  if (Number.isNaN(d.getTime())) return false;
+  return (blockedDays ?? []).includes(d.getDay());
 }
 
 /** Table decorations are priced per table of `seats`; the group needs ceil(guests / seats) tables. */

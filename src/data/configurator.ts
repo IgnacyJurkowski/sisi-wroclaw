@@ -141,8 +141,10 @@ export type ExtraKey = (typeof EXTRAS)[number];
 
 /** Event lengths offered (owner, 2026-09-15). */
 export const DURATIONS = [4, 5, 6, 8, 10] as const;
-/** Hire fee for SiSi on its club nights, by weekday (0 = Sunday); owner, 2026-09-15. */
-export const SISI_NIGHT_FEES: Record<number, number> = { 5: 5000, 6: 15000 };
+/** Hire fee for SiSi on a Friday (weekday 5); owner, 2026-09-15. */
+export const SISI_NIGHT_FEES: Record<number, number> = { 5: 5000 };
+/** Weekdays on which SiSi cannot be hired at all (Saturday is the club's own night); owner, 2026-09-15. */
+export const SISI_BLOCKED_DAYS = [6];
 /** The recommendation treats a start from this hour as an evening. */
 export const EVENING_FROM = '19:00';
 

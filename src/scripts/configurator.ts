@@ -8,7 +8,7 @@
    packages and rules from src/data/cork-configurator.mjs, venue limits from
    VENUE_FACTS. It never invents a number. */
 import {
-  capacityNotice, corkBaseHours, corkEstimate, decorTablesCost, estimate, formatMinutes, formatZl, recommendSpace, sisiNightFee, toMinutes,
+  capacityNotice, corkBaseHours, corkEstimate, decorTablesCost, estimate, formatMinutes, formatZl, recommendSpace, sisiBlockedOn, sisiNightFee, toMinutes,
 } from '../lib/configurator-estimate.mjs';
 
 type Strings = {
@@ -26,11 +26,12 @@ type Strings = {
   duration: { base: string; hours: string; individual: string; extensionAuto: string; tooLong: string; closing: string; none: string; plus1: string; plus2: string };
   durationPl: { none: string; plus1: string; plus2: string };
   corkClosing: string;
-  details: { plan: string; planCork: string; planSisi: string; corkWindow: string; corkWindowFix: string; extensionSave: string; nightFee: { friday: string; saturday: string } };
-  recommend: { heading: string; note: string; proposal: string; reasons: Record<string, string> };
+  details: { plan: string; planCork: string; planSisi: string; corkWindow: string; corkWindowFix: string; extensionSave: string; nightFee: { friday: string }; sisiBlocked: string };
+  recommend: { heading: string; sisiBlocked: string; note: string; proposal: string; reasons: Record<string, string> };
   spaceTitles: Record<string, string>;
   spaceTitlesPl: Record<string, string>;
   nightFees: Record<number, number>;
+  sisiBlockedDays: number[];
   eveningFrom: string;
   decorSeats: number;
   perTable: string;
@@ -141,22 +142,24 @@ function initConfigurator(form: HTMLFormElement): void {
   const closeMin = toMin(strings.cork.close) ?? 22 * 60;
   const eveningMin = toMin(strings.eveningFrom) ?? 19 * 60;
   const isoDate = () => q<HTMLInputElement>('[name="preferred_date_iso"]')?.value.slice(0, 10) || '';
+  /** Saturday is the club's own night: SiSi (and so the whole R32) cannot be hired. */
+  const sisiBlocked = () => sisiBlockedOn(isoDate(), strings.sisiBlockedDays);
   /** The space the details point to (only the verified capacities and hours). */
   const recommendation = () =>
     recommendSpace(
-      { guests: num('guests'), seating: (checkedRadio('seating')?.getAttribute('data-key') || '') as 'seated' | 'standing' | 'mixed' | '', startMin: startMin(), endMin: endMin() },
+      { guests: num('guests'), seating: (checkedRadio('seating')?.getAttribute('data-key') || '') as 'seated' | 'standing' | 'mixed' | '', startMin: startMin(), endMin: endMin(), sisiBlocked: sisiBlocked() },
       { seatedTheCork: strings.limits.seatedTheCork, standingR32: strings.limits.standingR32, closeMin, eveningFromMin: eveningMin },
     );
   /** The venue the rest of the flow prices: the chosen one, else the proposal. */
   const effectiveSpace = (): 'sisi' | 'cork' | 'r32' => {
     const chosen = spaceKey();
-    if (chosen === 'sisi' || chosen === 'cork' || chosen === 'r32') return chosen;
-    return recommendation()?.key ?? 'r32';
+    if (chosen === 'cork' || ((chosen === 'sisi' || chosen === 'r32') && !sisiBlocked())) return chosen;
+    return recommendation()?.key ?? (sisiBlocked() ? 'cork' : 'r32');
   };
   const corkActive = () => effectiveSpace() !== 'sisi';
-  // A dinner at The Cork that runs past closing continues at SiSi.
-  const afterClose = () => effectiveSpace() === 'cork' && (endMin() ?? 0) > closeMin;
-  const sisiActive = () => effectiveSpace() !== 'cork' || afterClose();
+  // A dinner at The Cork that runs past closing continues at SiSi (not on a blocked day).
+  const afterClose = () => effectiveSpace() === 'cork' && (endMin() ?? 0) > closeMin && !sisiBlocked();
+  const sisiActive = () => !sisiBlocked() && (effectiveSpace() !== 'cork' || afterClose());
 
   /* --- clickable plan: each venue region selects its radio --------------- */
   mapRegions.forEach((region) => {
@@ -385,6 +388,16 @@ function initConfigurator(form: HTMLFormElement): void {
     const childrenHalf = 0;
     const totalGuests = adults;
 
+    // Saturday: SiSi and R32 cannot be chosen; a choice made before the date changed is dropped.
+    const blocked = sisiBlocked();
+    qa<HTMLInputElement>('input[name="space"]').forEach((input) => {
+      const key = input.getAttribute('data-key');
+      const off = blocked && (key === 'sisi' || key === 'r32');
+      input.disabled = off;
+      if (off && input.checked) input.checked = false;
+    });
+    mapRegions.forEach((region) => region.classList.toggle('is-blocked', blocked && region.getAttribute('data-map-space') === 'sisi'));
+
     // Proposal from the details (guests, format, hours) and the venue in effect.
     const proposal = recommendation();
     const effective = effectiveSpace();
@@ -517,10 +530,14 @@ function initConfigurator(form: HTMLFormElement): void {
       windowEl.hidden = !outside;
     }
     // SiSi hire fee on its club nights (Friday / Saturday), when SiSi is booked.
-    const feeDay = isoDate() ? new Date(`${isoDate()}T00:00:00`).getDay() : -1;
     const nightFee = effective === 'sisi' || effective === 'r32' ? sisiNightFee(isoDate(), strings.nightFees) : 0;
-    const feeText = nightFee > 0 ? fill(feeDay === 5 ? strings.details.nightFee.friday : strings.details.nightFee.saturday, { fee: formatZl(nightFee) }) : '';
-    ['[data-night-fee]', '[data-space-night-fee]'].forEach((sel) => { const el = q<HTMLElement>(sel); if (el) { el.textContent = feeText; el.hidden = !feeText; } });
+    const feeText = nightFee > 0 ? fill(strings.details.nightFee.friday, { fee: formatZl(nightFee) }) : '';
+    const detailsNote = blocked && endM !== null && endM > closeMin ? fill(strings.details.sisiBlocked, { close: strings.cork.close }) : feeText;
+    const spaceNote = blocked ? strings.recommend.sisiBlocked : feeText;
+    [['[data-night-fee]', detailsNote], ['[data-space-night-fee]', spaceNote]].forEach(([sel, value]) => {
+      const el = q<HTMLElement>(sel);
+      if (el) { el.textContent = value; el.hidden = !value; }
+    });
 
     // The Cork packages
     const courseLines = syncCourses();

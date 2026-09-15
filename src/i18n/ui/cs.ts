@@ -436,11 +436,13 @@ const cs: UI = {
       },
       recommend: {
         heading: 'Navrhujeme',
+        sisiBlocked: 'V sobotu nejsou SiSi ani celý R32 k dispozici - vyberte The Cork nebo jiný termín.',
         note: 'Podle údajů navrhujeme: {space}.',
         proposal: 'návrh: {space}',
         reasons: {
           seated: 'večeře u stolů', standing: 'raut a ve stoje', mixed: 'večeře a večerní část', afterClose: 'po {close} večer pokračuje v SiSi',
           overSeated: 'více než {seated} míst k sezení v The Cork', overStanding: 'více než {standing} hostů', largeGroup: 'větší skupina', daytime: 'začátek přes den', evening: 'večerní začátek',
+          sisiBlocked: 'v sobotu není SiSi k dispozici',
         },
       },
     },
@@ -455,7 +457,8 @@ const cs: UI = {
       corkWindow: 'V tento den The Cork přijímá skupiny od {from} do {to}.',
       corkWindowFix: 'Nastavit {time}',
       extensionSave: 'Večeře do {hours} h se vejde do zahrnutého času - bez příplatku.',
-      nightFee: { friday: 'Pronájem SiSi v pátek: +{fee}', saturday: 'Pronájem SiSi v sobotu: +{fee}' },
+      nightFee: { friday: 'Pronájem SiSi v pátek: +{fee}' },
+      sisiBlocked: 'V sobotu nelze SiSi pronajmout - večer v The Cork trvá do {close}.',
       timeOther: 'Jiný čas - k domluvě',
       timeHint: 'Časy začátku v The Cork závisí na dni v týdnu; nejdřív vyberte datum.',
       adults: 'Počet hostů',

@@ -448,11 +448,13 @@ const pl = {
       },
       recommend: {
         heading: 'Proponujemy',
+        sisiBlocked: 'W soboty SiSi i cały R32 nie są dostępne - wybierz The Cork albo inny termin.',
         note: 'Na podstawie szczegółów proponujemy: {space}.',
         proposal: 'propozycja: {space}',
         reasons: {
           seated: 'kolacja przy stołach', standing: 'bufet i stojąco', mixed: 'kolacja i część wieczorna', afterClose: 'po {close} wieczór trwa w SiSi',
           overSeated: 'ponad {seated} miejsc siedzących w The Cork', overStanding: 'ponad {standing} gości', largeGroup: 'większa grupa', daytime: 'start w ciągu dnia', evening: 'wieczorny start',
+          sisiBlocked: 'w soboty SiSi jest niedostępne',
         },
       },
     },
@@ -467,7 +469,8 @@ const pl = {
       corkWindow: 'The Cork przyjmuje grupy w tym dniu od {from} do {to}.',
       corkWindowFix: 'Ustaw {time}',
       extensionSave: 'Kolacja do {hours} h mieści się w czasie podstawowym - bez dopłaty.',
-      nightFee: { friday: 'Wynajem SiSi w piątek: +{fee}', saturday: 'Wynajem SiSi w sobotę: +{fee}' },
+      nightFee: { friday: 'Wynajem SiSi w piątek: +{fee}' },
+      sisiBlocked: 'W soboty SiSi nie jest dostępne na wynajem - wieczór w The Cork trwa do {close}.',
       timeOther: 'Inna godzina - do ustalenia',
       timeHint: 'Godziny rozpoczęcia w The Cork zależą od dnia tygodnia; najpierw wybierz datę.',
       adults: 'Liczba gości',
