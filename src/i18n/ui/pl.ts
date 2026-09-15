@@ -428,11 +428,12 @@ const pl = {
     },
     progress: {
       label: 'Postęp konfiguracji',
-      steps: { space: 'Przestrzeń', details: 'Szczegóły', menu: 'Menu', extras: 'Dodatki', summary: 'Podsumowanie' },
+      steps: { occasion: 'Okazja', space: 'Przestrzeń', details: 'Szczegóły', menu: 'Menu', extras: 'Dodatki', summary: 'Podsumowanie' },
     },
     occasion: {
       heading: 'Rodzaj wydarzenia',
       options: { birthday: 'Urodziny', anniversary: 'Rocznica', celebration: 'Prywatne przyjęcie', corporate: 'Impreza firmowa', other: 'Inna okazja' },
+      hints: { birthday: 'Podpowiemy tort i desery.', anniversary: 'Kolacja i tort w propozycji.', celebration: 'Przyjęcie w Twoim stylu.', corporate: 'Podpowiemy ekrany do prezentacji.', other: 'Powiedz nam, co planujesz.' },
     },
     space: {
       heading: 'Wybierz przestrzeń',
@@ -523,7 +524,6 @@ const pl = {
         guests: 'gości',
         adults: 'gości',
         extension: 'przedłużenie +{pct}%',
-        empty: 'Wybierz pakiety lub pozycje z karty, aby zobaczyć szacunek.',
         note: 'Szacunek według aktualnych cen The Cork i karty SiSi. Ostateczny koszt ustalamy indywidualnie - to podsumowanie nie jest ofertą.',
       },
     },
@@ -599,14 +599,13 @@ const pl = {
         subject: 'Zapytanie z konfiguratora imprezy - SiSi Wrocław',
       },
     },
-    buttons: { toDetails: 'Podaj szczegóły', toMenu: 'Skomponuj menu', toExtras: 'Dodaj oprawę', toSummary: 'Przejdź do podsumowania' },
+    buttons: { toSpace: 'Wybierz przestrzeń', toDetails: 'Podaj szczegóły', toMenu: 'Skomponuj menu', toExtras: 'Dodaj oprawę', toSummary: 'Przejdź do podsumowania' },
     wizard: {
       back: 'Wstecz', next: 'Dalej', chooseDishes: 'Wybierz dania', hideDishes: 'Zwiń dania', suggested: 'sugerowane', cakeSizeAuto: 'dopasowane do liczby gości', perGuest: 'na gościa',
       propose: 'Zaproponuj menu na start',
-      proposeHint: 'Pakiety dobrane do liczby gości, czasu spotkania i okazji - wszystko możesz zmienić.',
       clearMenu: 'Wyczyść menu',
       needGuests: 'Podaj liczbę gości w kroku 2, a policzymy ceny za osobę.',
-      hints: { details: 'Podaj termin i liczbę gości.', menu: 'Dodaj pakiet lub pozycje z karty, aby zobaczyć szacunek.', summary: 'Wpisz imię i e-mail, a wyślemy propozycję.' },
+      hints: { occasion: 'Wybierz rodzaj wydarzenia.', details: 'Podaj termin i liczbę gości.', menu: 'Dodaj pakiet lub pozycje z karty, aby zobaczyć szacunek.', summary: 'Wpisz imię i e-mail, a wyślemy propozycję.' },
     },
   },
 

@@ -416,11 +416,12 @@ const cs: UI = {
     },
     progress: {
       label: 'Průběh konfigurace',
-      steps: { space: 'Prostor', details: 'Podrobnosti', menu: 'Menu', extras: 'Doplňky', summary: 'Shrnutí' },
+      steps: { occasion: 'Příležitost', space: 'Prostor', details: 'Podrobnosti', menu: 'Menu', extras: 'Doplňky', summary: 'Shrnutí' },
     },
     occasion: {
       heading: 'Typ akce',
       options: { birthday: 'Narozeniny', anniversary: 'Výročí', celebration: 'Soukromá oslava', corporate: 'Firemní večírek', other: 'Jiná příležitost' },
+      hints: { birthday: 'Navrhneme dort a dezerty.', anniversary: 'Večeře a dort v návrhu.', celebration: 'Oslava podle vás.', corporate: 'Navrhneme obrazovky pro prezentaci.', other: 'Řekněte nám, co plánujete.' },
     },
     space: {
       heading: 'Vyberte prostor',
@@ -511,7 +512,6 @@ const cs: UI = {
         guests: 'hostů',
         adults: 'hostů',
         extension: 'prodloužení +{pct} %',
-        empty: 'Vyberte balíčky nebo položky z nabídky a zobrazí se odhad.',
         note: 'Odhad podle aktuálních cen The Cork a nabídky SiSi. Konečnou cenu stanovujeme individuálně - toto shrnutí není nabídkou.',
       },
     },
@@ -587,14 +587,13 @@ const cs: UI = {
         subject: 'Poptávka z konfigurátoru akce - SiSi Wrocław',
       },
     },
-    buttons: { toDetails: 'Zadat podrobnosti', toMenu: 'Sestavit menu', toExtras: 'Přidat doplňky', toSummary: 'Přejít na shrnutí' },
+    buttons: { toSpace: 'Vyberte prostor', toDetails: 'Zadat podrobnosti', toMenu: 'Sestavit menu', toExtras: 'Přidat doplňky', toSummary: 'Přejít na shrnutí' },
     wizard: {
       back: 'Zpět', next: 'Dále', chooseDishes: 'Vybrat jídla', hideDishes: 'Skrýt jídla', suggested: 'doporučeno', cakeSizeAuto: 'podle počtu hostů', perGuest: 'na hosta',
       propose: 'Navrhnout menu na začátek',
-      proposeHint: 'Balíčky podle počtu hostů, zahrnutého času a příležitosti - vše můžete změnit.',
       clearMenu: 'Vymazat menu',
       needGuests: 'Zadejte počet hostů v kroku 2 a spočítáme cenu na osobu.',
-      hints: { details: 'Zadejte termín a počet hostů.', menu: 'Přidejte balíček nebo položky z nabídky, abyste viděli odhad.', summary: 'Zadejte jméno a e-mail a pošleme vám návrh.' },
+      hints: { occasion: 'Vyberte typ akce.', details: 'Zadejte termín a počet hostů.', menu: 'Přidejte balíček nebo položky z nabídky, abyste viděli odhad.', summary: 'Zadejte jméno a e-mail a pošleme vám návrh.' },
     },
   },
 

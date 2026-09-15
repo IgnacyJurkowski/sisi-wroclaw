@@ -231,13 +231,10 @@ const TAB_ICONS = { corkFood: UI_ICONS.utensils, corkDrinks: DRINK_ICONS.wine, d
         ))}
       </div>
 
-      <aside class="sisi-card cfg-estimate" aria-live="polite">
+      <!-- Shown only once something is priced; until then the bar carries the total. -->
+      <aside class="sisi-card cfg-estimate" aria-live="polite" data-est-card hidden>
         <p class="cfg-subhead">{m.estimate.heading}</p>
-        <div data-est-empty>
-          <p class="cfg-estimate-empty">{m.estimate.empty}</p>
-          <p class="cfg-estimate-empty cfg-estimate-hint" data-propose hidden>{c.wizard.proposeHint}</p>
-        </div>
-        <dl class="cfg-estimate-rows" data-est-rows hidden>
+        <dl class="cfg-estimate-rows" data-est-rows>
           <div data-est-row="corkFood" hidden><dt>{m.estimate.corkFood}</dt><dd data-est-corkFood>0 zł</dd></div>
           <div data-est-row="corkDrinks" hidden><dt>{m.estimate.corkDrinks}</dt><dd data-est-corkDrinks>0 zł</dd></div>
           <div data-est-row="drinks" hidden><dt>{m.estimate.drinks}</dt><dd data-est-drinks>0 zł</dd></div>
@@ -279,6 +276,7 @@ const TAB_ICONS = { corkFood: UI_ICONS.utensils, corkDrinks: DRINK_ICONS.wine, d
   .cfg-tab-sub { font-size: 11.5px; font-weight: 400; color: var(--text-faint); }
 
   .cfg-menu-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 20px; align-items: start; }
+  .cfg-menu-grid:has(> [data-est-card][hidden]) { grid-template-columns: minmax(0, 1fr); }
   .cfg-panel { display: flex; flex-direction: column; gap: 12px; }
   .cfg-note-top { margin: 0 0 10px; }
 
@@ -312,8 +310,6 @@ const TAB_ICONS = { corkFood: UI_ICONS.utensils, corkDrinks: DRINK_ICONS.wine, d
   .cfg-menu-link a { color: var(--cream); text-decoration: underline; text-underline-offset: 3px; }
 
   .cfg-estimate { position: sticky; top: 12px; padding: 20px 22px 20px; border-color: rgba(251,210,149,0.28); }
-  .cfg-estimate-empty { font-size: 13px; color: var(--text-faint); line-height: 1.6; }
-  .cfg-estimate-hint { margin-top: 10px; color: var(--text-mute); font-size: 12px; }
   .cfg-estimate-rows { margin: 0; display: flex; flex-direction: column; gap: 8px; }
   .cfg-estimate-rows > div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 13px; color: var(--text-dim); }
   .cfg-estimate-rows dd { margin: 0; color: var(--cream); font-weight: 600; white-space: nowrap; }

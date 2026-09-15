@@ -415,11 +415,12 @@ const it: UI = {
     },
     progress: {
       label: 'Avanzamento della configurazione',
-      steps: { space: 'Spazio', details: 'Dettagli', menu: 'Menu', extras: 'Extra', summary: 'Riepilogo' },
+      steps: { occasion: 'Occasione', space: 'Spazio', details: 'Dettagli', menu: 'Menu', extras: 'Extra', summary: 'Riepilogo' },
     },
     occasion: {
       heading: 'Tipo di evento',
       options: { birthday: 'Compleanno', anniversary: 'Anniversario', celebration: 'Festa privata', corporate: 'Festa aziendale', other: 'Altra occasione' },
+      hints: { birthday: 'Suggeriremo torta e dessert.', anniversary: 'Cena e torta nella proposta.', celebration: 'Una festa a modo tuo.', corporate: 'Suggeriremo gli schermi per le presentazioni.', other: 'Dicci cosa stai organizzando.' },
     },
     space: {
       heading: 'Scegli lo spazio',
@@ -510,7 +511,6 @@ const it: UI = {
         guests: 'ospiti',
         adults: 'ospiti',
         extension: 'estensione +{pct}%',
-        empty: 'Scegli pacchetti o voci del menu per vedere una stima.',
         note: 'Stima ai prezzi attuali del The Cork e del menu SiSi. Il costo finale viene concordato individualmente - questo riepilogo non è un’offerta.',
       },
     },
@@ -586,14 +586,13 @@ const it: UI = {
         subject: 'Richiesta dal configuratore eventi - SiSi Wrocław',
       },
     },
-    buttons: { toDetails: 'Inserisci i dettagli', toMenu: 'Componi il menu', toExtras: 'Aggiungi extra', toSummary: 'Vai al riepilogo' },
+    buttons: { toSpace: 'Scegli lo spazio', toDetails: 'Inserisci i dettagli', toMenu: 'Componi il menu', toExtras: 'Aggiungi extra', toSummary: 'Vai al riepilogo' },
     wizard: {
       back: 'Indietro', next: 'Avanti', chooseDishes: 'Scegli i piatti', hideDishes: 'Nascondi i piatti', suggested: 'consigliato', cakeSizeAuto: 'in base al numero di ospiti', perGuest: 'per ospite',
       propose: 'Proponi un menu di partenza',
-      proposeHint: 'Pacchetti in base al numero di ospiti, al tempo incluso e all’occasione - puoi cambiare tutto.',
       clearMenu: 'Svuota il menu',
       needGuests: 'Indica il numero di ospiti al passo 2 e calcoleremo il prezzo a persona.',
-      hints: { details: 'Indica la data e il numero di ospiti.', menu: 'Aggiungi un pacchetto o voci dal menu per vedere la stima.', summary: 'Inserisci nome ed e-mail e ti invieremo una proposta.' },
+      hints: { occasion: 'Scegli il tipo di evento.', details: 'Indica la data e il numero di ospiti.', menu: 'Aggiungi un pacchetto o voci dal menu per vedere la stima.', summary: 'Inserisci nome ed e-mail e ti invieremo una proposta.' },
     },
   },
 

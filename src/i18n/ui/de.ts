@@ -416,11 +416,12 @@ const de: UI = {
     },
     progress: {
       label: 'Fortschritt der Konfiguration',
-      steps: { space: 'Raum', details: 'Details', menu: 'Menü', extras: 'Extras', summary: 'Zusammenfassung' },
+      steps: { occasion: 'Anlass', space: 'Raum', details: 'Details', menu: 'Menü', extras: 'Extras', summary: 'Zusammenfassung' },
     },
     occasion: {
       heading: 'Art des Events',
       options: { birthday: 'Geburtstag', anniversary: 'Jubiläum', celebration: 'Private Feier', corporate: 'Firmenfeier', other: 'Anderer Anlass' },
+      hints: { birthday: 'Wir schlagen Torte und Desserts vor.', anniversary: 'Dinner und Torte im Vorschlag.', celebration: 'Eine Feier nach deinem Geschmack.', corporate: 'Wir schlagen die Präsentationsbildschirme vor.', other: 'Sag uns, was du planst.' },
     },
     space: {
       heading: 'Wähle den Raum',
@@ -511,7 +512,6 @@ const de: UI = {
         guests: 'Gäste',
         adults: 'Gäste',
         extension: 'Verlängerung +{pct} %',
-        empty: 'Wähle Pakete oder Positionen aus der Karte, um eine Schätzung zu sehen.',
         note: 'Schätzung zu aktuellen Preisen von The Cork und der SiSi-Karte. Die endgültigen Kosten vereinbaren wir individuell - diese Zusammenfassung ist kein Angebot.',
       },
     },
@@ -587,14 +587,13 @@ const de: UI = {
         subject: 'Anfrage aus dem Event-Konfigurator - SiSi Wrocław',
       },
     },
-    buttons: { toDetails: 'Details angeben', toMenu: 'Menü zusammenstellen', toExtras: 'Extras hinzufügen', toSummary: 'Zur Zusammenfassung' },
+    buttons: { toSpace: 'Raum wählen', toDetails: 'Details angeben', toMenu: 'Menü zusammenstellen', toExtras: 'Extras hinzufügen', toSummary: 'Zur Zusammenfassung' },
     wizard: {
       back: 'Zurück', next: 'Weiter', chooseDishes: 'Gerichte wählen', hideDishes: 'Gerichte ausblenden', suggested: 'empfohlen', cakeSizeAuto: 'an die Gästezahl angepasst', perGuest: 'pro Gast',
       propose: 'Menü zum Start vorschlagen',
-      proposeHint: 'Pakete passend zu Gästezahl, inkludierter Zeit und Anlass - alles lässt sich ändern.',
       clearMenu: 'Menü leeren',
       needGuests: 'Gib in Schritt 2 die Gästezahl an, dann rechnen wir pro Person.',
-      hints: { details: 'Gib Termin und Gästezahl an.', menu: 'Füge ein Paket oder Positionen aus der Karte hinzu, um die Schätzung zu sehen.', summary: 'Gib Name und E-Mail an, dann schicken wir ein Angebot.' },
+      hints: { occasion: 'Wähle die Art des Events.', details: 'Gib Termin und Gästezahl an.', menu: 'Füge ein Paket oder Positionen aus der Karte hinzu, um die Schätzung zu sehen.', summary: 'Gib Name und E-Mail an, dann schicken wir ein Angebot.' },
     },
   },
 

@@ -3,6 +3,7 @@ import ConfiguratorDetails from '../configurator/ConfiguratorDetails.astro';
 import ConfiguratorExtras from '../configurator/ConfiguratorExtras.astro';
 import ConfiguratorHero from '../configurator/ConfiguratorHero.astro';
 import ConfiguratorMenu from '../configurator/ConfiguratorMenu.astro';
+import ConfiguratorOccasion from '../configurator/ConfiguratorOccasion.astro';
 import ConfiguratorSpace from '../configurator/ConfiguratorSpace.astro';
 import ConfiguratorSummary from '../configurator/ConfiguratorSummary.astro';
 import { CONFIGURATOR_LIMITS } from '../../data/configurator';
@@ -99,6 +100,7 @@ const clientStrings = JSON.stringify({
 
     <!-- The steps scroll inside this pane; the header and the calculator bar stay put. -->
     <div class="cfg-body" data-cfg-body>
+      <ConfiguratorOccasion locale={locale} />
       <ConfiguratorSpace locale={locale} />
       <ConfiguratorDetails locale={locale} />
       <ConfiguratorMenu locale={locale} />

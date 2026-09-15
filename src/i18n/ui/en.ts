@@ -416,11 +416,12 @@ const en: UI = {
     },
     progress: {
       label: 'Configuration progress',
-      steps: { space: 'Space', details: 'Details', menu: 'Menu', extras: 'Extras', summary: 'Summary' },
+      steps: { occasion: 'Occasion', space: 'Space', details: 'Details', menu: 'Menu', extras: 'Extras', summary: 'Summary' },
     },
     occasion: {
       heading: 'Type of event',
       options: { birthday: 'Birthday', anniversary: 'Anniversary', celebration: 'Private party', corporate: 'Company party', other: 'Other occasion' },
+      hints: { birthday: 'We will suggest a cake and desserts.', anniversary: 'Dinner and a cake in the proposal.', celebration: 'A party your way.', corporate: 'We will suggest the presentation screens.', other: 'Tell us what you are planning.' },
     },
     space: {
       heading: 'Choose your space',
@@ -511,7 +512,6 @@ const en: UI = {
         guests: 'guests',
         adults: 'guests',
         extension: 'extension +{pct}%',
-        empty: 'Choose packages or menu items to see an estimate.',
         note: 'Estimate at current The Cork and SiSi menu prices. The final cost is agreed individually - this summary is not an offer.',
       },
     },
@@ -587,14 +587,13 @@ const en: UI = {
         subject: 'Enquiry from the event configurator - SiSi Wrocław',
       },
     },
-    buttons: { toDetails: 'Add the details', toMenu: 'Build the menu', toExtras: 'Add extras', toSummary: 'Go to the summary' },
+    buttons: { toSpace: 'Choose the space', toDetails: 'Add the details', toMenu: 'Build the menu', toExtras: 'Add extras', toSummary: 'Go to the summary' },
     wizard: {
       back: 'Back', next: 'Next', chooseDishes: 'Choose dishes', hideDishes: 'Hide dishes', suggested: 'suggested', cakeSizeAuto: 'matched to the guest count', perGuest: 'per guest',
       propose: 'Suggest a starting menu',
-      proposeHint: 'Packages matched to the guest count, the time included and the occasion - change anything you like.',
       clearMenu: 'Clear the menu',
       needGuests: 'Enter the guest count in step 2 and we will price per guest.',
-      hints: { details: 'Add the date and the guest count.', menu: 'Add a package or menu items to see the estimate.', summary: 'Enter your name and e-mail and we will send a proposal.' },
+      hints: { occasion: 'Pick the type of event.', details: 'Add the date and the guest count.', menu: 'Add a package or menu items to see the estimate.', summary: 'Enter your name and e-mail and we will send a proposal.' },
     },
   },
 

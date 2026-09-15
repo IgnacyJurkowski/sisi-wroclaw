@@ -25,7 +25,7 @@ type Strings = {
   estimate: { guests: string; adults: string; extension: string; perGuest: string };
   units: { perGuest: string; bottle: string; portion: string };
   chosen: string;
-  hints: { details: string; menu: string; summary: string };
+  hints: { occasion: string; details: string; menu: string; summary: string };
 };
 
 const OTHER_TIME = 'inna';
@@ -441,9 +441,8 @@ function initConfigurator(form: HTMLFormElement): void {
     qa<HTMLElement>('[data-suggest-wine]').forEach((badge) => show(badge, !!wineFit && badge.getAttribute('data-suggest-wine') === wineFit.getAttribute('data-key')));
     qa<HTMLElement>('[data-suggest-bar]').forEach((badge) => show(badge, !!barFit && badge.getAttribute('data-suggest-bar') === barFit.getAttribute('data-key')));
 
-    // Estimate panel
-    show(q<HTMLElement>('[data-est-empty]'), !hasLines);
-    show(q<HTMLElement>('[data-est-rows]'), hasLines);
+    // Estimate card (only once something is priced)
+    show(q<HTMLElement>('[data-est-card]'), hasLines);
     const row = (key: string, amount: number, on: boolean) => {
       show(q<HTMLElement>(`[data-est-row="${key}"]`), on);
       text(`[data-est-${key}]`, formatZl(amount));
@@ -528,7 +527,8 @@ function initConfigurator(form: HTMLFormElement): void {
     if (calcBar.per) calcBar.per.textContent = adults > 0 && hasLines ? `${formatZl(Math.round(total / adults))} ${strings.estimate.perGuest}` : '';
     const stepKey = steps[current]?.getAttribute('data-cfg-step') || '';
     const contactMissing = !(q<HTMLInputElement>('[name="name"]')?.value.trim() && q<HTMLInputElement>('[name="email"]')?.value.trim());
-    const hint = stepKey === 'details' && (!dateValue || adults === 0) ? strings.hints.details
+    const hint = stepKey === 'occasion' && !checkedRadio('occasion') ? strings.hints.occasion
+      : stepKey === 'details' && (!dateValue || adults === 0) ? strings.hints.details
       : stepKey === 'menu' && menuEmpty ? strings.hints.menu
       : stepKey === 'summary' && contactMissing ? strings.hints.summary
       : '';

@@ -1,37 +1,20 @@
 ---
-import { OCCASIONS } from '../../data/configurator';
 import { type Locale } from '../../i18n/config';
 import { useTranslations } from '../../i18n/t';
 
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const c = useTranslations(locale).configurator;
-// Submitted option values are the Polish labels so notification emails read in
-// Polish whichever language the visitor used (see PrivateEventsEnquiryForm).
-const plOccasions = useTranslations('pl').configurator.occasion.options;
-const STEP_KEYS = ['space', 'details', 'menu', 'extras', 'summary'] as const;
-// Compact app header: one line of copy, the occasion pills and a single
-// progress strip whose segments the page script drives (aria-current / data-done).
+const STEP_KEYS = ['occasion', 'space', 'details', 'menu', 'extras', 'summary'] as const;
+// Compact app header: one line of copy and a single progress strip whose
+// segments the page script drives (aria-current / data-done).
 ---
 
 <header class="cfg-head">
   <div class="container cfg-head-inner">
-    <div class="cfg-head-row">
-      <div class="cfg-head-copy">
-        <h1 class="display cfg-head-title">{c.hero.title}</h1>
-        <p class="cfg-head-body">{c.hero.body}</p>
-      </div>
-      <fieldset class="cfg-occasions">
-        <legend class="cfg-subhead">{c.occasion.heading}</legend>
-        <div class="cfg-pills cfg-occasion-pills">
-          {OCCASIONS.map((key, index) => (
-            <label class="cfg-pill">
-              <input type="radio" name="occasion" value={plOccasions[key]} data-key={key} data-label={c.occasion.options[key]} checked={index === 0} />
-              <span class="cfg-pill-body">{c.occasion.options[key]}</span>
-            </label>
-          ))}
-        </div>
-      </fieldset>
+    <div class="cfg-head-copy">
+      <h1 class="display cfg-head-title">{c.hero.title}</h1>
+      <p class="cfg-head-body">{c.hero.body}</p>
     </div>
 
     <nav class="cfg-strip" aria-label={c.progress.label} data-cfg-progress>
@@ -52,13 +35,9 @@ const STEP_KEYS = ['space', 'details', 'menu', 'extras', 'summary'] as const;
 <style>
   .cfg-head { flex-shrink: 0; border-bottom: 1px solid rgba(237,219,194,0.14); background: rgba(39,7,15,0.55); backdrop-filter: blur(8px); }
   .cfg-head-inner { padding-top: 14px; padding-bottom: 12px; }
-  .cfg-head-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px 28px; flex-wrap: wrap; margin-bottom: 12px; }
-  .cfg-head-copy { min-width: 0; }
+  .cfg-head-copy { min-width: 0; margin-bottom: 12px; }
   .cfg-head-title { font-size: clamp(1.35rem, 2.6vw, 1.8rem); line-height: 1.05; text-transform: uppercase; color: var(--cream); margin: 0 0 4px; }
   .cfg-head-body { color: var(--text-faint); font-size: 13px; line-height: 1.5; margin: 0; }
-  .cfg-occasions { border: none; margin: 0; padding: 0; min-width: 0; }
-  .cfg-occasions legend { padding: 0; margin-bottom: 6px; }
-  .cfg-occasion-pills .cfg-pill-body { padding: 7px 11px; font-size: 12px; }
 
   /* One strip of interlocking arrows: |>>>|>>>|>>>|>>>|>>>|. Each segment is a
      clip-path polygon (point on the right, notch on the left), overlapping the
@@ -87,7 +66,7 @@ const STEP_KEYS = ['space', 'details', 'menu', 'extras', 'summary'] as const;
   .cfg-strip-label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
   @media (max-width: 760px) {
-    .cfg-head-row { align-items: flex-start; margin-bottom: 10px; }
+    .cfg-head-copy { margin-bottom: 10px; }
     .cfg-head-body { display: none; }
     .cfg-head-inner { padding-top: 10px; }
     .cfg-strip { --arrow: 10px; }
