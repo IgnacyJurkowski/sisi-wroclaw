@@ -640,8 +640,8 @@ for (const locale of LOCALES) {
   const expectedFields = [
     'bot-field', 'cake', 'cake_base', 'cake_decor', 'cake_flavour', 'cake_size', 'consent',
     'cork_bar', 'cork_desserts', 'cork_dishes', 'cork_mains', 'cork_premium', 'cork_sommelier', 'cork_starters', 'cork_wine',
-    'decor_extras', 'decor_idea', 'decor_photo', 'decor_tables', 'drinks', 'email', 'end_time', 'estimate', 'extension', 'extras', 'food',
-    'form-name', 'guests', 'locale', 'message', 'name', 'occasion', 'page', 'phone', 'preferred_date', 'preferred_date_iso',
+    'decor_extras', 'decor_idea', 'decor_photo', 'decor_tables', 'drinks', 'duration', 'email', 'estimate', 'extension', 'extras', 'food',
+    'form-name', 'guests', 'locale', 'message', 'name', 'occasion', 'page', 'phone', 'preferred_date', 'preferred_date_iso', 'recommended_space',
     'seating', 'space', 'start_time', 'subject', 'utm',
   ];
   assert(
@@ -657,7 +657,7 @@ for (const locale of LOCALES) {
   );
   assert(
     `${locale} configurator form requires contact, guests, date, hours and consent`,
-    ['name', 'email', 'guests', 'preferred_date', 'start_time', 'end_time', 'consent'].every((name) =>
+    ['name', 'email', 'guests', 'preferred_date', 'start_time', 'consent'].every((name) =>
       new RegExp(`<(?:input|select|textarea)\\b(?=[^>]*\\bname="${name}")(?=[^>]*\\brequired(?:\\s|=|>))[^>]*>`).test(form)),
   );
   // Every option the visitor can pick submits its Polish label so the Netlify
@@ -665,9 +665,8 @@ for (const locale of LOCALES) {
   const optionValues = [...form.matchAll(/<input type="(?:radio|checkbox)" name="(?:occasion|seating|space|extras)" value="([^"]+)"/g)].map((m) => m[1]);
   assert(
     `${locale} configurator options submit the Polish labels`,
-    optionValues.length === 15
-      && ['Urodziny', 'Bufet i stojąco', 'Cały kompleks R32', 'Wynajem na wyłączność'].every((label) => optionValues.includes(label))
-      && !optionValues.includes('Nie wiem jeszcze'),
+    optionValues.length === 16
+      && ['Urodziny', 'Bufet i stojąco', 'Nie wiem jeszcze', 'Wynajem na wyłączność'].every((label) => optionValues.includes(label)),
   );
   // The floor plan is an inline vector (no raster from the reference site) and
   // the page never names a zone, table count or zone capacity.
@@ -679,6 +678,14 @@ for (const locale of LOCALES) {
     `${locale} configurator plan has one clickable region per venue plus the shared area`,
     html.split('data-map-space="sisi"').length === 2 && html.split('data-map-space="cork"').length === 2
       && html.split('data-map-shared').length === 2,
+  );
+  // The owner's event lengths are the only durations offered, and the space
+  // step comes after the details so the tool can propose a space.
+  assert(
+    `${locale} configurator offers the owner's durations and asks for details before the space`,
+    ['4 h', '5 h', '6 h', '8 h', '10 h'].every((v) => form.includes(`name="duration" value="${v}"`))
+      && form.indexOf('data-cfg-step="details"') < form.indexOf('data-cfg-step="space"')
+      && form.includes('data-recommend'),
   );
   // Adults-only venue: no child head-counts, child rates or under-18 copy.
   assert(
@@ -698,7 +705,8 @@ for (const locale of LOCALES) {
   // (src/data/cork-configurator.mjs). '0 zł' is the empty state of the estimate.
   const menuHtml = read(`${locale}/menu/index.html`);
   const menuPrices = new Set((menuHtml.match(/\b\d+ zł/g) || []));
-  const OWNER_EVENT_PRICES = new Set(['38 zł', '35 zł', '0 zł']);
+  // ... plus the SiSi club-night hire fees the owner set the same day (Friday 5000, Saturday 15000).
+  const OWNER_EVENT_PRICES = new Set(['38 zł', '35 zł', '0 zł', '5000 zł', '15000 zł']);
   const corkPrices = new Set(corkPriceLabels());
   const configuratorPrices = [...new Set(form.match(/\b\d+ zł/g) || [])]
     .filter((price) => !OWNER_EVENT_PRICES.has(price) && !corkPrices.has(price));

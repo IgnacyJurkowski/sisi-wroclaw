@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { capacityNotice, estimate, formatZl, parsePrice } from '../src/lib/configurator-estimate.mjs';
+import { capacityNotice, decorTablesCost, estimate, formatMinutes, formatZl, parsePrice, recommendSpace, sisiNightFee, toMinutes } from '../src/lib/configurator-estimate.mjs';
 
 test('parsePrice reads the menu price labels as published', () => {
   assert.equal(parsePrice('49 zł'), 49);
@@ -105,4 +105,50 @@ test('corkPriceLabels lists every published restaurant amount', () => {
   for (const expected of ['80 zł', '95 zł', '139 zł', '159 zł', '38 zł', '70 zł', '90 zł', '120 zł', '190 zł', '220 zł', '40 zł', '300 zł', '450 zł', '650 zł', '1000 zł', '2000 zł', '1500 zł']) {
     assert.ok(labels.includes(expected), expected);
   }
+});
+
+const RULES = { seatedTheCork: 150, standingR32: 500, closeMin: 22 * 60 };
+
+test('recommendSpace: a seated dinner that ends by closing goes to The Cork', () => {
+  assert.deepEqual(recommendSpace({ guests: 22, seating: 'seated', startMin: 18 * 60, endMin: 22 * 60 }, RULES), { key: 'cork', reasons: ['seated'] });
+});
+
+test('recommendSpace: a seated dinner past 22:00 or with an evening part takes the whole R32', () => {
+  assert.deepEqual(recommendSpace({ guests: 22, seating: 'seated', startMin: 18 * 60, endMin: 23 * 60 }, RULES), { key: 'r32', reasons: ['seated', 'afterClose'] });
+  assert.deepEqual(recommendSpace({ guests: 40, seating: 'mixed', startMin: 18 * 60, endMin: 26 * 60 }, RULES), { key: 'r32', reasons: ['mixed'] });
+});
+
+test('recommendSpace: capacities use only the verified 150 seated and 500 standing', () => {
+  assert.deepEqual(recommendSpace({ guests: 151, seating: 'seated', startMin: 18 * 60, endMin: 21 * 60 }, RULES), { key: 'r32', reasons: ['overSeated'] });
+  assert.deepEqual(recommendSpace({ guests: 501, seating: 'standing', startMin: 20 * 60, endMin: 26 * 60 }, RULES), { key: 'r32', reasons: ['overStanding'] });
+  assert.deepEqual(recommendSpace({ guests: 200, seating: 'standing', startMin: 20 * 60, endMin: 26 * 60 }, RULES), { key: 'r32', reasons: ['standing', 'largeGroup'] });
+});
+
+test('recommendSpace: standing groups go to SiSi in the evening and to R32 by day', () => {
+  assert.deepEqual(recommendSpace({ guests: 60, seating: 'standing', startMin: 20 * 60, endMin: 26 * 60 }, RULES), { key: 'sisi', reasons: ['standing', 'evening'] });
+  assert.deepEqual(recommendSpace({ guests: 60, seating: 'standing', startMin: 14 * 60, endMin: 18 * 60 }, RULES), { key: 'r32', reasons: ['standing', 'daytime'] });
+  assert.equal(recommendSpace({ guests: 0, seating: 'standing', startMin: null, endMin: null }, RULES), null);
+  assert.equal(recommendSpace({ guests: 20, seating: '', startMin: null, endMin: null }, RULES), null);
+});
+
+test('sisiNightFee charges the owner-set Friday and Saturday hire fees only', () => {
+  const fees = { 5: 5000, 6: 15000 };
+  assert.equal(sisiNightFee('2026-09-18', fees), 5000); // Friday
+  assert.equal(sisiNightFee('2026-09-19', fees), 15000); // Saturday
+  assert.equal(sisiNightFee('2026-09-20', fees), 0); // Sunday
+  assert.equal(sisiNightFee('', fees), 0);
+});
+
+test('decorTablesCost multiplies the per-table price by the tables the group needs', () => {
+  assert.equal(decorTablesCost(1000, 22, 8), 3000);
+  assert.equal(decorTablesCost(2000, 16, 8), 4000);
+  assert.equal(decorTablesCost(1000, 0, 8), 0);
+  assert.equal(decorTablesCost(null, 22, 8), 0);
+});
+
+test('toMinutes / formatMinutes round-trip and wrap after midnight', () => {
+  assert.equal(toMinutes('18:30'), 18 * 60 + 30);
+  assert.equal(toMinutes('inna'), null);
+  assert.equal(formatMinutes(26 * 60), '02:00');
+  assert.equal(formatMinutes(18 * 60 + 30), '18:30');
 });

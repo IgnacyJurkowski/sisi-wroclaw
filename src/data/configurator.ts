@@ -132,12 +132,19 @@ export const SEATINGS = ['seated', 'standing', 'mixed'] as const;
 export type SeatingKey = (typeof SEATINGS)[number];
 
 /** Spaces, in display order. The facts shown next to each are VENUE_FACTS. */
-export const SPACES = ['sisi', 'cork', 'r32'] as const;
+export const SPACES = ['sisi', 'cork', 'r32', 'unsure'] as const;
 export type SpaceKey = (typeof SPACES)[number];
 
 /** Extras the venue has confirmed it offers (see docs/B2B.md); all quoted individually. */
 export const EXTRAS = ['exclusive', 'music', 'screens', 'catering'] as const;
 export type ExtraKey = (typeof EXTRAS)[number];
+
+/** Event lengths offered (owner, 2026-09-15). */
+export const DURATIONS = [4, 5, 6, 8, 10] as const;
+/** Hire fee for SiSi on its club nights, by weekday (0 = Sunday); owner, 2026-09-15. */
+export const SISI_NIGHT_FEES: Record<number, number> = { 5: 5000, 6: 15000 };
+/** The recommendation treats a start from this hour as an evening. */
+export const EVENING_FROM = '19:00';
 
 export const CONFIGURATOR_LIMITS = {
   /** Smallest group the configurator plans for (owner, 2026-09-15). */

@@ -5,7 +5,7 @@ import { useTranslations } from '../../i18n/t';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const c = useTranslations(locale).configurator;
-const STEP_KEYS = ['occasion', 'space', 'details', 'menu', 'extras', 'summary'] as const;
+const STEP_KEYS = ['occasion', 'details', 'space', 'menu', 'extras', 'summary'] as const;
 // Compact app header: one line of copy and a single progress strip whose
 // segments the page script drives (aria-current / data-done).
 ---

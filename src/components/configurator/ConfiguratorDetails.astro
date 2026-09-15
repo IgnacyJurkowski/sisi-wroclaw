@@ -1,6 +1,6 @@
 ---
 import { SEATINGS } from '../../data/configurator';
-import { CONFIGURATOR_LIMITS } from '../../data/configurator';
+import { CONFIGURATOR_LIMITS, DURATIONS } from '../../data/configurator';
 import { type Locale } from '../../i18n/config';
 import { useTranslations } from '../../i18n/t';
 import DatePicker from '../DatePicker.astro';
@@ -38,6 +38,7 @@ const seatingHints = { seated: d.seating.seatedHint, standing: d.seating.standin
             prevMonth={shared.datePrevMonth}
             nextMonth={shared.dateNextMonth}
             clear={shared.dateClear}
+            singleOnly
           />
           <p class="cfg-field-error" id="cfg-err-preferred_date" data-error-for="preferred_date" hidden></p>
         </div>
@@ -48,16 +49,20 @@ const seatingHints = { seated: d.seating.seatedHint, standing: d.seating.standin
             <option value="">—</option>
           </select>
           <p class="cfg-field-error" id="cfg-err-start_time" data-error-for="start_time" hidden></p>
-          <p class="cfg-hint" data-cork-only>{d.timeHint}</p>
         </div>
 
-        <div class="cfg-field">
-          <label class="cfg-label" for="cfg-end">{d.end} <span class="req" aria-hidden="true">*</span></label>
-          <select id="cfg-end" name="end_time" class="cfg-select" required aria-describedby="cfg-err-end_time" data-cfg-end>
-            <option value="">—</option>
-          </select>
-          <p class="cfg-field-error" id="cfg-err-end_time" data-error-for="end_time" hidden></p>
-        </div>
+        <fieldset class="cfg-field cfg-length">
+          <legend class="cfg-label">{d.length} <span class="req" aria-hidden="true">*</span></legend>
+          <div class="cfg-pills cfg-length-pills">
+            {DURATIONS.map((hours) => (
+              <label class="cfg-pill">
+                <input type="radio" name="duration" value={`${hours} h`} data-hours={hours} data-label={d.hoursShort.replace('{hours}', String(hours))} aria-describedby="cfg-err-duration" />
+                <span class="cfg-pill-body">{d.hoursShort.replace('{hours}', String(hours))}</span>
+              </label>
+            ))}
+          </div>
+          <p class="cfg-field-error" id="cfg-err-duration" data-error-for="duration" hidden></p>
+        </fieldset>
 
         <div class="cfg-field">
           <label class="cfg-label" for="cfg-guests">{d.adults} <span class="req" aria-hidden="true">*</span></label>
@@ -83,6 +88,11 @@ const seatingHints = { seated: d.seating.seatedHint, standing: d.seating.standin
         </div>
       </fieldset>
 
+      <!-- Evening plan: which venue hosts which hours (script) -->
+      <p class="cfg-plan" data-plan hidden><span class="cfg-label">{d.plan}</span> <strong data-plan-text></strong></p>
+      <p class="cfg-notice" data-cork-window hidden><span data-cork-window-text></span> <button type="button" class="cfg-inline-btn" data-cork-window-fix></button></p>
+      <p class="cfg-notice" data-night-fee hidden></p>
+
       <!-- Time at The Cork: the included hours for the group, and the paid
            extension derived from the chosen end time (script). The value
            submitted is the Polish extension label. -->
@@ -105,7 +115,15 @@ const seatingHints = { seated: d.seating.seatedHint, standing: d.seating.standin
 </section>
 
 <style>
-  .cfg-details-grid { display: grid; grid-template-columns: 1.5fr 0.8fr 0.8fr 0.9fr; gap: 14px 16px; }
+  .cfg-details-grid { display: grid; grid-template-columns: 1.2fr 0.7fr 1.5fr 0.8fr; gap: 14px 16px; }
+  .cfg-length { border: none; margin: 0; padding: 0; }
+  .cfg-length legend { padding: 0; }
+  .cfg-length-pills .cfg-pill-body { padding: 10px 14px; font-size: 13px; }
+  .cfg-plan { font-size: 13px; color: var(--text-faint); margin-top: 16px; }
+  .cfg-plan strong { color: var(--cream); }
+  .cfg-plan .cfg-label { display: inline; margin: 0 6px 0 0; }
+  .cfg-inline-btn { margin-left: 8px; padding: 4px 10px; border-radius: 8px; border: 1px solid var(--gold); background: transparent; color: var(--gold); font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; }
+  .cfg-inline-btn:hover { background: rgba(251,210,149,0.12); }
   .cfg-details-grid > * { min-width: 0; }
   .cfg-fieldset { border: none; margin: 18px 0 0; padding: 0; min-width: 0; }
   .cfg-fieldset legend { padding: 0; }
@@ -113,8 +131,9 @@ const seatingHints = { seated: d.seating.seatedHint, standing: d.seating.standin
   .cfg-duration-ext { color: var(--gold); }
   .cfg-duration strong { color: var(--cream); }
   @media (max-width: 960px) {
-    .cfg-details-grid { grid-template-columns: 1fr 1fr 1fr; }
+    .cfg-details-grid { grid-template-columns: 1fr 1fr; }
     .cfg-field-date { grid-column: 1 / -1; }
+    .cfg-length { grid-column: 1 / -1; }
   }
-  @media (max-width: 560px) { .cfg-details-grid { grid-template-columns: 1fr 1fr; } .cfg-details-grid > :last-child { grid-column: 1 / -1; } }
+  @media (max-width: 560px) { .cfg-details-grid { grid-template-columns: 1fr; } }
 </style>

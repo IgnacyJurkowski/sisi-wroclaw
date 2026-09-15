@@ -7,7 +7,9 @@
    data-price on each pick row (read from the menu data at build), The Cork
    packages and rules from src/data/cork-configurator.mjs, venue limits from
    VENUE_FACTS. It never invents a number. */
-import { capacityNotice, corkBaseHours, corkEstimate, corkStartSlots, estimate, formatZl } from '../lib/configurator-estimate.mjs';
+import {
+  capacityNotice, corkBaseHours, corkEstimate, decorTablesCost, estimate, formatMinutes, formatZl, recommendSpace, sisiNightFee, toMinutes,
+} from '../lib/configurator-estimate.mjs';
 
 type Strings = {
   capacity: { seated: string; standing: string; min: string; corkExclusive: string };
@@ -24,6 +26,15 @@ type Strings = {
   duration: { base: string; hours: string; individual: string; extensionAuto: string; tooLong: string; closing: string; none: string; plus1: string; plus2: string };
   durationPl: { none: string; plus1: string; plus2: string };
   corkClosing: string;
+  details: { plan: string; planCork: string; planSisi: string; corkWindow: string; corkWindowFix: string; extensionSave: string; nightFee: { friday: string; saturday: string } };
+  recommend: { heading: string; note: string; proposal: string; reasons: Record<string, string> };
+  spaceTitles: Record<string, string>;
+  spaceTitlesPl: Record<string, string>;
+  nightFees: Record<number, number>;
+  eveningFrom: string;
+  decorSeats: number;
+  perTable: string;
+  durations: number[];
   time: { other: string };
   summary: { toBeAgreed: string; none: string; guestsUnit: string };
   estimate: { guests: string; adults: string; extension: string; perGuest: string };
@@ -33,16 +44,10 @@ type Strings = {
 };
 
 const OTHER_TIME = 'inna';
-/** Latest end offered: 04:00 the next day (the club's closing hour). */
-const LAST_END_MIN = 28 * 60;
 const fill = (template: string, vars: Record<string, string | number>) =>
   template.replace(/\{(\w+)\}/g, (_, key) => (key in vars ? String(vars[key]) : `{${key}}`));
-/** 'HH:MM' -> minutes since midnight; null for blank / "another time". */
-const toMin = (value: string | undefined): number | null => {
-  const m = /^(\d{2}):(\d{2})$/.exec(value || '');
-  return m ? Number(m[1]) * 60 + Number(m[2]) : null;
-};
-const fmtMin = (m: number) => `${String(Math.floor(m / 60) % 24).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
+const toMin = (value: string | undefined): number | null => toMinutes(value);
+const fmtMin = (m: number) => formatMinutes(m);
 
 function initConfigurator(form: HTMLFormElement): void {
   const strings = JSON.parse(form.getAttribute('data-strings') || '{}') as Strings;
@@ -60,7 +65,6 @@ function initConfigurator(form: HTMLFormElement): void {
   const labelOf = (input: HTMLInputElement | null, fallback: string) => input?.getAttribute('data-label') || fallback;
 
   const timeSelect = q<HTMLSelectElement>('[data-cfg-time]');
-  const endSelect = q<HTMLSelectElement>('[data-cfg-end]');
   const extensionField = q<HTMLInputElement>('[data-field-extension]');
   const mapRegions = qa<SVGGElement>('[data-map-space]');
   const corkOnly = qa<HTMLElement>('[data-cork-only]');
@@ -108,18 +112,6 @@ function initConfigurator(form: HTMLFormElement): void {
     });
   });
 
-  /* --- the format follows the venue until the visitor picks one ----------- */
-  let seatingTouched = false;
-  qa<HTMLInputElement>('input[name="seating"]').forEach((input) => input.addEventListener('click', () => { seatingTouched = true; }));
-  const SEATING_FOR: Record<string, string> = { sisi: 'standing', cork: 'seated', r32: 'mixed' };
-  qa<HTMLInputElement>('input[name="space"]').forEach((input) => {
-    input.addEventListener('change', () => {
-      const key = SEATING_FOR[input.getAttribute('data-key') || ''];
-      const radio = key && !seatingTouched ? q<HTMLInputElement>(`input[name="seating"][data-key="${key}"]`) : null;
-      if (radio) radio.checked = true;
-    });
-  });
-
   /* --- cake size follows the guest count until the visitor picks one ------ */
   let cakeSizeTouched = false;
   qa<HTMLInputElement>('input[name="cake_size"]').forEach((input) => input.addEventListener('change', () => { cakeSizeTouched = true; }));
@@ -138,19 +130,33 @@ function initConfigurator(form: HTMLFormElement): void {
 
   /* --- venue mode --------------------------------------------------------- */
   const spaceKey = () => checkedRadio('space')?.getAttribute('data-key') || '';
-  const corkActive = () => spaceKey() !== 'sisi';
-  // Planned hours. An end at or before the start means "after midnight".
+  // Planned hours: start + the chosen length (may run past midnight).
   const startMin = () => toMin(timeSelect?.value);
+  const durationHours = () => Number(checkedRadio('duration')?.getAttribute('data-hours') || 0);
   const endMin = (): number | null => {
     const start = startMin();
-    const end = toMin(endSelect?.value);
-    if (start === null || end === null) return null;
-    return end <= start ? end + 24 * 60 : end;
+    const hours = durationHours();
+    return start === null || !hours ? null : start + hours * 60;
   };
   const closeMin = toMin(strings.cork.close) ?? 22 * 60;
+  const eveningMin = toMin(strings.eveningFrom) ?? 19 * 60;
+  const isoDate = () => q<HTMLInputElement>('[name="preferred_date_iso"]')?.value.slice(0, 10) || '';
+  /** The space the details point to (only the verified capacities and hours). */
+  const recommendation = () =>
+    recommendSpace(
+      { guests: num('guests'), seating: (checkedRadio('seating')?.getAttribute('data-key') || '') as 'seated' | 'standing' | 'mixed' | '', startMin: startMin(), endMin: endMin() },
+      { seatedTheCork: strings.limits.seatedTheCork, standingR32: strings.limits.standingR32, closeMin, eveningFromMin: eveningMin },
+    );
+  /** The venue the rest of the flow prices: the chosen one, else the proposal. */
+  const effectiveSpace = (): 'sisi' | 'cork' | 'r32' => {
+    const chosen = spaceKey();
+    if (chosen === 'sisi' || chosen === 'cork' || chosen === 'r32') return chosen;
+    return recommendation()?.key ?? 'r32';
+  };
+  const corkActive = () => effectiveSpace() !== 'sisi';
   // A dinner at The Cork that runs past closing continues at SiSi.
-  const afterClose = () => spaceKey() === 'cork' && (endMin() ?? 0) > closeMin;
-  const sisiActive = () => spaceKey() !== 'cork' || afterClose();
+  const afterClose = () => effectiveSpace() === 'cork' && (endMin() ?? 0) > closeMin;
+  const sisiActive = () => effectiveSpace() !== 'cork' || afterClose();
 
   /* --- clickable plan: each venue region selects its radio --------------- */
   mapRegions.forEach((region) => {
@@ -241,24 +247,15 @@ function initConfigurator(form: HTMLFormElement): void {
     }
   }
 
-  /* --- start-time options: The Cork's weekday windows, else a plain list -- */
-  let lastTimeKey = '';
+  /* --- start-time options: one plain list (12:00-23:30); The Cork's weekday
+         window is explained with a one-click fix instead of hidden ----------- */
+  let timeOptionsBuilt = false;
   function syncTimeOptions(): void {
-    if (!timeSelect) return;
-    const iso = q<HTMLInputElement>('[name="preferred_date_iso"]')?.value || '';
-    const cork = corkActive();
-    const key = `${cork ? 'cork' : 'sisi'}:${cork ? iso.slice(0, 10) : ''}`;
-    if (key === lastTimeKey) return;
-    lastTimeKey = key;
+    if (!timeSelect || timeOptionsBuilt) return;
+    timeOptionsBuilt = true;
     const current = timeSelect.value;
-    let slots: string[] = [];
-    if (cork) {
-      slots = iso ? corkStartSlots(iso, strings.cork.startWindows) : [];
-    } else {
-      for (let m = 12 * 60; m <= 23 * 60 + 30; m += 30) {
-        slots.push(`${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`);
-      }
-    }
+    const slots: string[] = [];
+    for (let m = 12 * 60; m <= 23 * 60 + 30; m += 30) slots.push(fmtMin(m));
     timeSelect.innerHTML = '';
     const blank = document.createElement('option');
     blank.value = '';
@@ -276,38 +273,6 @@ function initConfigurator(form: HTMLFormElement): void {
     timeSelect.appendChild(other);
     timeSelect.value = Array.from(timeSelect.options).some((o) => o.value === current) ? current : '';
   }
-  /* --- end-time options: from an hour after the start up to 04:00 ----------- */
-  let lastEndKey = '';
-  function syncEndOptions(): void {
-    if (!endSelect || !timeSelect) return;
-    const start = timeSelect.value;
-    if (start === lastEndKey) return;
-    lastEndKey = start;
-    const current = endSelect.value;
-    endSelect.innerHTML = '';
-    const blank = document.createElement('option');
-    blank.value = '';
-    blank.textContent = '—';
-    endSelect.appendChild(blank);
-    const from = toMin(start);
-    if (from !== null) {
-      for (let m = from + 60; m <= LAST_END_MIN; m += 30) {
-        const option = document.createElement('option');
-        option.value = fmtMin(m);
-        option.textContent = fmtMin(m);
-        endSelect.appendChild(option);
-      }
-    }
-    if (start === OTHER_TIME) {
-      const other = document.createElement('option');
-      other.value = OTHER_TIME;
-      other.textContent = strings.time.other;
-      endSelect.appendChild(other);
-    }
-    endSelect.disabled = !start;
-    endSelect.value = Array.from(endSelect.options).some((o) => o.value === current) ? current : '';
-  }
-
   /* --- The Cork dish picks choose the package: the first pick selects the
          smallest package, one pick too many steps up to the next size, and a
          pick beyond the largest package is refused. Choosing a smaller package
@@ -372,7 +337,9 @@ function initConfigurator(form: HTMLFormElement): void {
   function proposeMenu(): void {
     const occasion = checkedRadio('occasion')?.getAttribute('data-key') || '';
     const festive = occasion === 'birthday' || occasion === 'anniversary';
-    if (corkActive()) {
+    const start = startMin();
+    const dinnerTime = start === null || start < closeMin - 60;
+    if (corkActive() && dinnerTime) {
       // A sharing dinner: starters + mains for everyone; desserts on a celebration;
       // the wine package that runs as long as the included time.
       setRadio('cork_starters', 'four');
@@ -391,6 +358,10 @@ function initConfigurator(form: HTMLFormElement): void {
     update();
   }
   q<HTMLButtonElement>('[data-propose-btn]')?.addEventListener('click', proposeMenu);
+  q<HTMLButtonElement>('[data-cork-window-fix]')?.addEventListener('click', (event) => {
+    const time = (event.currentTarget as HTMLElement).getAttribute('data-time') || '';
+    if (timeSelect && time) { timeSelect.value = time; timeSelect.dispatchEvent(new Event('change', { bubbles: true })); }
+  });
   q<HTMLButtonElement>('[data-clear-menu]')?.addEventListener('click', clearMenu);
 
   const steps = qa<HTMLElement>('[data-cfg-step]');
@@ -407,7 +378,6 @@ function initConfigurator(form: HTMLFormElement): void {
     const sisi = sisiActive();
     corkOnly.forEach((el) => show(el, cork));
     syncTimeOptions();
-    syncEndOptions();
     syncTabs();
 
     // Adults-only venue: every head-count is the guest count.
@@ -415,20 +385,47 @@ function initConfigurator(form: HTMLFormElement): void {
     const childrenHalf = 0;
     const totalGuests = adults;
 
-    // Map + "Selected:" line
+    // Proposal from the details (guests, format, hours) and the venue in effect.
+    const proposal = recommendation();
+    const effective = effectiveSpace();
+    const undecided = mode === '' || mode === 'unsure';
+    const proposalTitle = proposal ? strings.spaceTitles[proposal.key] : '';
+    const reasonWords = (proposal?.reasons ?? []).map((r) =>
+      fill(strings.recommend.reasons[r] || r, { close: strings.cork.close, seated: strings.limits.seatedTheCork, standing: strings.limits.standingR32 }));
+    const recommendEl = q<HTMLElement>('[data-recommend]');
+    if (recommendEl) {
+      text('[data-recommend-space]', proposal ? `${strings.recommend.heading}: ${proposalTitle}` : '');
+      text('[data-recommend-why]', reasonWords.length ? `· ${reasonWords.join(' · ')}` : '');
+      recommendEl.hidden = !proposal;
+    }
+    qa<HTMLElement>('[data-suggest-space]').forEach((badge) => show(badge, !!proposal && badge.getAttribute('data-suggest-space') === proposal.key));
+    const recommendedPl = proposal ? strings.spaceTitlesPl[proposal.key] : '';
+    const recommendedField = q<HTMLInputElement>('[data-field-recommended]');
+    if (recommendedField) recommendedField.value = undecided && proposal ? recommendedPl : '';
+
+    // Map + "Selected:" line: the chosen venue, or a lighter tint on the proposed one.
     const space = checkedRadio('space');
-    text('[data-space-selected]', labelOf(space, ''));
+    const spaceLabel = space
+      ? mode === 'unsure' && proposal ? `${labelOf(space, '')} · ${fill(strings.recommend.proposal, { space: proposalTitle })}` : labelOf(space, '')
+      : '';
+    text('[data-space-selected]', spaceLabel || '—');
+    const highlightKey = undecided ? (proposal?.key ?? '') : mode;
     mapRegions.forEach((region) => {
       const key = region.getAttribute('data-map-space') || '';
-      const on = mode === key || mode === 'r32';
+      const on = !undecided && (mode === key || mode === 'r32');
+      const suggested = undecided && (highlightKey === key || highlightKey === 'r32');
       region.classList.toggle('is-selected', on);
+      region.classList.toggle('is-recommended', suggested);
       region.setAttribute('aria-pressed', on ? 'true' : 'false');
     });
     // The shared area between the venues lights up with either of them, and the
     // plan draws one border around the chosen venue plus the shared area.
-    qa<SVGGElement>('[data-map-shared]').forEach((region) => region.classList.toggle('is-selected', mode !== ''));
+    qa<SVGGElement>('[data-map-shared]').forEach((region) => {
+      region.classList.toggle('is-selected', !undecided);
+      region.classList.toggle('is-recommended', undecided && !!proposal);
+    });
     const svg = q<SVGSVGElement>('.cfg-map-svg');
-    if (svg) svg.setAttribute('data-mode', mode);
+    if (svg) svg.setAttribute('data-mode', undecided ? '' : mode);
 
     // Capacity notices (verified limits) + The Cork group rules
     const seating = checkedRadio('seating');
@@ -476,7 +473,7 @@ function initConfigurator(form: HTMLFormElement): void {
     const noteEl = q<HTMLElement>('[data-duration-note]');
     if (noteEl) {
       const note = tooLong && baseHours !== null ? fill(strings.duration.tooLong, { hours: baseHours + maxExt })
-        : cork && endM !== null && endM > closeMin ? fill(strings.duration.closing, { close: strings.cork.close })
+        : extHours > 0 && baseHours !== null ? fill(strings.details.extensionSave, { hours: baseHours })
         : '';
       noteEl.textContent = note;
       noteEl.hidden = !note;
@@ -488,6 +485,42 @@ function initConfigurator(form: HTMLFormElement): void {
       closingEl.textContent = on ? fill(strings.corkClosing, { close: strings.cork.close, end: fmtMin(endM as number) }) : '';
       closingEl.hidden = !on;
     }
+    // Plan for the evening: which venue hosts which hours.
+    const planEl = q<HTMLElement>('[data-plan]');
+    if (planEl) {
+      const parts: string[] = [];
+      if (startM !== null && endM !== null) {
+        const corkEnd = Math.min(endM, closeMin);
+        if (effective !== 'sisi' && corkEnd > startM) parts.push(fill(strings.details.planCork, { from: fmtMin(startM), to: fmtMin(corkEnd) }));
+        if (effective === 'sisi') parts.push(fill(strings.details.planSisi, { from: fmtMin(startM), to: fmtMin(endM) }));
+        else if (endM > corkEnd && (effective === 'r32' || afterClose())) parts.push(fill(strings.details.planSisi, { from: fmtMin(Math.max(startM, corkEnd)), to: fmtMin(endM) }));
+      }
+      text('[data-plan-text]', parts.join(' · '));
+      planEl.hidden = parts.length === 0;
+    }
+    // The Cork's weekday start window: explain it and offer the nearest allowed time.
+    const windowEl = q<HTMLElement>('[data-cork-window]');
+    const fixBtn = q<HTMLButtonElement>('[data-cork-window-fix]');
+    if (windowEl && fixBtn) {
+      const iso = isoDate();
+      const day = iso ? new Date(`${iso}T00:00:00`).getDay() : NaN;
+      const win = Number.isNaN(day) ? null : strings.cork.startWindows[String(day)];
+      const from = win ? toMin(win[0]) : null;
+      const to = win ? toMin(win[1]) : null;
+      const outside = cork && win && startM !== null && from !== null && to !== null && (startM < from || startM > to);
+      if (outside) {
+        const fixTo = startM < (from as number) ? (win as [string, string])[0] : (win as [string, string])[1];
+        text('[data-cork-window-text]', fill(strings.details.corkWindow, { from: (win as [string, string])[0], to: (win as [string, string])[1] }));
+        fixBtn.textContent = fill(strings.details.corkWindowFix, { time: fixTo });
+        fixBtn.setAttribute('data-time', fixTo);
+      }
+      windowEl.hidden = !outside;
+    }
+    // SiSi hire fee on its club nights (Friday / Saturday), when SiSi is booked.
+    const feeDay = isoDate() ? new Date(`${isoDate()}T00:00:00`).getDay() : -1;
+    const nightFee = effective === 'sisi' || effective === 'r32' ? sisiNightFee(isoDate(), strings.nightFees) : 0;
+    const feeText = nightFee > 0 ? fill(feeDay === 5 ? strings.details.nightFee.friday : strings.details.nightFee.saturday, { fee: formatZl(nightFee) }) : '';
+    ['[data-night-fee]', '[data-space-night-fee]'].forEach((sel) => { const el = q<HTMLElement>(sel); if (el) { el.textContent = feeText; el.hidden = !feeText; } });
 
     // The Cork packages
     const courseLines = syncCourses();
@@ -514,7 +547,16 @@ function initConfigurator(form: HTMLFormElement): void {
     const all = sisiLines();
     const picked = all.filter((line) => line.qty > 0);
     const sisiResult = sisi ? estimate({ guests: adults, lines: all }) : { drinks: 0, food: 0, total: 0, perGuest: 0, lineCount: 0 };
-    const decorFlat = qa<HTMLInputElement>('[data-decor-flat]:checked').reduce((sum, input) => sum + (Number(input.getAttribute('data-price')) || 0), 0);
+    const tablesPkg = checkedRadio('decor_tables');
+    const tablesCost = decorTablesCost(Number(tablesPkg?.getAttribute('data-price') || 0), adults, strings.decorSeats);
+    const photoCost = Number(checkedRadio('decor_photo')?.getAttribute('data-price') || 0);
+    const decorFlat = tablesCost + photoCost;
+    qa<HTMLElement>('[data-decor-per-table]').forEach((line) => {
+      const price = Number(q<HTMLInputElement>(`input[name="decor_tables"][data-key="${line.getAttribute('data-decor-per-table')}"]`)?.getAttribute('data-price') || 0);
+      const total = decorTablesCost(price, adults, strings.decorSeats);
+      line.textContent = total > 0 ? fill(strings.perTable, { guests: adults, total: formatZl(total) }) : '';
+      line.hidden = total === 0;
+    });
 
     // Cake: the size's published "from" price, counted so the total moves with the choice.
     const cakeWanted = checkedRadio('cake')?.getAttribute('data-key') === 'with';
@@ -522,8 +564,8 @@ function initConfigurator(form: HTMLFormElement): void {
     suggestCakeSize(adults, cakeWanted);
     const cakeFrom = cakeWanted ? Number(checkedRadio('cake_size')?.getAttribute('data-price-from') || 0) : 0;
 
-    const total = corkResult.total + sisiResult.total + decorFlat + cakeFrom;
-    const hasLines = corkResult.value > 0 || sisiResult.lineCount > 0 || decorFlat > 0 || cakeFrom > 0;
+    const total = corkResult.total + sisiResult.total + decorFlat + cakeFrom + nightFee;
+    const hasLines = corkResult.value > 0 || sisiResult.lineCount > 0 || decorFlat > 0 || cakeFrom > 0 || nightFee > 0;
     const menuEmpty = corkResult.value === 0 && sisiResult.lineCount === 0;
 
     // Starting-menu offer while the menu is empty; "clear" once something is picked.
@@ -548,6 +590,7 @@ function initConfigurator(form: HTMLFormElement): void {
     row('food', sisiResult.food, sisi && sisiResult.food > 0);
     row('cake', cakeFrom, cakeFrom > 0);
     row('decor', decorFlat, decorFlat > 0);
+    row('nightFee', nightFee, nightFee > 0);
     row('service', corkResult.service, corkResult.service > 0);
     text('[data-est-total]', formatZl(total));
     text('[data-est-per-guest]', formatZl(adults > 0 ? Math.round(total / adults) : 0));
@@ -568,14 +611,14 @@ function initConfigurator(form: HTMLFormElement): void {
     const occasionKey = checkedRadio('occasion')?.getAttribute('data-key') || '';
     show(q<HTMLElement>('[data-suggest="cake"]'), occasionKey === 'birthday' || occasionKey === 'anniversary');
     show(q<HTMLElement>('[data-suggest="screens"]'), occasionKey === 'corporate');
+    show(q<HTMLElement>('[data-suggest="exclusive"]'), cork && adults >= strings.cork.exclusiveFrom);
 
     // Summary card
     const tba = strings.summary.toBeAgreed;
     const none = strings.summary.none;
     const dateValue = q<HTMLInputElement>('[name="preferred_date"]')?.value.trim() || '';
     const timeValue = timeSelect?.value || '';
-    const endValue = endSelect?.value || '';
-    const hoursLabel = timeValue === OTHER_TIME ? strings.time.other : timeValue && endValue ? `${timeValue}–${endValue}` : timeValue || tba;
+    const hoursLabel = timeValue === OTHER_TIME ? strings.time.other : timeValue && endM !== null ? `${timeValue}–${fmtMin(endM)} (${durationHours()} h)` : timeValue || tba;
     const drinksCork: string[] = [];
     if (cork && Number(wine?.getAttribute('data-price')) > 0) drinksCork.push(labelOf(wine, ''));
     if (cork && barPrice > 0) drinksCork.push(labelOf(bar, '') + (premium?.checked ? ` + ${labelOf(premium, '')}` : ''));
@@ -602,7 +645,7 @@ function initConfigurator(form: HTMLFormElement): void {
       time: { value: hoursLabel, on: true },
       guests: { value: guestsLabel, on: true },
       seating: { value: labelOf(seating, tba), on: true },
-      space: { value: labelOf(space, tba), on: true },
+      space: { value: spaceLabel || tba, on: true },
       duration: { value: durationLabel || tba, on: cork },
       corkMenu: { value: courseLines.length ? courseLines.join(' · ') : none, on: cork },
       corkDrinks: { value: drinksCork.length ? drinksCork.join(', ') : none, on: cork },
@@ -619,14 +662,14 @@ function initConfigurator(form: HTMLFormElement): void {
     text('[data-sum="estimate"]', hasLines ? `${formatZl(total)} (${formatZl(adults > 0 ? Math.round(total / adults) : 0)} ${strings.estimate.perGuest})` : none);
 
     // Calculator bar: what is chosen, the total, and the one thing the current step still needs.
-    if (calcBar.line) calcBar.line.textContent = [labelOf(checkedRadio('occasion'), ''), adults > 0 ? `${adults} ${strings.estimate.adults}` : '', labelOf(space, '')].filter(Boolean).join(' · ');
+    if (calcBar.line) calcBar.line.textContent = [labelOf(checkedRadio('occasion'), ''), adults > 0 ? `${adults} ${strings.estimate.adults}` : '', spaceLabel].filter(Boolean).join(' · ');
     if (calcBar.total) calcBar.total.textContent = formatZl(total);
     if (calcBar.per) calcBar.per.textContent = adults > 0 && hasLines ? `${formatZl(Math.round(total / adults))} ${strings.estimate.perGuest}` : '';
     const stepKey = steps[current]?.getAttribute('data-cfg-step') || '';
     const contactMissing = !(q<HTMLInputElement>('[name="name"]')?.value.trim() && q<HTMLInputElement>('[name="email"]')?.value.trim());
     const hint = stepKey === 'occasion' && !checkedRadio('occasion') ? strings.hints.occasion
       : stepKey === 'space' && !checkedRadio('space') ? strings.hints.space
-      : stepKey === 'details' && (!dateValue || !timeValue || !endValue || adults < strings.limits.minGuests) ? strings.hints.details
+      : stepKey === 'details' && (!dateValue || !timeValue || !durationHours() || adults < strings.limits.minGuests) ? strings.hints.details
       : stepKey === 'menu' && menuEmpty ? strings.hints.menu
       : stepKey === 'summary' && contactMissing ? strings.hints.summary
       : '';
@@ -651,6 +694,8 @@ function initConfigurator(form: HTMLFormElement): void {
       if (sisiResult.lineCount > 0) parts.push(`SiSi wg karty: bar ${formatZl(sisiResult.drinks)}, przekąski ${formatZl(sisiResult.food)}`);
       if (cakeFrom > 0) parts.push(`tort od ${formatZl(cakeFrom)}`);
       if (decorFlat > 0) parts.push(`dekoracje ${formatZl(decorFlat)}`);
+      if (nightFee > 0) parts.push(`wynajem SiSi ${formatZl(nightFee)}`);
+      if (undecided && proposal) parts.push(`propozycja przestrzeni: ${recommendedPl}`);
       hidden.estimate.value = hasLines
         ? `${parts.join('; ')}; łącznie ${formatZl(total)} (${adults} gości${cork && extPct ? `, przedłużenie +${extPct}%` : ''})`
         : '';

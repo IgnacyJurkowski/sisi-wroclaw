@@ -166,7 +166,10 @@ export const CAKE_FLAVOURS = [
 ];
 export const CAKE_NOTE = 'Każdy smak zawiera dużą ilość świeżych malin i borówek, frużelinę owocową oraz chrupiącą warstwę. Ostateczna cena zależy od liczby i stopnia trudności dekoracji.';
 
-/** Decorations (shared by both venues). Flat prices as published; null = quoted after a consultation. */
+/** Decorations (shared by both venues). Table packages are priced per table of
+ * DECOR_TABLE_SEATS guests (owner confirmed 2026-09-15: a longer table costs
+ * more), so the estimate multiplies by the tables the group needs; null = quoted. */
+export const DECOR_TABLE_SEATS = 8;
 export const DECOR_TABLES = [
   { key: 'standard', label: 'Pakiet Standard', detail: 'eleganckie szklane wazony · autorska kompozycja kwiatowa · świece', size: '8 osób', price: 1000 },
   { key: 'experience', label: 'Doświadczenie przy stole', detail: 'kwiaty i świece dopasowane do wydarzenia · podtalerze i materiałowe serwety · winietki i indywidualne menu', size: '8 osób', price: 2000 },

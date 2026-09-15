@@ -6,9 +6,9 @@ import ConfiguratorMenu from '../configurator/ConfiguratorMenu.astro';
 import ConfiguratorOccasion from '../configurator/ConfiguratorOccasion.astro';
 import ConfiguratorSpace from '../configurator/ConfiguratorSpace.astro';
 import ConfiguratorSummary from '../configurator/ConfiguratorSummary.astro';
-import { CONFIGURATOR_LIMITS } from '../../data/configurator';
+import { CONFIGURATOR_LIMITS, DURATIONS, EVENING_FROM, SISI_NIGHT_FEES } from '../../data/configurator';
 import {
-  CORK_BASE_HOURS, CORK_CHILD_SHARE, CORK_CLOSE, CORK_DEPOSIT_SHARE, CORK_EXCLUSIVE_FROM, CORK_EXTENSIONS, CORK_MIN_GUESTS, CORK_SERVICE_FEE, CORK_START_WINDOWS,
+  CORK_BASE_HOURS, CORK_CHILD_SHARE, CORK_CLOSE, CORK_DEPOSIT_SHARE, CORK_EXCLUSIVE_FROM, CORK_EXTENSIONS, CORK_MIN_GUESTS, CORK_SERVICE_FEE, CORK_START_WINDOWS, DECOR_TABLE_SEATS,
 } from '../../data/cork-configurator.mjs';
 import { privateEventsServiceSchema } from '../../data/site';
 import { type Locale } from '../../i18n/config';
@@ -57,6 +57,15 @@ const clientStrings = JSON.stringify({
     rules: { childShare: CORK_CHILD_SHARE, serviceFee: CORK_SERVICE_FEE, depositShare: CORK_DEPOSIT_SHARE },
   },
   duration: c.details.duration,
+  details: { plan: c.details.plan, planCork: c.details.planCork, planSisi: c.details.planSisi, corkWindow: c.details.corkWindow, corkWindowFix: c.details.corkWindowFix, extensionSave: c.details.extensionSave, nightFee: c.details.nightFee },
+  recommend: c.space.recommend,
+  spaceTitles: { sisi: c.space.options.sisi.title, cork: c.space.options.cork.title, r32: c.space.options.r32.title },
+  spaceTitlesPl: { sisi: useTranslations('pl').configurator.space.options.sisi.title, cork: useTranslations('pl').configurator.space.options.cork.title, r32: useTranslations('pl').configurator.space.options.r32.title },
+  nightFees: SISI_NIGHT_FEES,
+  eveningFrom: EVENING_FROM,
+  decorSeats: DECOR_TABLE_SEATS,
+  perTable: c.extras.decor.perTable,
+  durations: DURATIONS,
   durationPl: useTranslations('pl').configurator.details.duration,
   corkClosing: c.menu.corkClosing,
   time: { other: c.details.timeOther },
@@ -86,7 +95,7 @@ const clientStrings = JSON.stringify({
     netlify-honeypot={registersNetlifyForm ? 'bot-field' : undefined}
     data-messages={formMessages}
     data-strings={clientStrings}
-    data-required-fields="name,email,guests,preferred_date,start_time,end_time"
+    data-required-fields="name,email,guests,preferred_date,start_time,duration"
     data-event-enquiry-form
     data-configurator
     novalidate
@@ -105,8 +114,8 @@ const clientStrings = JSON.stringify({
     <!-- The steps scroll inside this pane; the header and the calculator bar stay put. -->
     <div class="cfg-body" data-cfg-body>
       <ConfiguratorOccasion locale={locale} />
-      <ConfiguratorSpace locale={locale} />
       <ConfiguratorDetails locale={locale} />
+      <ConfiguratorSpace locale={locale} />
       <ConfiguratorMenu locale={locale} />
       <ConfiguratorExtras locale={locale} />
       <ConfiguratorSummary locale={locale} />

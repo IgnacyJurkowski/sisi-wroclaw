@@ -16,6 +16,8 @@ interface Props {
   placeholder: string;
   modeSingle: string;
   modeRange: string;
+  /** hide the range mode (a party has one date) */
+  singleOnly?: boolean;
   prevMonth: string;
   nextMonth: string;
   clear: string;
@@ -29,6 +31,7 @@ const {
   placeholder,
   modeSingle,
   modeRange,
+  singleOnly = false,
   prevMonth,
   nextMonth,
   clear,
@@ -36,7 +39,7 @@ const {
 ---
 
 <div class="b2b-dp" data-dp data-locale={locale}>
-  <div class="b2b-dp-modes" role="group">
+  <div class="b2b-dp-modes" role="group" hidden={singleOnly}>
     <button type="button" class="b2b-dp-mode is-on" data-dp-mode="single" aria-pressed="true">{modeSingle}</button>
     <button type="button" class="b2b-dp-mode" data-dp-mode="range" aria-pressed="false">{modeRange}</button>
   </div>

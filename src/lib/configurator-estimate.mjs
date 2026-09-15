@@ -138,3 +138,61 @@ export function corkEstimate({ adults, childrenHalf = 0, foodPerAdult = 0, exten
   const deposit = Math.round(total * rules.depositShare);
   return { food: Math.round(food), drinks: Math.round(drinks), flat: Math.round(flatAmount), value, service, total, deposit, balance: total - deposit };
 }
+
+/** 'HH:MM' -> minutes since midnight, or null. */
+export function toMinutes(value) {
+  const m = /^(\d{2}):(\d{2})$/.exec(String(value ?? ''));
+  return m ? Number(m[1]) * 60 + Number(m[2]) : null;
+}
+
+/** Minutes (may exceed 24h for "after midnight") -> 'HH:MM'. */
+export function formatMinutes(minutes) {
+  const m = Math.max(0, Math.round(minutes));
+  return `${String(Math.floor(m / 60) % 24).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
+}
+
+/**
+ * Which space fits the details, from the facts the owner verified only:
+ * The Cork seats up to `seatedTheCork` and closes at `closeMin`; the whole R32
+ * takes up to `standingR32` standing; SiSi is the club for the evening.
+ * Returns { key, reasons } where reasons are keys the UI turns into words.
+ * @param {{ guests: number, seating: 'seated'|'standing'|'mixed'|'', startMin: number|null, endMin: number|null }} input
+ * @param {{ seatedTheCork: number, standingR32: number, closeMin: number, eveningFromMin?: number }} rules
+ * @returns {{ key: 'sisi'|'cork'|'r32', reasons: string[] } | null}
+ */
+export function recommendSpace({ guests, seating, startMin, endMin }, rules) {
+  const g = Math.max(0, Math.floor(Number(guests) || 0));
+  if (!g || !seating) return null;
+  const evening = rules.eveningFromMin ?? 19 * 60;
+  const runsPastClose = endMin !== null && endMin !== undefined && endMin > rules.closeMin;
+  if (g > rules.standingR32) return { key: 'r32', reasons: ['overStanding'] };
+  if (seating === 'mixed') return { key: 'r32', reasons: ['mixed'] };
+  if (seating === 'seated') {
+    if (g > rules.seatedTheCork) return { key: 'r32', reasons: ['overSeated'] };
+    if (runsPastClose) return { key: 'r32', reasons: ['seated', 'afterClose'] };
+    return { key: 'cork', reasons: ['seated'] };
+  }
+  // standing / buffet
+  if (g > rules.seatedTheCork) return { key: 'r32', reasons: ['standing', 'largeGroup'] };
+  if (startMin !== null && startMin !== undefined && startMin < evening) return { key: 'r32', reasons: ['standing', 'daytime'] };
+  return { key: 'sisi', reasons: ['standing', 'evening'] };
+}
+
+/**
+ * Owner-set hire fee for SiSi on club nights (0 = Sunday ... 6 = Saturday).
+ * @param {string} isoDate 'YYYY-MM-DD'
+ * @param {Record<number, number>} fees e.g. { 5: 5000, 6: 15000 }
+ */
+export function sisiNightFee(isoDate, fees) {
+  const d = new Date(`${String(isoDate).slice(0, 10)}T00:00:00`);
+  if (Number.isNaN(d.getTime())) return 0;
+  return Number(fees?.[d.getDay()]) || 0;
+}
+
+/** Table decorations are priced per table of `seats`; the group needs ceil(guests / seats) tables. */
+export function decorTablesCost(pricePerTable, guests, seats) {
+  const g = Math.max(0, Math.floor(Number(guests) || 0));
+  const price = Number(pricePerTable) || 0;
+  if (!g || !price || !seats) return 0;
+  return price * Math.ceil(g / seats);
+}

@@ -43,14 +43,16 @@ const SPACE_ICONS: Record<string, string> = {
               <input type="radio" name="space" value={plSpaces[key].title} data-key={key} data-label={c.space.options[key].title} />
               <span class="cfg-choice-body">
                 <svg class="cfg-space-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={SPACE_ICONS[key]} />
-                <span class="cfg-choice-title">{c.space.options[key].title}</span>
+                <span class="cfg-choice-title">{c.space.options[key].title}<span class="cfg-badge" data-suggest-space={key} hidden>{c.wizard.suggested}</span></span>
                 <span class="cfg-choice-sub">{c.space.options[key].body}</span>
+                {key === 'unsure' && <span class="cfg-choice-sub cfg-recommend" data-recommend hidden><strong data-recommend-space></strong> <span data-recommend-why></span></span>}
               </span>
               <span class="cfg-choice-check" aria-hidden="true">✓</span>
             </label>
           ))}
         </div>
         <p class="cfg-space-selected">{c.space.selected} <strong data-space-selected>—</strong></p>
+        <p class="cfg-notice" data-space-night-fee hidden></p>
         <div class="cfg-actions" data-step-actions>
           <a href="#cfg-details" class="btn-cta cfg-next">{c.buttons.toDetails}<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10m-4-4 4 4-4 4"/></svg></a>
         </div>
@@ -69,6 +71,8 @@ const SPACE_ICONS: Record<string, string> = {
   .cfg-spaces-grid .cfg-choice-body { padding: 20px 40px 20px 20px; justify-content: flex-end; gap: 6px; }
   .cfg-spaces-grid .cfg-choice-title { font-family: var(--font-display); font-weight: 400; font-size: 1.15rem; text-transform: uppercase; letter-spacing: 0.03em; }
   .cfg-spaces-grid .cfg-choice-sub { font-size: 12.5px; }
+  .cfg-recommend { color: var(--gold); }
+  .cfg-recommend strong { color: var(--gold); font-weight: 600; }
   .cfg-space-icon { width: 28px; height: 28px; margin-bottom: auto; fill: none; stroke: var(--gold); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
   .cfg-space-selected { font-size: 13px; color: var(--text-faint); margin-top: 12px; }
   .cfg-space-selected strong { color: var(--cream); }

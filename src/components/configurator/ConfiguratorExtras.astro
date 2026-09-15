@@ -93,7 +93,7 @@ const ICONS = {
               <input type="checkbox" name="extras" value={pl.items[key].title} data-key={key} data-label={x.items[key].title} />
               <span class="cfg-choice-body cfg-extra">
                 <svg class="cfg-extra-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS[key]} />
-                <span class="cfg-choice-title">{x.items[key].title}{key === 'screens' && <span class="cfg-badge" data-suggest="screens" hidden>{c.wizard.suggested}</span>}</span>
+                <span class="cfg-choice-title">{x.items[key].title}{(key === 'screens' || key === 'exclusive') && <span class="cfg-badge" data-suggest={key} hidden>{c.wizard.suggested}</span>}</span>
                 <span class="cfg-choice-sub">{x.items[key].body}</span>
               </span>
               <span class="cfg-choice-check" aria-hidden="true">✓</span>
@@ -118,6 +118,7 @@ const ICONS = {
                 <span class="cfg-choice-title">{pkg.label}</span>
                 <span class="cfg-choice-sub">{pkg.detail}</span>
                 <span class="cfg-choice-price">{pkg.price ? `${pkg.size} · ${pkg.price} zł` : x.decor.quoted}</span>
+                {pkg.price && <span class="cfg-choice-sub" data-decor-per-table={pkg.key} hidden></span>}
               </span>
               <span class="cfg-choice-check" aria-hidden="true">✓</span>
             </label>
