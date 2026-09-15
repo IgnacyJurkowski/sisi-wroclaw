@@ -1,5 +1,5 @@
 ---
-import type { ArticleItem } from '../data/articles';
+import { cardImage, type ArticleItem } from '../data/articles';
 import { type Locale } from '../i18n/config';
 import { articlePath } from '../i18n/routes';
 import { formatLongDate } from '../i18n/format';
@@ -10,15 +10,16 @@ const { article, locale } = Astro.props;
 const t = useTranslations(locale);
 const href = articlePath(article.slug, locale);
 const imgSizes = '(max-width: 700px) 92vw, (max-width: 1100px) 46vw, 30vw';
+const image = cardImage(article);
 const reading = interpolate(t.blogPage.readingTime, { minutes: String(article.readingMinutes) });
 ---
 
 <article class="bl-card">
-  {article.img && (
+  {image && (
     <div class="bl-media">
       <img
-        src={article.img}
-        srcset={article.imgSrcset}
+        src={image.src}
+        srcset={image.srcset}
         sizes={imgSizes}
         width={article.imgWidth}
         height={article.imgHeight}

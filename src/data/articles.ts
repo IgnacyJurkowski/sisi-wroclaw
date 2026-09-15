@@ -48,6 +48,34 @@ export type ArticleItem = {
 
 export const ARTICLES: ArticleItem[] = GENERATED_ARTICLES;
 
+/** Widest hero variant a blog-index card may load. The card slot is ~370 CSS
+    px (92vw on a 400px phone), so 640w covers it up to ~1.75x; letting a 2.6x
+    phone pick the 800/1080 hero doubles the bytes for a thumbnail nobody can
+    tell apart. */
+export const CARD_MAX_WIDTH = 640;
+
+/** src + srcset for a card: the hero srcset with every candidate above
+    `maxWidth` dropped, src being the widest that remains. Falls back to the
+    hero itself when the srcset is absent or has nothing small enough. */
+export function cardImage(
+  article: Pick<ArticleItem, 'img' | 'imgSrcset'>,
+  maxWidth: number = CARD_MAX_WIDTH,
+): { src: string; srcset?: string } | undefined {
+  if (!article.img) return undefined;
+  const candidates = (article.imgSrcset ?? '')
+    .split(',')
+    .map((entry) => entry.trim().match(/^(\S+)\s+(\d+)w$/))
+    .filter((match): match is RegExpMatchArray => !!match)
+    .map((match) => ({ url: match[1], width: Number(match[2]) }))
+    .filter((candidate) => candidate.width <= maxWidth)
+    .sort((a, b) => a.width - b.width);
+  if (candidates.length === 0) return { src: article.img, srcset: article.imgSrcset };
+  return {
+    src: candidates[candidates.length - 1].url,
+    srcset: candidates.map((candidate) => `${candidate.url} ${candidate.width}w`).join(', '),
+  };
+}
+
 /** Articles for one locale, newest first. */
 export function articlesFor(locale: Locale, list: ArticleItem[] = ARTICLES): ArticleItem[] {
   return list
