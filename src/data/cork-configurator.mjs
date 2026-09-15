@@ -19,7 +19,7 @@ export const CORK_EXCLUSIVE_FROM = 60;
 export const CORK_SERVICE_FEE = 0.1;
 /** Deposit share, payable 7 days before the event; the rest at the end. */
 export const CORK_DEPOSIT_SHARE = 0.5;
-/** Children 6-15 pay half of the food menu; 0-5 eat free. */
+/** The restaurant's child rate (6-15 at half price); the R32 configurator is adults-only and never uses it. */
 export const CORK_CHILD_SHARE = 0.5;
 
 /** Included base time by adult head-count, then the paid extensions. */
@@ -57,7 +57,7 @@ export const CORK_COURSES = [
   {
     key: 'welcome',
     numeral: 'I',
-    title: 'Rytuał oliwy',
+    title: 'Chleb i oliwa',
     included: true,
     packages: [],
     dishes: [{ name: 'Chleb & oliwa Albania Gold', desc: 'Domowy chleb · oliwa Velagosh · Dukkah pistacjowa' }],
@@ -65,11 +65,11 @@ export const CORK_COURSES = [
   {
     key: 'starters',
     numeral: 'II',
-    title: 'Pierwsze odkrycie',
+    title: 'Przystawki',
     packages: [
-      { key: 'four', label: 'Cztery pierwsze odkrycia', size: 4, unit: 'przystawki', price: 80 },
-      { key: 'five', label: 'Pięć pierwszych odkryć', size: 5, unit: 'przystawek', price: 95 },
-      { key: 'alacarte', label: 'Decyzja Gości przy stole', size: 0, unit: 'à la carte', price: null },
+      { key: 'four', label: 'Cztery przystawki', size: 4, unit: 'przystawki', price: 80 },
+      { key: 'five', label: 'Pięć przystawek', size: 5, unit: 'przystawek', price: 95 },
+      { key: 'alacarte', label: 'À la carte', size: 0, unit: 'à la carte', price: null },
     ],
     defaultPackage: 'four',
     dishes: [
@@ -87,11 +87,11 @@ export const CORK_COURSES = [
   {
     key: 'mains',
     numeral: 'III',
-    title: 'Serce kulinarnej podróży',
+    title: 'Dania główne',
     packages: [
-      { key: 'four', label: 'Cztery kierunki podróży', size: 4, unit: 'dania główne', price: 139 },
-      { key: 'five', label: 'Pięć kierunków podróży', size: 5, unit: 'dań głównych', price: 159 },
-      { key: 'alacarte', label: 'Decyzja Gości przy stole', size: 0, unit: 'à la carte', price: null },
+      { key: 'four', label: 'Cztery dania główne', size: 4, unit: 'dania główne', price: 139 },
+      { key: 'five', label: 'Pięć dań głównych', size: 5, unit: 'dań głównych', price: 159 },
+      { key: 'alacarte', label: 'À la carte', size: 0, unit: 'à la carte', price: null },
     ],
     defaultPackage: 'four',
     dishes: [
@@ -109,11 +109,11 @@ export const CORK_COURSES = [
   {
     key: 'desserts',
     numeral: 'IV',
-    title: 'Słodki finał',
+    title: 'Desery',
     optional: true,
     packages: [
-      { key: 'three', label: 'Pakiet finałowy', size: 3, unit: 'słodkie finały', price: 38 },
-      { key: 'alacarte', label: 'Decyzja Gości przy stole', size: 0, unit: 'à la carte', price: null },
+      { key: 'three', label: 'Trzy desery', size: 3, unit: 'słodkie finały', price: 38 },
+      { key: 'alacarte', label: 'À la carte', size: 0, unit: 'à la carte', price: null },
     ],
     defaultPackage: 'alacarte',
     dishes: [
@@ -127,15 +127,15 @@ export const CORK_COURSES = [
 
 /** Drinks, all per adult (children never count) or one flat amount. */
 export const CORK_WINE_PACKAGES = [
-  { key: 'wine3', label: 'Pierwsze spotkanie', detail: 'do 3 godzin', price: 70 },
-  { key: 'wine4', label: 'Dłuższa opowieść', detail: 'do 4 godzin', price: 90 },
-  { key: 'wine5', label: 'Pełny wieczór', detail: 'do 5 godzin', price: 120 },
-  { key: 'alacarte', label: 'Wybór Gości przy stole', detail: 'wino à la carte', price: null },
+  { key: 'wine3', label: 'Pakiet wina', detail: 'do 3 godzin', price: 70 },
+  { key: 'wine4', label: 'Pakiet wina', detail: 'do 4 godzin', price: 90 },
+  { key: 'wine5', label: 'Pakiet wina', detail: 'do 5 godzin', price: 120 },
+  { key: 'alacarte', label: 'À la carte', detail: 'wino według karty', price: null },
 ];
 export const CORK_WINE_NOTE = 'Pakiet obejmuje 2 białe i 2 czerwone wina - wybór sommeliera. Woda REDOX jest zawsze w pakiecie z winem.';
 export const CORK_OPEN_BAR = [
-  { key: 'bar4', label: 'OPEN BAR', detail: 'do 4 godzin', price: 190 },
-  { key: 'bar6', label: 'OPEN BAR', detail: 'do 6 godzin', price: 220 },
+  { key: 'bar4', label: 'Open bar', detail: 'do 4 godzin', price: 190 },
+  { key: 'bar6', label: 'Open bar', detail: 'do 6 godzin', price: 220 },
 ];
 export const CORK_OPEN_BAR_NOTE = 'Drinki, koktajle oraz alkohole mocne: wódka, whisky, rum, gin i tequila.';
 export const CORK_OPEN_BAR_PREMIUM = { key: 'premium', label: 'Premium', detail: 'dodatek do pakietu OPEN BAR', price: 40 };

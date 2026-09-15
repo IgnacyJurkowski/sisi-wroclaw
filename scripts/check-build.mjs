@@ -635,7 +635,7 @@ for (const locale of LOCALES) {
   );
   const renderedFields = [...new Set([...form.matchAll(/<(?:input|select|textarea)\b[^>]*\bname="([^"]+)"/g)].map((m) => m[1]))].sort();
   const expectedFields = [
-    'bot-field', 'cake', 'cake_base', 'cake_decor', 'cake_flavour', 'cake_size', 'children', 'children_small', 'consent',
+    'bot-field', 'cake', 'cake_base', 'cake_decor', 'cake_flavour', 'cake_size', 'consent',
     'cork_bar', 'cork_desserts', 'cork_dishes', 'cork_mains', 'cork_premium', 'cork_sommelier', 'cork_starters', 'cork_wine',
     'decor_extras', 'decor_idea', 'decor_photo', 'decor_tables', 'drinks', 'email', 'estimate', 'extension', 'extras', 'food',
     'form-name', 'guests', 'locale', 'message', 'name', 'occasion', 'page', 'phone', 'preferred_date', 'preferred_date_iso',
@@ -665,8 +665,15 @@ for (const locale of LOCALES) {
     html.includes('class="cfg-map-svg"') && !html.includes('/images/plan-r32') && !/strefa [123]|zone [123]|\d+ stołów/i.test(html),
   );
   assert(
-    `${locale} configurator plan has one clickable region per venue`,
-    html.split('data-map-space="sisi"').length === 2 && html.split('data-map-space="cork"').length === 2,
+    `${locale} configurator plan has one clickable region per venue plus the shared area`,
+    html.split('data-map-space="sisi"').length === 2 && html.split('data-map-space="cork"').length === 2
+      && html.split('data-map-shared').length === 2,
+  );
+  // Adults-only venue: no child head-counts, child rates or under-18 copy.
+  assert(
+    `${locale} configurator has nothing for guests under 18`,
+    // ("Kinder Bueno" is a cake flavour brand, not a child rate.)
+    !/name="children|dzieci|\bchildren\b|\bkinder\b(?![ -]bueno)|bambini|děti|menu dziecięce/i.test(form),
   );
   // Only the owner-verified limits appear as capacities; the reference site's
   // per-zone numbers (30 / 52 / 42 guests, 60-guest exclusivity) must not.

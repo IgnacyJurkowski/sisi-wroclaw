@@ -58,19 +58,8 @@ const extLabelPl = (key: string) => (key === 'plus1' ? pl.duration.plus1 : key =
           <label class="cfg-label" for="cfg-guests">{d.adults} <span class="req" aria-hidden="true">*</span></label>
           <NumberStepper id="cfg-guests" name="guests" min={1} required describedby="cfg-err-guests" decreaseLabel={shared.guestsDecrease} increaseLabel={shared.guestsIncrease} />
           <p class="cfg-field-error" id="cfg-err-guests" data-error-for="guests" hidden></p>
-          <p class="cfg-hint">{d.adultsHint}</p>
         </div>
 
-        <div class="cfg-field" data-cork-only>
-          <label class="cfg-label" for="cfg-children-small">{d.childrenSmall} <span class="opt">{d.childrenSmallHint}</span></label>
-          <NumberStepper id="cfg-children-small" name="children_small" min={0} decreaseLabel={shared.guestsDecrease} increaseLabel={shared.guestsIncrease} />
-        </div>
-
-        <div class="cfg-field" data-cork-only>
-          <label class="cfg-label" for="cfg-children">{d.children} <span class="opt">{d.childrenHint}</span></label>
-          <NumberStepper id="cfg-children" name="children" min={0} decreaseLabel={shared.guestsDecrease} increaseLabel={shared.guestsIncrease} />
-          <p class="cfg-hint">{d.childrenNote}</p>
-        </div>
       </div>
 
       <fieldset class="cfg-fieldset">
@@ -118,14 +107,14 @@ const extLabelPl = (key: string) => (key === 'plus1' ? pl.duration.plus1 : key =
 
 <style>
   .cfg-details { max-width: 980px; margin: 0 auto; }
-  .cfg-details-grid { display: grid; grid-template-columns: 1.3fr 0.9fr 0.8fr 0.8fr 0.8fr; gap: 14px 16px; }
+  .cfg-details-grid { display: grid; grid-template-columns: 1.4fr 1fr 0.9fr; gap: 14px 16px; }
   .cfg-details-grid > * { min-width: 0; }
   .cfg-fieldset { border: none; margin: 18px 0 0; padding: 0; min-width: 0; }
   .cfg-fieldset legend { padding: 0; }
   .cfg-duration { font-size: 13px; color: var(--text-faint); margin: -2px 0 10px; }
   .cfg-duration strong { color: var(--cream); }
   @media (max-width: 960px) {
-    .cfg-details-grid { grid-template-columns: 1fr 1fr 1fr; }
+    .cfg-details-grid { grid-template-columns: 1fr 1fr; }
     .cfg-field-date { grid-column: 1 / -1; }
   }
   @media (max-width: 560px) { .cfg-details-grid { grid-template-columns: 1fr; } }

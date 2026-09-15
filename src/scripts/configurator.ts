@@ -22,7 +22,7 @@ type Strings = {
   duration: { base: string; hours: string; individual: string };
   time: { other: string };
   summary: { toBeAgreed: string; none: string; guestsUnit: string };
-  estimate: { guests: string; adults: string; children: string; extension: string; perGuest: string };
+  estimate: { guests: string; adults: string; extension: string; perGuest: string };
   units: { perGuest: string; bottle: string; portion: string };
   chosen: string;
 };
@@ -231,10 +231,10 @@ function initConfigurator(form: HTMLFormElement): void {
     syncTabs();
     syncTimeOptions();
 
+    // Adults-only venue: every head-count is the guest count.
     const adults = num('guests');
-    const childrenHalf = cork ? num('children') : 0;
-    const childrenSmall = cork ? num('children_small') : 0;
-    const totalGuests = adults + childrenHalf + childrenSmall;
+    const childrenHalf = 0;
+    const totalGuests = adults;
 
     // Map + "Selected:" line
     const space = checkedRadio('space');
@@ -245,6 +245,11 @@ function initConfigurator(form: HTMLFormElement): void {
       region.classList.toggle('is-selected', on);
       region.setAttribute('aria-pressed', on ? 'true' : 'false');
     });
+    // The shared area between the venues lights up with either of them, and the
+    // plan draws one border around the chosen venue plus the shared area.
+    qa<SVGGElement>('[data-map-shared]').forEach((region) => region.classList.toggle('is-selected', mode !== 'unsure'));
+    const svg = q<SVGSVGElement>('.cfg-map-svg');
+    if (svg) svg.setAttribute('data-mode', mode);
 
     // Capacity notices (verified limits) + The Cork group rules
     const seating = checkedRadio('seating');
@@ -316,7 +321,6 @@ function initConfigurator(form: HTMLFormElement): void {
     text('[data-est-total]', formatZl(total));
     text('[data-est-per-guest]', formatZl(adults > 0 ? Math.round(total / adults) : 0));
     const meta: string[] = [`${adults} ${strings.estimate.adults}`];
-    if (cork && childrenHalf > 0) meta.push(`${childrenHalf} ${strings.estimate.children}`);
     if (cork && extPct > 0 && corkResult.food > 0) meta.push(fill(strings.estimate.extension, { pct: extPct }));
     text('[data-est-meta]', meta.join(' · '));
 
@@ -352,10 +356,7 @@ function initConfigurator(form: HTMLFormElement): void {
       ...qa<HTMLInputElement>('[data-decor-extra]:checked').map((input) => labelOf(input, '')),
     ];
     const extras = qa<HTMLInputElement>('input[name="extras"]:checked').map((input) => labelOf(input, ''));
-    const kids = childrenHalf + childrenSmall;
-    const guestsLabel = adults > 0
-      ? `${adults} ${strings.estimate.adults}${cork && kids > 0 ? ` + ${kids} ${strings.estimate.guests}` : ''}`
-      : tba;
+    const guestsLabel = adults > 0 ? `${adults} ${strings.estimate.adults}` : tba;
     const durationLabel = cork && adults > 0
       ? `${baseHours === null ? strings.duration.individual : fill(strings.duration.hours, { hours: baseHours })}${extPct > 0 ? ` · ${labelOf(extension, '')}` : ''}`
       : '';
@@ -394,7 +395,7 @@ function initConfigurator(form: HTMLFormElement): void {
       if (sisiResult.lineCount > 0) parts.push(`SiSi wg karty: bar ${formatZl(sisiResult.drinks)}, przekąski ${formatZl(sisiResult.food)}`);
       if (decorFlat > 0) parts.push(`dekoracje ${formatZl(decorFlat)}`);
       hidden.estimate.value = hasLines
-        ? `${parts.join('; ')}; łącznie ${formatZl(total)} (${adults} dorosłych${cork && childrenHalf ? `, ${childrenHalf} dzieci 50%` : ''}${cork && extPct ? `, przedłużenie +${extPct}%` : ''})`
+        ? `${parts.join('; ')}; łącznie ${formatZl(total)} (${adults} gości${cork && extPct ? `, przedłużenie +${extPct}%` : ''})`
         : '';
     }
   }
