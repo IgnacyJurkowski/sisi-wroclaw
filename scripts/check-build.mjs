@@ -1026,6 +1026,17 @@ assert(
     new RegExp(`^User-agent: ${bot}$`, 'm').test(robotsSource))
     && !/Disallow:\s*\S/.test(robotsSource),
 );
+// --- blog index cards: thumbnails never advertise a candidate wider than 640w ---
+const blogIndexHtml = exists('pl/blog/index.html') ? read('pl/blog/index.html') : '';
+const cardImgs = blogIndexHtml.match(/<img[^>]*\/blog\/pl-[^>]*>/g) || [];
+assert(
+  'blog index card images cap their srcset at 640w and load the 640 src',
+  (blogCounts.pl === 0 || cardImgs.length > 0)
+    && cardImgs.every((tag) => {
+      const widths = [...tag.matchAll(/\s(\d+)w[,"]/g)].map((m) => Number(m[1]));
+      return widths.length > 0 && Math.max(...widths) <= 640 && /src="\/blog\/pl-[^"]*-640\.webp"/.test(tag);
+    }),
+);
 // --- sitemap: every URL carries a W3C lastmod; articles use their own dates ---
 assert(
   'every sitemap url has a lastmod date',

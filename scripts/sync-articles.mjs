@@ -27,13 +27,26 @@ const REPO = path.resolve(import.meta.dirname, '..');
 const OUT_DATA = path.join(REPO, 'src/data/articles.generated.ts');
 const IMG_DIR = path.join(REPO, 'public/blog');
 const IMG_URL_PREFIX = '/blog';
-const IMG_WIDTHS = [640, 1280]; // card slot and article hero, both at retina
+// Card slot (~370 CSS px) at 1x/2x, the tablet card and the article hero
+// (880 CSS px) at retina. Ascending: the last produced variant is the widest.
+const IMG_WIDTHS = [400, 640, 800, 1280];
+// WebP quality: the vendor heroes are soft AI renders that hold up well at
+// this setting, and the blog index loads seven of them above the fold.
+const IMG_QUALITY = 65;
 const CANONICAL_ORIGIN = 'https://www.sisiwroclaw.pl';
 const BARE_HOSTS = ['sisiwroclaw.pl'];
 const DROP_THRESHOLD = 0.5;
 const SPACING_MS = 250; // stay friendly to the rate limit between detail calls
 
 async function run() {
+  // `--images`: re-encode the hero variants of the committed articles from the
+  // vendor originals without touching the API - for pipeline changes (widths,
+  // quality) that the reuse check in heroImages() would otherwise pick up only
+  // on the next content sync.
+  if (process.argv.includes('--images')) {
+    await regenerateImages();
+    return;
+  }
   // Before the GitHub secret is configured, no-op cleanly instead of failing.
   if (!apiKey()) {
     console.log('No BABYLOVEGROWTH_API_KEY configured; skipping articles sync.');
@@ -144,6 +157,24 @@ function carryOver(summary, previousBySlug, locales) {
   return matches.length === 1 ? matches[0] : null;
 }
 
+async function regenerateImages() {
+  const previous = await previousArticles();
+  const usedImages = new Set();
+  let regenerated = 0;
+  for (const article of previous) {
+    // Same-article reuse: heroImages() re-encodes only when the committed
+    // variant set no longer matches the pipeline (or a file is missing).
+    const hero = await heroImages(article, article);
+    if (!hero) continue;
+    if (hero.encoded) regenerated++;
+    Object.assign(article, hero.fields);
+    for (const name of hero.files) usedImages.add(name);
+  }
+  await pruneImages(usedImages);
+  await writeIfChanged(OUT_DATA, Buffer.from(renderModule(sortArticles(previous))));
+  console.log(`Articles images: ${regenerated} of ${previous.length} hero set(s) re-encoded.`);
+}
+
 /** Optimized hero variants for one article, reusing the committed files when
     the vendor image has not changed (avoids re-encoding on every sync). Any
     failure here is a bad row, never a failed run: the article publishes
@@ -167,7 +198,7 @@ async function heroImages(article, previous) {
       const output = await sharp(source)
         .rotate()
         .resize({ width, withoutEnlargement: true })
-        .webp({ quality: 80 })
+        .webp({ quality: IMG_QUALITY })
         .toBuffer({ resolveWithObject: true });
       const name = `${base}-${output.info.width}.webp`;
       await writeIfChanged(path.join(IMG_DIR, name), output.data);
@@ -178,6 +209,7 @@ async function heroImages(article, previous) {
 
     const widest = variants.at(-1);
     return {
+      encoded: true,
       files: variants.map((variant) => variant.name),
       fields: {
         img: `${IMG_URL_PREFIX}/${widest.name}`,
@@ -209,6 +241,15 @@ async function reusableHero(previous, base) {
     .map((url) => url.split('/').pop());
   const files = [...new Set(names)].filter((name) => name.startsWith(`${base}-`) && name.endsWith('.webp'));
   if (!files.length || !(await allExist(files))) return null;
+
+  // The committed set must be exactly what IMG_WIDTHS would produce today from
+  // a source of the committed widest width (no enlargement: every configured
+  // width below it, plus the widest itself), or the pipeline changed and the
+  // images must be re-encoded.
+  const widest = Number(previous.imgWidth);
+  if (!Number.isFinite(widest)) return null;
+  const expected = new Set([...IMG_WIDTHS.filter((width) => width < widest), widest].map((width) => `${base}-${width}.webp`));
+  if (files.length !== expected.size || !files.every((name) => expected.has(name))) return null;
 
   const fields = { img: previous.img };
   if (previous.imgSrcset) fields.imgSrcset = previous.imgSrcset;

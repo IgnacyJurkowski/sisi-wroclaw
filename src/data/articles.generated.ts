@@ -15,7 +15,7 @@ export const GENERATED_ARTICLES: ArticleItem[] = [
     "readingMinutes": 8,
     "heroSource": "https://csuxjmfbwmkxiegfpljm.supabase.co/storage/v1/object/public/blog-images/organization-52814/1789400158003_Dekoracyjna-karta-tytu-owa-o-koncercie-klubowym.jpeg",
     "img": "/blog/pl-koncert-klubowy-co-to-1080.webp",
-    "imgSrcset": "/blog/pl-koncert-klubowy-co-to-640.webp 640w, /blog/pl-koncert-klubowy-co-to-1080.webp 1080w",
+    "imgSrcset": "/blog/pl-koncert-klubowy-co-to-400.webp 400w, /blog/pl-koncert-klubowy-co-to-640.webp 640w, /blog/pl-koncert-klubowy-co-to-800.webp 800w, /blog/pl-koncert-klubowy-co-to-1080.webp 1080w",
     "imgWidth": 1080,
     "imgHeight": 720
   },
@@ -31,7 +31,7 @@ export const GENERATED_ARTICLES: ArticleItem[] = [
     "readingMinutes": 7,
     "heroSource": "https://csuxjmfbwmkxiegfpljm.supabase.co/storage/v1/object/public/blog-images/organization-52814/1789311748975_Dekoracyjna-karta-tytu-owa-aperitivo-we-Wroc-awiu.jpeg",
     "img": "/blog/pl-aperitivo-wroclaw-1080.webp",
-    "imgSrcset": "/blog/pl-aperitivo-wroclaw-640.webp 640w, /blog/pl-aperitivo-wroclaw-1080.webp 1080w",
+    "imgSrcset": "/blog/pl-aperitivo-wroclaw-400.webp 400w, /blog/pl-aperitivo-wroclaw-640.webp 640w, /blog/pl-aperitivo-wroclaw-800.webp 800w, /blog/pl-aperitivo-wroclaw-1080.webp 1080w",
     "imgWidth": 1080,
     "imgHeight": 720
   },
@@ -47,7 +47,7 @@ export const GENERATED_ARTICLES: ArticleItem[] = [
     "readingMinutes": 8,
     "heroSource": "https://csuxjmfbwmkxiegfpljm.supabase.co/storage/v1/object/public/blog-images/organization-52814/1789223781819_Ilustracyjna-karta-tytu-owa-o-tapas.jpeg",
     "img": "/blog/pl-tapas-co-to-1080.webp",
-    "imgSrcset": "/blog/pl-tapas-co-to-640.webp 640w, /blog/pl-tapas-co-to-1080.webp 1080w",
+    "imgSrcset": "/blog/pl-tapas-co-to-400.webp 400w, /blog/pl-tapas-co-to-640.webp 640w, /blog/pl-tapas-co-to-800.webp 800w, /blog/pl-tapas-co-to-1080.webp 1080w",
     "imgWidth": 1080,
     "imgHeight": 720
   },
@@ -63,7 +63,7 @@ export const GENERATED_ARTICLES: ArticleItem[] = [
     "readingMinutes": 7,
     "heroSource": "https://csuxjmfbwmkxiegfpljm.supabase.co/storage/v1/object/public/blog-images/organization-52814/1789144409925_Ilustracja-porownujaca-wino-wytrawne-i-po-wytrawne.jpeg",
     "img": "/blog/pl-wino-wytrawne-vs-polwytrawne-1080.webp",
-    "imgSrcset": "/blog/pl-wino-wytrawne-vs-polwytrawne-640.webp 640w, /blog/pl-wino-wytrawne-vs-polwytrawne-1080.webp 1080w",
+    "imgSrcset": "/blog/pl-wino-wytrawne-vs-polwytrawne-400.webp 400w, /blog/pl-wino-wytrawne-vs-polwytrawne-640.webp 640w, /blog/pl-wino-wytrawne-vs-polwytrawne-800.webp 800w, /blog/pl-wino-wytrawne-vs-polwytrawne-1080.webp 1080w",
     "imgWidth": 1080,
     "imgHeight": 720
   },
@@ -79,7 +79,7 @@ export const GENERATED_ARTICLES: ArticleItem[] = [
     "readingMinutes": 7,
     "heroSource": "https://csuxjmfbwmkxiegfpljm.supabase.co/storage/v1/object/public/blog-images/organization-52814/1789083309496_Dekoracyjna-ilustracja-zabawy-bez-alkoholu.jpeg",
     "img": "/blog/pl-zabawa-bez-alkoholu-1080.webp",
-    "imgSrcset": "/blog/pl-zabawa-bez-alkoholu-640.webp 640w, /blog/pl-zabawa-bez-alkoholu-1080.webp 1080w",
+    "imgSrcset": "/blog/pl-zabawa-bez-alkoholu-400.webp 400w, /blog/pl-zabawa-bez-alkoholu-640.webp 640w, /blog/pl-zabawa-bez-alkoholu-800.webp 800w, /blog/pl-zabawa-bez-alkoholu-1080.webp 1080w",
     "imgWidth": 1080,
     "imgHeight": 720
   },
@@ -95,7 +95,7 @@ export const GENERATED_ARTICLES: ArticleItem[] = [
     "readingMinutes": 13,
     "heroSource": "https://csuxjmfbwmkxiegfpljm.supabase.co/storage/v1/object/public/blog-images/organization-52814/1789004258621_Ilustracja-tytu-owa-polskich-win-musujacych.jpeg",
     "img": "/blog/pl-polskie-wina-musujace-1080.webp",
-    "imgSrcset": "/blog/pl-polskie-wina-musujace-640.webp 640w, /blog/pl-polskie-wina-musujace-1080.webp 1080w",
+    "imgSrcset": "/blog/pl-polskie-wina-musujace-400.webp 400w, /blog/pl-polskie-wina-musujace-640.webp 640w, /blog/pl-polskie-wina-musujace-800.webp 800w, /blog/pl-polskie-wina-musujace-1080.webp 1080w",
     "imgWidth": 1080,
     "imgHeight": 720
   },
@@ -111,7 +111,7 @@ export const GENERATED_ARTICLES: ArticleItem[] = [
     "readingMinutes": 10,
     "heroSource": "https://csuxjmfbwmkxiegfpljm.supabase.co/storage/v1/object/public/blog-images/organization-52814/1788932846916_Dekoracyjna-ilustracja-tytu-owa-mocktailu.jpeg",
     "img": "/blog/pl-mocktail-co-to-1080.webp",
-    "imgSrcset": "/blog/pl-mocktail-co-to-640.webp 640w, /blog/pl-mocktail-co-to-1080.webp 1080w",
+    "imgSrcset": "/blog/pl-mocktail-co-to-400.webp 400w, /blog/pl-mocktail-co-to-640.webp 640w, /blog/pl-mocktail-co-to-800.webp 800w, /blog/pl-mocktail-co-to-1080.webp 1080w",
     "imgWidth": 1080,
     "imgHeight": 720
   },
@@ -127,7 +127,7 @@ export const GENERATED_ARTICLES: ArticleItem[] = [
     "readingMinutes": 8,
     "heroSource": "https://csuxjmfbwmkxiegfpljm.supabase.co/storage/v1/object/public/blog-images/organization-52814/1788815151401_Ilustracja-tytu-owa-Prosecco-i-Cavy.jpeg",
     "img": "/blog/pl-prosecco-vs-cava-1080.webp",
-    "imgSrcset": "/blog/pl-prosecco-vs-cava-640.webp 640w, /blog/pl-prosecco-vs-cava-1080.webp 1080w",
+    "imgSrcset": "/blog/pl-prosecco-vs-cava-400.webp 400w, /blog/pl-prosecco-vs-cava-640.webp 640w, /blog/pl-prosecco-vs-cava-800.webp 800w, /blog/pl-prosecco-vs-cava-1080.webp 1080w",
     "imgWidth": 1080,
     "imgHeight": 720
   },
@@ -143,7 +143,7 @@ export const GENERATED_ARTICLES: ArticleItem[] = [
     "readingMinutes": 9,
     "heroSource": "https://csuxjmfbwmkxiegfpljm.supabase.co/storage/v1/object/public/blog-images/organization-52814/1788708969392_Ilustracja-tytu-owa-tequili-reposado-i-anejo.jpeg",
     "img": "/blog/pl-tequila-reposado-vs-anejo-1080.webp",
-    "imgSrcset": "/blog/pl-tequila-reposado-vs-anejo-640.webp 640w, /blog/pl-tequila-reposado-vs-anejo-1080.webp 1080w",
+    "imgSrcset": "/blog/pl-tequila-reposado-vs-anejo-400.webp 400w, /blog/pl-tequila-reposado-vs-anejo-640.webp 640w, /blog/pl-tequila-reposado-vs-anejo-800.webp 800w, /blog/pl-tequila-reposado-vs-anejo-1080.webp 1080w",
     "imgWidth": 1080,
     "imgHeight": 720
   },
@@ -159,7 +159,7 @@ export const GENERATED_ARTICLES: ArticleItem[] = [
     "readingMinutes": 8,
     "heroSource": "https://csuxjmfbwmkxiegfpljm.supabase.co/storage/v1/object/public/blog-images/organization-52814/1788626059940_Dekoracyjna-karta-tytu-owa-o-dwoch-bia-ych-winach.jpeg",
     "img": "/blog/pl-chardonnay-vs-sauvignon-blanc-1080.webp",
-    "imgSrcset": "/blog/pl-chardonnay-vs-sauvignon-blanc-640.webp 640w, /blog/pl-chardonnay-vs-sauvignon-blanc-1080.webp 1080w",
+    "imgSrcset": "/blog/pl-chardonnay-vs-sauvignon-blanc-400.webp 400w, /blog/pl-chardonnay-vs-sauvignon-blanc-640.webp 640w, /blog/pl-chardonnay-vs-sauvignon-blanc-800.webp 800w, /blog/pl-chardonnay-vs-sauvignon-blanc-1080.webp 1080w",
     "imgWidth": 1080,
     "imgHeight": 720
   },
@@ -175,7 +175,7 @@ export const GENERATED_ARTICLES: ArticleItem[] = [
     "readingMinutes": 7,
     "heroSource": "https://csuxjmfbwmkxiegfpljm.supabase.co/storage/v1/object/public/blog-images/organization-52814/1788536084583_Dekoracyjna-ilustracja-winogron-i-kieliszkow-wina.jpeg",
     "img": "/blog/pl-pinot-grigio-vs-pinot-gris-1080.webp",
-    "imgSrcset": "/blog/pl-pinot-grigio-vs-pinot-gris-640.webp 640w, /blog/pl-pinot-grigio-vs-pinot-gris-1080.webp 1080w",
+    "imgSrcset": "/blog/pl-pinot-grigio-vs-pinot-gris-400.webp 400w, /blog/pl-pinot-grigio-vs-pinot-gris-640.webp 640w, /blog/pl-pinot-grigio-vs-pinot-gris-800.webp 800w, /blog/pl-pinot-grigio-vs-pinot-gris-1080.webp 1080w",
     "imgWidth": 1080,
     "imgHeight": 720
   },
@@ -191,7 +191,7 @@ export const GENERATED_ARTICLES: ArticleItem[] = [
     "readingMinutes": 9,
     "heroSource": "https://csuxjmfbwmkxiegfpljm.supabase.co/storage/v1/object/public/blog-images/organization-52814/1788463901807_Dekoracyjna-ilustracja-trzech-kieliszkow-do-wina.jpeg",
     "img": "/blog/pl-kieliszki-do-wina-1080.webp",
-    "imgSrcset": "/blog/pl-kieliszki-do-wina-640.webp 640w, /blog/pl-kieliszki-do-wina-1080.webp 1080w",
+    "imgSrcset": "/blog/pl-kieliszki-do-wina-400.webp 400w, /blog/pl-kieliszki-do-wina-640.webp 640w, /blog/pl-kieliszki-do-wina-800.webp 800w, /blog/pl-kieliszki-do-wina-1080.webp 1080w",
     "imgWidth": 1080,
     "imgHeight": 720
   },
@@ -207,7 +207,7 @@ export const GENERATED_ARTICLES: ArticleItem[] = [
     "readingMinutes": 7,
     "heroSource": "https://csuxjmfbwmkxiegfpljm.supabase.co/storage/v1/object/public/blog-images/organization-52814/1788377505921_Ilustracja-agawy-mezcalu-i-tequili.jpeg",
     "img": "/blog/pl-mezcal-vs-tequila-1080.webp",
-    "imgSrcset": "/blog/pl-mezcal-vs-tequila-640.webp 640w, /blog/pl-mezcal-vs-tequila-1080.webp 1080w",
+    "imgSrcset": "/blog/pl-mezcal-vs-tequila-400.webp 400w, /blog/pl-mezcal-vs-tequila-640.webp 640w, /blog/pl-mezcal-vs-tequila-800.webp 800w, /blog/pl-mezcal-vs-tequila-1080.webp 1080w",
     "imgWidth": 1080,
     "imgHeight": 720
   },
@@ -223,7 +223,7 @@ export const GENERATED_ARTICLES: ArticleItem[] = [
     "readingMinutes": 10,
     "heroSource": "https://csuxjmfbwmkxiegfpljm.supabase.co/storage/v1/object/public/blog-images/organization-52814/1788265324339_Ilustracja-tytu-owa-porownania-aperitifow.jpeg",
     "img": "/blog/pl-aperol-vs-campari-1080.webp",
-    "imgSrcset": "/blog/pl-aperol-vs-campari-640.webp 640w, /blog/pl-aperol-vs-campari-1080.webp 1080w",
+    "imgSrcset": "/blog/pl-aperol-vs-campari-400.webp 400w, /blog/pl-aperol-vs-campari-640.webp 640w, /blog/pl-aperol-vs-campari-800.webp 800w, /blog/pl-aperol-vs-campari-1080.webp 1080w",
     "imgWidth": 1080,
     "imgHeight": 720
   },
@@ -239,7 +239,7 @@ export const GENERATED_ARTICLES: ArticleItem[] = [
     "readingMinutes": 7,
     "heroSource": "https://csuxjmfbwmkxiegfpljm.supabase.co/storage/v1/object/public/blog-images/organization-52814/1788280389134_Decorative-martini-proportions-title-card.jpeg",
     "img": "/blog/pl-martini-dry-vs-wet-1080.webp",
-    "imgSrcset": "/blog/pl-martini-dry-vs-wet-640.webp 640w, /blog/pl-martini-dry-vs-wet-1080.webp 1080w",
+    "imgSrcset": "/blog/pl-martini-dry-vs-wet-400.webp 400w, /blog/pl-martini-dry-vs-wet-640.webp 640w, /blog/pl-martini-dry-vs-wet-800.webp 800w, /blog/pl-martini-dry-vs-wet-1080.webp 1080w",
     "imgWidth": 1080,
     "imgHeight": 720
   },
@@ -255,7 +255,7 @@ export const GENERATED_ARTICLES: ArticleItem[] = [
     "readingMinutes": 6,
     "heroSource": "https://csuxjmfbwmkxiegfpljm.supabase.co/storage/v1/object/public/blog-images/organization-52814/1788265386376_Dekoracyjna-ilustracja-tytu-owa-o-dojrzewaniu-tequili.jpeg",
     "img": "/blog/pl-tequila-blanco-vs-reposado-1080.webp",
-    "imgSrcset": "/blog/pl-tequila-blanco-vs-reposado-640.webp 640w, /blog/pl-tequila-blanco-vs-reposado-1080.webp 1080w",
+    "imgSrcset": "/blog/pl-tequila-blanco-vs-reposado-400.webp 400w, /blog/pl-tequila-blanco-vs-reposado-640.webp 640w, /blog/pl-tequila-blanco-vs-reposado-800.webp 800w, /blog/pl-tequila-blanco-vs-reposado-1080.webp 1080w",
     "imgWidth": 1080,
     "imgHeight": 720
   }
