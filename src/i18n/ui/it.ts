@@ -420,7 +420,6 @@ const it: UI = {
     occasion: {
       heading: 'Tipo di evento',
       options: { birthday: 'Compleanno', anniversary: 'Anniversario', celebration: 'Festa privata', corporate: 'Festa aziendale', other: 'Altra occasione' },
-      hints: { birthday: 'Suggeriremo torta e dessert.', anniversary: 'Cena e torta nella proposta.', celebration: 'Una festa a modo tuo.', corporate: 'Suggeriremo gli schermi per le presentazioni.', other: 'Dicci cosa stai organizzando.' },
     },
     space: {
       heading: 'Scegli lo spazio',

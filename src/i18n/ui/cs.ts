@@ -421,7 +421,6 @@ const cs: UI = {
     occasion: {
       heading: 'Typ akce',
       options: { birthday: 'Narozeniny', anniversary: 'Výročí', celebration: 'Soukromá oslava', corporate: 'Firemní večírek', other: 'Jiná příležitost' },
-      hints: { birthday: 'Navrhneme dort a dezerty.', anniversary: 'Večeře a dort v návrhu.', celebration: 'Oslava podle vás.', corporate: 'Navrhneme obrazovky pro prezentaci.', other: 'Řekněte nám, co plánujete.' },
     },
     space: {
       heading: 'Vyberte prostor',

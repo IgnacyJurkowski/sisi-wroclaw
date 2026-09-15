@@ -433,7 +433,6 @@ const pl = {
     occasion: {
       heading: 'Rodzaj wydarzenia',
       options: { birthday: 'Urodziny', anniversary: 'Rocznica', celebration: 'Prywatne przyjęcie', corporate: 'Impreza firmowa', other: 'Inna okazja' },
-      hints: { birthday: 'Podpowiemy tort i desery.', anniversary: 'Kolacja i tort w propozycji.', celebration: 'Przyjęcie w Twoim stylu.', corporate: 'Podpowiemy ekrany do prezentacji.', other: 'Powiedz nam, co planujesz.' },
     },
     space: {
       heading: 'Wybierz przestrzeń',

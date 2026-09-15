@@ -421,7 +421,6 @@ const de: UI = {
     occasion: {
       heading: 'Art des Events',
       options: { birthday: 'Geburtstag', anniversary: 'Jubiläum', celebration: 'Private Feier', corporate: 'Firmenfeier', other: 'Anderer Anlass' },
-      hints: { birthday: 'Wir schlagen Torte und Desserts vor.', anniversary: 'Dinner und Torte im Vorschlag.', celebration: 'Eine Feier nach deinem Geschmack.', corporate: 'Wir schlagen die Präsentationsbildschirme vor.', other: 'Sag uns, was du planst.' },
     },
     space: {
       heading: 'Wähle den Raum',

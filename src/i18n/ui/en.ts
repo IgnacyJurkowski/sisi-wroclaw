@@ -421,7 +421,6 @@ const en: UI = {
     occasion: {
       heading: 'Type of event',
       options: { birthday: 'Birthday', anniversary: 'Anniversary', celebration: 'Private party', corporate: 'Company party', other: 'Other occasion' },
-      hints: { birthday: 'We will suggest a cake and desserts.', anniversary: 'Dinner and a cake in the proposal.', celebration: 'A party your way.', corporate: 'We will suggest the presentation screens.', other: 'Tell us what you are planning.' },
     },
     space: {
       heading: 'Choose your space',
