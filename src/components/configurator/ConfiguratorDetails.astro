@@ -52,7 +52,7 @@ const seatingHints = { seated: d.seating.seatedHint, standing: d.seating.standin
         </div>
 
         <fieldset class="cfg-field cfg-length">
-          <legend class="cfg-label">{d.length} <span class="req" aria-hidden="true">*</span></legend>
+          <legend class="cfg-label"><span data-tip={c.wizard.tips.duration} tabindex="0">{d.length}</span> <span class="req" aria-hidden="true">*</span></legend>
           <div class="cfg-pills cfg-length-pills">
             {DURATIONS.map((hours) => (
               <label class="cfg-pill">
@@ -65,7 +65,7 @@ const seatingHints = { seated: d.seating.seatedHint, standing: d.seating.standin
         </fieldset>
 
         <div class="cfg-field">
-          <label class="cfg-label" for="cfg-guests">{d.adults} <span class="req" aria-hidden="true">*</span></label>
+          <label class="cfg-label" for="cfg-guests"><span data-tip={c.wizard.tips.guests}>{d.adults}</span> <span class="req" aria-hidden="true">*</span></label>
           <NumberStepper id="cfg-guests" name="guests" min={CONFIGURATOR_LIMITS.minGuests} required describedby="cfg-err-guests" decreaseLabel={shared.guestsDecrease} increaseLabel={shared.guestsIncrease} />
           <p class="cfg-field-error" id="cfg-err-guests" data-error-for="guests" hidden></p>
         </div>

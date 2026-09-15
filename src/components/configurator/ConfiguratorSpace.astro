@@ -29,21 +29,21 @@ const SPACE_ICONS: Record<string, string> = {
 
     <div class="cfg-space-grid" data-reveal>
       <figure class="sisi-card cfg-plan">
-        <div class="cfg-map">
+        <div class="cfg-map" data-tip={c.space.planHint}>
           <FloorPlan labels={{ sisi: c.space.options.sisi.title, cork: c.space.options.cork.title, shared: c.space.shared }} hint={c.space.planHint} />
         </div>
-        <figcaption>{c.space.planHint}</figcaption>
+        <figcaption class="visually-hidden">{c.space.planHint}</figcaption>
       </figure>
 
       <fieldset class="cfg-spaces">
         <legend class="visually-hidden">{c.space.heading}</legend>
         <div class="cfg-spaces-grid">
           {SPACES.map((key) => (
-            <label class="cfg-choice">
+            <label class="cfg-choice" data-space-tile={key}>
               <input type="radio" name="space" value={plSpaces[key].title} data-key={key} data-label={c.space.options[key].title} />
               <span class="cfg-choice-body">
                 <svg class="cfg-space-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={SPACE_ICONS[key]} />
-                <span class="cfg-choice-title">{c.space.options[key].title}<span class="cfg-badge" data-suggest-space={key} hidden>{c.wizard.suggested}</span></span>
+                <span class="cfg-choice-title">{c.space.options[key].title}<span class="cfg-badge" data-suggest-space={key} data-tip={c.wizard.tips.space} hidden>{c.wizard.suggested}</span></span>
                 <span class="cfg-choice-sub">{c.space.options[key].body}</span>
                 {key === 'unsure' && <span class="cfg-choice-sub cfg-recommend" data-recommend hidden><strong data-recommend-space></strong> <span data-recommend-why></span></span>}
               </span>
@@ -53,6 +53,7 @@ const SPACE_ICONS: Record<string, string> = {
         </div>
         <p class="cfg-space-selected">{c.space.selected} <strong data-space-selected>—</strong></p>
         <p class="cfg-notice" data-space-night-fee hidden></p>
+        <p class="cfg-notice cfg-block" data-step-block="space" role="alert" hidden>{c.wizard.blocked.space}</p>
         <div class="cfg-actions" data-step-actions>
           <a href="#cfg-details" class="btn-cta cfg-next">{c.buttons.toDetails}<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10m-4-4 4 4-4 4"/></svg></a>
         </div>
@@ -62,9 +63,9 @@ const SPACE_ICONS: Record<string, string> = {
 </section>
 
 <style>
-  .cfg-space-grid { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: 20px; align-items: stretch; }
+  .cfg-space-grid { display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: 20px; align-items: stretch; }
   .cfg-plan { margin: 0; padding: 16px 16px 12px; text-align: center; display: flex; flex-direction: column; justify-content: center; }
-  .cfg-map { display: inline-block; width: min(100%, 256px); margin: 0 auto; }
+  .cfg-map { display: inline-block; width: min(100%, 296px); margin: 0 auto; }
   .cfg-plan figcaption { font-size: 12px; color: var(--text-faint); margin-top: 10px; line-height: 1.5; }
   .cfg-spaces { border: none; margin: 0; padding: 0; min-width: 0; display: flex; flex-direction: column; }
   .cfg-spaces-grid { flex: 1; display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; gap: 12px; }

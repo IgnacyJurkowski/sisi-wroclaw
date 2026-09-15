@@ -618,6 +618,11 @@ const de: UI = {
       clearMenu: 'Menü leeren',
       needGuests: 'Gib in Schritt 2 die Gästezahl an, dann rechnen wir pro Person.',
       hints: { occasion: 'Wähle die Art des Events.', space: 'Wähle den Raum.', details: 'Gib Termin, Startzeit, Dauer und Gästezahl an.', menu: 'Füge ein Paket oder Positionen aus der Karte hinzu, um die Schätzung zu sehen.', summary: 'Gib Name und E-Mail an, dann schicken wir ein Angebot.' },
+      blocked: { occasion: 'Wähle zuerst die Art des Events - dann geht es zu den Details.', space: 'Wähle zuerst einen Raum oder „Noch unentschieden“.' },
+      tips: {
+        duration: 'Gesamtdauer des Events ab der Startzeit. The Cork schließt um 22:00.', guests: 'Wir planen Events für Gruppen ab 10 Personen.', hours: 'Die Paketdauer deckt die Zeit im The Cork ab.', occasion: 'Passt zum gewählten Anlass.', exclusive: 'Größere Gruppen können The Cork exklusiv mieten.', space: 'Ergibt sich aus Gästezahl, Format und Uhrzeiten.',
+        service: 'Berechnet auf den Wert des The-Cork-Angebots.', cake: 'Der Endpreis hängt von der Dekoration ab.', nightFee: 'Gebühr für die SiSi-Miete am Freitag.', decor: 'Tischdekoration wird pro Tisch für 8 berechnet.', chosen: 'Gerichte im Paket. Das erste Häkchen wählt das Paket.',
+      },
     },
   },
 

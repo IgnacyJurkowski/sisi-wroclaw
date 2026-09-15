@@ -75,6 +75,7 @@ const clientStrings = JSON.stringify({
   units: c.menu.units,
   chosen: c.menu.cork.chosen,
   hints: c.wizard.hints,
+  blocked: c.wizard.blocked,
 });
 ---
 
@@ -173,7 +174,23 @@ const clientStrings = JSON.stringify({
   .cfg-bar-per { font-size: 12px; color: var(--text-faint); }
   .cfg-bar-actions { display: flex; gap: 8px; }
   .cfg-bar-btn { padding: 11px 20px; }
-  .cfg-bar-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  /* Tooltips: data-tip on any hoverable / focusable element. */
+  [data-tip] { position: relative; }
+  [data-tip]::after {
+    content: attr(data-tip); position: absolute; left: 50%; bottom: calc(100% + 8px); transform: translateX(-50%) translateY(2px); z-index: 60;
+    width: max-content; max-width: 260px; padding: 7px 10px; border-radius: 8px; border: 1px solid rgba(237,219,194,0.25);
+    background: #2a0912; color: var(--cream); font-size: 12px; font-weight: 400; line-height: 1.45; letter-spacing: 0; text-transform: none; white-space: normal; text-align: left;
+    opacity: 0; pointer-events: none; transition: opacity 120ms ease, transform 120ms ease;
+  }
+  [data-tip]:hover::after, [data-tip]:focus-visible::after, [data-tip]:focus-within::after { opacity: 1; transform: translateX(-50%) translateY(0); }
+  [data-tip=""]::after { content: none; }
+  .cfg-bar [data-tip]::after { left: auto; right: 0; transform: translateY(2px); }
+  .cfg-bar [data-tip]:hover::after, .cfg-bar [data-tip]:focus-visible::after { transform: translateY(0); }
+  .cfg-bar-btn[aria-disabled='true'] { opacity: 0.45; cursor: not-allowed; }
+  /* "Why can't I continue" notice, shaken on each blocked attempt. */
+  .cfg-block { margin-top: 14px; }
+  .cfg-block.is-shaking { animation: cfg-shake 320ms ease; }
+  @keyframes cfg-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
   .cfg-badge {
     display: inline-block; margin-left: 8px; padding: 2px 8px; border-radius: 999px; vertical-align: middle;
     font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #1a120b; background: var(--gold);

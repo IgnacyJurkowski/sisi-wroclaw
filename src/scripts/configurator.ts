@@ -42,6 +42,7 @@ type Strings = {
   units: { perGuest: string; bottle: string; portion: string };
   chosen: string;
   hints: { occasion: string; space: string; details: string; menu: string; summary: string };
+  blocked: { occasion: string; space: string };
 };
 
 const OTHER_TIME = 'inna';
@@ -395,6 +396,7 @@ function initConfigurator(form: HTMLFormElement): void {
       const off = blocked && (key === 'sisi' || key === 'r32');
       input.disabled = off;
       if (off && input.checked) input.checked = false;
+      input.closest<HTMLElement>('[data-space-tile]')?.setAttribute('data-tip', off ? strings.recommend.sisiBlocked : '');
     });
     mapRegions.forEach((region) => region.classList.toggle('is-blocked', blocked && region.getAttribute('data-map-space') === 'sisi'));
 
@@ -691,12 +693,19 @@ function initConfigurator(form: HTMLFormElement): void {
       : stepKey === 'summary' && contactMissing ? strings.hints.summary
       : '';
     if (calcBar.hint) { calcBar.hint.textContent = hint; calcBar.hint.hidden = !hint; }
-    // The occasion and the space must be chosen before moving on.
+    // The occasion and the space must be chosen before moving on: the button
+    // stays clickable so the attempt can explain itself (notice + tooltip).
     const limit = firstUnmet();
-    if (calcBar.next) calcBar.next.disabled = limit === current;
+    if (calcBar.next) {
+      calcBar.next.setAttribute('aria-disabled', limit === current ? 'true' : 'false');
+      calcBar.next.setAttribute('data-tip', limit === current ? hint : '');
+    }
     progress.forEach((link, i) => {
       if (limit >= 0 && i > limit) link.setAttribute('aria-disabled', 'true');
       else link.removeAttribute('aria-disabled');
+    });
+    qa<HTMLElement>('[data-step-block]').forEach((el) => {
+      if (requirementMet(el.getAttribute('data-step-block') || '')) el.hidden = true;
     });
 
     // Hidden fields for the notification email (Polish, like every other form)
@@ -724,8 +733,21 @@ function initConfigurator(form: HTMLFormElement): void {
   update();
 
   /* --- wizard: one step at a time, driven by the progress strip and the bar --- */
+  /** Explain a refused move: show the step's notice, shake it, focus its first choice. */
+  function explainBlock(stepIndex: number): void {
+    const step = steps[stepIndex];
+    const notice = step?.querySelector<HTMLElement>('[data-step-block]');
+    if (!notice) return;
+    notice.hidden = false;
+    notice.classList.remove('is-shaking');
+    void notice.offsetWidth;
+    notice.classList.add('is-shaking');
+    notice.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    step.querySelector<HTMLInputElement>('input[type="radio"]:not(:disabled)')?.focus({ preventScroll: true });
+  }
   function goTo(index: number, scroll = true): void {
     const limit = firstUnmet();
+    if (limit >= 0 && index > limit) explainBlock(limit);
     current = Math.min(steps.length - 1, Math.max(0, limit >= 0 ? Math.min(index, limit) : index));
     steps.forEach((step, i) => { step.hidden = i !== current; });
     progress.forEach((link, i) => {

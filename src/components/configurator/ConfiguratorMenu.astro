@@ -78,7 +78,7 @@ const TAB_ICONS = { corkFood: UI_ICONS.utensils, corkDrinks: DRINK_ICONS.wine, d
                 <svg class="cfg-course-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={COURSE_ICONS[course.key]} />
                 <h3 class="cfg-course-title">{course.title}</h3>
                 <span class="cfg-course-meta">
-                  {course.included ? m.cork.included : course.optional ? m.cork.optional : <span data-cork-chosen>{m.cork.chosen.replace('{n}', '0').replace('{size}', String(course.packages[0]?.size ?? 0))}</span>}
+                  {course.included ? m.cork.included : course.optional ? m.cork.optional : <span data-cork-chosen data-tip={c.wizard.tips.chosen} tabindex="0">{m.cork.chosen.replace('{n}', '0').replace('{size}', String(course.packages[0]?.size ?? 0))}</span>}
                 </span>
               </header>
               {course.packages.length > 0 && (
@@ -134,7 +134,7 @@ const TAB_ICONS = { corkFood: UI_ICONS.utensils, corkDrinks: DRINK_ICONS.wine, d
                 <label class="cfg-choice">
                   <input type="radio" name="cork_wine" value={`${pkg.label} (${pkg.detail})`} data-key={pkg.key} data-price={pkg.price} data-hours={pkg.hours} data-label={`${pkg.label} · ${pkg.detail}`} data-toggle />
                   <span class="cfg-choice-body">
-                    <span class="cfg-choice-title">{pkg.label}<span class="cfg-badge" data-suggest-wine={pkg.key} hidden>{c.wizard.suggested}</span></span>
+                    <span class="cfg-choice-title">{pkg.label}<span class="cfg-badge" data-suggest-wine={pkg.key} data-tip={c.wizard.tips.hours} hidden>{c.wizard.suggested}</span></span>
                     <span class="cfg-choice-sub">{pkg.detail}</span>
                     <span class="cfg-choice-price">{pkg.price} {m.cork.perAdult}</span>
                   </span>
@@ -162,7 +162,7 @@ const TAB_ICONS = { corkFood: UI_ICONS.utensils, corkDrinks: DRINK_ICONS.wine, d
                 <label class="cfg-choice">
                   <input type="radio" name="cork_bar" value={`${pkg.label} ${pkg.detail}`} data-key={pkg.key} data-price={pkg.price} data-hours={pkg.hours} data-label={`${pkg.label} · ${pkg.detail}`} />
                   <span class="cfg-choice-body">
-                    <span class="cfg-choice-title">{pkg.label}<span class="cfg-badge" data-suggest-bar={pkg.key} hidden>{c.wizard.suggested}</span></span>
+                    <span class="cfg-choice-title">{pkg.label}<span class="cfg-badge" data-suggest-bar={pkg.key} data-tip={c.wizard.tips.hours} hidden>{c.wizard.suggested}</span></span>
                     <span class="cfg-choice-sub">{pkg.detail}</span>
                     <span class="cfg-choice-price">{pkg.price} {m.cork.perAdult}</span>
                   </span>
@@ -240,10 +240,10 @@ const TAB_ICONS = { corkFood: UI_ICONS.utensils, corkDrinks: DRINK_ICONS.wine, d
           <div data-est-row="corkDrinks" hidden><dt>{m.estimate.corkDrinks}</dt><dd data-est-corkDrinks>0 zł</dd></div>
           <div data-est-row="drinks" hidden><dt>{m.estimate.drinks}</dt><dd data-est-drinks>0 zł</dd></div>
           <div data-est-row="food" hidden><dt>{m.estimate.food}</dt><dd data-est-food>0 zł</dd></div>
-          <div data-est-row="cake" hidden><dt>{m.estimate.cake}</dt><dd data-est-cake>0 zł</dd></div>
-          <div data-est-row="decor" hidden><dt>{m.estimate.decor}</dt><dd data-est-decor>0 zł</dd></div>
-          <div data-est-row="nightFee" hidden><dt>{m.estimate.nightFee}</dt><dd data-est-nightFee>0 zł</dd></div>
-          <div data-est-row="service" hidden><dt>{m.estimate.service}</dt><dd data-est-service>0 zł</dd></div>
+          <div data-est-row="cake" hidden><dt><span data-tip={c.wizard.tips.cake} tabindex="0">{m.estimate.cake}</span></dt><dd data-est-cake>0 zł</dd></div>
+          <div data-est-row="decor" hidden><dt><span data-tip={c.wizard.tips.decor} tabindex="0">{m.estimate.decor}</span></dt><dd data-est-decor>0 zł</dd></div>
+          <div data-est-row="nightFee" hidden><dt><span data-tip={c.wizard.tips.nightFee} tabindex="0">{m.estimate.nightFee}</span></dt><dd data-est-nightFee>0 zł</dd></div>
+          <div data-est-row="service" hidden><dt><span data-tip={c.wizard.tips.service} tabindex="0">{m.estimate.service}</span></dt><dd data-est-service>0 zł</dd></div>
           <div class="cfg-estimate-total">
             <dt>{m.estimate.total}<span class="cfg-estimate-meta" data-est-meta></span></dt>
             <dd data-est-total>0 zł</dd>

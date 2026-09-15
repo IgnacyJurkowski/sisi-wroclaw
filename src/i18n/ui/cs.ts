@@ -618,6 +618,11 @@ const cs: UI = {
       clearMenu: 'Vymazat menu',
       needGuests: 'Zadejte počet hostů v kroku 2 a spočítáme cenu na osobu.',
       hints: { occasion: 'Vyberte typ akce.', space: 'Vyberte prostor.', details: 'Zadejte termín, čas začátku, délku a počet hostů.', menu: 'Přidejte balíček nebo položky z nabídky, abyste viděli odhad.', summary: 'Zadejte jméno a e-mail a pošleme vám návrh.' },
+      blocked: { occasion: 'Nejprve vyberte typ akce - pak přejdete k údajům.', space: 'Nejprve vyberte prostor nebo „Ještě nevím“.' },
+      tips: {
+        duration: 'Celková délka akce od času začátku. The Cork zavíráme ve 22:00.', guests: 'Akce plánujeme pro skupiny od 10 osob.', hours: 'Délka balíčku pokrývá čas v The Cork.', occasion: 'Hodí se k vybrané příležitosti.', exclusive: 'Větší skupiny si mohou The Cork pronajmout exkluzivně.', space: 'Vyplývá z počtu hostů, formátu a časů.',
+        service: 'Počítá se z hodnoty nabídky The Cork.', cake: 'Konečná cena závisí na dekoraci.', nightFee: 'Poplatek za pronájem SiSi v pátek.', decor: 'Výzdoba stolů se počítá za každý stůl pro 8.', chosen: 'Počet chodů v balíčku. První zaškrtnutí vybere balíček.',
+      },
     },
   },
 

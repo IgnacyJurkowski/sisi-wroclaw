@@ -617,6 +617,11 @@ const it: UI = {
       clearMenu: 'Svuota il menu',
       needGuests: 'Indica il numero di ospiti al passo 2 e calcoleremo il prezzo a persona.',
       hints: { occasion: 'Scegli il tipo di evento.', space: 'Scegli lo spazio.', details: 'Indica la data, l’ora di inizio, la durata e il numero di ospiti.', menu: 'Aggiungi un pacchetto o voci dal menu per vedere la stima.', summary: 'Inserisci nome ed e-mail e ti invieremo una proposta.' },
+      blocked: { occasion: 'Scegli prima il tipo di evento - poi passi ai dettagli.', space: 'Scegli prima uno spazio oppure "Non lo so ancora".' },
+      tips: {
+        duration: 'Durata totale dell’evento dall’ora di inizio. The Cork chiude alle 22:00.', guests: 'Organizziamo eventi per gruppi da 10 persone.', hours: 'La durata del pacchetto copre il tempo al The Cork.', occasion: 'Adatto all’occasione scelta.', exclusive: 'I gruppi più numerosi possono affittare The Cork in esclusiva.', space: 'Deriva dal numero di ospiti, dalla formula e dagli orari.',
+        service: 'Calcolato sul valore dell’offerta The Cork.', cake: 'Il prezzo finale dipende dalla decorazione.', nightFee: 'Costo dell’affitto del SiSi di venerdì.', decor: 'L’allestimento dei tavoli è calcolato per tavolo da 8.', chosen: 'Piatti nel pacchetto. La prima spunta seleziona il pacchetto.',
+      },
     },
   },
 

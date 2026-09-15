@@ -36,7 +36,7 @@ const ICONS = {
         <div class="cfg-grid-2 cfg-extras-row">
           <label class="cfg-choice">
             <input type="radio" name="cake" value={pl.cake.with} data-key="with" data-label={x.cake.with} />
-            <span class="cfg-choice-body"><span class="cfg-choice-title">{x.cake.with}<span class="cfg-badge" data-suggest="cake" hidden>{c.wizard.suggested}</span></span><span class="cfg-choice-sub">{x.cake.withHint}</span></span>
+            <span class="cfg-choice-body"><span class="cfg-choice-title">{x.cake.with}<span class="cfg-badge" data-suggest="cake" data-tip={c.wizard.tips.occasion} hidden>{c.wizard.suggested}</span></span><span class="cfg-choice-sub">{x.cake.withHint}</span></span>
             <span class="cfg-choice-check" aria-hidden="true">✓</span>
           </label>
           <label class="cfg-choice">
@@ -93,7 +93,7 @@ const ICONS = {
               <input type="checkbox" name="extras" value={pl.items[key].title} data-key={key} data-label={x.items[key].title} />
               <span class="cfg-choice-body cfg-extra">
                 <svg class="cfg-extra-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS[key]} />
-                <span class="cfg-choice-title">{x.items[key].title}{(key === 'screens' || key === 'exclusive') && <span class="cfg-badge" data-suggest={key} hidden>{c.wizard.suggested}</span>}</span>
+                <span class="cfg-choice-title">{x.items[key].title}{(key === 'screens' || key === 'exclusive') && <span class="cfg-badge" data-suggest={key} data-tip={key === 'exclusive' ? c.wizard.tips.exclusive : c.wizard.tips.occasion} hidden>{c.wizard.suggested}</span>}</span>
                 <span class="cfg-choice-sub">{x.items[key].body}</span>
               </span>
               <span class="cfg-choice-check" aria-hidden="true">✓</span>
