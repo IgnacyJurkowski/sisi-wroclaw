@@ -14,7 +14,7 @@ test('jsonForHtml preserves JSON without a literal tag opener', () => {
 const CANONICAL_ORIGIN = 'https://www.sisiwroclaw.pl';
 
 for (const [name, input, expected] of [
-  ['canonical production', { context: 'production', siteUrl: CANONICAL_ORIGIN, canonicalOrigin: CANONICAL_ORIGIN, noindex: false }, undefined],
+  ['canonical production', { context: 'production', siteUrl: CANONICAL_ORIGIN, canonicalOrigin: CANONICAL_ORIGIN, noindex: false }, 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'],
   ['utility production', { context: 'production', siteUrl: `${CANONICAL_ORIGIN}/`, canonicalOrigin: CANONICAL_ORIGIN, noindex: true }, 'noindex, follow'],
   ['noncanonical production host', { context: 'production', siteUrl: 'https://sisi-wroclaw.netlify.app', canonicalOrigin: CANONICAL_ORIGIN, noindex: false }, 'noindex, nofollow'],
   ['deploy preview', { context: 'deploy-preview', siteUrl: 'https://deploy-preview-1--sisi-wroclaw.netlify.app', canonicalOrigin: CANONICAL_ORIGIN, noindex: false }, 'noindex, nofollow'],

@@ -132,6 +132,8 @@ test('renders the complete launch policy without wildcard CORS', () => {
     assert.equal(rule.headers['X-Content-Type-Options'], 'nosniff', rule.pattern);
     assert.equal(rule.headers['Referrer-Policy'], 'strict-origin-when-cross-origin', rule.pattern);
     assert.equal(rule.headers['Permissions-Policy'], 'camera=(), microphone=(), geolocation=()', rule.pattern);
+    // Legacy twin of CSP frame-ancestors for clients and auditors that only read this header.
+    assert.equal(rule.headers['X-Frame-Options'], 'DENY', rule.pattern);
   }
   assert.doesNotMatch(output, /Access-Control-Allow-Origin/i);
 });
