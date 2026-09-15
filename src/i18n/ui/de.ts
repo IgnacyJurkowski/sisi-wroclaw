@@ -592,6 +592,7 @@ const de: UI = {
       },
     },
     buttons: { toDetails: 'Details angeben', toMenu: 'Menü zusammenstellen', toExtras: 'Extras hinzufügen', toSummary: 'Zur Zusammenfassung' },
+    wizard: { back: 'Zurück', next: 'Weiter', chooseDishes: 'Gerichte wählen', hideDishes: 'Gerichte ausblenden', suggested: 'empfohlen', cakeSizeAuto: 'an die Gästezahl angepasst', perGuest: 'pro Gast' },
   },
 
   b2b: {

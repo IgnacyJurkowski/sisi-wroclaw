@@ -591,6 +591,7 @@ const it: UI = {
       },
     },
     buttons: { toDetails: 'Inserisci i dettagli', toMenu: 'Componi il menu', toExtras: 'Aggiungi extra', toSummary: 'Vai al riepilogo' },
+    wizard: { back: 'Indietro', next: 'Avanti', chooseDishes: 'Scegli i piatti', hideDishes: 'Nascondi i piatti', suggested: 'consigliato', cakeSizeAuto: 'in base al numero di ospiti', perGuest: 'per ospite' },
   },
 
   b2b: {

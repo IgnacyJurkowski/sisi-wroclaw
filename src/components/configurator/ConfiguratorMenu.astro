@@ -86,7 +86,12 @@ const TAB_ICONS = { corkFood: UI_ICONS.utensils, corkDrinks: DRINK_ICONS.wine, d
                   ))}
                 </div>
               )}
-              <div class="cfg-pills cfg-course-dishes">
+              {!course.included && (
+                <button type="button" class="cfg-dish-toggle" data-dish-toggle aria-expanded="false" data-label-open={c.wizard.chooseDishes} data-label-close={c.wizard.hideDishes}>
+                  {c.wizard.chooseDishes}<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg>
+                </button>
+              )}
+              <div class:list={['cfg-pills', 'cfg-course-dishes', { 'cfg-dish-list': !course.included }]} data-dish-list hidden={!course.included}>
                 {course.dishes.map((dish) => (
                   <label class="cfg-pill cfg-dish" title={dish.desc}>
                     <input type="checkbox" data-cork-dish data-course={course.key} data-dish={dish.name} checked={course.included} disabled={course.included} />
@@ -228,7 +233,7 @@ const TAB_ICONS = { corkFood: UI_ICONS.utensils, corkDrinks: DRINK_ICONS.wine, d
           </div>
           <div class="cfg-estimate-per"><dt>{m.estimate.perGuest}</dt><dd data-est-per-guest>0 zł</dd></div>
         </dl>
-        <div class="cfg-actions">
+        <div class="cfg-actions" data-step-actions>
           <a href="#cfg-extras" class="btn-cta cfg-next">{c.buttons.toExtras}<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10m-4-4 4 4-4 4"/></svg></a>
         </div>
       </aside>

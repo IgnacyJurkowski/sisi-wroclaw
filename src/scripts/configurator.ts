@@ -59,6 +59,42 @@ function initConfigurator(form: HTMLFormElement): void {
     corkDishes: q<HTMLInputElement>('[data-field-cork-dishes]'),
     estimate: q<HTMLInputElement>('[data-field-estimate]'),
   };
+  const calcBar = {
+    root: q<HTMLElement>('[data-cfg-bar]'),
+    line: q<HTMLElement>('[data-bar-line]'),
+    total: q<HTMLElement>('[data-bar-total]'),
+    per: q<HTMLElement>('[data-bar-per]'),
+    back: q<HTMLButtonElement>('[data-wizard-back]'),
+    next: q<HTMLButtonElement>('[data-wizard-next]'),
+  };
+
+  /* --- dish lists fold behind a toggle so the menu step stays short ------- */
+  qa<HTMLButtonElement>('[data-dish-toggle]').forEach((toggle) => {
+    const list = toggle.parentElement?.querySelector<HTMLElement>('[data-dish-list]');
+    if (!list) return;
+    toggle.addEventListener('click', () => {
+      const open = list.hidden;
+      list.hidden = !open;
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      toggle.firstChild!.textContent = toggle.getAttribute(open ? 'data-label-close' : 'data-label-open') || '';
+    });
+  });
+
+  /* --- cake size follows the guest count until the visitor picks one ------ */
+  let cakeSizeTouched = false;
+  qa<HTMLInputElement>('input[name="cake_size"]').forEach((input) => input.addEventListener('change', () => { cakeSizeTouched = true; }));
+  const CAKE_SIZE_FOR = [[12, 'd16'], [15, 'd17'], [18, 'd18'], [23, 'd20'], [25, 'd21']] as const;
+  function suggestCakeSize(adults: number, wanted: boolean): void {
+    const note = q<HTMLElement>('[data-cake-auto]');
+    if (!wanted || cakeSizeTouched || adults <= 0) {
+      show(note, false);
+      return;
+    }
+    const key = CAKE_SIZE_FOR.find(([max]) => adults <= max)?.[1] || 'tiered';
+    const radio = q<HTMLInputElement>(`input[name="cake_size"][data-key="${key}"]`);
+    if (radio && !radio.checked) radio.checked = true;
+    show(note, true);
+  }
 
   /* --- venue mode --------------------------------------------------------- */
   const spaceKey = () => checkedRadio('space')?.getAttribute('data-key') || 'unsure';
@@ -332,9 +368,16 @@ function initConfigurator(form: HTMLFormElement): void {
     text('[data-cork-deposit]', formatZl(corkResult.deposit));
     text('[data-cork-balance]', formatZl(corkResult.balance));
 
-    // Cake options only when a cake is wanted
+    // Cake options only when a cake is wanted; size matched to the group by default
     const cakeWanted = checkedRadio('cake')?.getAttribute('data-key') === 'with';
     show(cakeOptions, cakeWanted);
+    suggestCakeSize(adults, cakeWanted);
+
+    // Gentle suggestions from the occasion: a cake for birthdays and
+    // anniversaries, the presentation screens for company events.
+    const occasionKey = checkedRadio('occasion')?.getAttribute('data-key') || '';
+    show(q<HTMLElement>('[data-suggest="cake"]'), occasionKey === 'birthday' || occasionKey === 'anniversary');
+    show(q<HTMLElement>('[data-suggest="screens"]'), occasionKey === 'corporate');
 
     // Summary card
     const tba = strings.summary.toBeAgreed;
@@ -383,6 +426,11 @@ function initConfigurator(form: HTMLFormElement): void {
     });
     text('[data-sum="estimate"]', hasLines ? `${formatZl(total)} (${formatZl(adults > 0 ? Math.round(total / adults) : 0)} ${strings.estimate.perGuest})` : none);
 
+    // Sticky calculator bar
+    if (calcBar.line) calcBar.line.textContent = [labelOf(checkedRadio('occasion'), ''), adults > 0 ? `${adults} ${strings.estimate.adults}` : '', labelOf(space, '')].filter(Boolean).join(' · ');
+    if (calcBar.total) calcBar.total.textContent = formatZl(total);
+    if (calcBar.per) calcBar.per.textContent = adults > 0 && hasLines ? `${formatZl(Math.round(total / adults))} ${strings.estimate.perGuest}` : '';
+
     // Hidden fields for the notification email (Polish, like every other form)
     if (hidden.drinks) hidden.drinks.value = sisi ? describe(picked.filter((l) => l.group === 'drinks'), true) : '';
     if (hidden.food) hidden.food.value = sisi ? describe(picked.filter((l) => l.group === 'food'), true) : '';
@@ -404,27 +452,42 @@ function initConfigurator(form: HTMLFormElement): void {
   form.addEventListener('change', update);
   update();
 
-  /* --- progress nav follows the visible step ------------------------------- */
+  /* --- wizard: one step at a time, driven by the progress row and the bar --- */
   const steps = qa<HTMLElement>('[data-cfg-step]');
   const progress = qa<HTMLAnchorElement>('[data-cfg-progress] [data-step]');
-  if (steps.length && progress.length && 'IntersectionObserver' in window) {
-    const order = steps.map((step) => step.getAttribute('data-cfg-step') || '');
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (!visible) return;
-        const current = visible.target.getAttribute('data-cfg-step') || '';
-        const currentIndex = order.indexOf(current);
-        progress.forEach((link) => {
-          const key = link.getAttribute('data-step') || '';
-          if (key === current) link.setAttribute('aria-current', 'step');
-          else link.removeAttribute('aria-current');
-          link.setAttribute('data-done', order.indexOf(key) < currentIndex ? 'true' : 'false');
-        });
-      },
-      { rootMargin: '-35% 0px -45% 0px', threshold: [0, 0.2, 0.5] },
-    );
-    steps.forEach((step) => observer.observe(step));
+  let current = 0;
+  function goTo(index: number, scroll = true): void {
+    current = Math.min(steps.length - 1, Math.max(0, index));
+    steps.forEach((step, i) => { step.hidden = i !== current; });
+    progress.forEach((link, i) => {
+      if (i === current) link.setAttribute('aria-current', 'step');
+      else link.removeAttribute('aria-current');
+      link.setAttribute('data-done', i < current ? 'true' : 'false');
+    });
+    if (calcBar.back) calcBar.back.hidden = current === 0;
+    if (calcBar.next) calcBar.next.hidden = current === steps.length - 1;
+    if (scroll) {
+      const top = steps[current].getBoundingClientRect().top + window.scrollY - 96;
+      window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+    }
+  }
+  if (steps.length && progress.length === steps.length && calcBar.root) {
+    form.classList.add('cfg-wizard');
+    calcBar.root.hidden = false;
+    progress.forEach((link, i) => link.addEventListener('click', (event) => { event.preventDefault(); goTo(i); }));
+    // In-step "next" links stay in the markup for no-JS visitors; route them through the wizard.
+    qa<HTMLAnchorElement>('[data-step-actions] a[href^="#cfg-"]').forEach((link) => {
+      link.addEventListener('click', (event) => {
+        const target = steps.findIndex((step) => `#${step.id}` === link.getAttribute('href'));
+        if (target < 0) return;
+        event.preventDefault();
+        goTo(target);
+      });
+    });
+    calcBar.back?.addEventListener('click', () => goTo(current - 1));
+    calcBar.next?.addEventListener('click', () => goTo(current + 1));
+    const fromHash = steps.findIndex((step) => `#${step.id}` === location.hash);
+    goTo(fromHash >= 0 ? fromHash : 0, fromHash >= 0);
   }
 }
 

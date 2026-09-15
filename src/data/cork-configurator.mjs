@@ -71,7 +71,7 @@ export const CORK_COURSES = [
       { key: 'five', label: 'Pięć przystawek', size: 5, unit: 'przystawek', price: 95 },
       { key: 'alacarte', label: 'À la carte', size: 0, unit: 'à la carte', price: null },
     ],
-    defaultPackage: 'four',
+    defaultPackage: 'alacarte',
     dishes: [
       { name: 'Matjas', desc: 'Grzanka żytnia · twarożek z czosnkiem niedźwiedzim · młody bób · pikle · oliwa koperkowa' },
       { name: 'Burrata Pugliese & pomidory', desc: 'Lokalne pomidory · bazylia · purée malinowe · oliwa Coratina · pistacja' },
@@ -93,7 +93,7 @@ export const CORK_COURSES = [
       { key: 'five', label: 'Pięć dań głównych', size: 5, unit: 'dań głównych', price: 159 },
       { key: 'alacarte', label: 'À la carte', size: 0, unit: 'à la carte', price: null },
     ],
-    defaultPackage: 'four',
+    defaultPackage: 'alacarte',
     dishes: [
       { name: 'Domowe spaghetti & pomidory', desc: 'Lokalne pomidory · bazylia · pieprz młotkowany · stracciatella di burrata' },
       { name: 'Risotto & kurki', desc: 'Pieczone kurki · suszone pomidory · Gorgonzola Dolce · młody szpinak · oliwa ziołowa', note: 'Kurczak +29 zł · krewetki +44 zł · polędwica +59 zł' },

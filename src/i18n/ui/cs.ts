@@ -592,6 +592,7 @@ const cs: UI = {
       },
     },
     buttons: { toDetails: 'Zadat podrobnosti', toMenu: 'Sestavit menu', toExtras: 'Přidat doplňky', toSummary: 'Přejít na shrnutí' },
+    wizard: { back: 'Zpět', next: 'Dále', chooseDishes: 'Vybrat jídla', hideDishes: 'Skrýt jídla', suggested: 'doporučeno', cakeSizeAuto: 'podle počtu hostů', perGuest: 'na hosta' },
   },
 
   b2b: {

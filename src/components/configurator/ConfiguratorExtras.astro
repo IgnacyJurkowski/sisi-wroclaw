@@ -37,7 +37,7 @@ const ICONS = {
         <div class="cfg-grid-2 cfg-extras-row">
           <label class="cfg-choice">
             <input type="radio" name="cake" value={pl.cake.with} data-key="with" data-label={x.cake.with} />
-            <span class="cfg-choice-body"><span class="cfg-choice-title">{x.cake.with}</span><span class="cfg-choice-sub">{x.cake.withHint}</span></span>
+            <span class="cfg-choice-body"><span class="cfg-choice-title">{x.cake.with}<span class="cfg-badge" data-suggest="cake" hidden>{c.wizard.suggested}</span></span><span class="cfg-choice-sub">{x.cake.withHint}</span></span>
             <span class="cfg-choice-check" aria-hidden="true">✓</span>
           </label>
           <label class="cfg-choice">
@@ -47,7 +47,7 @@ const ICONS = {
           </label>
         </div>
         <div class="cfg-cake-options" data-cake-options hidden>
-          <p class="cfg-subhead">{x.cake.size}</p>
+          <p class="cfg-subhead">{x.cake.size} <span class="opt" data-cake-auto hidden>· {c.wizard.cakeSizeAuto}</span></p>
           <div class="cfg-pills">
             {CAKE_SIZES.map((size) => (
               <label class="cfg-pill">
@@ -149,7 +149,7 @@ const ICONS = {
               <input type="checkbox" name="extras" value={pl.items[key].title} data-key={key} data-label={x.items[key].title} />
               <span class="cfg-choice-body cfg-extra">
                 <svg class="cfg-extra-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS[key]} />
-                <span class="cfg-choice-title">{x.items[key].title}</span>
+                <span class="cfg-choice-title">{x.items[key].title}{key === 'screens' && <span class="cfg-badge" data-suggest="screens" hidden>{c.wizard.suggested}</span>}</span>
                 <span class="cfg-choice-sub">{x.items[key].body}</span>
               </span>
               <span class="cfg-choice-check" aria-hidden="true">✓</span>
@@ -158,7 +158,7 @@ const ICONS = {
         </div>
       </MenuFold>
 
-      <div class="cfg-actions">
+      <div class="cfg-actions" data-step-actions>
         <a href="#cfg-summary" class="btn-cta cfg-next">{c.buttons.toSummary}<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10m-4-4 4 4-4 4"/></svg></a>
       </div>
     </div>

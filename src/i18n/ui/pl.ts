@@ -604,6 +604,7 @@ const pl = {
       },
     },
     buttons: { toDetails: 'Podaj szczegóły', toMenu: 'Skomponuj menu', toExtras: 'Dodaj oprawę', toSummary: 'Przejdź do podsumowania' },
+    wizard: { back: 'Wstecz', next: 'Dalej', chooseDishes: 'Wybierz dania', hideDishes: 'Zwiń dania', suggested: 'sugerowane', cakeSizeAuto: 'dopasowane do liczby gości', perGuest: 'na gościa' },
   },
 
   b2b: {
