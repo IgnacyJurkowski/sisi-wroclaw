@@ -15,7 +15,6 @@ const imageSizes = '(min-width: 1024px) 39vw, (min-width: 760px) 52vw, calc(100v
 
 <section id="ewolucja-onas" class="about" aria-labelledby="about-title">
   <div class="container about-head" data-reveal>
-    <span class="page-label">{t.about.eyebrow}</span>
     <h2 id="about-title" class="display about-title">{t.about.title}</h2>
     <p class="about-intro">{night.intro}</p>
   </div>
@@ -32,13 +31,11 @@ const imageSizes = '(min-width: 1024px) 39vw, (min-width: 760px) 52vw, calc(100v
         loading="lazy"
         decoding="async"
       />
-      <figcaption>{night.caption}</figcaption>
     </figure>
 
     <ol class="night-phases">
-      {night.phases.map((phase, index) => (
+      {night.phases.map((phase) => (
         <li class="night-phase">
-          <span class="phase-number" aria-hidden="true">0{index + 1}</span>
           <div>
             <h3 class="display phase-title">{phase.title}</h3>
             <p>{phase.body}</p>
@@ -83,29 +80,13 @@ const imageSizes = '(min-width: 1024px) 39vw, (min-width: 760px) 52vw, calc(100v
     object-position: 56% center;
     border-radius: 12px;
   }
-  .about-live figcaption {
-    margin-top: 13px;
-    color: var(--text-dim);
-    font-size: 12px;
-    line-height: 1.6;
-  }
   .night-phases { list-style: none; margin: 0; padding: 0; }
   .night-phase {
-    display: grid;
-    grid-template-columns: 24px minmax(0, 1fr);
-    gap: 16px;
     padding: 23px 0;
     border-top: 1px solid rgba(237, 219, 194, 0.18);
   }
   .night-phase:first-child { padding-top: 0; border-top: 0; }
   .night-phase:last-child { padding-bottom: 0; }
-  .phase-number {
-    padding-top: 6px;
-    color: var(--gold);
-    font-size: 11px;
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-  }
   .phase-title {
     margin: 0 0 9px;
     font-size: clamp(1.3rem, 2vw, 1.65rem);
@@ -123,8 +104,7 @@ const imageSizes = '(min-width: 1024px) 39vw, (min-width: 760px) 52vw, calc(100v
     .about-intro { font-size: 14px; }
     .about-story { grid-template-columns: 1fr; gap: 26px; margin-top: 28px; }
     .about-live img { aspect-ratio: 3 / 2; border-radius: 10px; }
-    .about-live figcaption { margin-top: 9px; font-size: 11px; }
-    .night-phase { grid-template-columns: 23px minmax(0, 1fr); gap: 12px; padding: 19px 0; }
+    .night-phase { padding: 19px 0; }
     .phase-title { margin-bottom: 6px; font-size: 1.4rem; }
     .night-phase p { font-size: 13px; }
   }

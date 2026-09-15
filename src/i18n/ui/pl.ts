@@ -32,7 +32,7 @@ const pl = {
     reservations: {
       title: 'Rezerwacja stolika w SiSi Wrocław – klub muzyczny',
       description:
-        'Zarezerwuj stolik w SiSi Wrocław online. Koszt to 50 zł od osoby do wykorzystania przy stoliku. Sprawdź warunki rezerwacji i kontakt do eventów firmowych.',
+        'Zarezerwuj stolik w SiSi Wrocław online. Koszt to 100 zł od osoby do wykorzystania przy stoliku. Sprawdź warunki rezerwacji i kontakt do eventów firmowych.',
       ogDescription: 'Stolik w SiSi: cała kwota rezerwacji do wykorzystania przy stoliku. Piątki i soboty od 22:00.',
     },
     corporate: {
@@ -203,7 +203,7 @@ const pl = {
     title: 'Zarezerwuj stolik',
     body: 'Rezerwacja online zajmuje chwilę, a cała kwota rezerwacji jest do wykorzystania przy stoliku. W piątki wstęp z rezerwacją jest bezpłatny.',
     reassure: 'Potwierdzenie i szczegóły wysyłamy po akceptacji rezerwacji',
-    terms: 'Rezerwacja stolika to 50 zł od osoby do wykorzystania przy stoliku; w soboty obowiązuje dodatkowy wstęp 40 zł od osoby.',
+    terms: 'Rezerwacja stolika to 100 zł od osoby do wykorzystania przy stoliku; w soboty obowiązuje dodatkowy wstęp 40 zł od osoby.',
     info: {
       hours: 'Godziny',
       address: 'Adres',
@@ -322,7 +322,7 @@ const pl = {
     externalLocaleNote: 'System rezerwacji otworzy się po polsku.',
     practicalTitle: 'Informacje praktyczne',
     practicalConditions: [
-      'Koszt rezerwacji wynosi 50 zł od osoby - cała kwota jest do wykorzystania przy stoliku u obsługi.',
+      'Koszt rezerwacji wynosi 100 zł od osoby - cała kwota jest do wykorzystania przy stoliku u obsługi.',
       'W piątki wstęp do klubu dla osób z rezerwacją jest bezpłatny.',
       'W soboty do rezerwacji doliczany jest wstęp w wysokości 40 zł od osoby.',
       'Rezerwację należy odebrać w godzinach 22:00-23:00. W przypadku spóźnienia powyżej 30 minut stolik może zostać przekazany innym gościom.',

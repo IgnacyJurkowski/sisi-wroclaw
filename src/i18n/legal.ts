@@ -39,7 +39,7 @@ const pl_terms: LegalDoc = {
       heading: '3. Rezerwacje stolików',
       items: [
         'Rezerwacji stolika można dokonać online za pośrednictwem systemu rezerwacji dostępnego na stronie, telefonicznie pod numerem {phone} lub mailowo: {email}.',
-        'Koszt rezerwacji wynosi 50 zł od osoby i jest do wykorzystania przy stoliku u obsługi. W piątki wstęp dla osób z rezerwacją jest bezpłatny, w soboty doliczany jest wstęp w wysokości 30 zł od osoby.',
+        'Koszt rezerwacji wynosi 100 zł od osoby i jest do wykorzystania przy stoliku u obsługi. W piątki wstęp dla osób z rezerwacją jest bezpłatny, w soboty doliczany jest wstęp w wysokości 30 zł od osoby.',
         'Warunkiem potwierdzenia rezerwacji jest przedpłata.',
         'Rezerwację należy odebrać w godzinach 22:00-23:30. Spóźnienie powyżej 30 minut może skutkować przekazaniem stolika innym gościom.',
         'Rezerwacje na eventy firmowe i grupowe prowadzone są odrębnie: {eventsPhone}, {eventsEmail}.',
@@ -238,7 +238,7 @@ const en_terms: LegalDoc = {
       heading: '3. Table reservations',
       items: [
         'A table can be reserved online via the booking system on this site, by phone at {phone} or by email at {email}.',
-        'The reservation fee is PLN 50 per person and can be spent at your table with staff. On Fridays entry is free for guests with a reservation; on Saturdays an entry fee of PLN 30 per person is added.',
+        'The reservation fee is PLN 100 per person and can be spent at your table with staff. On Fridays entry is free for guests with a reservation; on Saturdays an entry fee of PLN 30 per person is added.',
         'A reservation is confirmed by prepayment.',
         'Reservations must be claimed between 22:00 and 23:30. Being more than 30 minutes late may result in the table being released to other guests.',
         'Corporate and group event bookings are handled separately: {eventsPhone}, {eventsEmail}.',
