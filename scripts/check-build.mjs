@@ -658,7 +658,7 @@ for (const locale of LOCALES) {
   // names a zone, table count or zone capacity.
   assert(
     `${locale} configurator shows the cleaned R32 floor plan and no restaurant zones`,
-    html.includes('/images/plan-r32-896.avif') && html.includes('/images/plan-r32.webp') && !/strefa [123]|zone [123]|stołów/i.test(html),
+    html.includes('/images/plan-r32.avif') && html.includes('/images/plan-r32.webp') && !/strefa [123]|zone [123]|stołów/i.test(html),
   );
   // Only the owner-verified limits appear as capacities; the reference site's
   // per-zone numbers (30 / 52 / 42 guests, 60-guest exclusivity) must not.

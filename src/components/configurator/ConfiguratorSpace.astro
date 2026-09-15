@@ -7,8 +7,10 @@ interface Props { locale: Locale }
 const { locale } = Astro.props;
 const c = useTranslations(locale).configurator;
 const plSpaces = useTranslations('pl').configurator.space.options;
-// The plan is The Cork / SiSi functional layout with the restaurant's zone
-// markers removed - the same R32 footprint the B2B page describes.
+// The plan is The Cork / SiSi functional layout redrawn for this site: zone
+// markers, title and the toilet block removed, background transparent, and
+// the seating recoloured to the brand cream / gold - the same R32 footprint
+// the B2B page describes.
 const PLAN = '/images/plan-r32';
 ---
 
@@ -23,9 +25,8 @@ const PLAN = '/images/plan-r32';
     <div class="cfg-space-grid" data-reveal>
       <figure class="sisi-card cfg-plan">
         <picture>
-          <source type="image/avif" srcset={`${PLAN}-600.avif 600w, ${PLAN}-896.avif 896w`} sizes="(max-width: 900px) 92vw, 560px" />
-          <source type="image/webp" srcset={`${PLAN}-600.webp 600w, ${PLAN}-896.webp 896w`} sizes="(max-width: 900px) 92vw, 560px" />
-          <img src={`${PLAN}.webp`} width="896" height="787" alt={c.space.planAlt} loading="lazy" decoding="async" />
+          <source type="image/avif" srcset={`${PLAN}.avif`} />
+          <img src={`${PLAN}.webp`} width="468" height="649" alt={c.space.planAlt} loading="lazy" decoding="async" />
         </picture>
         <figcaption>{c.space.planCaption}</figcaption>
       </figure>
@@ -53,9 +54,9 @@ const PLAN = '/images/plan-r32';
 
 <style>
   .cfg-space-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 24px; align-items: start; }
-  .cfg-plan { margin: 0; padding: 18px; background: rgba(247,245,232,0.96); border-color: rgba(237,219,194,0.35); }
-  .cfg-plan img { display: block; width: 100%; height: auto; border-radius: 8px; }
-  .cfg-plan figcaption { font-size: 12px; color: #4a2a33; margin-top: 12px; line-height: 1.5; }
+  .cfg-plan { margin: 0; padding: 22px 22px 18px; text-align: center; }
+  .cfg-plan img { display: inline-block; width: min(100%, 468px); height: auto; }
+  .cfg-plan figcaption { font-size: 12px; color: var(--text-faint); margin-top: 14px; line-height: 1.5; }
   .cfg-spaces { border: none; margin: 0; padding: 0; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
   .cfg-spaces .cfg-choice-body { padding-right: 44px; }
   .cfg-space-selected { font-size: 13px; color: var(--text-faint); margin-top: 6px; }
