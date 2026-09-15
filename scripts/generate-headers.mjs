@@ -111,6 +111,9 @@ export function renderHeaders(hashes) {
   const securityHeaders = [
     `  Content-Security-Policy: default-src 'self'; script-src ${scriptSource}; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; media-src 'self'; connect-src ${connectSource}; form-action 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'`,
     '  X-Content-Type-Options: nosniff',
+    // CSP frame-ancestors is authoritative; this is its legacy twin for
+    // clients and audit tools that only read the older header.
+    '  X-Frame-Options: DENY',
     '  Referrer-Policy: strict-origin-when-cross-origin',
     '  Permissions-Policy: camera=(), microphone=(), geolocation=()',
   ];

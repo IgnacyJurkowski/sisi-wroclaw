@@ -1000,6 +1000,38 @@ assert(
   'llms.txt lists every locale home',
   LOCALES.every((locale) => llmsSource.includes(`${CANONICAL_ORIGIN}/${locale}/`)),
 );
+// --- llms-full.txt: the index plus the full text of every Polish article ---
+assert('llms-full.txt built', exists('llms-full.txt'));
+const llmsFullSource = exists('llms-full.txt') ? read('llms-full.txt') : '';
+assert('llms.txt links llms-full.txt', llmsSource.includes(`](${CANONICAL_ORIGIN}/llms-full.txt)`));
+assert('llms-full.txt opens with the llms.txt index', llmsFullSource.startsWith(llmsSource));
+assert(
+  'llms-full.txt carries every Polish article body under its own source link',
+  blogCounts.pl === 0
+    || (llmsFullSource.includes('# Artykuły z bloga')
+      && (llmsFullSource.match(/^Źródło: https:\/\/www\.sisiwroclaw\.pl\/pl\/blog\/[^/\s]+\/$/gm) || []).length === blogCounts.pl),
+);
+assert(
+  'llms-full.txt is plain text with no HTML tags, entities, bare origin or unverified claim',
+  !/<[a-z][^>]*>/i.test(llmsFullSource)
+    && !/&[a-z#0-9]+;/i.test(llmsFullSource)
+    && !llmsFullSource.includes(BARE_ORIGIN)
+    && !/\{[a-zA-Z]+\}/.test(llmsFullSource)
+    && UNVERIFIED_CLAIMS.every(([, pattern]) => !pattern.test(llmsFullSource)),
+);
+// --- robots.txt: explicit welcome for AI crawlers, on top of the wildcard ---
+assert(
+  'robots.txt explicitly allows the major AI crawlers',
+  ['GPTBot', 'OAI-SearchBot', 'ClaudeBot', 'PerplexityBot', 'Google-Extended', 'Bingbot'].every((bot) =>
+    new RegExp(`^User-agent: ${bot}$`, 'm').test(robotsSource))
+    && !/Disallow:\s*\S/.test(robotsSource),
+);
+// --- sitemap: every URL carries a W3C lastmod; articles use their own dates ---
+assert(
+  'every sitemap url has a lastmod date',
+  (sitemapXml.match(/<url>/g) || []).length > 0
+    && (sitemapXml.match(/<url>/g) || []).length === (sitemapXml.match(/<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/g) || []).length,
+);
 // posthog-* chunks are third-party vendor payloads (astro.config manualChunks);
 // the strict first-party storage/claims scans exclude them, with their own
 // assertions below.

@@ -7,9 +7,15 @@ import { ARTICLES, articleLocales, hasArticles } from '../data/articles';
 
 // Build-time sitemap covering every locale of every route, each with full
 // hreflang alternates + x-default. Stays in sync with the central route map.
+/** W3C date (YYYY-MM-DD) for <lastmod>; day precision is all crawlers use. */
+const lastmodDate = (iso: string) => iso.slice(0, 10);
+
 export const GET: APIRoute = ({ site }) => {
   const origin = (site?.href ?? 'https://www.sisiwroclaw.pl/').replace(/\/$/, '');
   const abs = (p: string) => origin + p;
+  // Static pages and event listings re-render on every deploy from synced data,
+  // so the build date is their honest last-modified; articles carry their own.
+  const buildLastmod = `<lastmod>${lastmodDate(new Date().toISOString())}</lastmod>`;
   // Empty hubs stay out of the index until they have something to show; both
   // restore automatically on the next content sync.
   const publicRouteKeys = ROUTE_KEYS.filter((key) => key !== 'events' || EVENTS.length > 0);
@@ -27,7 +33,7 @@ export const GET: APIRoute = ({ site }) => {
       const xdefault = altLocales.includes(DEFAULT_LOCALE)
         ? `<xhtml:link rel="alternate" hreflang="x-default" href="${abs(localizedPath(key, DEFAULT_LOCALE))}"/>`
         : '';
-      return `  <url><loc>${abs(localizedPath(key, locale))}</loc>${alts}${xdefault}</url>`;
+      return `  <url><loc>${abs(localizedPath(key, locale))}</loc>${buildLastmod}${alts}${xdefault}</url>`;
     });
   });
 
@@ -38,7 +44,7 @@ export const GET: APIRoute = ({ site }) => {
         (l) => `<xhtml:link rel="alternate" hreflang="${l}" href="${abs(eventPath(ev.slug, l))}"/>`,
       ).join('');
       const xdefault = `<xhtml:link rel="alternate" hreflang="x-default" href="${abs(eventPath(ev.slug, DEFAULT_LOCALE))}"/>`;
-      return `  <url><loc>${abs(eventPath(ev.slug, locale))}</loc>${alts}${xdefault}</url>`;
+      return `  <url><loc>${abs(eventPath(ev.slug, locale))}</loc>${buildLastmod}${alts}${xdefault}</url>`;
     }),
   );
 
@@ -52,7 +58,8 @@ export const GET: APIRoute = ({ site }) => {
     const xdefault = locales.includes(DEFAULT_LOCALE)
       ? `<xhtml:link rel="alternate" hreflang="x-default" href="${abs(articlePath(article.slug, DEFAULT_LOCALE))}"/>`
       : '';
-    return `  <url><loc>${abs(articlePath(article.slug, article.locale))}</loc>${alts}${xdefault}</url>`;
+    const lastmod = `<lastmod>${lastmodDate(article.updatedAt ?? article.publishedAt)}</lastmod>`;
+    return `  <url><loc>${abs(articlePath(article.slug, article.locale))}</loc>${lastmod}${alts}${xdefault}</url>`;
   });
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
