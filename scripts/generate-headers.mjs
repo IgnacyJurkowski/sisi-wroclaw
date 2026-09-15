@@ -104,16 +104,12 @@ const GA_CONNECT_ORIGINS = [
   'https://*.analytics.google.com',
 ];
 
-// The event configurator embeds The Cork's own party configurator when a
-// visitor picks the restaurant alone (src/components/configurator).
-const CORK_CONFIGURATOR_ORIGIN = 'https://thecork.pl';
-
 export function renderHeaders(hashes) {
   const uniqueHashes = [...new Set(hashes)].sort();
   const scriptSource = ["'self'", ...uniqueHashes, GA_SCRIPT_ORIGIN].join(' ');
   const connectSource = ["'self'", ...GA_CONNECT_ORIGINS].join(' ');
   const securityHeaders = [
-    `  Content-Security-Policy: default-src 'self'; script-src ${scriptSource}; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; media-src 'self'; connect-src ${connectSource}; form-action 'self'; base-uri 'self'; object-src 'none'; frame-src ${CORK_CONFIGURATOR_ORIGIN}; frame-ancestors 'none'`,
+    `  Content-Security-Policy: default-src 'self'; script-src ${scriptSource}; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; media-src 'self'; connect-src ${connectSource}; form-action 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'`,
     '  X-Content-Type-Options: nosniff',
     // CSP frame-ancestors is authoritative; this is its legacy twin for
     // clients and audit tools that only read the older header.

@@ -9,7 +9,7 @@ const c = useTranslations(locale).configurator;
 // Submitted option values are the Polish labels so notification emails read in
 // Polish whichever language the visitor used (see PrivateEventsEnquiryForm).
 const plOccasions = useTranslations('pl').configurator.occasion.options;
-const STEP_KEYS = ['details', 'space', 'menu', 'extras', 'summary'] as const;
+const STEP_KEYS = ['space', 'details', 'menu', 'extras', 'summary'] as const;
 ---
 
 <section class="cfg-hero">
@@ -38,76 +38,58 @@ const STEP_KEYS = ['details', 'space', 'menu', 'extras', 'summary'] as const;
       </ol>
     </nav>
 
-    <fieldset class="cfg-occasions sisi-card cfg-card" data-reveal>
-      <legend class="cfg-occasions-legend display">{c.occasion.heading}</legend>
-      <div class="cfg-occasions-grid">
+    <fieldset class="cfg-occasions sisi-card" data-reveal>
+      <legend class="cfg-subhead">{c.occasion.heading}</legend>
+      <div class="cfg-pills">
         {OCCASIONS.map((key, index) => (
-          <label class="cfg-choice">
+          <label class="cfg-pill">
             <input type="radio" name="occasion" value={plOccasions[key]} data-key={key} data-label={c.occasion.options[key]} checked={index === 0} />
-            <span class="cfg-choice-body"><span class="cfg-choice-title">{c.occasion.options[key]}</span></span>
-            <span class="cfg-choice-check" aria-hidden="true">✓</span>
+            <span class="cfg-pill-body">{c.occasion.options[key]}</span>
           </label>
         ))}
       </div>
-      <div class="cfg-actions">
-        <a href="#cfg-details" class="btn-cta cfg-next">{c.hero.start}<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10m-4-4 4 4-4 4"/></svg></a>
+      <div class="cfg-actions cfg-hero-actions">
+        <a href="#cfg-space" class="btn-cta cfg-next">{c.hero.start}<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10m-4-4 4 4-4 4"/></svg></a>
       </div>
     </fieldset>
   </div>
 </section>
 
 <style>
-  .cfg-hero { position: relative; overflow: hidden; padding: calc(var(--nav-height) + 56px) 0 24px; }
+  .cfg-hero { position: relative; overflow: hidden; padding: calc(var(--nav-height) + 44px) 0 16px; }
   .cfg-hero-bg {
     position: absolute; left: 0; right: 0; top: -10%; height: 120%;
     background: url('/framerusercontent.com/images/cDJcCUEanjQSoFpALHKgU3hNpQ.webp') center/cover no-repeat;
   }
-  .cfg-hero-scrim {
-    position: absolute; inset: 0;
-    background: linear-gradient(180deg, rgba(39,6,15,0.82) 0%, rgba(39,6,15,0.8) 45%, rgba(39,6,15,1) 100%);
-  }
+  .cfg-hero-scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(39,6,15,0.82) 0%, rgba(39,6,15,0.8) 45%, rgba(39,6,15,1) 100%); }
   .cfg-hero-content { position: relative; z-index: 2; }
   .cfg-hero-copy { max-width: 720px; }
-  .cfg-hero-title {
-    font-size: clamp(2.1rem, 5.6vw, 3.8rem); line-height: 1.06; text-transform: uppercase;
-    color: var(--cream); margin: 14px 0 18px; text-shadow: 0 2px 40px rgba(0,0,0,0.5);
-  }
-  .cfg-hero-body { color: var(--text-dim); font-size: 16px; line-height: 1.8; max-width: 640px; }
+  .cfg-hero-title { font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.06; text-transform: uppercase; color: var(--cream); margin: 12px 0 14px; text-shadow: 0 2px 40px rgba(0,0,0,0.5); }
+  .cfg-hero-body { color: var(--text-dim); font-size: 15px; line-height: 1.7; max-width: 640px; }
 
-  .cfg-progress { margin: 36px 0 28px; }
-  .cfg-progress-list {
-    list-style: none; margin: 0; padding: 0;
-    display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px;
-  }
+  .cfg-progress { margin: 26px 0 18px; }
+  .cfg-progress-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
   .cfg-progress-step {
-    display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 12px;
-    border: 1px solid var(--line); background: rgba(39,7,15,0.42); backdrop-filter: blur(8px);
-    color: var(--text-dim); text-decoration: none; transition: border-color 150ms ease, color 150ms ease;
+    display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 11px; border: 1px solid var(--line);
+    background: rgba(39,7,15,0.42); backdrop-filter: blur(8px); color: var(--text-dim); text-decoration: none; transition: border-color 150ms ease, color 150ms ease;
   }
   .cfg-progress-step:hover { border-color: rgba(237,219,194,0.45); color: var(--cream); }
   .cfg-progress-step[aria-current='step'] { border-color: var(--gold); color: var(--cream); }
   .cfg-progress-step[data-done='true'] .cfg-progress-num { background: var(--gold); color: #1a120b; border-color: var(--gold); }
-  .cfg-progress-num {
-    width: 28px; height: 28px; flex-shrink: 0; border-radius: 50%; display: grid; place-items: center;
-    border: 1px solid var(--line); font-size: 12px; font-weight: 700;
-  }
+  .cfg-progress-num { width: 24px; height: 24px; flex-shrink: 0; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--line); font-size: 11px; font-weight: 700; }
   .cfg-progress-step[aria-current='step'] .cfg-progress-num { border-color: var(--gold); color: var(--gold); }
-  .cfg-progress-label { display: flex; flex-direction: column; font-size: 13px; font-weight: 600; line-height: 1.2; }
-  .cfg-progress-kicker { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-mute); margin-bottom: 3px; }
+  .cfg-progress-label { display: flex; flex-direction: column; font-size: 12.5px; font-weight: 600; line-height: 1.2; }
+  .cfg-progress-kicker { font-size: 9.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-mute); margin-bottom: 2px; }
 
-  .cfg-occasions { border: 1px solid rgba(237,219,194,0.2); margin: 0; min-width: 0; }
-  .cfg-occasions-legend { float: left; width: 100%; font-size: 1.25rem; text-transform: uppercase; margin-bottom: 18px; padding: 0; }
-  .cfg-occasions-grid { clear: both; display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
-  .cfg-occasions .cfg-choice-body { align-items: center; text-align: center; padding: 18px 14px; }
-  .cfg-occasions .cfg-choice-check { top: 8px; right: 8px; }
+  .cfg-occasions { border: 1px solid rgba(237,219,194,0.2); margin: 0; min-width: 0; padding: 18px 22px 20px; display: flex; align-items: center; gap: 16px 22px; flex-wrap: wrap; }
+  .cfg-occasions legend { float: left; margin: 0; padding: 0; width: auto; }
+  .cfg-hero-actions { margin: 0 0 0 auto; }
 
-  @media (max-width: 960px) {
-    .cfg-progress-list { grid-template-columns: repeat(3, 1fr); }
-    .cfg-occasions-grid { grid-template-columns: repeat(3, 1fr); }
-  }
+  @media (max-width: 960px) { .cfg-progress-list { grid-template-columns: repeat(3, 1fr); } }
   @media (max-width: 600px) {
     .cfg-progress-list { grid-template-columns: repeat(2, 1fr); }
-    .cfg-progress-step { padding: 10px 12px; }
-    .cfg-occasions-grid { grid-template-columns: 1fr 1fr; }
+    .cfg-occasions { padding: 16px 16px 18px; }
+    .cfg-hero-actions { width: 100%; justify-content: stretch; }
+    .cfg-hero-actions .btn-cta { width: 100%; }
   }
 </style>

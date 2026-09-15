@@ -80,3 +80,61 @@ export function formatZl(amount) {
   const digits = String(Math.abs(value)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
   return `${value < 0 ? '-' : ''}${digits} zł`;
 }
+
+/* ---------------------------------------------------------------------------
+ * The Cork restaurant offer (src/data/cork-configurator.mjs). Reproduces the
+ * restaurant configurator's own arithmetic, verified against its totals on
+ * 2026-09-15: 20 adults + 4 children (6-15) + 1 h extension, 219 zł food and
+ * 70 zł wine per adult -> 6 700 zł, 670 zł service, 7 370 zł, 3 685 zł deposit.
+ * ------------------------------------------------------------------------- */
+
+/** Included hours for an adult head-count, or null when agreed individually. */
+export function corkBaseHours(adults, table) {
+  const a = Math.floor(Number(adults) || 0);
+  let hours = null;
+  let matched = false;
+  for (const row of table) {
+    if (a >= row.minGuests) {
+      hours = row.hours;
+      matched = true;
+    }
+  }
+  return matched ? hours : null;
+}
+
+/** Half-hour start slots for an ISO date under the weekday windows; [] when unknown. */
+export function corkStartSlots(isoDate, windows) {
+  const d = new Date(`${String(isoDate).slice(0, 10)}T12:00:00`);
+  if (Number.isNaN(d.getTime())) return [];
+  const window = windows[d.getDay()];
+  if (!window) return [];
+  const toMin = (t) => Number(t.slice(0, 2)) * 60 + Number(t.slice(3, 5));
+  const slots = [];
+  for (let m = toMin(window[0]); m <= toMin(window[1]); m += 30) {
+    slots.push(`${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`);
+  }
+  return slots;
+}
+
+/**
+ * The Cork dinner estimate.
+ * adults, childrenHalf: head-counts (children 6-15 pay childShare of food).
+ * foodPerAdult: sum of chosen course package prices (zł per adult).
+ * extensionSurcharge: 0 | 0.1 | 0.2, applied to the food part only.
+ * drinksPerAdult: wine / open-bar package (+ premium) per adult.
+ * flat: one-off amounts (sommelier, decorations) added before the service fee.
+ * Returns whole-zł amounts.
+ */
+export function corkEstimate({ adults, childrenHalf = 0, foodPerAdult = 0, extensionSurcharge = 0, drinksPerAdult = 0, flat = 0 }, rules) {
+  const a = Math.max(0, Math.floor(Number(adults) || 0));
+  const c = Math.max(0, Math.floor(Number(childrenHalf) || 0));
+  const foodHeads = a + c * rules.childShare;
+  const food = foodPerAdult * foodHeads * (1 + extensionSurcharge);
+  const drinks = drinksPerAdult * a;
+  const flatAmount = Math.max(0, Number(flat) || 0);
+  const value = Math.round(food + drinks + flatAmount);
+  const service = Math.round(value * rules.serviceFee);
+  const total = value + service;
+  const deposit = Math.round(total * rules.depositShare);
+  return { food: Math.round(food), drinks: Math.round(drinks), flat: Math.round(flatAmount), value, service, total, deposit, balance: total - deposit };
+}

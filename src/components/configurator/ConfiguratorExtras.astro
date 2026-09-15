@@ -1,17 +1,26 @@
 ---
 import { EXTRAS } from '../../data/configurator';
+import {
+  CAKE_BASES, CAKE_FLAVOURS, CAKE_NOTE, CAKE_SIZES, CAKE_TIERED, DECOR_EXTRAS, DECOR_PHOTO, DECOR_TABLES,
+} from '../../data/cork-configurator.mjs';
+import { UI_ICONS } from '../../data/ui-icons';
 import { type Locale } from '../../i18n/config';
 import { useTranslations } from '../../i18n/t';
+import MenuFold from '../MenuFold.astro';
 
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const c = useTranslations(locale).configurator;
-const plExtras = useTranslations('pl').configurator.extras.items;
+const x = c.extras;
+const pl = useTranslations('pl').configurator.extras;
 const ICONS = {
+  cake: '<path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"/><path d="M4 16c1.5 0 1.5-1 3-1s1.5 1 3 1 1.5-1 3-1 1.5 1 3 1 1.5-1 3-1"/><path d="M2 21h20"/><path d="M7 8v3m5-3v3m5-3v3"/><path d="M7 4h.01M12 4h.01M17 4h.01"/>',
+  decor: '<path d="M12 22c4-3 6-6 6-10a6 6 0 0 0-12 0c0 4 2 7 6 10Z"/><circle cx="12" cy="12" r="2"/>',
+  services: '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
   exclusive: '<rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
   music: '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
   screens: '<rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8m-4-4v4"/>',
-  catering: '<path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/>',
+  catering: UI_ICONS.utensils,
 } as const;
 ---
 
@@ -19,40 +28,151 @@ const ICONS = {
   <div class="container">
     <div class="cfg-step-head" data-reveal>
       <p class="cfg-step-kicker">{c.progress.stepLabel.replace('{n}', '4')} · {c.progress.steps.extras}</p>
-      <h2 class="display cfg-step-title">{c.extras.heading}</h2>
-      <p class="cfg-step-intro">{c.extras.intro}</p>
+      <h2 class="display cfg-step-title">{x.heading}</h2>
+      <p class="cfg-step-intro">{x.intro}</p>
     </div>
 
-    <fieldset class="cfg-extras" data-reveal>
-      <legend class="visually-hidden">{c.extras.heading}</legend>
-      <div class="cfg-extras-grid">
-        {EXTRAS.map((key) => (
+    <div class="cfg-extras" data-reveal>
+      <!-- Cake: The Cork's pastry offer, available in both venues -->
+      <MenuFold label={x.cake.heading} icon={ICONS.cake} open>
+        <div class="cfg-grid-2 cfg-extras-row">
           <label class="cfg-choice">
-            <input type="checkbox" name="extras" value={plExtras[key].title} data-key={key} data-label={c.extras.items[key].title} />
-            <span class="cfg-choice-body cfg-extra">
-              <svg class="cfg-extra-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS[key]} />
-              <span class="cfg-choice-title">{c.extras.items[key].title}</span>
-              <span class="cfg-choice-sub">{c.extras.items[key].body}</span>
-              <span class="cfg-extra-quoted">{c.extras.quoted}</span>
-            </span>
+            <input type="radio" name="cake" value={pl.cake.with} data-key="with" data-label={x.cake.with} />
+            <span class="cfg-choice-body"><span class="cfg-choice-title">{x.cake.with}</span><span class="cfg-choice-sub">{x.cake.withHint}</span></span>
             <span class="cfg-choice-check" aria-hidden="true">✓</span>
           </label>
-        ))}
-      </div>
+          <label class="cfg-choice">
+            <input type="radio" name="cake" value={pl.cake.without} data-key="without" data-label={x.cake.without} checked />
+            <span class="cfg-choice-body"><span class="cfg-choice-title">{x.cake.without}</span><span class="cfg-choice-sub">{x.cake.withoutHint}</span></span>
+            <span class="cfg-choice-check" aria-hidden="true">✓</span>
+          </label>
+        </div>
+        <div class="cfg-cake-options" data-cake-options hidden>
+          <p class="cfg-subhead">{x.cake.size}</p>
+          <div class="cfg-pills">
+            {CAKE_SIZES.map((size) => (
+              <label class="cfg-pill">
+                <input type="radio" name="cake_size" value={`${size.label} (${size.portions} porcji, od ${size.priceFrom} zł)`} data-key={size.key} data-label={`${size.label} · ${size.portions} ${x.cake.portions}`} data-price-from={size.priceFrom} />
+                <span class="cfg-pill-body">{size.label}<span class="cfg-pill-sub">{size.portions} {x.cake.portions} · {x.cake.from} {size.priceFrom} zł</span></span>
+              </label>
+            ))}
+            <label class="cfg-pill">
+              <input type="radio" name="cake_size" value={`${CAKE_TIERED.label} (${CAKE_TIERED.detail})`} data-key={CAKE_TIERED.key} data-label={CAKE_TIERED.label} />
+              <span class="cfg-pill-body">{CAKE_TIERED.label}<span class="cfg-pill-sub">{CAKE_TIERED.detail} · {x.cake.tieredHint}</span></span>
+            </label>
+          </div>
+          <p class="cfg-subhead">{x.cake.base}</p>
+          <div class="cfg-pills">
+            {CAKE_BASES.map((base) => (
+              <label class="cfg-pill">
+                <input type="radio" name="cake_base" value={base.label} data-key={base.key} data-label={base.label} />
+                <span class="cfg-pill-body">{base.label}<span class="cfg-pill-sub">{base.detail}</span></span>
+              </label>
+            ))}
+          </div>
+          <p class="cfg-subhead">{x.cake.flavour}</p>
+          <div class="cfg-pills">
+            {CAKE_FLAVOURS.map((flavour) => (
+              <label class="cfg-pill">
+                <input type="radio" name="cake_flavour" value={flavour.label} data-key={flavour.key} data-label={flavour.label} />
+                <span class="cfg-pill-body">{flavour.label}<span class="cfg-pill-sub">{flavour.detail}</span></span>
+              </label>
+            ))}
+          </div>
+          <div class="cfg-field cfg-extras-field">
+            <label class="cfg-label" for="cfg-cake-decor">{x.cake.decor} <span class="opt">{useTranslations(locale).b2b.form.optional}</span></label>
+            <textarea id="cfg-cake-decor" name="cake_decor" rows="2" maxlength="700" placeholder={x.cake.decorPlaceholder}></textarea>
+          </div>
+          <p class="cfg-note">{CAKE_NOTE} {x.cake.priceNote}</p>
+        </div>
+      </MenuFold>
+
+      <!-- Decorations: table styling, photo wall, attractions, own idea -->
+      <MenuFold label={x.decor.heading} icon={ICONS.decor}>
+        <p class="cfg-subhead">{x.decor.tables}</p>
+        <div class="cfg-grid-4 cfg-extras-row">
+          <label class="cfg-choice">
+            <input type="radio" name="decor_tables" value="Bez aranżacji stołów" data-key="none" data-price="0" data-label={x.decor.none} data-decor-flat checked />
+            <span class="cfg-choice-body"><span class="cfg-choice-title">{x.decor.none}</span><span class="cfg-choice-sub">{x.decor.noneHint}</span></span>
+            <span class="cfg-choice-check" aria-hidden="true">✓</span>
+          </label>
+          {DECOR_TABLES.map((pkg) => (
+            <label class="cfg-choice">
+              <input type="radio" name="decor_tables" value={pkg.price ? `${pkg.label} (${pkg.size} · ${pkg.price} zł)` : `${pkg.label} (wycena po konsultacji)`} data-key={pkg.key} data-price={pkg.price ?? 0} data-label={pkg.label} data-decor-flat />
+              <span class="cfg-choice-body">
+                <span class="cfg-choice-title">{pkg.label}</span>
+                <span class="cfg-choice-sub">{pkg.detail}</span>
+                <span class="cfg-choice-price">{pkg.price ? `${pkg.size} · ${pkg.price} zł` : x.decor.quoted}</span>
+              </span>
+              <span class="cfg-choice-check" aria-hidden="true">✓</span>
+            </label>
+          ))}
+        </div>
+        <p class="cfg-subhead">{x.decor.photo}</p>
+        <div class="cfg-grid-3 cfg-extras-row">
+          <label class="cfg-choice">
+            <input type="radio" name="decor_photo" value="Bez fotostrefy" data-key="none" data-price="0" data-label={x.decor.none} data-decor-flat checked />
+            <span class="cfg-choice-body"><span class="cfg-choice-title">{x.decor.none}</span><span class="cfg-choice-sub">{x.decor.noneHint}</span></span>
+            <span class="cfg-choice-check" aria-hidden="true">✓</span>
+          </label>
+          {DECOR_PHOTO.map((pkg) => (
+            <label class="cfg-choice">
+              <input type="radio" name="decor_photo" value={pkg.price ? `${pkg.label} (${pkg.price} zł)` : `${pkg.label} (wycena indywidualna)`} data-key={pkg.key} data-price={pkg.price ?? 0} data-label={pkg.label} data-decor-flat />
+              <span class="cfg-choice-body">
+                <span class="cfg-choice-title">{pkg.label}</span>
+                <span class="cfg-choice-sub">{pkg.detail}</span>
+                <span class="cfg-choice-price">{pkg.price ? `${pkg.price} zł` : x.quoted}</span>
+              </span>
+              <span class="cfg-choice-check" aria-hidden="true">✓</span>
+            </label>
+          ))}
+        </div>
+        <p class="cfg-note">{x.decor.photoNote}</p>
+        <p class="cfg-subhead">{x.decor.attractions} <span class="opt">· {x.quoted}</span></p>
+        <div class="cfg-pills">
+          {DECOR_EXTRAS.map((item) => (
+            <label class="cfg-pill">
+              <input type="checkbox" name="decor_extras" value={item} data-label={item} data-decor-extra />
+              <span class="cfg-pill-body">{item}</span>
+            </label>
+          ))}
+        </div>
+        <div class="cfg-field cfg-extras-field">
+          <label class="cfg-label" for="cfg-decor-idea">{x.decor.idea} <span class="opt">{useTranslations(locale).b2b.form.optional}</span></label>
+          <textarea id="cfg-decor-idea" name="decor_idea" rows="2" maxlength="1000" placeholder={x.decor.ideaPlaceholder}></textarea>
+        </div>
+      </MenuFold>
+
+      <!-- Setting: the venue's own confirmed services, quoted individually -->
+      <MenuFold label={x.services} icon={ICONS.services} note={x.quoted}>
+        <div class="cfg-grid-4">
+          {EXTRAS.map((key) => (
+            <label class="cfg-choice">
+              <input type="checkbox" name="extras" value={pl.items[key].title} data-key={key} data-label={x.items[key].title} />
+              <span class="cfg-choice-body cfg-extra">
+                <svg class="cfg-extra-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS[key]} />
+                <span class="cfg-choice-title">{x.items[key].title}</span>
+                <span class="cfg-choice-sub">{x.items[key].body}</span>
+              </span>
+              <span class="cfg-choice-check" aria-hidden="true">✓</span>
+            </label>
+          ))}
+        </div>
+      </MenuFold>
+
       <div class="cfg-actions">
         <a href="#cfg-summary" class="btn-cta cfg-next">{c.buttons.toSummary}<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10m-4-4 4 4-4 4"/></svg></a>
       </div>
-    </fieldset>
+    </div>
   </div>
 </section>
 
 <style>
-  .cfg-extras { border: none; margin: 0; padding: 0; min-width: 0; }
-  .cfg-extras-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
-  .cfg-extra { padding: 22px 20px 18px; }
-  .cfg-extra-icon { width: 24px; height: 24px; margin-bottom: 10px; fill: none; stroke: var(--gold); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
-  .cfg-extra-quoted { margin-top: auto; padding-top: 12px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-mute); }
-  .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-  @media (max-width: 900px) { .cfg-extras-grid { grid-template-columns: 1fr 1fr; } }
-  @media (max-width: 520px) { .cfg-extras-grid { grid-template-columns: 1fr; } }
+  .cfg-extras { display: flex; flex-direction: column; gap: 12px; max-width: 1080px; margin: 0 auto; }
+  .cfg-extras-row { margin-bottom: 14px; }
+  .cfg-cake-options { margin-top: 4px; }
+  .cfg-cake-options .cfg-pills { margin-bottom: 14px; }
+  .cfg-extras-field { margin-top: 6px; }
+  .cfg-extra { padding-top: 14px; }
+  .cfg-extra-icon { width: 20px; height: 20px; margin-bottom: 6px; fill: none; stroke: var(--gold); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 </style>

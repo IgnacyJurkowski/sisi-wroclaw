@@ -1,5 +1,8 @@
 ---
 import { PICK_GROUPS, pickText, type PickGroup } from '../../data/configurator';
+import {
+  CORK_COURSES, CORK_OPEN_BAR, CORK_OPEN_BAR_NOTE, CORK_OPEN_BAR_PREMIUM, CORK_SOMMELIER, CORK_WINE_NOTE, CORK_WINE_PACKAGES,
+} from '../../data/cork-configurator.mjs';
 import { ICONS as DRINK_ICONS } from '../../data/bar-menu';
 import { UI_ICONS } from '../../data/ui-icons';
 import { type Locale } from '../../i18n/config';
@@ -10,10 +13,8 @@ import MenuFold from '../MenuFold.astro';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const c = useTranslations(locale).configurator;
+const m = c.menu;
 const menuHref = localizedPath('menu', locale);
-// The restaurant's own party configurator, shown when The Cork alone is chosen.
-// Its origin is allowed by frame-src in scripts/generate-headers.mjs.
-const CORK_CONFIGURATOR_URL = 'https://thecork.pl/konfigurator_imprez/';
 const GROUP_ICONS = {
   cocktails: DRINK_ICONS.martini,
   wines: DRINK_ICONS.wine,
@@ -23,46 +24,152 @@ const GROUP_ICONS = {
 } as const;
 const drinkGroups = PICK_GROUPS.filter((g) => g.tab === 'drinks');
 const foodGroups = PICK_GROUPS.filter((g) => g.tab === 'food');
-const unitFor = (group: PickGroup) => (group.hint === 'perGuest' ? c.menu.units.perGuest : group.hint === 'bottles' ? c.menu.units.bottle : c.menu.units.portion);
+const unitFor = (group: PickGroup) => (group.hint === 'perGuest' ? m.units.perGuest : group.hint === 'bottles' ? m.units.bottle : m.units.portion);
+const TABS = [
+  { key: 'corkFood', venue: 'cork', label: m.tabs.corkFood, sub: m.tabs.corkFoodSub },
+  { key: 'corkDrinks', venue: 'cork', label: m.tabs.corkDrinks, sub: m.tabs.corkDrinksSub },
+  { key: 'drinks', venue: 'sisi', label: m.tabs.drinks, sub: m.tabs.drinksSub },
+  { key: 'food', venue: 'sisi', label: m.tabs.food, sub: m.tabs.foodSub },
+] as const;
+const packageSub = (pkg: { size: number; unit: string; price: number | null }) =>
+  pkg.price ? `${pkg.size} ${pkg.unit} · ${pkg.price} ${m.cork.perAdult}` : `${pkg.unit} · ${m.cork.alacarte}`;
 ---
 
 <section id="cfg-menu" class="cfg-step" data-cfg-step="menu">
   <div class="container">
     <div class="cfg-step-head" data-reveal>
       <p class="cfg-step-kicker">{c.progress.stepLabel.replace('{n}', '3')} · {c.progress.steps.menu}</p>
-      <h2 class="display cfg-step-title">{c.menu.heading}</h2>
-      <p class="cfg-step-intro">{c.menu.intro}</p>
+      <h2 class="display cfg-step-title">{m.heading}</h2>
+      <p class="cfg-step-intro">{m.intro}</p>
     </div>
 
-    <!-- The Cork alone: the restaurant's own configurator replaces the SiSi menu. -->
-    <div class="sisi-card cfg-cork" data-menu-cork hidden>
-      <p class="cfg-step-kicker">{c.menu.cork.heading}</p>
-      <p class="cfg-cork-intro">{c.menu.cork.intro}</p>
-      <div class="cfg-cork-frame">
-        <iframe title={c.menu.cork.frameTitle} data-src={CORK_CONFIGURATOR_URL} loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-      </div>
-      <p class="cfg-cork-link"><a href={CORK_CONFIGURATOR_URL} target="_blank" rel="noopener">{c.menu.cork.open}</a></p>
-      <div class="cfg-actions">
-        <a href="#cfg-extras" class="btn-cta cfg-next">{c.buttons.toExtras}<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10m-4-4 4 4-4 4"/></svg></a>
-      </div>
-    </div>
-
-    <div data-menu-own>
     <div class="cfg-tabs" role="tablist" aria-label={c.progress.steps.menu} data-reveal>
-      <button type="button" class="cfg-tab" role="tab" id="cfg-tab-drinks" aria-controls="cfg-panel-drinks" aria-selected="true" data-cfg-tab="drinks">
-        <span class="cfg-tab-num">01</span>{c.menu.tabs.drinks}<span class="cfg-tab-sub">{c.menu.tabs.drinksSub}</span>
-      </button>
-      <button type="button" class="cfg-tab" role="tab" id="cfg-tab-food" aria-controls="cfg-panel-food" aria-selected="false" tabindex="-1" data-cfg-tab="food">
-        <span class="cfg-tab-num">02</span>{c.menu.tabs.food}<span class="cfg-tab-sub">{c.menu.tabs.foodSub}</span>
-      </button>
+      {TABS.map((tab, index) => (
+        <button type="button" class="cfg-tab" role="tab" id={`cfg-tab-${tab.key}`} aria-controls={`cfg-panel-${tab.key}`} aria-selected={index === 0 ? 'true' : 'false'} tabindex={index === 0 ? 0 : -1} data-cfg-tab={tab.key} data-venue={tab.venue}>
+          <span class="cfg-tab-num">{String(index + 1).padStart(2, '0')}</span>{tab.label}<span class="cfg-tab-sub">{tab.sub}</span>
+        </button>
+      ))}
     </div>
 
     <div class="cfg-menu-grid">
       <div class="cfg-menu-panels">
+        <!-- The Cork · food: sharing packages per adult, dishes chosen per course -->
+        <div id="cfg-panel-corkFood" class="cfg-panel" role="tabpanel" aria-labelledby="cfg-tab-corkFood" data-cfg-panel="corkFood" data-venue="cork">
+          <p class="cfg-note cfg-panel-intro">{m.cork.intro}</p>
+          {CORK_COURSES.map((course) => (
+            <article class="sisi-card cfg-course" data-cork-course={course.key}>
+              <header class="cfg-course-head">
+                <span class="cfg-course-numeral" aria-hidden="true">{course.numeral}</span>
+                <h3 class="cfg-course-title">{course.title}</h3>
+                <span class="cfg-course-meta">
+                  {course.included ? m.cork.included : course.optional ? m.cork.optional : <span data-cork-chosen>{m.cork.chosen.replace('{n}', '0').replace('{size}', String(course.packages[0]?.size ?? 0))}</span>}
+                </span>
+              </header>
+              {course.packages.length > 0 && (
+                <div class="cfg-grid-3 cfg-course-packages">
+                  {course.packages.map((pkg) => (
+                    <label class="cfg-choice">
+                      <input type="radio" name={`cork_${course.key}`} value={`${pkg.label} (${packageSub(pkg)})`} data-key={pkg.key} data-price={pkg.price ?? 0} data-size={pkg.size} data-label={pkg.label} checked={pkg.key === course.defaultPackage} />
+                      <span class="cfg-choice-body">
+                        <span class="cfg-choice-title">{pkg.label}</span>
+                        <span class="cfg-choice-sub">{packageSub(pkg)}</span>
+                      </span>
+                      <span class="cfg-choice-check" aria-hidden="true">✓</span>
+                    </label>
+                  ))}
+                </div>
+              )}
+              <div class="cfg-pills cfg-course-dishes">
+                {course.dishes.map((dish) => (
+                  <label class="cfg-pill cfg-dish" title={dish.desc}>
+                    <input type="checkbox" data-cork-dish data-course={course.key} data-dish={dish.name} checked={course.included} disabled={course.included} />
+                    <span class="cfg-pill-body">
+                      {dish.name}
+                      <span class="cfg-pill-sub">{dish.desc}{dish.note ? ` · ${dish.note}` : ''}</span>
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </article>
+          ))}
+          <p class="cfg-note">{m.cork.alacarteNote}</p>
+        </div>
+
+        <!-- The Cork · drinks: wine packages, open bar, sommelier -->
+        <div id="cfg-panel-corkDrinks" class="cfg-panel" role="tabpanel" aria-labelledby="cfg-tab-corkDrinks" data-cfg-panel="corkDrinks" data-venue="cork" hidden>
+          <article class="sisi-card cfg-course">
+            <header class="cfg-course-head">
+              <h3 class="cfg-course-title">{m.cork.wineTitle}</h3>
+              <span class="cfg-course-meta">{m.cork.perAdultLabel}</span>
+            </header>
+            <div class="cfg-grid-4">
+              {CORK_WINE_PACKAGES.map((pkg, index) => (
+                <label class="cfg-choice">
+                  <input type="radio" name="cork_wine" value={`${pkg.label} (${pkg.detail})`} data-key={pkg.key} data-price={pkg.price ?? 0} data-label={`${pkg.label} · ${pkg.detail}`} checked={index === CORK_WINE_PACKAGES.length - 1} />
+                  <span class="cfg-choice-body">
+                    <span class="cfg-choice-title">{pkg.label}</span>
+                    <span class="cfg-choice-sub">{pkg.detail}</span>
+                    <span class="cfg-choice-price">{pkg.price ? `${pkg.price} ${m.cork.perAdult}` : m.cork.alacarte}</span>
+                  </span>
+                  <span class="cfg-choice-check" aria-hidden="true">✓</span>
+                </label>
+              ))}
+            </div>
+            <p class="cfg-note">{CORK_WINE_NOTE}</p>
+          </article>
+
+          <article class="sisi-card cfg-course">
+            <header class="cfg-course-head">
+              <h3 class="cfg-course-title">{m.cork.openBar}</h3>
+              <span class="cfg-course-meta">{m.cork.perAdultLabel}</span>
+            </header>
+            <p class="cfg-note cfg-note-top">{CORK_OPEN_BAR_NOTE}</p>
+            <div class="cfg-grid-4">
+              <label class="cfg-choice">
+                <input type="radio" name="cork_bar" value="Bez open baru" data-key="none" data-price="0" data-label={m.cork.openBarNone} checked />
+                <span class="cfg-choice-body"><span class="cfg-choice-title">{m.cork.openBarNone}</span></span>
+                <span class="cfg-choice-check" aria-hidden="true">✓</span>
+              </label>
+              {CORK_OPEN_BAR.map((pkg) => (
+                <label class="cfg-choice">
+                  <input type="radio" name="cork_bar" value={`${pkg.label} ${pkg.detail}`} data-key={pkg.key} data-price={pkg.price} data-label={`${pkg.label} · ${pkg.detail}`} />
+                  <span class="cfg-choice-body">
+                    <span class="cfg-choice-title">{pkg.label}</span>
+                    <span class="cfg-choice-sub">{pkg.detail}</span>
+                    <span class="cfg-choice-price">{pkg.price} {m.cork.perAdult}</span>
+                  </span>
+                  <span class="cfg-choice-check" aria-hidden="true">✓</span>
+                </label>
+              ))}
+              <label class="cfg-choice">
+                <input type="checkbox" name="cork_premium" value={`${CORK_OPEN_BAR_PREMIUM.label} +${CORK_OPEN_BAR_PREMIUM.price} zł/os.`} data-price={CORK_OPEN_BAR_PREMIUM.price} data-label={CORK_OPEN_BAR_PREMIUM.label} data-cork-premium disabled />
+                <span class="cfg-choice-body">
+                  <span class="cfg-choice-title">{CORK_OPEN_BAR_PREMIUM.label}</span>
+                  <span class="cfg-choice-sub">{CORK_OPEN_BAR_PREMIUM.detail}</span>
+                  <span class="cfg-choice-price">+{CORK_OPEN_BAR_PREMIUM.price} {m.cork.perAdult}</span>
+                </span>
+                <span class="cfg-choice-check" aria-hidden="true">✓</span>
+              </label>
+            </div>
+            <p class="cfg-note" data-premium-hint>{m.cork.premiumHint}</p>
+          </article>
+
+          <label class="cfg-choice cfg-sommelier">
+            <input type="checkbox" name="cork_sommelier" value={`${CORK_SOMMELIER.label} (${CORK_SOMMELIER.price} zł)`} data-price={CORK_SOMMELIER.price} data-label={CORK_SOMMELIER.label} data-cork-flat />
+            <span class="cfg-choice-body">
+              <span class="cfg-choice-title">{m.cork.sommelier} · {CORK_SOMMELIER.label}</span>
+              <span class="cfg-choice-sub">{CORK_SOMMELIER.detail}</span>
+              <span class="cfg-choice-price">{CORK_SOMMELIER.price} zł</span>
+            </span>
+            <span class="cfg-choice-check" aria-hidden="true">✓</span>
+          </label>
+        </div>
+
+        <!-- SiSi · bar and Night Menu, priced from the menu data -->
         {[['drinks', drinkGroups], ['food', foodGroups]].map(([tab, groups]) => (
-          <div id={`cfg-panel-${tab}`} class="cfg-panel" role="tabpanel" aria-labelledby={`cfg-tab-${tab}`} data-cfg-panel={tab} hidden={tab !== 'drinks'}>
+          <div id={`cfg-panel-${tab}`} class="cfg-panel" role="tabpanel" aria-labelledby={`cfg-tab-${tab}`} data-cfg-panel={tab} data-venue="sisi" hidden>
             {(groups as PickGroup[]).map((group, index) => (
-              <MenuFold label={c.menu.groups[group.key]} icon={GROUP_ICONS[group.key]} count={group.items.length} note={c.menu.hints[group.hint]} open={index === 0}>
+              <MenuFold label={m.groups[group.key]} icon={GROUP_ICONS[group.key]} count={group.items.length} note={m.hints[group.hint]} open={index === 0}>
                 <ul class="cfg-picks">
                   {group.items.map((item) => (
                     <li
@@ -83,105 +190,102 @@ const unitFor = (group: PickGroup) => (group.hint === 'perGuest' ? c.menu.units.
                       </div>
                       <span class="cfg-pick-price">{item.priceLabel}<span class="cfg-pick-unit"> / {unitFor(group)}</span></span>
                       <div class="cfg-qty" data-qty-control>
-                        <button type="button" class="cfg-qty-btn" data-qty-step="-1" aria-label={`${c.menu.decrease}: ${pickText(item.name, locale)}`} tabindex="-1">−</button>
+                        <button type="button" class="cfg-qty-btn" data-qty-step="-1" aria-label={`${m.decrease}: ${pickText(item.name, locale)}`} tabindex="-1">−</button>
                         <input class="cfg-qty-input" type="number" inputmode="numeric" min="0" max="999" value="0" aria-label={pickText(item.name, locale)} data-qty />
-                        <button type="button" class="cfg-qty-btn" data-qty-step="1" aria-label={`${c.menu.increase}: ${pickText(item.name, locale)}`} tabindex="-1">+</button>
+                        <button type="button" class="cfg-qty-btn" data-qty-step="1" aria-label={`${m.increase}: ${pickText(item.name, locale)}`} tabindex="-1">+</button>
                       </div>
                     </li>
                   ))}
                 </ul>
               </MenuFold>
             ))}
+            {tab === 'drinks' && <p class="cfg-menu-link"><a href={menuHref}>{m.fullMenu}</a></p>}
           </div>
         ))}
-        <p class="cfg-menu-link"><a href={menuHref}>{c.menu.fullMenu}</a></p>
       </div>
 
       <aside class="sisi-card cfg-estimate" aria-live="polite">
-        <p class="cfg-step-kicker">{c.menu.estimate.heading}</p>
-        <p class="cfg-estimate-empty" data-est-empty>{c.menu.estimate.empty}</p>
+        <p class="cfg-subhead">{m.estimate.heading}</p>
+        <p class="cfg-estimate-empty" data-est-empty>{m.estimate.empty}</p>
         <dl class="cfg-estimate-rows" data-est-rows hidden>
-          <div><dt>{c.menu.estimate.drinks}</dt><dd data-est-drinks>0 zł</dd></div>
-          <div><dt>{c.menu.estimate.food}</dt><dd data-est-food>0 zł</dd></div>
+          <div data-est-row="corkFood" hidden><dt>{m.estimate.corkFood}</dt><dd data-est-corkFood>0 zł</dd></div>
+          <div data-est-row="corkDrinks" hidden><dt>{m.estimate.corkDrinks}</dt><dd data-est-corkDrinks>0 zł</dd></div>
+          <div data-est-row="drinks" hidden><dt>{m.estimate.drinks}</dt><dd data-est-drinks>0 zł</dd></div>
+          <div data-est-row="food" hidden><dt>{m.estimate.food}</dt><dd data-est-food>0 zł</dd></div>
+          <div data-est-row="decor" hidden><dt>{m.estimate.decor}</dt><dd data-est-decor>0 zł</dd></div>
+          <div data-est-row="service" hidden><dt>{m.estimate.service}</dt><dd data-est-service>0 zł</dd></div>
           <div class="cfg-estimate-total">
-            <dt>{c.menu.estimate.total}<span class="cfg-estimate-guests"><span data-est-guests>0</span> {c.menu.estimate.guests}</span></dt>
+            <dt>{m.estimate.total}<span class="cfg-estimate-meta" data-est-meta></span></dt>
             <dd data-est-total>0 zł</dd>
           </div>
-          <div class="cfg-estimate-per"><dt>{c.menu.estimate.perGuest}</dt><dd data-est-per-guest>0 zł</dd></div>
+          <div class="cfg-estimate-per"><dt>{m.estimate.perGuest}</dt><dd data-est-per-guest>0 zł</dd></div>
         </dl>
-        <p class="cfg-estimate-note">{c.menu.estimate.note}</p>
+        <p class="cfg-estimate-note">{m.estimate.note}</p>
         <div class="cfg-actions">
           <a href="#cfg-extras" class="btn-cta cfg-next">{c.buttons.toExtras}<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10m-4-4 4 4-4 4"/></svg></a>
         </div>
       </aside>
     </div>
-    </div>
   </div>
 </section>
 
 <style>
-  [data-menu-own][hidden], .cfg-cork[hidden] { display: none; }
-  .cfg-cork { padding: 26px 28px 24px; border-color: rgba(251,210,149,0.28); }
-  .cfg-cork-intro { color: var(--text-dim); font-size: 14px; line-height: 1.7; max-width: 720px; }
-  .cfg-cork-frame { margin-top: 18px; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); background: #fff; }
-  .cfg-cork-frame iframe { display: block; width: 100%; height: min(78vh, 900px); border: 0; }
-  .cfg-cork-link { margin-top: 12px; font-size: 13px; }
-  .cfg-cork-link a { color: var(--cream); text-decoration: underline; text-underline-offset: 3px; }
-  .cfg-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+  .cfg-tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
   .cfg-tab {
-    display: flex; align-items: baseline; gap: 10px; padding: 12px 18px; border-radius: 12px;
-    border: 1px solid var(--line); background: rgba(39,7,15,0.42); color: var(--text-dim);
-    font: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
+    display: flex; align-items: baseline; gap: 8px; padding: 9px 14px; border-radius: 11px; border: 1px solid var(--line);
+    background: rgba(39,7,15,0.42); color: var(--text-dim); font: inherit; font-size: 13px; font-weight: 600; cursor: pointer;
     transition: border-color 150ms ease, color 150ms ease, background 150ms ease;
   }
   .cfg-tab:hover { border-color: rgba(237,219,194,0.45); color: var(--cream); }
   .cfg-tab[aria-selected='true'] { border-color: var(--gold); color: var(--cream); background: rgba(251,210,149,0.1); }
   .cfg-tab:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
-  .cfg-tab-num { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; color: var(--gold); }
-  .cfg-tab-sub { font-size: 12px; font-weight: 400; color: var(--text-faint); }
+  .cfg-tab-num { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; color: var(--gold); }
+  .cfg-tab-sub { font-size: 11.5px; font-weight: 400; color: var(--text-faint); }
 
-  .cfg-menu-grid { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 24px; align-items: start; }
-  .cfg-panel { display: flex; flex-direction: column; gap: 14px; }
-  .cfg-panel[hidden] { display: none; }
+  .cfg-menu-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 20px; align-items: start; }
+  .cfg-panel { display: flex; flex-direction: column; gap: 12px; }
+  .cfg-panel-intro { margin: 0 0 2px; }
+  .cfg-note-top { margin: 0 0 10px; }
+
+  .cfg-course { padding: 18px 20px; }
+  .cfg-course-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+  .cfg-course-numeral { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; color: var(--gold); }
+  .cfg-course-title { font-family: var(--font-display); font-weight: 400; font-size: 1.05rem; text-transform: uppercase; letter-spacing: 0.03em; color: var(--cream); }
+  .cfg-course-meta { margin-left: auto; font-size: 11.5px; color: var(--text-faint); letter-spacing: 0.04em; }
+  .cfg-course-packages { margin-bottom: 12px; }
+  .cfg-dish .cfg-pill-body { max-width: 260px; }
+  .cfg-dish .cfg-pill-sub { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .cfg-sommelier { display: block; }
+
   .cfg-picks { list-style: none; margin: 0; padding: 0; }
-  .cfg-pick {
-    display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 10px 16px;
-    padding: 12px 0; border-bottom: 1px solid rgba(237,219,194,0.1);
-  }
+  .cfg-pick { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 8px 14px; padding: 9px 0; border-bottom: 1px solid rgba(237,219,194,0.1); }
   .cfg-pick:last-child { border-bottom: none; }
   .cfg-pick.is-picked .cfg-pick-name { color: var(--gold); }
-  .cfg-pick-name { font-size: 14px; font-weight: 600; color: var(--text); }
-  .cfg-pick-detail { font-size: 12px; color: var(--text-faint); line-height: 1.5; margin-top: 2px; }
-  .cfg-pick-price { font-size: 13px; color: var(--cream); white-space: nowrap; }
+  .cfg-pick-name { font-size: 13.5px; font-weight: 600; color: var(--text); }
+  .cfg-pick-detail { font-size: 11.5px; color: var(--text-faint); line-height: 1.45; margin-top: 1px; }
+  .cfg-pick-price { font-size: 12.5px; color: var(--cream); white-space: nowrap; }
   .cfg-pick-unit { color: var(--text-mute); font-size: 11px; }
   .cfg-qty { display: flex; align-items: stretch; border: 1px solid var(--line); border-radius: 9px; overflow: hidden; background: rgba(255,255,255,0.03); }
   .cfg-qty:focus-within { outline: 2px solid rgba(237,219,194,0.5); outline-offset: 1px; }
-  .cfg-qty-btn {
-    width: 34px; border: none; background: rgba(237,219,194,0.05); color: var(--cream);
-    font-size: 16px; cursor: pointer; transition: background 150ms ease;
-  }
+  .cfg-qty-btn { width: 30px; border: none; background: rgba(237,219,194,0.05); color: var(--cream); font-size: 15px; cursor: pointer; transition: background 150ms ease; }
   .cfg-qty-btn:hover { background: rgba(237,219,194,0.14); }
-  .cfg-qty-input {
-    width: 44px; text-align: center; border: none; background: transparent; color: var(--cream);
-    font: inherit; font-size: 14px; padding: 8px 2px; outline: none; -moz-appearance: textfield; appearance: textfield;
-  }
+  .cfg-qty-input { width: 40px; text-align: center; border: none; background: transparent; color: var(--cream); font: inherit; font-size: 13px; padding: 6px 2px; outline: none; -moz-appearance: textfield; appearance: textfield; }
   .cfg-qty-input::-webkit-outer-spin-button, .cfg-qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-  .cfg-menu-link { margin-top: 18px; font-size: 13px; }
+  .cfg-menu-link { margin-top: 4px; font-size: 13px; }
   .cfg-menu-link a { color: var(--cream); text-decoration: underline; text-underline-offset: 3px; }
 
-  .cfg-estimate { position: sticky; top: calc(var(--nav-height) + 16px); padding: 26px 26px 24px; border-color: rgba(251,210,149,0.28); }
+  .cfg-estimate { position: sticky; top: calc(var(--nav-height) + 12px); padding: 20px 22px 20px; border-color: rgba(251,210,149,0.28); }
   .cfg-estimate-empty { font-size: 13px; color: var(--text-faint); line-height: 1.6; }
-  .cfg-estimate-empty[hidden], .cfg-estimate-rows[hidden] { display: none; }
-  .cfg-estimate-rows { margin: 0; display: flex; flex-direction: column; gap: 10px; }
+  .cfg-estimate-rows { margin: 0; display: flex; flex-direction: column; gap: 8px; }
   .cfg-estimate-rows > div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 13px; color: var(--text-dim); }
   .cfg-estimate-rows dd { margin: 0; color: var(--cream); font-weight: 600; white-space: nowrap; }
-  .cfg-estimate-total { padding-top: 10px; border-top: 1px solid rgba(237,219,194,0.16); }
+  .cfg-estimate-total { padding-top: 8px; border-top: 1px solid rgba(237,219,194,0.16); }
   .cfg-estimate-total dt { display: flex; flex-direction: column; gap: 2px; color: var(--cream); }
-  .cfg-estimate-total dd { font-family: var(--font-display); font-size: 1.5rem; font-weight: 400; }
-  .cfg-estimate-guests { font-size: 11px; color: var(--text-mute); }
+  .cfg-estimate-total dd { font-family: var(--font-display); font-size: 1.45rem; font-weight: 400; }
+  .cfg-estimate-meta { font-size: 11px; color: var(--text-mute); line-height: 1.4; }
   .cfg-estimate-per dt { font-size: 12px; }
-  .cfg-estimate-note { font-size: 11px; color: var(--text-mute); line-height: 1.55; margin-top: 16px; }
-  .cfg-estimate .cfg-actions { justify-content: stretch; }
+  .cfg-estimate-note { font-size: 11px; color: var(--text-mute); line-height: 1.5; margin-top: 12px; }
+  .cfg-estimate .cfg-actions { justify-content: stretch; margin-top: 14px; }
   .cfg-estimate .cfg-actions .btn-cta { width: 100%; }
 
   @media (max-width: 960px) {
@@ -192,5 +296,6 @@ const unitFor = (group: PickGroup) => (group.hint === 'perGuest' ? c.menu.units.
     .cfg-pick { grid-template-columns: minmax(0, 1fr) auto; }
     .cfg-pick-price { grid-column: 1; }
     .cfg-qty { grid-column: 2; grid-row: 1 / span 2; }
+    .cfg-dish .cfg-pill-body { max-width: 100%; }
   }
 </style>

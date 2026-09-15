@@ -53,3 +53,56 @@ test('formatZl groups thousands with a plain space', () => {
   assert.equal(formatZl(0), '0 zł');
   assert.equal(formatZl('abc'), '0 zł');
 });
+
+import { corkBaseHours, corkEstimate, corkStartSlots } from '../src/lib/configurator-estimate.mjs';
+import {
+  CORK_BASE_HOURS, CORK_CHILD_SHARE, CORK_DEPOSIT_SHARE, CORK_SERVICE_FEE, CORK_START_WINDOWS, corkPriceLabels,
+} from '../src/data/cork-configurator.mjs';
+
+const CORK_RULES = { childShare: CORK_CHILD_SHARE, serviceFee: CORK_SERVICE_FEE, depositShare: CORK_DEPOSIT_SHARE };
+
+test('corkEstimate reproduces the restaurant configurator totals', () => {
+  // 20 adults, 4 children at 50%, +1 h (+10% on food), 80 + 139 food, 70 wine
+  const r = corkEstimate({ adults: 20, childrenHalf: 4, foodPerAdult: 219, extensionSurcharge: 0.1, drinksPerAdult: 70 }, CORK_RULES);
+  assert.equal(r.value, 6700);
+  assert.equal(r.service, 670);
+  assert.equal(r.total, 7370);
+  assert.equal(r.deposit, 3685);
+  assert.equal(r.balance, 3685);
+  // 10 adults, menu only
+  const s = corkEstimate({ adults: 10, foodPerAdult: 219 }, CORK_RULES);
+  assert.deepEqual([s.value, s.service, s.total], [2190, 219, 2409]);
+});
+
+test('corkEstimate adds flat items before the service fee and survives empty input', () => {
+  const r = corkEstimate({ adults: 8, drinksPerAdult: 190, flat: 300 }, CORK_RULES);
+  assert.equal(r.value, 8 * 190 + 300);
+  assert.equal(r.service, Math.round(r.value * 0.1));
+  assert.deepEqual(corkEstimate({ adults: 0 }, CORK_RULES).total, 0);
+});
+
+test('corkBaseHours follows the published thresholds', () => {
+  assert.equal(corkBaseHours(9, CORK_BASE_HOURS), null);
+  assert.equal(corkBaseHours(10, CORK_BASE_HOURS), 3);
+  assert.equal(corkBaseHours(11, CORK_BASE_HOURS), 3);
+  assert.equal(corkBaseHours(12, CORK_BASE_HOURS), 4);
+  assert.equal(corkBaseHours(15, CORK_BASE_HOURS), 5);
+  assert.equal(corkBaseHours(59, CORK_BASE_HOURS), 5);
+  assert.equal(corkBaseHours(60, CORK_BASE_HOURS), null);
+});
+
+test('corkStartSlots follows the weekday windows in half-hour steps', () => {
+  assert.deepEqual(corkStartSlots('2026-10-14', CORK_START_WINDOWS).slice(0, 2), ['17:00', '17:30']); // Wednesday
+  assert.equal(corkStartSlots('2026-10-14', CORK_START_WINDOWS).at(-1), '20:30');
+  assert.equal(corkStartSlots('2026-10-16', CORK_START_WINDOWS).at(-1), '21:00'); // Friday
+  assert.deepEqual([corkStartSlots('2026-10-17', CORK_START_WINDOWS)[0], corkStartSlots('2026-10-17', CORK_START_WINDOWS).at(-1)], ['14:00', '21:00']); // Saturday
+  assert.deepEqual([corkStartSlots('2026-10-18', CORK_START_WINDOWS)[0], corkStartSlots('2026-10-18', CORK_START_WINDOWS).at(-1)], ['13:00', '18:30']); // Sunday
+  assert.deepEqual(corkStartSlots('nonsense', CORK_START_WINDOWS), []);
+});
+
+test('corkPriceLabels lists every published restaurant amount', () => {
+  const labels = corkPriceLabels();
+  for (const expected of ['80 zł', '95 zł', '139 zł', '159 zł', '38 zł', '70 zł', '90 zł', '120 zł', '190 zł', '220 zł', '40 zł', '300 zł', '450 zł', '650 zł', '1000 zł', '2000 zł', '1500 zł']) {
+    assert.ok(labels.includes(expected), expected);
+  }
+});

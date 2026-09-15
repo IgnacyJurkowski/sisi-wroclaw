@@ -10,6 +10,8 @@ import { cacheAssetInventory, headersForPath, parseHeaderRules } from './generat
 // Shared with the content syncs, so a syndicated article carrying one of these
 // claims is skipped at sync time instead of failing this gate for every page.
 import { UNVERIFIED_CLAIMS } from '../src/lib/claims.mjs';
+// The Cork's ported party offer: the only other source of prices the configurator may show.
+import { corkPriceLabels } from '../src/data/cork-configurator.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = join(ROOT, 'dist');
@@ -633,9 +635,11 @@ for (const locale of LOCALES) {
   );
   const renderedFields = [...new Set([...form.matchAll(/<(?:input|select|textarea)\b[^>]*\bname="([^"]+)"/g)].map((m) => m[1]))].sort();
   const expectedFields = [
-    'bot-field', 'consent', 'drinks', 'email', 'estimate', 'extras', 'food', 'form-name', 'guests', 'locale',
-    'message', 'name', 'occasion', 'page', 'phone', 'preferred_date', 'preferred_date_iso', 'seating', 'space',
-    'start_time', 'subject', 'utm',
+    'bot-field', 'cake', 'cake_base', 'cake_decor', 'cake_flavour', 'cake_size', 'children', 'children_small', 'consent',
+    'cork_bar', 'cork_desserts', 'cork_dishes', 'cork_mains', 'cork_premium', 'cork_sommelier', 'cork_starters', 'cork_wine',
+    'decor_extras', 'decor_idea', 'decor_photo', 'decor_tables', 'drinks', 'email', 'estimate', 'extension', 'extras', 'food',
+    'form-name', 'guests', 'locale', 'message', 'name', 'occasion', 'page', 'phone', 'preferred_date', 'preferred_date_iso',
+    'seating', 'space', 'start_time', 'subject', 'utm',
   ];
   assert(
     `${locale} configurator form submits exactly the approved field set`,
@@ -658,14 +662,7 @@ for (const locale of LOCALES) {
   // the page never names a zone, table count or zone capacity.
   assert(
     `${locale} configurator draws the R32 floor plan as an inline SVG with no restaurant zones`,
-    html.includes('class="cfg-map-svg"') && !html.includes('/images/plan-r32') && !/strefa [123]|zone [123]|stołów/i.test(html),
-  );
-  // The Cork alone hands over to the restaurant's own configurator, embedded
-  // lazily (data-src, no src) so nobody else loads the third-party frame.
-  assert(
-    `${locale} configurator embeds The Cork configurator lazily for the restaurant-only choice`,
-    /<iframe\b(?=[^>]*\bdata-src="https:\/\/thecork\.pl\/konfigurator_imprez\/")(?![^>]*\ssrc=)[^>]*>/.test(html)
-      && html.includes('href="https://thecork.pl/konfigurator_imprez/"'),
+    html.includes('class="cfg-map-svg"') && !html.includes('/images/plan-r32') && !/strefa [123]|zone [123]|\d+ stołów/i.test(html),
   );
   assert(
     `${locale} configurator plan has one clickable region per venue`,
@@ -677,15 +674,16 @@ for (const locale of LOCALES) {
     `${locale} configurator names only the verified 150 / 500 capacities`,
     /\b150\b/.test(html) && /\b500\b/.test(html) && !/\b(?:30|42|52|60) (?:gości|guests|Gäste|ospiti|hostů)\b/.test(html),
   );
-  // Prices on the page are the menu's own: every "N zł" the configurator lists
-  // must also appear on the localized menu page - except the two flat event
-  // cocktail prices the owner set on 2026-09-15 (38 zł cocktail, 35 zł 0%).
+  // Every "N zł" the configurator lists must come from one of three sources:
+  // the localized SiSi menu page, the two flat event cocktail prices the owner
+  // set on 2026-09-15 (38 zł cocktail, 35 zł 0%), or The Cork's ported offer
+  // (src/data/cork-configurator.mjs). '0 zł' is the empty state of the estimate.
   const menuHtml = read(`${locale}/menu/index.html`);
   const menuPrices = new Set((menuHtml.match(/\b\d+ zł/g) || []));
-  const OWNER_EVENT_PRICES = new Set(['38 zł', '35 zł']);
-  // '0 zł' is the live estimate's empty state, not a menu price.
+  const OWNER_EVENT_PRICES = new Set(['38 zł', '35 zł', '0 zł']);
+  const corkPrices = new Set(corkPriceLabels());
   const configuratorPrices = [...new Set(form.match(/\b\d+ zł/g) || [])]
-    .filter((price) => price !== '0 zł' && !OWNER_EVENT_PRICES.has(price));
+    .filter((price) => !OWNER_EVENT_PRICES.has(price) && !corkPrices.has(price));
   assert(
     `${locale} configurator prices cocktails at the owner's flat 38 zł / 35 zł per drink`,
     form.includes('data-id="cocktail-per-guest"') && form.includes('data-price="38"')
@@ -693,8 +691,14 @@ for (const locale of LOCALES) {
       && !form.includes('data-id="cocktail-hugo-spritz"'),
   );
   assert(
-    `${locale} configurator lists only prices published on the menu page (${configuratorPrices.length} distinct)`,
+    `${locale} configurator lists only SiSi menu, owner event or The Cork prices (${configuratorPrices.length} menu prices)`,
     configuratorPrices.length > 20 && configuratorPrices.every((price) => menuPrices.has(price)),
+  );
+  // The Cork's dinner is priced in-page (no iframe, no link-out to a second tool).
+  assert(
+    `${locale} configurator ports The Cork packages in-page`,
+    !html.includes('<iframe') && !html.includes('thecork.pl/konfigurator_imprez')
+      && form.includes('name="cork_starters"') && form.includes('data-price="139"') && form.includes('name="cake_flavour"'),
   );
   const errorStatus = form.match(/<div class="cfg-form-status cfg-status-error"[\s\S]*?<\/div>/)?.[0] ?? '';
   assert(
@@ -869,7 +873,6 @@ const expectedCsp = [
   "form-action 'self'",
   "base-uri 'self'",
   "object-src 'none'",
-  "frame-src https://thecork.pl",
   "frame-ancestors 'none'",
 ].join('; ');
 const revalidate = 'public, max-age=0, must-revalidate';
