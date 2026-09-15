@@ -427,9 +427,7 @@ const en: UI = {
     },
     space: {
       heading: 'Choose your space',
-      intro: 'The space shapes the rest of the configurator: the SiSi club prices bar and snacks from the menu, The Cork restaurant prices dinner packages.',
       planAlt: 'Plan of the R32 complex: SiSi club and The Cork restaurant',
-      planCaption: 'R32 plan - SiSi club and The Cork restaurant at Rzeźnicza 32-33',
       planHint: 'Click SiSi or The Cork on the plan to choose a space.',
       selected: 'Selected:',
       shared: 'Shared area',
@@ -442,7 +440,6 @@ const en: UI = {
     },
     details: {
       heading: 'Basic information',
-      intro: 'Date, guest count and format.',
       time: 'Start time',
       timeOther: 'Another time - to be agreed',
       timeHint: 'Start times at The Cork depend on the weekday; pick a date first.',
@@ -476,7 +473,6 @@ const en: UI = {
     },
     menu: {
       heading: 'Build your menu',
-      intro: 'The Cork prices packages per person; SiSi prices items from the menu. Amounts are a starting point for the conversation, not an offer.',
       tabs: {
         corkFood: 'The Cork · Food', corkFoodSub: 'sharing packages',
         corkDrinks: 'The Cork · Drinks', corkDrinksSub: 'wine and open bar',
@@ -484,7 +480,6 @@ const en: UI = {
         food: 'SiSi · Snacks', foodSub: 'Night Menu by The Cork',
       },
       cork: {
-        intro: 'Dishes are served sharing-style - you choose a package and guests discover the flavours together.',
         included: 'always included',
         optional: 'optional package',
         perAdult: 'zł / person',
@@ -526,7 +521,6 @@ const en: UI = {
     },
     extras: {
       heading: 'Extras and setting',
-      intro: 'Cake, decorations and setting - shared by both spaces.',
       quoted: 'quoted individually',
       cake: {
         heading: 'Cake',
@@ -554,7 +548,6 @@ const en: UI = {
         idea: 'Your idea',
         ideaPlaceholder: 'Theme, colours, occasion and personal wishes…',
         quoted: 'quoted after a consultation',
-        photoNote: 'The Standard package can be extended with a second wall, giant flowers and themed decorations - scope and price after a consultation.',
       },
       services: 'Event setting',
       items: {
@@ -566,7 +559,6 @@ const en: UI = {
     },
     summary: {
       heading: 'Your event at R32',
-      intro: 'Check your choices and leave your contact details. We will prepare a tailored proposal from them.',
       planCard: 'Event plan',
       labels: {
         occasion: 'Type', date: 'Date', time: 'Time', guests: 'Guests', seating: 'Format', space: 'Space',
@@ -593,7 +585,6 @@ const en: UI = {
       },
       form: {
         heading: 'Where should we send the proposal?',
-        intro: 'The configuration summary is attached to your enquiry.',
         configLabel: 'Configuration',
         messagePlaceholder: 'Tell us anything else we should know about your event.',
         success: 'Thank you! We have received your configuration and will get back to you with a tailored proposal.',

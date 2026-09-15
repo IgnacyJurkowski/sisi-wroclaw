@@ -20,7 +20,6 @@ const ROWS = ['occasion', 'date', 'time', 'guests', 'seating', 'space', 'duratio
     <div class="cfg-step-head" data-reveal>
       <p class="cfg-step-kicker">{c.progress.stepLabel.replace('{n}', '5')} · {c.progress.steps.summary}</p>
       <h2 class="display cfg-step-title">{s.heading}</h2>
-      <p class="cfg-step-intro">{s.intro}</p>
     </div>
 
     <div class="cfg-summary-grid">
@@ -57,7 +56,7 @@ const ROWS = ['occasion', 'date', 'time', 'guests', 'seating', 'space', 'duratio
 
       <div class="sisi-card cfg-card cfg-contact" data-reveal>
         <p class="cfg-subhead">{s.form.heading}</p>
-        <p class="cfg-contact-intro">{s.form.intro} <span class="cfg-hint-inline">{shared.requiredHint}</span></p>
+        <p class="cfg-contact-intro">{shared.requiredHint}</p>
         <div class="cfg-form-errors" data-form-errors role="alert" tabindex="-1" hidden>{shared.errorSummary}</div>
 
         <!-- Configuration lines the script fills in Polish for the notification email. -->

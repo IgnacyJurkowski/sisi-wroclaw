@@ -18,7 +18,6 @@ const plSpaces = useTranslations('pl').configurator.space.options;
     <div class="cfg-step-head" data-reveal>
       <p class="cfg-step-kicker">{c.progress.stepLabel.replace('{n}', '1')} · {c.progress.steps.space}</p>
       <h2 class="display cfg-step-title">{c.space.heading}</h2>
-      <p class="cfg-step-intro">{c.space.intro}</p>
     </div>
 
     <div class="cfg-space-grid" data-reveal>
@@ -26,7 +25,7 @@ const plSpaces = useTranslations('pl').configurator.space.options;
         <div class="cfg-map">
           <FloorPlan labels={{ sisi: c.space.options.sisi.title, cork: c.space.options.cork.title, shared: c.space.shared }} hint={c.space.planHint} />
         </div>
-        <figcaption>{c.space.planHint} {c.space.planCaption}</figcaption>
+        <figcaption>{c.space.planHint}</figcaption>
       </figure>
 
       <fieldset class="cfg-spaces">

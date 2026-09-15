@@ -439,9 +439,7 @@ const pl = {
     },
     space: {
       heading: 'Wybierz przestrzeń',
-      intro: 'Od przestrzeni zależy reszta konfiguratora: klub SiSi rozlicza bar i przekąski z karty, restauracja The Cork - pakiety kolacji.',
       planAlt: 'Plan kompleksu R32: klub SiSi i restauracja The Cork',
-      planCaption: 'Plan R32 - klub SiSi i restauracja The Cork przy Rzeźniczej 32-33',
       planHint: 'Kliknij SiSi lub The Cork na planie, aby wybrać przestrzeń.',
       selected: 'Wybrano:',
       shared: 'Część wspólna',
@@ -454,7 +452,6 @@ const pl = {
     },
     details: {
       heading: 'Podstawowe informacje',
-      intro: 'Termin, liczba gości i formuła spotkania.',
       time: 'Godzina rozpoczęcia',
       timeOther: 'Inna godzina - do ustalenia',
       timeHint: 'Godziny rozpoczęcia w The Cork zależą od dnia tygodnia; najpierw wybierz datę.',
@@ -488,7 +485,6 @@ const pl = {
     },
     menu: {
       heading: 'Skomponuj menu',
-      intro: 'The Cork rozlicza pakiety za osobę; SiSi - pozycje z karty. Kwoty to punkt wyjścia do rozmowy, nie oferta.',
       tabs: {
         corkFood: 'The Cork · Jedzenie', corkFoodSub: 'pakiety sharingowe',
         corkDrinks: 'The Cork · Napoje', corkDrinksSub: 'wino i open bar',
@@ -496,7 +492,6 @@ const pl = {
         food: 'SiSi · Przekąski', foodSub: 'Night Menu by The Cork',
       },
       cork: {
-        intro: 'Potrawy serwujemy w formule sharing - wybierasz pakiet, a goście wspólnie odkrywają kolejne smaki.',
         included: 'zawsze w pakiecie',
         optional: 'pakiet opcjonalny',
         perAdult: 'zł / os.',
@@ -538,7 +533,6 @@ const pl = {
     },
     extras: {
       heading: 'Dodatki i oprawa',
-      intro: 'Tort, dekoracje i oprawa - wspólne dla obu przestrzeni.',
       quoted: 'wycena indywidualna',
       cake: {
         heading: 'Tort',
@@ -566,7 +560,6 @@ const pl = {
         idea: 'Twój pomysł',
         ideaPlaceholder: 'Motyw, kolorystyka, okazja i indywidualne życzenia…',
         quoted: 'wycena po konsultacji',
-        photoNote: 'Pakiet Standard można rozbudować o drugą ściankę, kwiaty giganty i dekoracje tematyczne - zakres i cena po konsultacji.',
       },
       services: 'Oprawa wydarzenia',
       items: {
@@ -578,7 +571,6 @@ const pl = {
     },
     summary: {
       heading: 'Twoje wydarzenie w R32',
-      intro: 'Sprawdź wybrane elementy i zostaw kontakt. Na tej podstawie przygotujemy indywidualną propozycję.',
       planCard: 'Plan wydarzenia',
       labels: {
         occasion: 'Rodzaj', date: 'Termin', time: 'Godzina', guests: 'Goście', seating: 'Formuła', space: 'Przestrzeń',
@@ -605,7 +597,6 @@ const pl = {
       },
       form: {
         heading: 'Gdzie mamy wysłać propozycję?',
-        intro: 'Podsumowanie konfiguracji dołączymy do zapytania.',
         configLabel: 'Konfiguracja',
         messagePlaceholder: 'Napisz, co jeszcze powinniśmy wiedzieć o Twoim wydarzeniu.',
         success: 'Dziękujemy! Otrzymaliśmy Twoją konfigurację i odezwiemy się z indywidualną propozycją.',

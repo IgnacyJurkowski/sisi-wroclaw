@@ -427,9 +427,7 @@ const cs: UI = {
     },
     space: {
       heading: 'Vyberte prostor',
-      intro: 'Na prostoru závisí zbytek konfigurátoru: klub SiSi počítá bar a občerstvení z nabídky, restaurace The Cork balíčky večeře.',
       planAlt: 'Půdorys komplexu R32: klub SiSi a restaurace The Cork',
-      planCaption: 'Půdorys R32 - klub SiSi a restaurace The Cork, Rzeźnicza 32-33',
       planHint: 'Kliknutím na SiSi nebo The Cork v půdorysu vyberete prostor.',
       selected: 'Vybráno:',
       shared: 'Společná část',
@@ -442,7 +440,6 @@ const cs: UI = {
     },
     details: {
       heading: 'Základní informace',
-      intro: 'Termín, počet hostů a formát.',
       time: 'Čas začátku',
       timeOther: 'Jiný čas - k domluvě',
       timeHint: 'Časy začátku v The Cork závisí na dni v týdnu; nejdřív vyberte datum.',
@@ -476,7 +473,6 @@ const cs: UI = {
     },
     menu: {
       heading: 'Sestavte menu',
-      intro: 'The Cork počítá balíčky na osobu, SiSi položky z nabídky. Částky jsou výchozí bod pro rozhovor, ne nabídka.',
       tabs: {
         corkFood: 'The Cork · Jídlo', corkFoodSub: 'sharing balíčky',
         corkDrinks: 'The Cork · Nápoje', corkDrinksSub: 'víno a open bar',
@@ -484,7 +480,6 @@ const cs: UI = {
         food: 'SiSi · Občerstvení', foodSub: 'Night Menu by The Cork',
       },
       cork: {
-        intro: 'Jídla servírujeme ve stylu sharing - vyberete balíček a hosté objevují chutě společně.',
         included: 'vždy v balíčku',
         optional: 'volitelný balíček',
         perAdult: 'zł / os.',
@@ -526,7 +521,6 @@ const cs: UI = {
     },
     extras: {
       heading: 'Doplňky a program',
-      intro: 'Dort, dekorace a program - společné pro oba prostory.',
       quoted: 'individuální ocenění',
       cake: {
         heading: 'Dort',
@@ -554,7 +548,6 @@ const cs: UI = {
         idea: 'Váš nápad',
         ideaPlaceholder: 'Motiv, barvy, příležitost a osobní přání…',
         quoted: 'ocenění po konzultaci',
-        photoNote: 'Balíček Standard lze rozšířit o druhou stěnu, obří květiny a tematické dekorace - rozsah a cena po konzultaci.',
       },
       services: 'Program akce',
       items: {
@@ -566,7 +559,6 @@ const cs: UI = {
     },
     summary: {
       heading: 'Vaše akce v R32',
-      intro: 'Zkontrolujte vybrané položky a zanechte kontakt. Na jejich základě připravíme individuální návrh.',
       planCard: 'Plán akce',
       labels: {
         occasion: 'Typ', date: 'Termín', time: 'Čas', guests: 'Hosté', seating: 'Formát', space: 'Prostor',
@@ -593,7 +585,6 @@ const cs: UI = {
       },
       form: {
         heading: 'Kam máme poslat návrh?',
-        intro: 'Shrnutí konfigurace přiložíme k poptávce.',
         configLabel: 'Konfigurace',
         messagePlaceholder: 'Napište, co dalšího bychom měli o vaší akci vědět.',
         success: 'Děkujeme! Vaši konfiguraci jsme přijali a ozveme se s individuálním návrhem.',

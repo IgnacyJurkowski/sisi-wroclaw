@@ -23,7 +23,6 @@ const extLabelPl = (key: string) => (key === 'plus1' ? pl.duration.plus1 : key =
     <div class="cfg-step-head" data-reveal>
       <p class="cfg-step-kicker">{c.progress.stepLabel.replace('{n}', '2')} · {c.progress.steps.details}</p>
       <h2 class="display cfg-step-title">{d.heading}</h2>
-      <p class="cfg-step-intro">{d.intro}</p>
     </div>
 
     <div class="sisi-card cfg-card cfg-details" data-reveal>
@@ -106,7 +105,6 @@ const extLabelPl = (key: string) => (key === 'plus1' ? pl.duration.plus1 : key =
 </section>
 
 <style>
-  .cfg-details { max-width: 980px; margin: 0 auto; }
   .cfg-details-grid { display: grid; grid-template-columns: 1.4fr 1fr 0.9fr; gap: 14px 16px; }
   .cfg-details-grid > * { min-width: 0; }
   .cfg-fieldset { border: none; margin: 18px 0 0; padding: 0; min-width: 0; }

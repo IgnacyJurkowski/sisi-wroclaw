@@ -427,9 +427,7 @@ const de: UI = {
     },
     space: {
       heading: 'Wähle den Raum',
-      intro: 'Der Raum bestimmt den Rest des Konfigurators: der Club SiSi rechnet Bar und Snacks nach Karte ab, das Restaurant The Cork Dinner-Pakete.',
       planAlt: 'Plan des R32-Komplexes: Club SiSi und Restaurant The Cork',
-      planCaption: 'Plan R32 - Club SiSi und Restaurant The Cork, Rzeźnicza 32-33',
       planHint: 'Klicke im Plan auf SiSi oder The Cork, um einen Raum zu wählen.',
       selected: 'Ausgewählt:',
       shared: 'Gemeinsamer Bereich',
@@ -442,7 +440,6 @@ const de: UI = {
     },
     details: {
       heading: 'Grundlegende Angaben',
-      intro: 'Termin, Gästezahl und Format.',
       time: 'Beginn',
       timeOther: 'Andere Uhrzeit - nach Absprache',
       timeHint: 'Die Startzeiten im The Cork hängen vom Wochentag ab; wähle zuerst ein Datum.',
@@ -476,7 +473,6 @@ const de: UI = {
     },
     menu: {
       heading: 'Stelle das Menü zusammen',
-      intro: 'The Cork rechnet Pakete pro Person ab, SiSi Positionen aus der Karte. Die Beträge sind ein Ausgangspunkt für das Gespräch, kein Angebot.',
       tabs: {
         corkFood: 'The Cork · Essen', corkFoodSub: 'Sharing-Pakete',
         corkDrinks: 'The Cork · Getränke', corkDrinksSub: 'Wein und Open Bar',
@@ -484,7 +480,6 @@ const de: UI = {
         food: 'SiSi · Snacks', foodSub: 'Night Menu by The Cork',
       },
       cork: {
-        intro: 'Die Gerichte kommen im Sharing-Stil - du wählst ein Paket, die Gäste entdecken die Aromen gemeinsam.',
         included: 'immer inklusive',
         optional: 'optionales Paket',
         perAdult: 'zł / Pers.',
@@ -526,7 +521,6 @@ const de: UI = {
     },
     extras: {
       heading: 'Extras und Rahmen',
-      intro: 'Torte, Dekoration und Rahmen - für beide Räume.',
       quoted: 'individuelle Kalkulation',
       cake: {
         heading: 'Torte',
@@ -554,7 +548,6 @@ const de: UI = {
         idea: 'Deine Idee',
         ideaPlaceholder: 'Motiv, Farben, Anlass und persönliche Wünsche…',
         quoted: 'Kalkulation nach Beratung',
-        photoNote: 'Das Standardpaket kann um eine zweite Wand, Riesenblumen und thematische Dekoration erweitert werden - Umfang und Preis nach Beratung.',
       },
       services: 'Rahmen des Events',
       items: {
@@ -566,7 +559,6 @@ const de: UI = {
     },
     summary: {
       heading: 'Dein Event im R32',
-      intro: 'Prüfe deine Auswahl und hinterlasse deine Kontaktdaten. Daraus erstellen wir ein individuelles Angebot.',
       planCard: 'Eventplan',
       labels: {
         occasion: 'Art', date: 'Termin', time: 'Uhrzeit', guests: 'Gäste', seating: 'Format', space: 'Raum',
@@ -593,7 +585,6 @@ const de: UI = {
       },
       form: {
         heading: 'Wohin sollen wir das Angebot schicken?',
-        intro: 'Die Zusammenfassung der Konfiguration fügen wir der Anfrage bei.',
         configLabel: 'Konfiguration',
         messagePlaceholder: 'Schreib uns, was wir sonst noch über dein Event wissen sollten.',
         success: 'Danke! Wir haben deine Konfiguration erhalten und melden uns mit einem individuellen Angebot.',

@@ -1,7 +1,7 @@
 ---
 import { EXTRAS } from '../../data/configurator';
 import {
-  CAKE_BASES, CAKE_FLAVOURS, CAKE_NOTE, CAKE_SIZES, CAKE_TIERED, DECOR_EXTRAS, DECOR_PHOTO, DECOR_TABLES,
+  CAKE_BASES, CAKE_FLAVOURS, CAKE_SIZES, CAKE_TIERED, DECOR_EXTRAS, DECOR_PHOTO, DECOR_TABLES,
 } from '../../data/cork-configurator.mjs';
 import { UI_ICONS } from '../../data/ui-icons';
 import { type Locale } from '../../i18n/config';
@@ -29,7 +29,6 @@ const ICONS = {
     <div class="cfg-step-head" data-reveal>
       <p class="cfg-step-kicker">{c.progress.stepLabel.replace('{n}', '4')} · {c.progress.steps.extras}</p>
       <h2 class="display cfg-step-title">{x.heading}</h2>
-      <p class="cfg-step-intro">{x.intro}</p>
     </div>
 
     <div class="cfg-extras" data-reveal>
@@ -83,7 +82,7 @@ const ICONS = {
             <label class="cfg-label" for="cfg-cake-decor">{x.cake.decor} <span class="opt">{useTranslations(locale).b2b.form.optional}</span></label>
             <textarea id="cfg-cake-decor" name="cake_decor" rows="2" maxlength="700" placeholder={x.cake.decorPlaceholder}></textarea>
           </div>
-          <p class="cfg-note">{CAKE_NOTE} {x.cake.priceNote}</p>
+          <p class="cfg-note">{x.cake.priceNote}</p>
         </div>
       </MenuFold>
 
@@ -127,7 +126,6 @@ const ICONS = {
             </label>
           ))}
         </div>
-        <p class="cfg-note">{x.decor.photoNote}</p>
         <p class="cfg-subhead">{x.decor.attractions} <span class="opt">· {x.quoted}</span></p>
         <div class="cfg-pills">
           {DECOR_EXTRAS.map((item) => (
@@ -168,7 +166,7 @@ const ICONS = {
 </section>
 
 <style>
-  .cfg-extras { display: flex; flex-direction: column; gap: 12px; max-width: 1080px; margin: 0 auto; }
+  .cfg-extras { display: flex; flex-direction: column; gap: 12px; }
   .cfg-extras-row { margin-bottom: 14px; }
   .cfg-cake-options { margin-top: 4px; }
   .cfg-cake-options .cfg-pills { margin-bottom: 14px; }
