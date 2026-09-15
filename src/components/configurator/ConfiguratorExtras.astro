@@ -16,7 +16,7 @@ const pl = useTranslations('pl').configurator.extras;
 const ICONS = {
   cake: '<path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"/><path d="M4 16c1.5 0 1.5-1 3-1s1.5 1 3 1 1.5-1 3-1 1.5 1 3 1 1.5-1 3-1"/><path d="M2 21h20"/><path d="M7 8v3m5-3v3m5-3v3"/><path d="M7 4h.01M12 4h.01M17 4h.01"/>',
   decor: '<path d="M12 22c4-3 6-6 6-10a6 6 0 0 0-12 0c0 4 2 7 6 10Z"/><circle cx="12" cy="12" r="2"/>',
-  services: '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
+  services: '<path d="M9.94 15.5a2 2 0 0 0-1.44-1.44L2.37 12.48a.5.5 0 0 1 0-.96L8.5 9.94a2 2 0 0 0 1.44-1.44l1.58-6.13a.5.5 0 0 1 .96 0l1.58 6.13a2 2 0 0 0 1.44 1.44l6.13 1.58a.5.5 0 0 1 0 .96l-6.13 1.58a2 2 0 0 0-1.44 1.44l-1.58 6.13a.5.5 0 0 1-.96 0Z"/><path d="M20 3v4m-2-2h4M4 17v2m-1-1h2"/>',
   exclusive: '<rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
   music: '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
   screens: '<rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8m-4-4v4"/>',
@@ -85,6 +85,23 @@ const ICONS = {
         </div>
       </MenuFold>
 
+      <!-- Setting: the venue's own confirmed services, quoted individually -->
+      <MenuFold label={x.services} icon={ICONS.services} note={x.quoted}>
+        <div class="cfg-grid-4">
+          {EXTRAS.map((key) => (
+            <label class="cfg-choice">
+              <input type="checkbox" name="extras" value={pl.items[key].title} data-key={key} data-label={x.items[key].title} />
+              <span class="cfg-choice-body cfg-extra">
+                <svg class="cfg-extra-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS[key]} />
+                <span class="cfg-choice-title">{x.items[key].title}{key === 'screens' && <span class="cfg-badge" data-suggest="screens" hidden>{c.wizard.suggested}</span>}</span>
+                <span class="cfg-choice-sub">{x.items[key].body}</span>
+              </span>
+              <span class="cfg-choice-check" aria-hidden="true">✓</span>
+            </label>
+          ))}
+        </div>
+      </MenuFold>
+
       <!-- Decorations: table styling, photo wall, attractions, own idea -->
       <MenuFold label={x.decor.heading} icon={ICONS.decor}>
         <p class="cfg-subhead">{x.decor.tables}</p>
@@ -137,23 +154,6 @@ const ICONS = {
         <div class="cfg-field cfg-extras-field">
           <label class="cfg-label" for="cfg-decor-idea">{x.decor.idea} <span class="opt">{useTranslations(locale).b2b.form.optional}</span></label>
           <textarea id="cfg-decor-idea" name="decor_idea" rows="2" maxlength="1000" placeholder={x.decor.ideaPlaceholder}></textarea>
-        </div>
-      </MenuFold>
-
-      <!-- Setting: the venue's own confirmed services, quoted individually -->
-      <MenuFold label={x.services} icon={ICONS.services} note={x.quoted}>
-        <div class="cfg-grid-4">
-          {EXTRAS.map((key) => (
-            <label class="cfg-choice">
-              <input type="checkbox" name="extras" value={pl.items[key].title} data-key={key} data-label={x.items[key].title} />
-              <span class="cfg-choice-body cfg-extra">
-                <svg class="cfg-extra-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS[key]} />
-                <span class="cfg-choice-title">{x.items[key].title}{key === 'screens' && <span class="cfg-badge" data-suggest="screens" hidden>{c.wizard.suggested}</span>}</span>
-                <span class="cfg-choice-sub">{x.items[key].body}</span>
-              </span>
-              <span class="cfg-choice-check" aria-hidden="true">✓</span>
-            </label>
-          ))}
         </div>
       </MenuFold>
 

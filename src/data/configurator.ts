@@ -132,7 +132,7 @@ export const SEATINGS = ['seated', 'standing', 'mixed'] as const;
 export type SeatingKey = (typeof SEATINGS)[number];
 
 /** Spaces, in display order. The facts shown next to each are VENUE_FACTS. */
-export const SPACES = ['sisi', 'cork', 'r32', 'unsure'] as const;
+export const SPACES = ['sisi', 'cork', 'r32'] as const;
 export type SpaceKey = (typeof SPACES)[number];
 
 /** Extras the venue has confirmed it offers (see docs/B2B.md); all quoted individually. */
@@ -140,6 +140,8 @@ export const EXTRAS = ['exclusive', 'music', 'screens', 'catering'] as const;
 export type ExtraKey = (typeof EXTRAS)[number];
 
 export const CONFIGURATOR_LIMITS = {
+  /** Smallest group the configurator plans for (owner, 2026-09-15). */
+  minGuests: 10,
   seatedTheCork: VENUE_FACTS.theCorkSeated,
   standingR32: VENUE_FACTS.standingBuffet,
 };

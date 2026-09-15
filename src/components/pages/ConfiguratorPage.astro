@@ -8,7 +8,7 @@ import ConfiguratorSpace from '../configurator/ConfiguratorSpace.astro';
 import ConfiguratorSummary from '../configurator/ConfiguratorSummary.astro';
 import { CONFIGURATOR_LIMITS } from '../../data/configurator';
 import {
-  CORK_BASE_HOURS, CORK_CHILD_SHARE, CORK_DEPOSIT_SHARE, CORK_EXCLUSIVE_FROM, CORK_MIN_GUESTS, CORK_SERVICE_FEE, CORK_START_WINDOWS,
+  CORK_BASE_HOURS, CORK_CHILD_SHARE, CORK_CLOSE, CORK_DEPOSIT_SHARE, CORK_EXCLUSIVE_FROM, CORK_EXTENSIONS, CORK_MIN_GUESTS, CORK_SERVICE_FEE, CORK_START_WINDOWS,
 } from '../../data/cork-configurator.mjs';
 import { privateEventsServiceSchema } from '../../data/site';
 import { type Locale } from '../../i18n/config';
@@ -52,9 +52,13 @@ const clientStrings = JSON.stringify({
     exclusiveFrom: CORK_EXCLUSIVE_FROM,
     baseHours: CORK_BASE_HOURS,
     startWindows: CORK_START_WINDOWS,
+    close: CORK_CLOSE,
+    extensions: CORK_EXTENSIONS,
     rules: { childShare: CORK_CHILD_SHARE, serviceFee: CORK_SERVICE_FEE, depositShare: CORK_DEPOSIT_SHARE },
   },
   duration: c.details.duration,
+  durationPl: useTranslations('pl').configurator.details.duration,
+  corkClosing: c.menu.corkClosing,
   time: { other: c.details.timeOther },
   summary: { toBeAgreed: c.summary.toBeAgreed, none: c.summary.none, guestsUnit: c.summary.guestsUnit },
   estimate: c.menu.estimate,
@@ -82,7 +86,7 @@ const clientStrings = JSON.stringify({
     netlify-honeypot={registersNetlifyForm ? 'bot-field' : undefined}
     data-messages={formMessages}
     data-strings={clientStrings}
-    data-required-fields="name,email,guests,preferred_date"
+    data-required-fields="name,email,guests,preferred_date,start_time,end_time"
     data-event-enquiry-form
     data-configurator
     novalidate
@@ -153,12 +157,13 @@ const clientStrings = JSON.stringify({
   .cfg-bar-line > span { overflow: hidden; text-overflow: ellipsis; }
   .cfg-bar-hint { color: var(--gold); font-size: 12.5px; }
   .cfg-bar-hint::before { content: '·'; margin-right: 10px; color: var(--text-mute); }
-  .cfg-bar-hint:first-child::before { content: none; }
+  .cfg-bar-hint:first-child::before, [data-bar-line]:empty + .cfg-bar-hint::before { content: none; }
   .cfg-bar-total { display: flex; align-items: baseline; gap: 8px; white-space: nowrap; }
   .cfg-bar-total strong { font-family: var(--font-display); font-weight: 400; font-size: 1.35rem; color: var(--cream); }
   .cfg-bar-per { font-size: 12px; color: var(--text-faint); }
   .cfg-bar-actions { display: flex; gap: 8px; }
   .cfg-bar-btn { padding: 11px 20px; }
+  .cfg-bar-btn:disabled { opacity: 0.4; cursor: not-allowed; }
   .cfg-badge {
     display: inline-block; margin-left: 8px; padding: 2px 8px; border-radius: 999px; vertical-align: middle;
     font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #1a120b; background: var(--gold);

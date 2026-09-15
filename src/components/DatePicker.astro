@@ -265,6 +265,9 @@ const {
       }
       clearBtn!.hidden = !input!.value;
       if (input!.value) input!.removeAttribute('aria-invalid');
+      // Scripts that derive options from the date (the configurator's start
+      // times) listen for form input events; a click in the calendar fires none.
+      input!.dispatchEvent(new Event('input', { bubbles: true }));
     }
 
     function clearValue(): void {

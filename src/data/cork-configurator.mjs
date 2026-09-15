@@ -22,6 +22,10 @@ export const CORK_DEPOSIT_SHARE = 0.5;
 /** The restaurant's child rate (6-15 at half price); the R32 configurator is adults-only and never uses it. */
 export const CORK_CHILD_SHARE = 0.5;
 
+/** The restaurant closes at this hour (owner, 2026-09-15); a party that runs
+ * later continues at SiSi in the same complex. */
+export const CORK_CLOSE = '22:00';
+
 /** Included base time by adult head-count, then the paid extensions. */
 export const CORK_BASE_HOURS = [
   { minGuests: 10, hours: 3 },

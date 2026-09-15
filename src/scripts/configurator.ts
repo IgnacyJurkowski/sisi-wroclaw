@@ -10,27 +10,39 @@
 import { capacityNotice, corkBaseHours, corkEstimate, corkStartSlots, estimate, formatZl } from '../lib/configurator-estimate.mjs';
 
 type Strings = {
-  capacity: { seated: string; standing: string; corkMin: string; corkExclusive: string };
-  limits: { seatedTheCork: number; standingR32: number };
+  capacity: { seated: string; standing: string; min: string; corkExclusive: string };
+  limits: { minGuests: number; seatedTheCork: number; standingR32: number };
   cork: {
     minGuests: number;
     exclusiveFrom: number;
     baseHours: { minGuests: number; hours: number | null }[];
     startWindows: Record<string, [string, string]>;
+    close: string;
+    extensions: { key: string; hours: number; surcharge: number }[];
     rules: { childShare: number; serviceFee: number; depositShare: number };
   };
-  duration: { base: string; hours: string; individual: string };
+  duration: { base: string; hours: string; individual: string; extensionAuto: string; tooLong: string; closing: string; none: string; plus1: string; plus2: string };
+  durationPl: { none: string; plus1: string; plus2: string };
+  corkClosing: string;
   time: { other: string };
   summary: { toBeAgreed: string; none: string; guestsUnit: string };
   estimate: { guests: string; adults: string; extension: string; perGuest: string };
   units: { perGuest: string; bottle: string; portion: string };
   chosen: string;
-  hints: { occasion: string; details: string; menu: string; summary: string };
+  hints: { occasion: string; space: string; details: string; menu: string; summary: string };
 };
 
 const OTHER_TIME = 'inna';
+/** Latest end offered: 04:00 the next day (the club's closing hour). */
+const LAST_END_MIN = 28 * 60;
 const fill = (template: string, vars: Record<string, string | number>) =>
   template.replace(/\{(\w+)\}/g, (_, key) => (key in vars ? String(vars[key]) : `{${key}}`));
+/** 'HH:MM' -> minutes since midnight; null for blank / "another time". */
+const toMin = (value: string | undefined): number | null => {
+  const m = /^(\d{2}):(\d{2})$/.exec(value || '');
+  return m ? Number(m[1]) * 60 + Number(m[2]) : null;
+};
+const fmtMin = (m: number) => `${String(Math.floor(m / 60) % 24).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
 
 function initConfigurator(form: HTMLFormElement): void {
   const strings = JSON.parse(form.getAttribute('data-strings') || '{}') as Strings;
@@ -48,6 +60,8 @@ function initConfigurator(form: HTMLFormElement): void {
   const labelOf = (input: HTMLInputElement | null, fallback: string) => input?.getAttribute('data-label') || fallback;
 
   const timeSelect = q<HTMLSelectElement>('[data-cfg-time]');
+  const endSelect = q<HTMLSelectElement>('[data-cfg-end]');
+  const extensionField = q<HTMLInputElement>('[data-field-extension]');
   const mapRegions = qa<SVGGElement>('[data-map-space]');
   const corkOnly = qa<HTMLElement>('[data-cork-only]');
   const tabs = qa<HTMLButtonElement>('[data-cfg-tab]');
@@ -123,9 +137,20 @@ function initConfigurator(form: HTMLFormElement): void {
   }
 
   /* --- venue mode --------------------------------------------------------- */
-  const spaceKey = () => checkedRadio('space')?.getAttribute('data-key') || 'unsure';
+  const spaceKey = () => checkedRadio('space')?.getAttribute('data-key') || '';
   const corkActive = () => spaceKey() !== 'sisi';
-  const sisiActive = () => spaceKey() !== 'cork';
+  // Planned hours. An end at or before the start means "after midnight".
+  const startMin = () => toMin(timeSelect?.value);
+  const endMin = (): number | null => {
+    const start = startMin();
+    const end = toMin(endSelect?.value);
+    if (start === null || end === null) return null;
+    return end <= start ? end + 24 * 60 : end;
+  };
+  const closeMin = toMin(strings.cork.close) ?? 22 * 60;
+  // A dinner at The Cork that runs past closing continues at SiSi.
+  const afterClose = () => spaceKey() === 'cork' && (endMin() ?? 0) > closeMin;
+  const sisiActive = () => spaceKey() !== 'cork' || afterClose();
 
   /* --- clickable plan: each venue region selects its radio --------------- */
   mapRegions.forEach((region) => {
@@ -251,6 +276,37 @@ function initConfigurator(form: HTMLFormElement): void {
     timeSelect.appendChild(other);
     timeSelect.value = Array.from(timeSelect.options).some((o) => o.value === current) ? current : '';
   }
+  /* --- end-time options: from an hour after the start up to 04:00 ----------- */
+  let lastEndKey = '';
+  function syncEndOptions(): void {
+    if (!endSelect || !timeSelect) return;
+    const start = timeSelect.value;
+    if (start === lastEndKey) return;
+    lastEndKey = start;
+    const current = endSelect.value;
+    endSelect.innerHTML = '';
+    const blank = document.createElement('option');
+    blank.value = '';
+    blank.textContent = '—';
+    endSelect.appendChild(blank);
+    const from = toMin(start);
+    if (from !== null) {
+      for (let m = from + 60; m <= LAST_END_MIN; m += 30) {
+        const option = document.createElement('option');
+        option.value = fmtMin(m);
+        option.textContent = fmtMin(m);
+        endSelect.appendChild(option);
+      }
+    }
+    if (start === OTHER_TIME) {
+      const other = document.createElement('option');
+      other.value = OTHER_TIME;
+      other.textContent = strings.time.other;
+      endSelect.appendChild(other);
+    }
+    endSelect.disabled = !start;
+    endSelect.value = Array.from(endSelect.options).some((o) => o.value === current) ? current : '';
+  }
 
   /* --- The Cork dish picks choose the package: the first pick selects the
          smallest package, one pick too many steps up to the next size, and a
@@ -301,9 +357,10 @@ function initConfigurator(form: HTMLFormElement): void {
     const input = q<HTMLInputElement>(`[data-pick][data-id="${id}"] [data-qty]`);
     if (input) input.value = String(qty);
   };
+  let extHoursNow = 0; // derived in update() from the end time
   const includedHours = () => {
     const base = corkBaseHours(num('guests'), strings.cork.baseHours);
-    return base === null ? null : base + Number(checkedRadio('extension')?.getAttribute('data-hours') || 0);
+    return base === null ? null : base + extHoursNow;
   };
   /** The shortest wine / open-bar package that covers the included time (+extension). */
   const packageForHours = (name: string) => {
@@ -339,6 +396,9 @@ function initConfigurator(form: HTMLFormElement): void {
   const steps = qa<HTMLElement>('[data-cfg-step]');
   const progress = qa<HTMLAnchorElement>('[data-cfg-progress] [data-step]');
   let current = 0;
+  const requirementMet = (key: string) => (key === 'occasion' ? !!checkedRadio('occasion') : key === 'space' ? !!checkedRadio('space') : true);
+  /** Index of the first step whose choice is still missing, or -1. */
+  const firstUnmet = () => steps.findIndex((step) => !requirementMet(step.getAttribute('data-cfg-step') || ''));
 
   /* --- everything derived ------------------------------------------------ */
   function update(): void {
@@ -346,8 +406,9 @@ function initConfigurator(form: HTMLFormElement): void {
     const cork = corkActive();
     const sisi = sisiActive();
     corkOnly.forEach((el) => show(el, cork));
-    syncTabs();
     syncTimeOptions();
+    syncEndOptions();
+    syncTabs();
 
     // Adults-only venue: every head-count is the guest count.
     const adults = num('guests');
@@ -365,7 +426,7 @@ function initConfigurator(form: HTMLFormElement): void {
     });
     // The shared area between the venues lights up with either of them, and the
     // plan draws one border around the chosen venue plus the shared area.
-    qa<SVGGElement>('[data-map-shared]').forEach((region) => region.classList.toggle('is-selected', mode !== 'unsure'));
+    qa<SVGGElement>('[data-map-shared]').forEach((region) => region.classList.toggle('is-selected', mode !== ''));
     const svg = q<SVGSVGElement>('.cfg-map-svg');
     if (svg) svg.setAttribute('data-mode', mode);
 
@@ -380,7 +441,7 @@ function initConfigurator(form: HTMLFormElement): void {
     const corkNoticeEl = q<HTMLElement>('[data-cork-notice]');
     if (corkNoticeEl) {
       let message = '';
-      if (cork && adults > 0 && adults < strings.cork.minGuests) message = fill(strings.capacity.corkMin, { min: strings.cork.minGuests });
+      if (adults > 0 && adults < strings.limits.minGuests) message = fill(strings.capacity.min, { min: strings.limits.minGuests });
       else if (cork && adults >= strings.cork.exclusiveFrom) message = fill(strings.capacity.corkExclusive, { min: strings.cork.exclusiveFrom });
       corkNoticeEl.textContent = message;
       corkNoticeEl.hidden = !message;
@@ -388,11 +449,45 @@ function initConfigurator(form: HTMLFormElement): void {
 
     // Included time at The Cork (the block waits for a group size)
     const baseHours = corkBaseHours(adults, strings.cork.baseHours);
-    show(q<HTMLElement>('[data-duration]'), cork && adults > 0);
+    show(q<HTMLElement>('[data-duration]'), cork && adults >= strings.limits.minGuests);
     text('[data-duration-base]', adults > 0 ? fill(strings.duration.base, { guests: adults }) : '');
     text('[data-duration-hours]', adults === 0 ? '—' : baseHours === null ? strings.duration.individual : fill(strings.duration.hours, { hours: baseHours }));
-    const extension = checkedRadio('extension');
-    const extPct = Number(extension?.getAttribute('data-pct') || 0);
+    // Paid extension derived from the end time: the time at The Cork (until
+    // closing) beyond the included hours, in whole hours, capped at the longest
+    // extension the restaurant offers; anything longer is agreed individually.
+    const startM = startMin();
+    const endM = endMin();
+    const maxExt = Math.max(...strings.cork.extensions.map((e) => e.hours));
+    let extHours = 0;
+    let tooLong = false;
+    if (cork && baseHours !== null && startM !== null && endM !== null) {
+      const atCork = Math.max(0, Math.min(endM, closeMin) - startM);
+      extHours = Math.max(0, Math.ceil((atCork - baseHours * 60) / 60));
+      tooLong = extHours > maxExt;
+      extHours = Math.min(extHours, maxExt);
+    }
+    extHoursNow = extHours;
+    const ext = strings.cork.extensions.find((e) => e.hours === extHours) ?? strings.cork.extensions[0];
+    const extPct = Math.round(ext.surcharge * 100);
+    const extKey = (ext.key === 'plus1' || ext.key === 'plus2' ? ext.key : 'none') as 'none' | 'plus1' | 'plus2';
+    if (extensionField) extensionField.value = cork ? strings.durationPl[extKey] : '';
+    const extEl = q<HTMLElement>('[data-duration-ext]');
+    if (extEl) { extEl.textContent = extHours > 0 ? fill(strings.duration.extensionAuto, { hours: extHours, pct: extPct }) : ''; extEl.hidden = extHours === 0; }
+    const noteEl = q<HTMLElement>('[data-duration-note]');
+    if (noteEl) {
+      const note = tooLong && baseHours !== null ? fill(strings.duration.tooLong, { hours: baseHours + maxExt })
+        : cork && endM !== null && endM > closeMin ? fill(strings.duration.closing, { close: strings.cork.close })
+        : '';
+      noteEl.textContent = note;
+      noteEl.hidden = !note;
+    }
+    // Menu step: the evening after The Cork closes moves to the SiSi bar.
+    const closingEl = q<HTMLElement>('[data-cork-closing]');
+    if (closingEl) {
+      const on = afterClose() && endM !== null;
+      closingEl.textContent = on ? fill(strings.corkClosing, { close: strings.cork.close, end: fmtMin(endM as number) }) : '';
+      closingEl.hidden = !on;
+    }
 
     // The Cork packages
     const courseLines = syncCourses();
@@ -479,6 +574,8 @@ function initConfigurator(form: HTMLFormElement): void {
     const none = strings.summary.none;
     const dateValue = q<HTMLInputElement>('[name="preferred_date"]')?.value.trim() || '';
     const timeValue = timeSelect?.value || '';
+    const endValue = endSelect?.value || '';
+    const hoursLabel = timeValue === OTHER_TIME ? strings.time.other : timeValue && endValue ? `${timeValue}–${endValue}` : timeValue || tba;
     const drinksCork: string[] = [];
     if (cork && Number(wine?.getAttribute('data-price')) > 0) drinksCork.push(labelOf(wine, ''));
     if (cork && barPrice > 0) drinksCork.push(labelOf(bar, '') + (premium?.checked ? ` + ${labelOf(premium, '')}` : ''));
@@ -496,13 +593,13 @@ function initConfigurator(form: HTMLFormElement): void {
     const extras = qa<HTMLInputElement>('input[name="extras"]:checked').map((input) => labelOf(input, ''));
     const guestsLabel = adults > 0 ? `${adults} ${strings.estimate.adults}` : tba;
     const durationLabel = cork && adults > 0
-      ? `${baseHours === null ? strings.duration.individual : fill(strings.duration.hours, { hours: baseHours })}${extPct > 0 ? ` · ${labelOf(extension, '')}` : ''}`
+      ? `${baseHours === null ? strings.duration.individual : fill(strings.duration.hours, { hours: baseHours })}${extHours > 0 ? ` · ${strings.duration[extKey]}` : ''}`
       : '';
 
     const rows: Record<string, { value: string; on: boolean }> = {
       occasion: { value: labelOf(checkedRadio('occasion'), tba), on: true },
       date: { value: dateValue || tba, on: true },
-      time: { value: timeValue === OTHER_TIME ? strings.time.other : timeValue || tba, on: true },
+      time: { value: hoursLabel, on: true },
       guests: { value: guestsLabel, on: true },
       seating: { value: labelOf(seating, tba), on: true },
       space: { value: labelOf(space, tba), on: true },
@@ -528,11 +625,19 @@ function initConfigurator(form: HTMLFormElement): void {
     const stepKey = steps[current]?.getAttribute('data-cfg-step') || '';
     const contactMissing = !(q<HTMLInputElement>('[name="name"]')?.value.trim() && q<HTMLInputElement>('[name="email"]')?.value.trim());
     const hint = stepKey === 'occasion' && !checkedRadio('occasion') ? strings.hints.occasion
-      : stepKey === 'details' && (!dateValue || adults === 0) ? strings.hints.details
+      : stepKey === 'space' && !checkedRadio('space') ? strings.hints.space
+      : stepKey === 'details' && (!dateValue || !timeValue || !endValue || adults < strings.limits.minGuests) ? strings.hints.details
       : stepKey === 'menu' && menuEmpty ? strings.hints.menu
       : stepKey === 'summary' && contactMissing ? strings.hints.summary
       : '';
     if (calcBar.hint) { calcBar.hint.textContent = hint; calcBar.hint.hidden = !hint; }
+    // The occasion and the space must be chosen before moving on.
+    const limit = firstUnmet();
+    if (calcBar.next) calcBar.next.disabled = limit === current;
+    progress.forEach((link, i) => {
+      if (limit >= 0 && i > limit) link.setAttribute('aria-disabled', 'true');
+      else link.removeAttribute('aria-disabled');
+    });
 
     // Hidden fields for the notification email (Polish, like every other form)
     if (hidden.drinks) hidden.drinks.value = sisi ? describe(picked.filter((l) => l.group === 'drinks'), true) : '';
@@ -558,7 +663,8 @@ function initConfigurator(form: HTMLFormElement): void {
 
   /* --- wizard: one step at a time, driven by the progress strip and the bar --- */
   function goTo(index: number, scroll = true): void {
-    current = Math.min(steps.length - 1, Math.max(0, index));
+    const limit = firstUnmet();
+    current = Math.min(steps.length - 1, Math.max(0, limit >= 0 ? Math.min(index, limit) : index));
     steps.forEach((step, i) => { step.hidden = i !== current; });
     progress.forEach((link, i) => {
       if (i === current) link.setAttribute('aria-current', 'step');

@@ -1,6 +1,6 @@
 ---
 import { SEATINGS } from '../../data/configurator';
-import { CORK_EXTENSIONS } from '../../data/cork-configurator.mjs';
+import { CONFIGURATOR_LIMITS } from '../../data/configurator';
 import { type Locale } from '../../i18n/config';
 import { useTranslations } from '../../i18n/t';
 import DatePicker from '../DatePicker.astro';
@@ -14,8 +14,6 @@ const d = c.details;
 const shared = t.b2b.form;
 const pl = useTranslations('pl').configurator.details;
 const seatingHints = { seated: d.seating.seatedHint, standing: d.seating.standingHint, mixed: d.seating.mixedHint } as const;
-const extLabel = (key: string) => (key === 'plus1' ? d.duration.plus1 : key === 'plus2' ? d.duration.plus2 : d.duration.none);
-const extLabelPl = (key: string) => (key === 'plus1' ? pl.duration.plus1 : key === 'plus2' ? pl.duration.plus2 : pl.duration.none);
 ---
 
 <section id="cfg-details" class="cfg-step" data-cfg-step="details">
@@ -45,16 +43,25 @@ const extLabelPl = (key: string) => (key === 'plus1' ? pl.duration.plus1 : key =
         </div>
 
         <div class="cfg-field">
-          <label class="cfg-label" for="cfg-time">{d.time} <span class="opt">{shared.optional}</span></label>
-          <select id="cfg-time" name="start_time" class="cfg-select" data-cfg-time>
+          <label class="cfg-label" for="cfg-time">{d.time} <span class="req" aria-hidden="true">*</span></label>
+          <select id="cfg-time" name="start_time" class="cfg-select" required aria-describedby="cfg-err-start_time" data-cfg-time>
             <option value="">—</option>
           </select>
+          <p class="cfg-field-error" id="cfg-err-start_time" data-error-for="start_time" hidden></p>
           <p class="cfg-hint" data-cork-only>{d.timeHint}</p>
         </div>
 
         <div class="cfg-field">
+          <label class="cfg-label" for="cfg-end">{d.end} <span class="req" aria-hidden="true">*</span></label>
+          <select id="cfg-end" name="end_time" class="cfg-select" required aria-describedby="cfg-err-end_time" data-cfg-end>
+            <option value="">—</option>
+          </select>
+          <p class="cfg-field-error" id="cfg-err-end_time" data-error-for="end_time" hidden></p>
+        </div>
+
+        <div class="cfg-field">
           <label class="cfg-label" for="cfg-guests">{d.adults} <span class="req" aria-hidden="true">*</span></label>
-          <NumberStepper id="cfg-guests" name="guests" min={1} required describedby="cfg-err-guests" decreaseLabel={shared.guestsDecrease} increaseLabel={shared.guestsIncrease} />
+          <NumberStepper id="cfg-guests" name="guests" min={CONFIGURATOR_LIMITS.minGuests} required describedby="cfg-err-guests" decreaseLabel={shared.guestsDecrease} increaseLabel={shared.guestsIncrease} />
           <p class="cfg-field-error" id="cfg-err-guests" data-error-for="guests" hidden></p>
         </div>
 
@@ -76,22 +83,16 @@ const extLabelPl = (key: string) => (key === 'plus1' ? pl.duration.plus1 : key =
         </div>
       </fieldset>
 
-      <fieldset class="cfg-fieldset" data-cork-only data-duration>
-        <legend class="cfg-label">{d.duration.label}</legend>
-        <p class="cfg-duration"><span data-duration-base>{d.duration.base.replace('{guests}', '10')}</span> <strong data-duration-hours>{d.duration.hours.replace('{hours}', '3')}</strong></p>
-        <div class="cfg-grid-3">
-          {CORK_EXTENSIONS.map((ext) => (
-            <label class="cfg-choice">
-              <input type="radio" name="extension" value={extLabelPl(ext.key)} data-key={ext.key} data-pct={Math.round(ext.surcharge * 100)} data-hours={ext.hours} data-label={extLabel(ext.key)} checked={ext.key === 'none'} />
-              <span class="cfg-choice-body">
-                <span class="cfg-choice-title">{extLabel(ext.key)}</span>
-                <span class="cfg-choice-sub">{ext.surcharge ? d.duration.surcharge.replace('{pct}', String(Math.round(ext.surcharge * 100))) : d.duration.noneHint}</span>
-              </span>
-              <span class="cfg-choice-check" aria-hidden="true">✓</span>
-            </label>
-          ))}
-        </div>
-      </fieldset>
+      <!-- Time at The Cork: the included hours for the group, and the paid
+           extension derived from the chosen end time (script). The value
+           submitted is the Polish extension label. -->
+      <div class="cfg-fieldset cfg-duration-block" data-cork-only data-duration>
+        <p class="cfg-label">{d.duration.label}</p>
+        <p class="cfg-duration"><span data-duration-base></span> <strong data-duration-hours></strong></p>
+        <p class="cfg-duration cfg-duration-ext" data-duration-ext hidden></p>
+        <p class="cfg-hint" data-duration-note hidden></p>
+        <input type="hidden" name="extension" value={pl.duration.none} data-field-extension />
+      </div>
 
       <p class="cfg-notice" data-capacity-notice role="status" hidden></p>
       <p class="cfg-notice" data-cork-notice role="status" hidden></p>
@@ -104,15 +105,16 @@ const extLabelPl = (key: string) => (key === 'plus1' ? pl.duration.plus1 : key =
 </section>
 
 <style>
-  .cfg-details-grid { display: grid; grid-template-columns: 1.4fr 1fr 0.9fr; gap: 14px 16px; }
+  .cfg-details-grid { display: grid; grid-template-columns: 1.5fr 0.8fr 0.8fr 0.9fr; gap: 14px 16px; }
   .cfg-details-grid > * { min-width: 0; }
   .cfg-fieldset { border: none; margin: 18px 0 0; padding: 0; min-width: 0; }
   .cfg-fieldset legend { padding: 0; }
-  .cfg-duration { font-size: 13px; color: var(--text-faint); margin: -2px 0 10px; }
+  .cfg-duration { font-size: 13px; color: var(--text-faint); margin: -2px 0 6px; }
+  .cfg-duration-ext { color: var(--gold); }
   .cfg-duration strong { color: var(--cream); }
   @media (max-width: 960px) {
-    .cfg-details-grid { grid-template-columns: 1fr 1fr; }
+    .cfg-details-grid { grid-template-columns: 1fr 1fr 1fr; }
     .cfg-field-date { grid-column: 1 / -1; }
   }
-  @media (max-width: 560px) { .cfg-details-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) { .cfg-details-grid { grid-template-columns: 1fr 1fr; } .cfg-details-grid > :last-child { grid-column: 1 / -1; } }
 </style>

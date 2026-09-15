@@ -640,7 +640,7 @@ for (const locale of LOCALES) {
   const expectedFields = [
     'bot-field', 'cake', 'cake_base', 'cake_decor', 'cake_flavour', 'cake_size', 'consent',
     'cork_bar', 'cork_desserts', 'cork_dishes', 'cork_mains', 'cork_premium', 'cork_sommelier', 'cork_starters', 'cork_wine',
-    'decor_extras', 'decor_idea', 'decor_photo', 'decor_tables', 'drinks', 'email', 'estimate', 'extension', 'extras', 'food',
+    'decor_extras', 'decor_idea', 'decor_photo', 'decor_tables', 'drinks', 'email', 'end_time', 'estimate', 'extension', 'extras', 'food',
     'form-name', 'guests', 'locale', 'message', 'name', 'occasion', 'page', 'phone', 'preferred_date', 'preferred_date_iso',
     'seating', 'space', 'start_time', 'subject', 'utm',
   ];
@@ -648,9 +648,16 @@ for (const locale of LOCALES) {
     `${locale} configurator form submits exactly the approved field set`,
     JSON.stringify(renderedFields) === JSON.stringify(expectedFields),
   );
+  // Nothing is pre-chosen for the occasion or the space; the wizard blocks
+  // "next" until both are picked, and the group size starts at the owner's minimum.
   assert(
-    `${locale} configurator form requires contact, guests, date and consent`,
-    ['name', 'email', 'guests', 'preferred_date', 'consent'].every((name) =>
+    `${locale} configurator pre-selects no occasion or space and starts at 10 guests`,
+    ![...form.matchAll(/<input type="radio" name="(?:occasion|space)"[^>]*>/g)].some((m) => /\bchecked\b/.test(m[0]))
+      && /<input[^>]*\bname="guests"[^>]*\bmin="10"/.test(form),
+  );
+  assert(
+    `${locale} configurator form requires contact, guests, date, hours and consent`,
+    ['name', 'email', 'guests', 'preferred_date', 'start_time', 'end_time', 'consent'].every((name) =>
       new RegExp(`<(?:input|select|textarea)\\b(?=[^>]*\\bname="${name}")(?=[^>]*\\brequired(?:\\s|=|>))[^>]*>`).test(form)),
   );
   // Every option the visitor can pick submits its Polish label so the Netlify
@@ -658,8 +665,9 @@ for (const locale of LOCALES) {
   const optionValues = [...form.matchAll(/<input type="(?:radio|checkbox)" name="(?:occasion|seating|space|extras)" value="([^"]+)"/g)].map((m) => m[1]);
   assert(
     `${locale} configurator options submit the Polish labels`,
-    optionValues.length === 16
-      && ['Urodziny', 'Bufet i stojąco', 'Nie wiem jeszcze', 'Wynajem na wyłączność'].every((label) => optionValues.includes(label)),
+    optionValues.length === 15
+      && ['Urodziny', 'Bufet i stojąco', 'Cały kompleks R32', 'Wynajem na wyłączność'].every((label) => optionValues.includes(label))
+      && !optionValues.includes('Nie wiem jeszcze'),
   );
   // The floor plan is an inline vector (no raster from the reference site) and
   // the page never names a zone, table count or zone capacity.
