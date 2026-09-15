@@ -411,14 +411,11 @@ const de: UI = {
 
   configurator: {
     hero: {
-      eyebrow: 'Deine Feier im R32',
       title: 'Plane dein Event',
-      body: 'Wähle Raum, Termin und Menü - im Club SiSi, im Restaurant The Cork oder im gesamten R32. Am Ende siehst du eine Zusammenfassung und schickst sie an das Team, das ein individuelles Angebot erstellt.',
-      start: 'Los geht’s',
+      body: 'Wähle Raum, Termin und Menü. Die Zusammenfassung schickst du uns am Ende.',
     },
     progress: {
       label: 'Fortschritt der Konfiguration',
-      stepLabel: 'Schritt {n}',
       steps: { space: 'Raum', details: 'Details', menu: 'Menü', extras: 'Extras', summary: 'Zusammenfassung' },
     },
     occasion: {
@@ -483,7 +480,6 @@ const de: UI = {
         included: 'immer inklusive',
         optional: 'optionales Paket',
         perAdult: 'zł / Pers.',
-        alacarte: 'laut Karte',
         chosen: '{n} / {size} gewählt',
         pickHint: 'Markiere die Gerichte für das Paket.',
         winePackages: 'Weinpakete',
@@ -493,7 +489,6 @@ const de: UI = {
         openBarNone: 'Keine Open Bar',
         premiumHint: 'Wähle eine Open-Bar-Dauer, um Premium hinzuzufügen.',
         sommelier: 'Persönliche Weinbegleitung',
-        alacarteNote: 'À-la-carte-Positionen sind nicht im Betrag enthalten - die Gäste wählen sie am Tisch. Die Servicegebühr von 10 % gilt auch für À-la-carte-Bestellungen.',
       },
       groups: { cocktails: 'Cocktails', wines: 'Polnische Weine - Flasche 750 ml', champagne: 'Champagner - Flasche 750 ml', bottles: 'Bottle Service', food: 'Night Menu' },
       hints: { perGuest: 'Anzahl pro Gast', bottles: 'Anzahl Flaschen', portions: 'Anzahl Portionen' },
@@ -592,7 +587,14 @@ const de: UI = {
       },
     },
     buttons: { toDetails: 'Details angeben', toMenu: 'Menü zusammenstellen', toExtras: 'Extras hinzufügen', toSummary: 'Zur Zusammenfassung' },
-    wizard: { back: 'Zurück', next: 'Weiter', chooseDishes: 'Gerichte wählen', hideDishes: 'Gerichte ausblenden', suggested: 'empfohlen', cakeSizeAuto: 'an die Gästezahl angepasst', perGuest: 'pro Gast' },
+    wizard: {
+      back: 'Zurück', next: 'Weiter', chooseDishes: 'Gerichte wählen', hideDishes: 'Gerichte ausblenden', suggested: 'empfohlen', cakeSizeAuto: 'an die Gästezahl angepasst', perGuest: 'pro Gast',
+      propose: 'Menü zum Start vorschlagen',
+      proposeHint: 'Pakete passend zu Gästezahl, inkludierter Zeit und Anlass - alles lässt sich ändern.',
+      clearMenu: 'Menü leeren',
+      needGuests: 'Gib in Schritt 2 die Gästezahl an, dann rechnen wir pro Person.',
+      hints: { details: 'Gib Termin und Gästezahl an.', menu: 'Füge ein Paket oder Positionen aus der Karte hinzu, um die Schätzung zu sehen.', summary: 'Gib Name und E-Mail an, dann schicken wir ein Angebot.' },
+    },
   },
 
   b2b: {

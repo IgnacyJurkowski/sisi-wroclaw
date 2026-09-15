@@ -21,7 +21,6 @@ const extLabelPl = (key: string) => (key === 'plus1' ? pl.duration.plus1 : key =
 <section id="cfg-details" class="cfg-step" data-cfg-step="details">
   <div class="container">
     <div class="cfg-step-head" data-reveal>
-      <p class="cfg-step-kicker">{c.progress.stepLabel.replace('{n}', '2')} · {c.progress.steps.details}</p>
       <h2 class="display cfg-step-title">{d.heading}</h2>
     </div>
 
@@ -83,7 +82,7 @@ const extLabelPl = (key: string) => (key === 'plus1' ? pl.duration.plus1 : key =
         <div class="cfg-grid-3">
           {CORK_EXTENSIONS.map((ext) => (
             <label class="cfg-choice">
-              <input type="radio" name="extension" value={extLabelPl(ext.key)} data-key={ext.key} data-pct={Math.round(ext.surcharge * 100)} data-label={extLabel(ext.key)} checked={ext.key === 'none'} />
+              <input type="radio" name="extension" value={extLabelPl(ext.key)} data-key={ext.key} data-pct={Math.round(ext.surcharge * 100)} data-hours={ext.hours} data-label={extLabel(ext.key)} checked={ext.key === 'none'} />
               <span class="cfg-choice-body">
                 <span class="cfg-choice-title">{extLabel(ext.key)}</span>
                 <span class="cfg-choice-sub">{ext.surcharge ? d.duration.surcharge.replace('{pct}', String(Math.round(ext.surcharge * 100))) : d.duration.noneHint}</span>

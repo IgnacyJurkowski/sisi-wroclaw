@@ -25,6 +25,7 @@ type Strings = {
   estimate: { guests: string; adults: string; extension: string; perGuest: string };
   units: { perGuest: string; bottle: string; portion: string };
   chosen: string;
+  hints: { details: string; menu: string; summary: string };
 };
 
 const OTHER_TIME = 'inna';
@@ -59,9 +60,11 @@ function initConfigurator(form: HTMLFormElement): void {
     corkDishes: q<HTMLInputElement>('[data-field-cork-dishes]'),
     estimate: q<HTMLInputElement>('[data-field-estimate]'),
   };
+  const body = q<HTMLElement>('[data-cfg-body]');
   const calcBar = {
     root: q<HTMLElement>('[data-cfg-bar]'),
     line: q<HTMLElement>('[data-bar-line]'),
+    hint: q<HTMLElement>('[data-bar-hint]'),
     total: q<HTMLElement>('[data-bar-total]'),
     per: q<HTMLElement>('[data-bar-per]'),
     back: q<HTMLButtonElement>('[data-wizard-back]'),
@@ -77,6 +80,29 @@ function initConfigurator(form: HTMLFormElement): void {
       list.hidden = !open;
       toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
       toggle.firstChild!.textContent = toggle.getAttribute(open ? 'data-label-close' : 'data-label-open') || '';
+    });
+  });
+
+  /* --- package radios can be switched off again (no "à la carte" option) --- */
+  qa<HTMLInputElement>('input[type="radio"][data-toggle]').forEach((radio) => {
+    radio.addEventListener('pointerdown', () => { radio.dataset.wasChecked = radio.checked ? 'true' : 'false'; });
+    radio.addEventListener('click', () => {
+      if (radio.dataset.wasChecked !== 'true') return;
+      radio.checked = false;
+      radio.dataset.wasChecked = 'false';
+      radio.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+  });
+
+  /* --- the format follows the venue until the visitor picks one ----------- */
+  let seatingTouched = false;
+  qa<HTMLInputElement>('input[name="seating"]').forEach((input) => input.addEventListener('click', () => { seatingTouched = true; }));
+  const SEATING_FOR: Record<string, string> = { sisi: 'standing', cork: 'seated', r32: 'mixed' };
+  qa<HTMLInputElement>('input[name="space"]').forEach((input) => {
+    input.addEventListener('change', () => {
+      const key = SEATING_FOR[input.getAttribute('data-key') || ''];
+      const radio = key && !seatingTouched ? q<HTMLInputElement>(`input[name="seating"][data-key="${key}"]`) : null;
+      if (radio) radio.checked = true;
     });
   });
 
@@ -226,14 +252,27 @@ function initConfigurator(form: HTMLFormElement): void {
     timeSelect.value = Array.from(timeSelect.options).some((o) => o.value === current) ? current : '';
   }
 
-  /* --- The Cork dish picks: at most `size` per course --------------------- */
-  const courseSize = (course: string) => Number(checkedRadio(`cork_${course}`)?.getAttribute('data-size') || 0);
+  /* --- The Cork dish picks choose the package: the first pick selects the
+         smallest package, one pick too many steps up to the next size, and a
+         pick beyond the largest package is refused. Choosing a smaller package
+         drops the surplus picks. ------------------------------------------- */
+  const packagesOf = (course: string) => qa<HTMLInputElement>(`input[name="cork_${course}"]`);
+  const dishesOf = (course: string) => qa<HTMLInputElement>(`[data-cork-dish][data-course="${course}"]`);
   qa<HTMLInputElement>('[data-cork-dish]').forEach((box) => {
     box.addEventListener('change', () => {
+      if (!box.checked) return;
       const course = box.getAttribute('data-course') || '';
-      const size = courseSize(course);
-      const chosen = qa<HTMLInputElement>(`[data-cork-dish][data-course="${course}"]:checked`);
-      if (box.checked && size > 0 && chosen.length > size) box.checked = false;
+      const chosen = dishesOf(course).filter((b) => b.checked).length;
+      const fitting = packagesOf(course).find((pkg) => Number(pkg.getAttribute('data-size')) >= chosen);
+      if (!fitting) { box.checked = false; return; }
+      if (!fitting.checked) fitting.checked = true;
+    });
+  });
+  qa<HTMLInputElement>('[data-cork-course] input[type="radio"]').forEach((pkg) => {
+    pkg.addEventListener('change', () => {
+      if (!pkg.checked) return;
+      const size = Number(pkg.getAttribute('data-size'));
+      dishesOf(pkg.name.replace('cork_', '')).filter((b) => b.checked).slice(size).forEach((b) => { b.checked = false; });
     });
   });
   function syncCourses(): string[] {
@@ -241,22 +280,65 @@ function initConfigurator(form: HTMLFormElement): void {
     qa<HTMLElement>('[data-cork-course]').forEach((card) => {
       const course = card.getAttribute('data-cork-course') || '';
       const pkg = checkedRadio(`cork_${course}`);
-      const size = Number(pkg?.getAttribute('data-size') || 0);
-      const boxes = qa<HTMLInputElement>(`[data-cork-dish][data-course="${course}"]`);
-      const included = boxes.some((b) => b.disabled && b.checked && !pkg);
-      // An à la carte package (size 0) has nothing to pick; drop stale picks.
-      if (pkg && size === 0) boxes.forEach((b) => { b.checked = false; });
-      if (pkg) boxes.forEach((b) => { b.disabled = size === 0; });
-      const chosen = boxes.filter((b) => b.checked && (included || !b.disabled));
+      const packages = packagesOf(course);
+      const size = Number((pkg ?? packages[0])?.getAttribute('data-size') || 0);
+      const boxes = dishesOf(course);
+      const chosen = boxes.filter((b) => b.checked);
       const counter = card.querySelector<HTMLElement>('[data-cork-chosen]');
       if (counter) counter.textContent = fill(strings.chosen, { n: chosen.length, size });
       const names = chosen.map((b) => b.getAttribute('data-dish') || '');
-      if (pkg && Number(pkg.getAttribute('data-price')) > 0) {
-        lines.push(`${labelOf(pkg, '')}${names.length ? `: ${names.join(', ')}` : ''}`);
-      }
+      if (pkg) lines.push(`${labelOf(pkg, '')}${names.length ? `: ${names.join(', ')}` : ''}`);
     });
     return lines;
   }
+
+  /* --- one-click starting menu, then everything stays editable ------------ */
+  const setRadio = (name: string, key: string) => {
+    const radio = q<HTMLInputElement>(`input[name="${name}"][data-key="${key}"]`);
+    if (radio) radio.checked = true;
+  };
+  const setQty = (id: string, qty: number) => {
+    const input = q<HTMLInputElement>(`[data-pick][data-id="${id}"] [data-qty]`);
+    if (input) input.value = String(qty);
+  };
+  const includedHours = () => {
+    const base = corkBaseHours(num('guests'), strings.cork.baseHours);
+    return base === null ? null : base + Number(checkedRadio('extension')?.getAttribute('data-hours') || 0);
+  };
+  /** The shortest wine / open-bar package that covers the included time (+extension). */
+  const packageForHours = (name: string) => {
+    const hours = includedHours();
+    if (hours === null) return null;
+    const options = qa<HTMLInputElement>(`input[name="${name}"][data-hours]`);
+    return options.find((o) => Number(o.getAttribute('data-hours')) >= hours) ?? options[options.length - 1] ?? null;
+  };
+  function proposeMenu(): void {
+    const occasion = checkedRadio('occasion')?.getAttribute('data-key') || '';
+    const festive = occasion === 'birthday' || occasion === 'anniversary';
+    if (corkActive()) {
+      // A sharing dinner: starters + mains for everyone; desserts on a celebration;
+      // the wine package that runs as long as the included time.
+      setRadio('cork_starters', 'four');
+      setRadio('cork_mains', 'four');
+      if (festive) setRadio('cork_desserts', 'three');
+      const wine = packageForHours('cork_wine');
+      if (wine) wine.checked = true;
+    }
+    if (sisiActive()) setQty('cocktail-per-guest', 1);
+    update();
+  }
+  function clearMenu(): void {
+    qa<HTMLInputElement>('[data-cork-course] input[type="radio"], input[name="cork_wine"], [data-cork-dish]:not(:disabled), [data-cork-premium], [data-cork-flat]').forEach((i) => { i.checked = false; });
+    setRadio('cork_bar', 'none');
+    qa<HTMLInputElement>('[data-pick] [data-qty]').forEach((i) => { i.value = '0'; });
+    update();
+  }
+  q<HTMLButtonElement>('[data-propose-btn]')?.addEventListener('click', proposeMenu);
+  q<HTMLButtonElement>('[data-clear-menu]')?.addEventListener('click', clearMenu);
+
+  const steps = qa<HTMLElement>('[data-cfg-step]');
+  const progress = qa<HTMLAnchorElement>('[data-cfg-progress] [data-step]');
+  let current = 0;
 
   /* --- everything derived ------------------------------------------------ */
   function update(): void {
@@ -340,6 +422,17 @@ function initConfigurator(form: HTMLFormElement): void {
 
     const total = corkResult.total + sisiResult.total + decorFlat;
     const hasLines = corkResult.value > 0 || sisiResult.lineCount > 0 || decorFlat > 0;
+    const menuEmpty = corkResult.value === 0 && sisiResult.lineCount === 0;
+
+    // Starting-menu offer while the menu is empty; "clear" once something is picked.
+    show(q<HTMLElement>('[data-propose]'), menuEmpty && adults > 0);
+    show(q<HTMLElement>('[data-clear-menu]'), !menuEmpty);
+    show(q<HTMLElement>('[data-need-guests]'), adults === 0);
+    // Wine / open-bar length that matches the included time at The Cork.
+    const wineFit = cork ? packageForHours('cork_wine') : null;
+    const barFit = cork ? packageForHours('cork_bar') : null;
+    qa<HTMLElement>('[data-suggest-wine]').forEach((badge) => show(badge, !!wineFit && badge.getAttribute('data-suggest-wine') === wineFit.getAttribute('data-key')));
+    qa<HTMLElement>('[data-suggest-bar]').forEach((badge) => show(badge, !!barFit && badge.getAttribute('data-suggest-bar') === barFit.getAttribute('data-key')));
 
     // Estimate panel
     show(q<HTMLElement>('[data-est-empty]'), !hasLines);
@@ -426,10 +519,17 @@ function initConfigurator(form: HTMLFormElement): void {
     });
     text('[data-sum="estimate"]', hasLines ? `${formatZl(total)} (${formatZl(adults > 0 ? Math.round(total / adults) : 0)} ${strings.estimate.perGuest})` : none);
 
-    // Sticky calculator bar
+    // Calculator bar: what is chosen, the total, and the one thing the current step still needs.
     if (calcBar.line) calcBar.line.textContent = [labelOf(checkedRadio('occasion'), ''), adults > 0 ? `${adults} ${strings.estimate.adults}` : '', labelOf(space, '')].filter(Boolean).join(' · ');
     if (calcBar.total) calcBar.total.textContent = formatZl(total);
     if (calcBar.per) calcBar.per.textContent = adults > 0 && hasLines ? `${formatZl(Math.round(total / adults))} ${strings.estimate.perGuest}` : '';
+    const stepKey = steps[current]?.getAttribute('data-cfg-step') || '';
+    const contactMissing = !(q<HTMLInputElement>('[name="name"]')?.value.trim() && q<HTMLInputElement>('[name="email"]')?.value.trim());
+    const hint = stepKey === 'details' && (!dateValue || adults === 0) ? strings.hints.details
+      : stepKey === 'menu' && menuEmpty ? strings.hints.menu
+      : stepKey === 'summary' && contactMissing ? strings.hints.summary
+      : '';
+    if (calcBar.hint) { calcBar.hint.textContent = hint; calcBar.hint.hidden = !hint; }
 
     // Hidden fields for the notification email (Polish, like every other form)
     if (hidden.drinks) hidden.drinks.value = sisi ? describe(picked.filter((l) => l.group === 'drinks'), true) : '';
@@ -452,10 +552,7 @@ function initConfigurator(form: HTMLFormElement): void {
   form.addEventListener('change', update);
   update();
 
-  /* --- wizard: one step at a time, driven by the progress row and the bar --- */
-  const steps = qa<HTMLElement>('[data-cfg-step]');
-  const progress = qa<HTMLAnchorElement>('[data-cfg-progress] [data-step]');
-  let current = 0;
+  /* --- wizard: one step at a time, driven by the progress strip and the bar --- */
   function goTo(index: number, scroll = true): void {
     current = Math.min(steps.length - 1, Math.max(0, index));
     steps.forEach((step, i) => { step.hidden = i !== current; });
@@ -466,10 +563,8 @@ function initConfigurator(form: HTMLFormElement): void {
     });
     if (calcBar.back) calcBar.back.hidden = current === 0;
     if (calcBar.next) calcBar.next.hidden = current === steps.length - 1;
-    if (scroll) {
-      const top = steps[current].getBoundingClientRect().top + window.scrollY - 96;
-      window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
-    }
+    if (scroll) (body ?? window).scrollTo({ top: 0, behavior: 'smooth' });
+    update();
   }
   if (steps.length && progress.length === steps.length && calcBar.root) {
     form.classList.add('cfg-wizard');

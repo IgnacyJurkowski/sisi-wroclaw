@@ -410,14 +410,11 @@ const it: UI = {
 
   configurator: {
     hero: {
-      eyebrow: 'La tua festa a R32',
       title: 'Organizza il tuo evento',
-      body: 'Scegli lo spazio, la data e il menu - al club SiSi, al ristorante The Cork o in tutto R32. Alla fine vedrai un riepilogo e lo invierai al team, che preparerà una proposta personalizzata.',
-      start: 'Iniziamo',
+      body: 'Scegli lo spazio, la data e il menu. Il riepilogo ce lo invii alla fine.',
     },
     progress: {
       label: 'Avanzamento della configurazione',
-      stepLabel: 'Passo {n}',
       steps: { space: 'Spazio', details: 'Dettagli', menu: 'Menu', extras: 'Extra', summary: 'Riepilogo' },
     },
     occasion: {
@@ -482,7 +479,6 @@ const it: UI = {
         included: 'sempre incluso',
         optional: 'pacchetto opzionale',
         perAdult: 'zł / pers.',
-        alacarte: 'secondo il menu',
         chosen: '{n} / {size} scelti',
         pickHint: 'Seleziona i piatti del pacchetto.',
         winePackages: 'Pacchetti vino',
@@ -492,7 +488,6 @@ const it: UI = {
         openBarNone: 'Senza open bar',
         premiumHint: 'Scegli la durata dell’open bar per aggiungere Premium.',
         sommelier: 'Servizio vino personale',
-        alacarteNote: 'Le voci à la carte non sono incluse nell’importo - gli ospiti le scelgono al tavolo. Il servizio del 10% si applica anche agli ordini à la carte.',
       },
       groups: { cocktails: 'Cocktail', wines: 'Vini polacchi - bottiglia 750 ml', champagne: 'Champagne - bottiglia 750 ml', bottles: 'Bottle service', food: 'Night Menu' },
       hints: { perGuest: 'quantità per ospite', bottles: 'numero di bottiglie', portions: 'numero di porzioni' },
@@ -591,7 +586,14 @@ const it: UI = {
       },
     },
     buttons: { toDetails: 'Inserisci i dettagli', toMenu: 'Componi il menu', toExtras: 'Aggiungi extra', toSummary: 'Vai al riepilogo' },
-    wizard: { back: 'Indietro', next: 'Avanti', chooseDishes: 'Scegli i piatti', hideDishes: 'Nascondi i piatti', suggested: 'consigliato', cakeSizeAuto: 'in base al numero di ospiti', perGuest: 'per ospite' },
+    wizard: {
+      back: 'Indietro', next: 'Avanti', chooseDishes: 'Scegli i piatti', hideDishes: 'Nascondi i piatti', suggested: 'consigliato', cakeSizeAuto: 'in base al numero di ospiti', perGuest: 'per ospite',
+      propose: 'Proponi un menu di partenza',
+      proposeHint: 'Pacchetti in base al numero di ospiti, al tempo incluso e all’occasione - puoi cambiare tutto.',
+      clearMenu: 'Svuota il menu',
+      needGuests: 'Indica il numero di ospiti al passo 2 e calcoleremo il prezzo a persona.',
+      hints: { details: 'Indica la data e il numero di ospiti.', menu: 'Aggiungi un pacchetto o voci dal menu per vedere la stima.', summary: 'Inserisci nome ed e-mail e ti invieremo una proposta.' },
+    },
   },
 
   b2b: {

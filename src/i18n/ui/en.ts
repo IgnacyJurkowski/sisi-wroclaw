@@ -411,14 +411,11 @@ const en: UI = {
 
   configurator: {
     hero: {
-      eyebrow: 'Your party at R32',
       title: 'Plan your event',
-      body: 'Choose the space, the date and the menu - at the SiSi club, The Cork restaurant or the entire R32. At the end you will see a summary and send it to the team, who will prepare a tailored proposal.',
-      start: 'Get started',
+      body: 'Pick the space, the date and the menu. You send us the summary at the end.',
     },
     progress: {
       label: 'Configuration progress',
-      stepLabel: 'Step {n}',
       steps: { space: 'Space', details: 'Details', menu: 'Menu', extras: 'Extras', summary: 'Summary' },
     },
     occasion: {
@@ -483,7 +480,6 @@ const en: UI = {
         included: 'always included',
         optional: 'optional package',
         perAdult: 'zł / person',
-        alacarte: 'per the menu',
         chosen: '{n} / {size} chosen',
         pickHint: 'Tick the dishes for the package.',
         winePackages: 'Wine packages',
@@ -493,7 +489,6 @@ const en: UI = {
         openBarNone: 'No open bar',
         premiumHint: 'Choose an open-bar duration to add Premium.',
         sommelier: 'Personal wine service',
-        alacarteNote: 'À la carte items are not included in the amount - guests choose them at the table. The 10% service fee also covers à la carte orders.',
       },
       groups: { cocktails: 'Cocktails', wines: 'Polish wines - 750 ml bottle', champagne: 'Champagne - 750 ml bottle', bottles: 'Bottle service', food: 'Night Menu' },
       hints: { perGuest: 'number per guest', bottles: 'number of bottles', portions: 'number of portions' },
@@ -592,7 +587,14 @@ const en: UI = {
       },
     },
     buttons: { toDetails: 'Add the details', toMenu: 'Build the menu', toExtras: 'Add extras', toSummary: 'Go to the summary' },
-    wizard: { back: 'Back', next: 'Next', chooseDishes: 'Choose dishes', hideDishes: 'Hide dishes', suggested: 'suggested', cakeSizeAuto: 'matched to the guest count', perGuest: 'per guest' },
+    wizard: {
+      back: 'Back', next: 'Next', chooseDishes: 'Choose dishes', hideDishes: 'Hide dishes', suggested: 'suggested', cakeSizeAuto: 'matched to the guest count', perGuest: 'per guest',
+      propose: 'Suggest a starting menu',
+      proposeHint: 'Packages matched to the guest count, the time included and the occasion - change anything you like.',
+      clearMenu: 'Clear the menu',
+      needGuests: 'Enter the guest count in step 2 and we will price per guest.',
+      hints: { details: 'Add the date and the guest count.', menu: 'Add a package or menu items to see the estimate.', summary: 'Enter your name and e-mail and we will send a proposal.' },
+    },
   },
 
   b2b: {

@@ -1,7 +1,7 @@
 ---
 import { OCCASIONS } from '../../data/configurator';
 import { type Locale } from '../../i18n/config';
-import { useTranslations, interpolate } from '../../i18n/t';
+import { useTranslations } from '../../i18n/t';
 
 interface Props { locale: Locale }
 const { locale } = Astro.props;
@@ -10,86 +10,80 @@ const c = useTranslations(locale).configurator;
 // Polish whichever language the visitor used (see PrivateEventsEnquiryForm).
 const plOccasions = useTranslations('pl').configurator.occasion.options;
 const STEP_KEYS = ['space', 'details', 'menu', 'extras', 'summary'] as const;
+// Compact app header: one line of copy, the occasion pills and a single
+// progress strip whose segments the page script drives (aria-current / data-done).
 ---
 
-<section class="cfg-hero">
-  <div class="cfg-hero-bg" aria-hidden="true"></div>
-  <div class="cfg-hero-scrim" aria-hidden="true"></div>
-  <div class="container cfg-hero-content">
-    <div class="cfg-hero-copy" data-reveal>
-      <span class="page-label">{c.hero.eyebrow}</span>
-      <h1 class="display cfg-hero-title">{c.hero.title}</h1>
-      <p class="cfg-hero-body">{c.hero.body}</p>
+<header class="cfg-head">
+  <div class="container cfg-head-inner">
+    <div class="cfg-head-row">
+      <div class="cfg-head-copy">
+        <h1 class="display cfg-head-title">{c.hero.title}</h1>
+        <p class="cfg-head-body">{c.hero.body}</p>
+      </div>
+      <fieldset class="cfg-occasions">
+        <legend class="cfg-subhead">{c.occasion.heading}</legend>
+        <div class="cfg-pills cfg-occasion-pills">
+          {OCCASIONS.map((key, index) => (
+            <label class="cfg-pill">
+              <input type="radio" name="occasion" value={plOccasions[key]} data-key={key} data-label={c.occasion.options[key]} checked={index === 0} />
+              <span class="cfg-pill-body">{c.occasion.options[key]}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
     </div>
 
-    <nav class="cfg-progress" aria-label={c.progress.label} data-cfg-progress>
-      <ol class="cfg-progress-list">
+    <nav class="cfg-strip" aria-label={c.progress.label} data-cfg-progress>
+      <ol class="cfg-strip-list">
         {STEP_KEYS.map((key, index) => (
-          <li>
-            <a href={`#cfg-${key}`} class="cfg-progress-step" data-step={key} aria-current={index === 0 ? 'step' : undefined}>
-              <span class="cfg-progress-num" aria-hidden="true">{index + 1}</span>
-              <span class="cfg-progress-label">
-                <span class="cfg-progress-kicker">{interpolate(c.progress.stepLabel, { n: String(index + 1) })}</span>
-                {c.progress.steps[key]}
-              </span>
+          <li class="cfg-strip-item">
+            {index > 0 && <svg class="cfg-strip-chev" viewBox="0 0 8 16" aria-hidden="true"><path d="m1 1 6 7-6 7" /></svg>}
+            <a href={`#cfg-${key}`} class="cfg-strip-step" data-step={key} aria-current={index === 0 ? 'step' : undefined}>
+              <span class="cfg-strip-num" aria-hidden="true">{index + 1}</span>
+              <span class="cfg-strip-label">{c.progress.steps[key]}</span>
             </a>
           </li>
         ))}
       </ol>
     </nav>
-
-    <fieldset class="cfg-occasions sisi-card" data-reveal>
-      <legend class="cfg-subhead">{c.occasion.heading}</legend>
-      <div class="cfg-pills">
-        {OCCASIONS.map((key, index) => (
-          <label class="cfg-pill">
-            <input type="radio" name="occasion" value={plOccasions[key]} data-key={key} data-label={c.occasion.options[key]} checked={index === 0} />
-            <span class="cfg-pill-body">{c.occasion.options[key]}</span>
-          </label>
-        ))}
-      </div>
-      <div class="cfg-actions cfg-hero-actions" data-step-actions>
-        <a href="#cfg-space" class="btn-cta cfg-next">{c.hero.start}<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10m-4-4 4 4-4 4"/></svg></a>
-      </div>
-    </fieldset>
   </div>
-</section>
+</header>
 
 <style>
-  .cfg-hero { position: relative; overflow: hidden; padding: calc(var(--nav-height) + 44px) 0 16px; }
-  .cfg-hero-bg {
-    position: absolute; left: 0; right: 0; top: -10%; height: 120%;
-    background: url('/framerusercontent.com/images/cDJcCUEanjQSoFpALHKgU3hNpQ.webp') center/cover no-repeat;
+  .cfg-head { flex-shrink: 0; border-bottom: 1px solid rgba(237,219,194,0.14); background: rgba(39,7,15,0.55); backdrop-filter: blur(8px); }
+  .cfg-head-inner { padding-top: 14px; padding-bottom: 12px; }
+  .cfg-head-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px 28px; flex-wrap: wrap; margin-bottom: 12px; }
+  .cfg-head-copy { min-width: 0; }
+  .cfg-head-title { font-size: clamp(1.35rem, 2.6vw, 1.8rem); line-height: 1.05; text-transform: uppercase; color: var(--cream); margin: 0 0 4px; }
+  .cfg-head-body { color: var(--text-faint); font-size: 13px; line-height: 1.5; margin: 0; }
+  .cfg-occasions { border: none; margin: 0; padding: 0; min-width: 0; }
+  .cfg-occasions legend { padding: 0; margin-bottom: 6px; }
+  .cfg-occasion-pills .cfg-pill-body { padding: 7px 11px; font-size: 12px; }
+
+  /* One strip, five segments joined by chevrons. */
+  .cfg-strip-list { list-style: none; margin: 0; padding: 0; display: flex; border: 1px solid var(--line); border-radius: 12px; background: rgba(39,7,15,0.42); overflow: hidden; }
+  .cfg-strip-item { flex: 1; display: flex; align-items: stretch; min-width: 0; }
+  .cfg-strip-chev { flex-shrink: 0; width: 8px; margin: 0 2px; align-self: center; stroke: var(--text-mute); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .cfg-strip-step {
+    flex: 1; display: flex; align-items: center; justify-content: center; gap: 9px; min-width: 0; padding: 9px 10px;
+    color: var(--text-dim); text-decoration: none; font-size: 12.5px; font-weight: 600; letter-spacing: 0.02em; transition: color 150ms ease, background 150ms ease;
   }
-  .cfg-hero-scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(39,6,15,0.82) 0%, rgba(39,6,15,0.8) 45%, rgba(39,6,15,1) 100%); }
-  .cfg-hero-content { position: relative; z-index: 2; }
-  .cfg-hero-copy { max-width: 720px; }
-  .cfg-hero-title { font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.06; text-transform: uppercase; color: var(--cream); margin: 12px 0 14px; text-shadow: 0 2px 40px rgba(0,0,0,0.5); }
-  .cfg-hero-body { color: var(--text-dim); font-size: 15px; line-height: 1.7; max-width: 640px; }
+  .cfg-strip-step:hover { color: var(--cream); background: rgba(237,219,194,0.05); }
+  .cfg-strip-step[aria-current='step'] { color: var(--cream); background: rgba(251,210,149,0.1); }
+  .cfg-strip-step:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
+  .cfg-strip-num { width: 22px; height: 22px; flex-shrink: 0; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--line); font-size: 11px; font-weight: 700; }
+  .cfg-strip-step[aria-current='step'] .cfg-strip-num { border-color: var(--gold); color: var(--gold); }
+  .cfg-strip-step[data-done='true'] .cfg-strip-num { background: var(--gold); color: #1a120b; border-color: var(--gold); }
+  .cfg-strip-label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-  .cfg-progress { margin: 26px 0 18px; }
-  .cfg-progress-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
-  .cfg-progress-step {
-    display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 11px; border: 1px solid var(--line);
-    background: rgba(39,7,15,0.42); backdrop-filter: blur(8px); color: var(--text-dim); text-decoration: none; transition: border-color 150ms ease, color 150ms ease;
-  }
-  .cfg-progress-step:hover { border-color: rgba(237,219,194,0.45); color: var(--cream); }
-  .cfg-progress-step[aria-current='step'] { border-color: var(--gold); color: var(--cream); }
-  .cfg-progress-step[data-done='true'] .cfg-progress-num { background: var(--gold); color: #1a120b; border-color: var(--gold); }
-  .cfg-progress-num { width: 24px; height: 24px; flex-shrink: 0; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--line); font-size: 11px; font-weight: 700; }
-  .cfg-progress-step[aria-current='step'] .cfg-progress-num { border-color: var(--gold); color: var(--gold); }
-  .cfg-progress-label { display: flex; flex-direction: column; font-size: 12.5px; font-weight: 600; line-height: 1.2; }
-  .cfg-progress-kicker { font-size: 9.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-mute); margin-bottom: 2px; }
-
-  .cfg-occasions { border: 1px solid rgba(237,219,194,0.2); margin: 0; min-width: 0; padding: 18px 22px 20px; display: flex; align-items: center; gap: 16px 22px; flex-wrap: wrap; }
-  .cfg-occasions legend { float: left; margin: 0; padding: 0; width: auto; }
-  .cfg-hero-actions { margin: 0 0 0 auto; }
-
-  @media (max-width: 960px) { .cfg-progress-list { grid-template-columns: repeat(3, 1fr); } }
-  @media (max-width: 600px) {
-    .cfg-progress-list { grid-template-columns: repeat(2, 1fr); }
-    .cfg-occasions { padding: 16px 16px 18px; }
-    .cfg-hero-actions { width: 100%; justify-content: stretch; }
-    .cfg-hero-actions .btn-cta { width: 100%; }
+  @media (max-width: 760px) {
+    .cfg-head-row { align-items: flex-start; margin-bottom: 10px; }
+    .cfg-head-body { display: none; }
+    .cfg-head-inner { padding-top: 10px; }
+    .cfg-strip-step { padding: 9px 6px; gap: 6px; }
+    .cfg-strip-label { display: none; }
+    .cfg-strip-step[aria-current='step'] .cfg-strip-label { display: inline; }
+    .cfg-strip-item:not(:has([aria-current='step'])) { flex: 0 0 auto; }
   }
 </style>

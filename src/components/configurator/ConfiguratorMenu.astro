@@ -32,7 +32,7 @@ const TABS = [
   { key: 'drinks', venue: 'sisi', label: m.tabs.drinks, sub: m.tabs.drinksSub },
   { key: 'food', venue: 'sisi', label: m.tabs.food, sub: m.tabs.foodSub },
 ] as const;
-const packageSub = (pkg: { price: number | null }) => (pkg.price ? `${pkg.price} ${m.cork.perAdult}` : m.cork.alacarte);
+const packageSub = (pkg: { price: number }) => `${pkg.price} ${m.cork.perAdult}`;
 // One glyph per course / drinks card and per tab, from the menu icon sets.
 const DESSERT_ICON = '<path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"/><path d="M4 16c1.5 0 1.5-1 3-1s1.5 1 3 1 1.5-1 3-1 1.5 1 3 1 1.5-1 3-1"/><path d="M2 21h20"/><path d="M7 8v3m5-3v3m5-3v3"/><path d="M7 4h.01M12 4h.01M17 4h.01"/>';
 const COURSE_ICONS: Record<string, string> = {
@@ -47,8 +47,18 @@ const TAB_ICONS = { corkFood: UI_ICONS.utensils, corkDrinks: DRINK_ICONS.wine, d
 <section id="cfg-menu" class="cfg-step" data-cfg-step="menu">
   <div class="container">
     <div class="cfg-step-head" data-reveal>
-      <p class="cfg-step-kicker">{c.progress.stepLabel.replace('{n}', '3')} · {c.progress.steps.menu}</p>
       <h2 class="display cfg-step-title">{m.heading}</h2>
+    </div>
+
+    <!-- One-click starting point (script): packages matched to the group, the
+         included time and the occasion; every pick stays editable. -->
+    <div class="cfg-propose" data-reveal>
+      <p class="cfg-notice cfg-need-guests" data-need-guests hidden>{c.wizard.needGuests}</p>
+      <div class="cfg-propose-row" data-propose hidden>
+        <button type="button" class="btn-outline cfg-propose-btn" data-propose-btn>{c.wizard.propose}</button>
+        <span class="cfg-propose-hint">{c.wizard.proposeHint}</span>
+      </div>
+      <button type="button" class="cfg-link-btn" data-clear-menu hidden>{c.wizard.clearMenu}</button>
     </div>
 
     <div class="cfg-tabs" role="tablist" aria-label={c.progress.steps.menu} data-reveal>
@@ -76,7 +86,7 @@ const TAB_ICONS = { corkFood: UI_ICONS.utensils, corkDrinks: DRINK_ICONS.wine, d
                 <div class="cfg-grid-3 cfg-course-packages">
                   {course.packages.map((pkg) => (
                     <label class="cfg-choice">
-                      <input type="radio" name={`cork_${course.key}`} value={`${pkg.label} (${packageSub(pkg)})`} data-key={pkg.key} data-price={pkg.price ?? 0} data-size={pkg.size} data-label={pkg.label} checked={pkg.key === course.defaultPackage} />
+                      <input type="radio" name={`cork_${course.key}`} value={`${pkg.label} (${packageSub(pkg)})`} data-key={pkg.key} data-price={pkg.price} data-size={pkg.size} data-label={pkg.label} data-toggle />
                       <span class="cfg-choice-body">
                         <span class="cfg-choice-title">{pkg.label}</span>
                         <span class="cfg-choice-sub">{packageSub(pkg)}</span>
@@ -115,13 +125,13 @@ const TAB_ICONS = { corkFood: UI_ICONS.utensils, corkDrinks: DRINK_ICONS.wine, d
               <span class="cfg-course-meta">{m.cork.perAdultLabel}</span>
             </header>
             <div class="cfg-grid-4">
-              {CORK_WINE_PACKAGES.map((pkg, index) => (
+              {CORK_WINE_PACKAGES.map((pkg) => (
                 <label class="cfg-choice">
-                  <input type="radio" name="cork_wine" value={`${pkg.label} (${pkg.detail})`} data-key={pkg.key} data-price={pkg.price ?? 0} data-label={`${pkg.label} · ${pkg.detail}`} checked={index === CORK_WINE_PACKAGES.length - 1} />
+                  <input type="radio" name="cork_wine" value={`${pkg.label} (${pkg.detail})`} data-key={pkg.key} data-price={pkg.price} data-hours={pkg.hours} data-label={`${pkg.label} · ${pkg.detail}`} data-toggle />
                   <span class="cfg-choice-body">
-                    <span class="cfg-choice-title">{pkg.label}</span>
+                    <span class="cfg-choice-title">{pkg.label}<span class="cfg-badge" data-suggest-wine={pkg.key} hidden>{c.wizard.suggested}</span></span>
                     <span class="cfg-choice-sub">{pkg.detail}</span>
-                    <span class="cfg-choice-price">{pkg.price ? `${pkg.price} ${m.cork.perAdult}` : m.cork.alacarte}</span>
+                    <span class="cfg-choice-price">{pkg.price} {m.cork.perAdult}</span>
                   </span>
                   <span class="cfg-choice-check" aria-hidden="true">✓</span>
                 </label>
@@ -145,9 +155,9 @@ const TAB_ICONS = { corkFood: UI_ICONS.utensils, corkDrinks: DRINK_ICONS.wine, d
               </label>
               {CORK_OPEN_BAR.map((pkg) => (
                 <label class="cfg-choice">
-                  <input type="radio" name="cork_bar" value={`${pkg.label} ${pkg.detail}`} data-key={pkg.key} data-price={pkg.price} data-label={`${pkg.label} · ${pkg.detail}`} />
+                  <input type="radio" name="cork_bar" value={`${pkg.label} ${pkg.detail}`} data-key={pkg.key} data-price={pkg.price} data-hours={pkg.hours} data-label={`${pkg.label} · ${pkg.detail}`} />
                   <span class="cfg-choice-body">
-                    <span class="cfg-choice-title">{pkg.label}</span>
+                    <span class="cfg-choice-title">{pkg.label}<span class="cfg-badge" data-suggest-bar={pkg.key} hidden>{c.wizard.suggested}</span></span>
                     <span class="cfg-choice-sub">{pkg.detail}</span>
                     <span class="cfg-choice-price">{pkg.price} {m.cork.perAdult}</span>
                   </span>
@@ -242,6 +252,14 @@ const TAB_ICONS = { corkFood: UI_ICONS.utensils, corkDrinks: DRINK_ICONS.wine, d
 </section>
 
 <style>
+  .cfg-propose { display: flex; align-items: center; gap: 12px 18px; flex-wrap: wrap; margin-bottom: 14px; }
+  .cfg-propose:empty { display: none; }
+  .cfg-need-guests { flex: 1 1 100%; margin: 0; }
+  .cfg-propose-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .cfg-propose-btn { padding: 10px 18px; font-size: 13px; }
+  .cfg-propose-hint { font-size: 12.5px; color: var(--text-faint); max-width: 520px; line-height: 1.5; }
+  .cfg-link-btn { margin-left: auto; border: none; background: none; padding: 6px 0; color: var(--text-faint); font: inherit; font-size: 12.5px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+  .cfg-link-btn:hover { color: var(--cream); }
   .cfg-tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
   .cfg-tab {
     display: flex; align-items: baseline; gap: 8px; padding: 9px 14px; border-radius: 11px; border: 1px solid var(--line);
@@ -285,7 +303,7 @@ const TAB_ICONS = { corkFood: UI_ICONS.utensils, corkDrinks: DRINK_ICONS.wine, d
   .cfg-menu-link { margin-top: 4px; font-size: 13px; }
   .cfg-menu-link a { color: var(--cream); text-decoration: underline; text-underline-offset: 3px; }
 
-  .cfg-estimate { position: sticky; top: calc(var(--nav-height) + 12px); padding: 20px 22px 20px; border-color: rgba(251,210,149,0.28); }
+  .cfg-estimate { position: sticky; top: 12px; padding: 20px 22px 20px; border-color: rgba(251,210,149,0.28); }
   .cfg-estimate-empty { font-size: 13px; color: var(--text-faint); line-height: 1.6; }
   .cfg-estimate-rows { margin: 0; display: flex; flex-direction: column; gap: 8px; }
   .cfg-estimate-rows > div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 13px; color: var(--text-dim); }

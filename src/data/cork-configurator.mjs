@@ -15,7 +15,7 @@
 export const CORK_MIN_GUESTS = 10;
 /** From this size the whole restaurant can be hired exclusively (individual quote). */
 export const CORK_EXCLUSIVE_FROM = 60;
-/** Service charge applied to the whole restaurant offer, à la carte included. */
+/** Service charge applied to the whole restaurant offer. */
 export const CORK_SERVICE_FEE = 0.1;
 /** Deposit share, payable 7 days before the event; the rest at the end. */
 export const CORK_DEPOSIT_SHARE = 0.5;
@@ -48,10 +48,12 @@ export const CORK_START_WINDOWS = {
 
 /**
  * Sharing-menu courses. `packages` are priced per adult; `dishes` are the
- * choices a package draws from (pick up to `size`).
- * @typedef {{ key: string, label: string, size: number, unit: string, price: number | null }} CorkPackage
+ * choices a package draws from (pick up to `size`). A course with no package
+ * chosen is simply left out of the estimate (the owner dropped the explicit
+ * "à la carte" option on 2026-09-15).
+ * @typedef {{ key: string, label: string, size: number, unit: string, price: number }} CorkPackage
  * @typedef {{ name: string, desc: string, note?: string }} CorkDish
- * @type {{ key: string, numeral: string, title: string, included?: boolean, optional?: boolean, packages: CorkPackage[], defaultPackage?: string, dishes: CorkDish[] }[]}
+ * @type {{ key: string, numeral: string, title: string, included?: boolean, optional?: boolean, packages: CorkPackage[], dishes: CorkDish[] }[]}
  */
 export const CORK_COURSES = [
   {
@@ -69,9 +71,7 @@ export const CORK_COURSES = [
     packages: [
       { key: 'four', label: 'Cztery przystawki', size: 4, unit: 'przystawki', price: 80 },
       { key: 'five', label: 'Pięć przystawek', size: 5, unit: 'przystawek', price: 95 },
-      { key: 'alacarte', label: 'À la carte', size: 0, unit: 'à la carte', price: null },
     ],
-    defaultPackage: 'alacarte',
     dishes: [
       { name: 'Matjas', desc: 'Grzanka żytnia · twarożek z czosnkiem niedźwiedzim · młody bób · pikle · oliwa koperkowa' },
       { name: 'Burrata Pugliese & pomidory', desc: 'Lokalne pomidory · bazylia · purée malinowe · oliwa Coratina · pistacja' },
@@ -91,9 +91,7 @@ export const CORK_COURSES = [
     packages: [
       { key: 'four', label: 'Cztery dania główne', size: 4, unit: 'dania główne', price: 139 },
       { key: 'five', label: 'Pięć dań głównych', size: 5, unit: 'dań głównych', price: 159 },
-      { key: 'alacarte', label: 'À la carte', size: 0, unit: 'à la carte', price: null },
     ],
-    defaultPackage: 'alacarte',
     dishes: [
       { name: 'Domowe spaghetti & pomidory', desc: 'Lokalne pomidory · bazylia · pieprz młotkowany · stracciatella di burrata' },
       { name: 'Risotto & kurki', desc: 'Pieczone kurki · suszone pomidory · Gorgonzola Dolce · młody szpinak · oliwa ziołowa', note: 'Kurczak +29 zł · krewetki +44 zł · polędwica +59 zł' },
@@ -113,9 +111,7 @@ export const CORK_COURSES = [
     optional: true,
     packages: [
       { key: 'three', label: 'Trzy desery', size: 3, unit: 'słodkie finały', price: 38 },
-      { key: 'alacarte', label: 'À la carte', size: 0, unit: 'à la carte', price: null },
     ],
-    defaultPackage: 'alacarte',
     dishes: [
       { name: 'Tarta morelowa & kwiat bzu', desc: 'Morele · migdały · kwiaty bzu · sorbet prosecco · likier St-Germain' },
       { name: 'Fondant pistacjowy', desc: 'Sos z białej czekolady i fasoli Tonka · lody śmietankowe' },
@@ -125,17 +121,17 @@ export const CORK_COURSES = [
   },
 ];
 
-/** Drinks, all per adult (children never count) or one flat amount. */
+/** Drinks, all per adult (children never count) or one flat amount. `hours` is
+ * the package length, matched by the page script to the group's included time. */
 export const CORK_WINE_PACKAGES = [
-  { key: 'wine3', label: 'Pakiet wina', detail: 'do 3 godzin', price: 70 },
-  { key: 'wine4', label: 'Pakiet wina', detail: 'do 4 godzin', price: 90 },
-  { key: 'wine5', label: 'Pakiet wina', detail: 'do 5 godzin', price: 120 },
-  { key: 'alacarte', label: 'À la carte', detail: 'wino według karty', price: null },
+  { key: 'wine3', hours: 3, label: 'Pakiet wina', detail: 'do 3 godzin', price: 70 },
+  { key: 'wine4', hours: 4, label: 'Pakiet wina', detail: 'do 4 godzin', price: 90 },
+  { key: 'wine5', hours: 5, label: 'Pakiet wina', detail: 'do 5 godzin', price: 120 },
 ];
 export const CORK_WINE_NOTE = 'Pakiet obejmuje 2 białe i 2 czerwone wina - wybór sommeliera. Woda REDOX jest zawsze w pakiecie z winem.';
 export const CORK_OPEN_BAR = [
-  { key: 'bar4', label: 'Open bar', detail: 'do 4 godzin', price: 190 },
-  { key: 'bar6', label: 'Open bar', detail: 'do 6 godzin', price: 220 },
+  { key: 'bar4', hours: 4, label: 'Open bar', detail: 'do 4 godzin', price: 190 },
+  { key: 'bar6', hours: 6, label: 'Open bar', detail: 'do 6 godzin', price: 220 },
 ];
 export const CORK_OPEN_BAR_NOTE = 'Drinki, koktajle oraz alkohole mocne: wódka, whisky, rum, gin i tequila.';
 export const CORK_OPEN_BAR_PREMIUM = { key: 'premium', label: 'Premium', detail: 'dodatek do pakietu OPEN BAR', price: 40 };

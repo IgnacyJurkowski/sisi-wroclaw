@@ -16,7 +16,6 @@ const plSpaces = useTranslations('pl').configurator.space.options;
 <section id="cfg-space" class="cfg-step" data-cfg-step="space">
   <div class="container">
     <div class="cfg-step-head" data-reveal>
-      <p class="cfg-step-kicker">{c.progress.stepLabel.replace('{n}', '1')} · {c.progress.steps.space}</p>
       <h2 class="display cfg-step-title">{c.space.heading}</h2>
     </div>
 
@@ -52,9 +51,9 @@ const plSpaces = useTranslations('pl').configurator.space.options;
 </section>
 
 <style>
-  .cfg-space-grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 20px; align-items: start; }
-  .cfg-plan { margin: 0; padding: 18px 18px 14px; text-align: center; }
-  .cfg-map { display: inline-block; width: min(100%, 400px); }
+  .cfg-space-grid { display: grid; grid-template-columns: minmax(0, 360px) minmax(0, 1fr); gap: 20px; align-items: start; }
+  .cfg-plan { margin: 0; padding: 16px 16px 12px; text-align: center; }
+  .cfg-map { display: inline-block; width: min(100%, 300px); }
   .cfg-plan figcaption { font-size: 12px; color: var(--text-faint); margin-top: 10px; line-height: 1.5; }
   .cfg-spaces { border: none; margin: 0; padding: 0; min-width: 0; }
   .cfg-spaces-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }

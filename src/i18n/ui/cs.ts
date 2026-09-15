@@ -411,14 +411,11 @@ const cs: UI = {
 
   configurator: {
     hero: {
-      eyebrow: 'Vaše oslava v R32',
       title: 'Naplánujte svou akci',
-      body: 'Vyberte prostor, termín a menu - v klubu SiSi, restauraci The Cork nebo v celém R32. Na konci uvidíte shrnutí a odešlete ho týmu, který připraví individuální návrh.',
-      start: 'Začínáme',
+      body: 'Vyberte prostor, termín a menu. Shrnutí nám pošlete na konci.',
     },
     progress: {
       label: 'Průběh konfigurace',
-      stepLabel: 'Krok {n}',
       steps: { space: 'Prostor', details: 'Podrobnosti', menu: 'Menu', extras: 'Doplňky', summary: 'Shrnutí' },
     },
     occasion: {
@@ -483,7 +480,6 @@ const cs: UI = {
         included: 'vždy v balíčku',
         optional: 'volitelný balíček',
         perAdult: 'zł / os.',
-        alacarte: 'podle nabídky',
         chosen: '{n} / {size} vybráno',
         pickHint: 'Označte jídla do balíčku.',
         winePackages: 'Vinné balíčky',
@@ -493,7 +489,6 @@ const cs: UI = {
         openBarNone: 'Bez open baru',
         premiumHint: 'Vyberte délku open baru a přidejte Premium.',
         sommelier: 'Osobní vinný servis',
-        alacarteNote: 'Položky à la carte nejsou v částce zahrnuty - hosté si je vyberou u stolu. Servisní poplatek 10 % se vztahuje i na objednávky à la carte.',
       },
       groups: { cocktails: 'Koktejly', wines: 'Polská vína - lahev 750 ml', champagne: 'Šampaňské - lahev 750 ml', bottles: 'Bottle service', food: 'Night Menu' },
       hints: { perGuest: 'počet na hosta', bottles: 'počet lahví', portions: 'počet porcí' },
@@ -592,7 +587,14 @@ const cs: UI = {
       },
     },
     buttons: { toDetails: 'Zadat podrobnosti', toMenu: 'Sestavit menu', toExtras: 'Přidat doplňky', toSummary: 'Přejít na shrnutí' },
-    wizard: { back: 'Zpět', next: 'Dále', chooseDishes: 'Vybrat jídla', hideDishes: 'Skrýt jídla', suggested: 'doporučeno', cakeSizeAuto: 'podle počtu hostů', perGuest: 'na hosta' },
+    wizard: {
+      back: 'Zpět', next: 'Dále', chooseDishes: 'Vybrat jídla', hideDishes: 'Skrýt jídla', suggested: 'doporučeno', cakeSizeAuto: 'podle počtu hostů', perGuest: 'na hosta',
+      propose: 'Navrhnout menu na začátek',
+      proposeHint: 'Balíčky podle počtu hostů, zahrnutého času a příležitosti - vše můžete změnit.',
+      clearMenu: 'Vymazat menu',
+      needGuests: 'Zadejte počet hostů v kroku 2 a spočítáme cenu na osobu.',
+      hints: { details: 'Zadejte termín a počet hostů.', menu: 'Přidejte balíček nebo položky z nabídky, abyste viděli odhad.', summary: 'Zadejte jméno a e-mail a pošleme vám návrh.' },
+    },
   },
 
   b2b: {

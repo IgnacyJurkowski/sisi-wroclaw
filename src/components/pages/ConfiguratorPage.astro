@@ -59,6 +59,7 @@ const clientStrings = JSON.stringify({
   estimate: c.menu.estimate,
   units: c.menu.units,
   chosen: c.menu.cork.chosen,
+  hints: c.wizard.hints,
 });
 ---
 
@@ -70,6 +71,7 @@ const clientStrings = JSON.stringify({
   ogTitle={t.meta.configurator.title}
   ogDescription={t.meta.configurator.ogDescription}
   schema={[privateEventsServiceSchema(locale), breadcrumb]}
+  noFooter
 >
   <form
     class="cfg"
@@ -94,16 +96,20 @@ const clientStrings = JSON.stringify({
     </p>
 
     <ConfiguratorHero locale={locale} />
-    <ConfiguratorSpace locale={locale} />
-    <ConfiguratorDetails locale={locale} />
-    <ConfiguratorMenu locale={locale} />
-    <ConfiguratorExtras locale={locale} />
-    <ConfiguratorSummary locale={locale} />
 
-    <!-- Sticky calculator bar (shown by the script, which turns the steps into a wizard) -->
+    <!-- The steps scroll inside this pane; the header and the calculator bar stay put. -->
+    <div class="cfg-body" data-cfg-body>
+      <ConfiguratorSpace locale={locale} />
+      <ConfiguratorDetails locale={locale} />
+      <ConfiguratorMenu locale={locale} />
+      <ConfiguratorExtras locale={locale} />
+      <ConfiguratorSummary locale={locale} />
+    </div>
+
+    <!-- Calculator bar (shown by the script, which turns the steps into a wizard) -->
     <div class="cfg-bar" data-cfg-bar hidden>
       <div class="container cfg-bar-inner">
-        <p class="cfg-bar-line" data-bar-line aria-live="polite"></p>
+        <p class="cfg-bar-line" aria-live="polite"><span data-bar-line></span><span class="cfg-bar-hint" data-bar-hint hidden></span></p>
         <p class="cfg-bar-total"><strong data-bar-total>0 zł</strong> <span class="cfg-bar-per" data-bar-per></span></p>
         <div class="cfg-bar-actions">
           <button type="button" class="btn-outline cfg-bar-btn" data-wizard-back>{c.wizard.back}</button>
@@ -122,19 +128,28 @@ const clientStrings = JSON.stringify({
 <style is:global>
   /* Shared configurator chrome. Global (not scoped) because the six step
      components share the same section, card, chip and button recipes. */
-  .cfg { display: block; }
+  /* App shell: the site nav floats above, the page fills the viewport, the
+     header and the calculator bar stay put and only the step pane scrolls. */
+  .cfg { display: flex; flex-direction: column; min-height: 100dvh; padding-top: var(--nav-height); }
+  .cfg .container { max-width: min(1400px, 100%); }
+  .cfg-body { flex: 1; min-height: 0; }
   .cfg-hp { position: absolute; left: -9999px; }
-  /* Wizard mode (script on): one step at a time, in-step "next" links hidden, room for the bar. */
-  .cfg-wizard { padding-bottom: 96px; }
+  /* Wizard mode (script on): one step at a time, in-step "next" links hidden. */
+  .cfg-wizard { height: 100dvh; overflow: hidden; }
+  .cfg-wizard .cfg-body { overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
   .cfg-wizard [data-step-actions] { display: none; }
-  .cfg-wizard .cfg-step { padding-top: 28px; }
+  .cfg-wizard .cfg-step { padding: 22px 0 28px; }
   .cfg-bar {
-    position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+    flex-shrink: 0; z-index: 40;
     background: rgba(39,7,15,0.9); backdrop-filter: blur(12px); border-top: 1px solid rgba(237,219,194,0.2);
     padding: 10px 0 calc(10px + env(safe-area-inset-bottom, 0px));
   }
   .cfg-bar-inner { display: flex; align-items: center; gap: 16px; }
-  .cfg-bar-line { flex: 1; min-width: 0; font-size: 13px; color: var(--text-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cfg-bar-line { flex: 1; min-width: 0; display: flex; align-items: baseline; gap: 10px; font-size: 13px; color: var(--text-dim); white-space: nowrap; overflow: hidden; }
+  .cfg-bar-line > span { overflow: hidden; text-overflow: ellipsis; }
+  .cfg-bar-hint { color: var(--gold); font-size: 12.5px; }
+  .cfg-bar-hint::before { content: '·'; margin-right: 10px; color: var(--text-mute); }
+  .cfg-bar-hint:first-child::before { content: none; }
   .cfg-bar-total { display: flex; align-items: baseline; gap: 8px; white-space: nowrap; }
   .cfg-bar-total strong { font-family: var(--font-display); font-weight: 400; font-size: 1.35rem; color: var(--cream); }
   .cfg-bar-per { font-size: 12px; color: var(--text-faint); }
@@ -154,7 +169,7 @@ const clientStrings = JSON.stringify({
   .cfg-dish-toggle svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform 150ms ease; }
   .cfg-dish-toggle[aria-expanded='true'] svg { transform: rotate(180deg); }
   .cfg-dish-list { margin-top: 12px; }
-  .cfg-step { padding: 40px 0 8px; scroll-margin-top: calc(var(--nav-height) + 12px); }
+  .cfg-step { padding: 40px 0 8px; scroll-margin-top: 12px; }
   .cfg-step-head { margin: 0 0 18px; }
   .cfg-step-kicker {
     font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
@@ -240,10 +255,12 @@ const clientStrings = JSON.stringify({
 
   @media (max-width: 900px) { .cfg-grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } .cfg-grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (max-width: 640px) {
-    .cfg-bar-line { display: none; }
+    .cfg-bar-line > span:first-child { display: none; }
+    .cfg-bar-hint::before { content: none; }
     .cfg-bar-inner { justify-content: space-between; }
     .cfg-bar-btn { padding: 10px 14px; }
     .cfg-step { padding: 32px 0 6px; }
+    .cfg-wizard .cfg-step { padding: 16px 0 24px; }
     .cfg-card { padding: 20px 18px; }
     .cfg-grid-2, .cfg-grid-3, .cfg-grid-4 { grid-template-columns: 1fr; }
     .cfg .menu-fold-summary { padding: 16px 18px; }

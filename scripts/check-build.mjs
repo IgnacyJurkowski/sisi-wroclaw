@@ -615,11 +615,14 @@ for (const locale of LOCALES) {
       && (html.match(/rel="alternate" hreflang="(pl|en|de|it|cs)"/g) || []).length === 5
       && html.includes('hreflang="x-default"'),
   );
+  // App-like page: fills the viewport, no footer of its own; it is reached from
+  // every other page's footer and from the private-events CTA.
   assert(
-    `${locale} configurator is linked from the footer and the private-events page`,
-    html.includes(`href="${routePath}"`)
+    `${locale} configurator is linked from the shared footer and the private-events page`,
+    read(`${locale}/index.html`).includes(`href="${routePath}"`)
       && privateEventPages[locale].includes(`href="${routePath}"`),
   );
+  assert(`${locale} configurator renders as a full-viewport shell without the footer`, !html.includes('<footer') && html.includes('data-cfg-body'));
   const forms = html.match(/<form\b[^>]*\bname="event-configurator"[^>]*>[\s\S]*?<\/form>/g) ?? [];
   const form = forms[0] ?? '';
   const openTag = form.match(/^<form\b[^>]*>/)?.[0] ?? '';
@@ -700,6 +703,13 @@ for (const locale of LOCALES) {
   assert(
     `${locale} configurator lists only SiSi menu, owner event or The Cork prices (${configuratorPrices.length} menu prices)`,
     configuratorPrices.length > 20 && configuratorPrices.every((price) => menuPrices.has(price)),
+  );
+  // The owner dropped the "à la carte" choice (2026-09-15): a course or wine
+  // package is picked or left out, and nothing is pre-selected.
+  assert(
+    `${locale} configurator has no à la carte option and no pre-selected restaurant package`,
+    !/à la carte/i.test(form)
+      && ![...form.matchAll(/<input type="radio" name="cork_(?:starters|mains|desserts|wine)"[^>]*>/g)].some((m) => /\bchecked\b/.test(m[0])),
   );
   // The Cork's dinner is priced in-page (no iframe, no link-out to a second tool).
   assert(

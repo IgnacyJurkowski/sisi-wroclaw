@@ -18,7 +18,6 @@ const ROWS = ['occasion', 'date', 'time', 'guests', 'seating', 'space', 'duratio
 <section id="cfg-summary" class="cfg-step cfg-summary" data-cfg-step="summary">
   <div class="container">
     <div class="cfg-step-head" data-reveal>
-      <p class="cfg-step-kicker">{c.progress.stepLabel.replace('{n}', '5')} · {c.progress.steps.summary}</p>
       <h2 class="display cfg-step-title">{s.heading}</h2>
     </div>
 
@@ -45,7 +44,7 @@ const ROWS = ['occasion', 'date', 'time', 'guests', 'seating', 'space', 'duratio
             <div><dt>{s.cork.deposit}<span class="cfg-summary-hint">{s.cork.depositHint}</span></dt><dd data-cork-deposit>0 zł</dd></div>
             <div><dt>{s.cork.balance}<span class="cfg-summary-hint">{s.cork.balanceHint}</span></dt><dd data-cork-balance>0 zł</dd></div>
           </dl>
-          <p class="cfg-summary-note">{s.cork.vat} {c.menu.cork.alacarteNote}</p>
+          <p class="cfg-summary-note">{s.cork.vat}</p>
         </article>
 
         <article class="sisi-card cfg-card cfg-terms">
