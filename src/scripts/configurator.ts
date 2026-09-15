@@ -11,7 +11,7 @@ import { capacityNotice, estimate, formatZl } from '../lib/configurator-estimate
 type Strings = {
   capacity: { seated: string; standing: string };
   limits: { seatedTheCork: number; standingR32: number };
-  summary: { toBeAgreed: string; none: string; guestsUnit: string };
+  summary: { toBeAgreed: string; none: string; guestsUnit: string; corkCalculator: string; corkCalculatorPl: string };
   units: { perGuest: string; bottle: string; portion: string };
   estimate: { drinks: string; food: string; total: string; guests: string; perGuest: string };
 };
@@ -27,6 +27,9 @@ function initConfigurator(form: HTMLFormElement): void {
   const guestsInput = q<HTMLInputElement>('[name="guests"]');
   const capacityEl = q<HTMLElement>('[data-capacity-notice]');
   const spaceSelected = q<HTMLElement>('[data-space-selected]');
+  const menuOwn = q<HTMLElement>('[data-menu-own]');
+  const menuCork = q<HTMLElement>('[data-menu-cork]');
+  const corkFrame = q<HTMLIFrameElement>('[data-menu-cork] iframe[data-src]');
   const est = {
     empty: q<HTMLElement>('[data-est-empty]'),
     rows: q<HTMLElement>('[data-est-rows]'),
@@ -123,6 +126,12 @@ function initConfigurator(form: HTMLFormElement): void {
     const space = checkedRadio('space');
     if (spaceSelected && space) spaceSelected.textContent = space.getAttribute('data-label') || '';
     const spaceKey = space?.getAttribute('data-key') || '';
+    // The Cork alone: swap the SiSi menu for the restaurant's own configurator,
+    // loading the third-party frame only once a visitor actually chooses it.
+    const corkMode = spaceKey === 'cork';
+    if (menuOwn) menuOwn.hidden = corkMode;
+    if (menuCork) menuCork.hidden = !corkMode;
+    if (corkMode && corkFrame && !corkFrame.src) corkFrame.src = corkFrame.getAttribute('data-src') || '';
     mapRegions.forEach((region) => {
       const key = region.getAttribute('data-map-space') || '';
       const on = spaceKey === key || spaceKey === 'r32';
@@ -147,23 +156,29 @@ function initConfigurator(form: HTMLFormElement): void {
     set('guests', g > 0 ? `${g} ${strings.summary.guestsUnit}` : strings.summary.toBeAgreed);
     set('seating', label(seating));
     set('space', label(space));
-    set('drinks', drinks.length ? describe(drinks, false) : strings.summary.none);
-    set('food', food.length ? describe(food, false) : strings.summary.none);
+    const cork = strings.summary.corkCalculator;
+    set('drinks', corkMode ? cork : drinks.length ? describe(drinks, false) : strings.summary.none);
+    set('food', corkMode ? cork : food.length ? describe(food, false) : strings.summary.none);
     set('extras', extras.length ? extras.join(', ') : strings.summary.none);
     set(
       'estimate',
-      hasLines
-        ? `${formatZl(result.total)} (${g} ${strings.estimate.guests}, ${formatZl(result.perGuest)} ${strings.estimate.perGuest})`
-        : strings.summary.none,
+      corkMode
+        ? cork
+        : hasLines
+          ? `${formatZl(result.total)} (${g} ${strings.estimate.guests}, ${formatZl(result.perGuest)} ${strings.estimate.perGuest})`
+          : strings.summary.none,
     );
 
     // Hidden fields for the notification email (Polish, like every other form)
-    if (hidden.drinks) hidden.drinks.value = describe(drinks, true);
-    if (hidden.food) hidden.food.value = describe(food, true);
+    const corkPl = strings.summary.corkCalculatorPl;
+    if (hidden.drinks) hidden.drinks.value = corkMode ? corkPl : describe(drinks, true);
+    if (hidden.food) hidden.food.value = corkMode ? corkPl : describe(food, true);
     if (hidden.estimate) {
-      hidden.estimate.value = hasLines
-        ? `wg karty: napoje ${formatZl(result.drinks)}, przekąski ${formatZl(result.food)}, razem ${formatZl(result.total)} (${g} gości, ${formatZl(result.perGuest)} na gościa)`
-        : '';
+      hidden.estimate.value = corkMode
+        ? corkPl
+        : hasLines
+          ? `wg karty: napoje ${formatZl(result.drinks)}, przekąski ${formatZl(result.food)}, razem ${formatZl(result.total)} (${g} gości, ${formatZl(result.perGuest)} na gościa)`
+          : '';
     }
   }
 

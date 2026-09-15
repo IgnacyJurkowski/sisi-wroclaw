@@ -6,7 +6,7 @@
 
 import { type Locale } from '../i18n/config';
 import { parsePrice } from '../lib/configurator-estimate.mjs';
-import { CHAMPAGNE_HOUSES, WINES, bottleService, koktajle, mocktails } from './bar-menu';
+import { CHAMPAGNE_HOUSES, WINES, bottleService } from './bar-menu';
 import { SECTIONS as FOOD_SECTIONS, type L } from './food-menu';
 import { VENUE_FACTS } from './site';
 
@@ -28,7 +28,7 @@ export interface Pick {
   group: 'drinks' | 'food';
 }
 
-export type PickGroupKey = 'cocktails' | 'mocktails' | 'wines' | 'champagne' | 'bottles' | 'food';
+export type PickGroupKey = 'cocktails' | 'wines' | 'champagne' | 'bottles' | 'food';
 
 export interface PickGroup {
   key: PickGroupKey;
@@ -53,14 +53,29 @@ function priced(id: string, name: string | L, priceLabel: string, kind: PickKind
 
 const present = <T,>(value: T | null): value is T => value !== null;
 
-/** Cocktails and 0% cocktails: quantity is "per guest". */
-const cocktailPicks: Pick[] = koktajle
-  .map((item) => priced(`cocktail-${slug(item.name)}`, item.name, item.price, 'perGuest', 'drinks', item.desc))
-  .filter(present);
-
-const mocktailPicks: Pick[] = mocktails
-  .map((item) => priced(`mocktail-${slug(item.name)}`, item.name, item.price, 'perGuest', 'drinks', item.desc))
-  .filter(present);
+/** Event cocktails are a flat per-guest price set by the owner (2026-09-15):
+    38 zł per cocktail and 35 zł per 0% cocktail, any recipe from the SiSi
+    menu. Visitors pick how many per guest, not which ones. */
+const cocktailPicks: Pick[] = [
+  {
+    id: 'cocktail-per-guest',
+    name: { pl: 'Koktajl z karty SiSi', en: 'Cocktail from the SiSi menu', de: 'Cocktail aus der SiSi-Karte', it: 'Cocktail dal menu SiSi', cs: 'Koktejl z nabídky SiSi' },
+    detail: { pl: 'dowolny koktajl autorski · cena za sztukę', en: 'any signature cocktail · price per drink', de: 'beliebiger Signature-Cocktail · Preis pro Drink', it: 'qualsiasi cocktail d’autore · prezzo a drink', cs: 'libovolný autorský koktejl · cena za kus' },
+    priceLabel: '38 zł',
+    price: 38,
+    kind: 'perGuest',
+    group: 'drinks',
+  },
+  {
+    id: 'mocktail-per-guest',
+    name: { pl: 'Koktajl 0% z karty SiSi', en: '0% cocktail from the SiSi menu', de: 'Cocktail 0% aus der SiSi-Karte', it: 'Cocktail 0% dal menu SiSi', cs: 'Koktejl 0% z nabídky SiSi' },
+    detail: { pl: 'dowolny koktajl bezalkoholowy · cena za sztukę', en: 'any alcohol-free cocktail · price per drink', de: 'beliebiger alkoholfreier Cocktail · Preis pro Drink', it: 'qualsiasi cocktail analcolico · prezzo a drink', cs: 'libovolný nealkoholický koktejl · cena za kus' },
+    priceLabel: '35 zł',
+    price: 35,
+    kind: 'perGuest',
+    group: 'drinks',
+  },
+];
 
 /** Wines by the 750 ml bottle: quantity is a bottle count. */
 const winePicks: Pick[] = WINES.map((wine) =>
@@ -96,7 +111,6 @@ const foodPicks: Pick[] = FOOD_SECTIONS.flatMap((section) =>
 
 export const PICK_GROUPS: PickGroup[] = [
   { key: 'cocktails', tab: 'drinks', hint: 'perGuest', items: cocktailPicks },
-  { key: 'mocktails', tab: 'drinks', hint: 'perGuest', items: mocktailPicks },
   { key: 'wines', tab: 'drinks', hint: 'bottles', items: winePicks },
   { key: 'champagne', tab: 'drinks', hint: 'bottles', items: champagnePicks },
   { key: 'bottles', tab: 'drinks', hint: 'bottles', items: bottlePicks },

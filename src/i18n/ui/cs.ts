@@ -471,7 +471,6 @@ const cs: UI = {
       tabs: { drinks: 'Nápoje', drinksSub: 'koktejly, vína, lahve', food: 'Občerstvení', foodSub: 'Night Menu by The Cork' },
       groups: {
         cocktails: 'Koktejly',
-        mocktails: 'Koktejly 0%',
         wines: 'Polská vína - lahev 750 ml',
         champagne: 'Šampaňské - lahev 750 ml',
         bottles: 'Bottle service',
@@ -491,6 +490,12 @@ const cs: UI = {
         guests: 'hostů',
         empty: 'Přidejte položky z nabídky a zobrazí se odhad.',
         note: 'Odhad podle aktuálních cen v nabídce SiSi. Konečnou cenu akce stanovujeme individuálně - toto shrnutí není nabídkou.',
+      },
+      cork: {
+        heading: 'Kalkulačka restaurace The Cork',
+        intro: 'Vybrali jste samotnou restauraci The Cork. Menu a ceny oslavy v restauraci určuje její tým - použijte níže konfigurátor The Cork a zbytek poptávky nám pošlete jako obvykle.',
+        frameTitle: 'Konfigurátor oslav restaurace The Cork',
+        open: 'Otevřít konfigurátor The Cork v nové kartě',
       },
     },
     extras: {
@@ -522,6 +527,7 @@ const cs: UI = {
       },
       toBeAgreed: 'k domluvě',
       none: 'nic nevybráno',
+      corkCalculator: 'podle konfigurátoru The Cork',
       guestsUnit: 'os.',
       terms: {
         heading: 'Podmínky rezervace',

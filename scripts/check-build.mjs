@@ -654,11 +654,18 @@ for (const locale of LOCALES) {
     optionValues.length === 16
       && ['Urodziny', 'Bufet i stojąco', 'Nie wiem jeszcze', 'Wynajem na wyłączność'].every((label) => optionValues.includes(label)),
   );
-  // The floor plan ships without The Cork's zone markers and the page never
-  // names a zone, table count or zone capacity.
+  // The floor plan is an inline vector (no raster from the reference site) and
+  // the page never names a zone, table count or zone capacity.
   assert(
-    `${locale} configurator shows the cleaned R32 floor plan and no restaurant zones`,
-    html.includes('/images/plan-r32.avif') && html.includes('/images/plan-r32.webp') && !/strefa [123]|zone [123]|stołów/i.test(html),
+    `${locale} configurator draws the R32 floor plan as an inline SVG with no restaurant zones`,
+    html.includes('class="cfg-map-svg"') && !html.includes('/images/plan-r32') && !/strefa [123]|zone [123]|stołów/i.test(html),
+  );
+  // The Cork alone hands over to the restaurant's own configurator, embedded
+  // lazily (data-src, no src) so nobody else loads the third-party frame.
+  assert(
+    `${locale} configurator embeds The Cork configurator lazily for the restaurant-only choice`,
+    /<iframe\b(?=[^>]*\bdata-src="https:\/\/thecork\.pl\/konfigurator_imprez\/")(?![^>]*\ssrc=)[^>]*>/.test(html)
+      && html.includes('href="https://thecork.pl/konfigurator_imprez/"'),
   );
   assert(
     `${locale} configurator plan has one clickable region per venue`,
@@ -671,11 +678,20 @@ for (const locale of LOCALES) {
     /\b150\b/.test(html) && /\b500\b/.test(html) && !/\b(?:30|42|52|60) (?:gości|guests|Gäste|ospiti|hostů)\b/.test(html),
   );
   // Prices on the page are the menu's own: every "N zł" the configurator lists
-  // must also appear on the localized menu page.
+  // must also appear on the localized menu page - except the two flat event
+  // cocktail prices the owner set on 2026-09-15 (38 zł cocktail, 35 zł 0%).
   const menuHtml = read(`${locale}/menu/index.html`);
   const menuPrices = new Set((menuHtml.match(/\b\d+ zł/g) || []));
+  const OWNER_EVENT_PRICES = new Set(['38 zł', '35 zł']);
   // '0 zł' is the live estimate's empty state, not a menu price.
-  const configuratorPrices = [...new Set(form.match(/\b\d+ zł/g) || [])].filter((price) => price !== '0 zł');
+  const configuratorPrices = [...new Set(form.match(/\b\d+ zł/g) || [])]
+    .filter((price) => price !== '0 zł' && !OWNER_EVENT_PRICES.has(price));
+  assert(
+    `${locale} configurator prices cocktails at the owner's flat 38 zł / 35 zł per drink`,
+    form.includes('data-id="cocktail-per-guest"') && form.includes('data-price="38"')
+      && form.includes('data-id="mocktail-per-guest"') && form.includes('data-price="35"')
+      && !form.includes('data-id="cocktail-hugo-spritz"'),
+  );
   assert(
     `${locale} configurator lists only prices published on the menu page (${configuratorPrices.length} distinct)`,
     configuratorPrices.length > 20 && configuratorPrices.every((price) => menuPrices.has(price)),
@@ -853,6 +869,7 @@ const expectedCsp = [
   "form-action 'self'",
   "base-uri 'self'",
   "object-src 'none'",
+  "frame-src https://thecork.pl",
   "frame-ancestors 'none'",
 ].join('; ');
 const revalidate = 'public, max-age=0, must-revalidate';

@@ -471,7 +471,6 @@ const en: UI = {
       tabs: { drinks: 'Drinks', drinksSub: 'cocktails, wines, bottles', food: 'Snacks', foodSub: 'Night Menu by The Cork' },
       groups: {
         cocktails: 'Cocktails',
-        mocktails: 'Cocktails 0%',
         wines: 'Polish wines - 750 ml bottle',
         champagne: 'Champagne - 750 ml bottle',
         bottles: 'Bottle service',
@@ -491,6 +490,12 @@ const en: UI = {
         guests: 'guests',
         empty: 'Add items from the menu to see an estimate.',
         note: 'Estimate at current SiSi menu prices. The final cost of the event is agreed individually - this summary is not an offer.',
+      },
+      cork: {
+        heading: 'The Cork restaurant calculator',
+        intro: 'You chose The Cork restaurant on its own. The restaurant team sets the menu and prices for a party there - use The Cork configurator below and send the rest of your enquiry to us as usual.',
+        frameTitle: 'The Cork restaurant party configurator',
+        open: 'Open The Cork configurator in a new tab',
       },
     },
     extras: {
@@ -522,6 +527,7 @@ const en: UI = {
       },
       toBeAgreed: 'to be agreed',
       none: 'none selected',
+      corkCalculator: 'per The Cork configurator',
       guestsUnit: 'guests',
       terms: {
         heading: 'Booking terms',

@@ -1,6 +1,6 @@
 ---
 import { PICK_GROUPS, pickText, type PickGroup } from '../../data/configurator';
-import { ICONS as DRINK_ICONS, localizeDesc } from '../../data/bar-menu';
+import { ICONS as DRINK_ICONS } from '../../data/bar-menu';
 import { UI_ICONS } from '../../data/ui-icons';
 import { type Locale } from '../../i18n/config';
 import { localizedPath } from '../../i18n/routes';
@@ -11,9 +11,11 @@ interface Props { locale: Locale }
 const { locale } = Astro.props;
 const c = useTranslations(locale).configurator;
 const menuHref = localizedPath('menu', locale);
+// The restaurant's own party configurator, shown when The Cork alone is chosen.
+// Its origin is allowed by frame-src in scripts/generate-headers.mjs.
+const CORK_CONFIGURATOR_URL = 'https://thecork.pl/konfigurator_imprez/';
 const GROUP_ICONS = {
   cocktails: DRINK_ICONS.martini,
-  mocktails: DRINK_ICONS.leaf,
   wines: DRINK_ICONS.wine,
   champagne: DRINK_ICONS.champagne,
   bottles: DRINK_ICONS.bottle,
@@ -21,10 +23,6 @@ const GROUP_ICONS = {
 } as const;
 const drinkGroups = PICK_GROUPS.filter((g) => g.tab === 'drinks');
 const foodGroups = PICK_GROUPS.filter((g) => g.tab === 'food');
-// Cocktail ingredient lists are localized token-by-token like on the menu page;
-// other details (winery, house, portion) are brand-invariant or already localized.
-const detailFor = (group: PickGroup, detail: string | undefined) =>
-  detail && (group.key === 'cocktails' || group.key === 'mocktails') ? localizeDesc(detail, locale) : detail;
 const unitFor = (group: PickGroup) => (group.hint === 'perGuest' ? c.menu.units.perGuest : group.hint === 'bottles' ? c.menu.units.bottle : c.menu.units.portion);
 ---
 
@@ -36,6 +34,20 @@ const unitFor = (group: PickGroup) => (group.hint === 'perGuest' ? c.menu.units.
       <p class="cfg-step-intro">{c.menu.intro}</p>
     </div>
 
+    <!-- The Cork alone: the restaurant's own configurator replaces the SiSi menu. -->
+    <div class="sisi-card cfg-cork" data-menu-cork hidden>
+      <p class="cfg-step-kicker">{c.menu.cork.heading}</p>
+      <p class="cfg-cork-intro">{c.menu.cork.intro}</p>
+      <div class="cfg-cork-frame">
+        <iframe title={c.menu.cork.frameTitle} data-src={CORK_CONFIGURATOR_URL} loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      </div>
+      <p class="cfg-cork-link"><a href={CORK_CONFIGURATOR_URL} target="_blank" rel="noopener">{c.menu.cork.open}</a></p>
+      <div class="cfg-actions">
+        <a href="#cfg-extras" class="btn-cta cfg-next">{c.buttons.toExtras}<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10m-4-4 4 4-4 4"/></svg></a>
+      </div>
+    </div>
+
+    <div data-menu-own>
     <div class="cfg-tabs" role="tablist" aria-label={c.progress.steps.menu} data-reveal>
       <button type="button" class="cfg-tab" role="tab" id="cfg-tab-drinks" aria-controls="cfg-panel-drinks" aria-selected="true" data-cfg-tab="drinks">
         <span class="cfg-tab-num">01</span>{c.menu.tabs.drinks}<span class="cfg-tab-sub">{c.menu.tabs.drinksSub}</span>
@@ -67,7 +79,7 @@ const unitFor = (group: PickGroup) => (group.hint === 'perGuest' ? c.menu.units.
                     >
                       <div class="cfg-pick-main">
                         <p class="cfg-pick-name">{pickText(item.name, locale)}</p>
-                        {item.detail && <p class="cfg-pick-detail">{detailFor(group, pickText(item.detail, locale))}</p>}
+                        {item.detail && <p class="cfg-pick-detail">{pickText(item.detail, locale)}</p>}
                       </div>
                       <span class="cfg-pick-price">{item.priceLabel}<span class="cfg-pick-unit"> / {unitFor(group)}</span></span>
                       <div class="cfg-qty" data-qty-control>
@@ -103,10 +115,18 @@ const unitFor = (group: PickGroup) => (group.hint === 'perGuest' ? c.menu.units.
         </div>
       </aside>
     </div>
+    </div>
   </div>
 </section>
 
 <style>
+  [data-menu-own][hidden], .cfg-cork[hidden] { display: none; }
+  .cfg-cork { padding: 26px 28px 24px; border-color: rgba(251,210,149,0.28); }
+  .cfg-cork-intro { color: var(--text-dim); font-size: 14px; line-height: 1.7; max-width: 720px; }
+  .cfg-cork-frame { margin-top: 18px; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); background: #fff; }
+  .cfg-cork-frame iframe { display: block; width: 100%; height: min(78vh, 900px); border: 0; }
+  .cfg-cork-link { margin-top: 12px; font-size: 13px; }
+  .cfg-cork-link a { color: var(--cream); text-decoration: underline; text-underline-offset: 3px; }
   .cfg-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
   .cfg-tab {
     display: flex; align-items: baseline; gap: 10px; padding: 12px 18px; border-radius: 12px;

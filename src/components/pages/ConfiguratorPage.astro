@@ -42,7 +42,13 @@ const formMessages = JSON.stringify({
 const clientStrings = JSON.stringify({
   capacity: c.details.capacity,
   limits: CONFIGURATOR_LIMITS,
-  summary: { toBeAgreed: c.summary.toBeAgreed, none: c.summary.none, guestsUnit: c.summary.guestsUnit },
+  summary: {
+    toBeAgreed: c.summary.toBeAgreed,
+    none: c.summary.none,
+    guestsUnit: c.summary.guestsUnit,
+    corkCalculator: c.summary.corkCalculator,
+    corkCalculatorPl: useTranslations('pl').configurator.summary.corkCalculator,
+  },
   units: c.menu.units,
   estimate: { drinks: c.menu.estimate.drinks, food: c.menu.estimate.food, total: c.menu.estimate.total, guests: c.menu.estimate.guests, perGuest: c.menu.estimate.perGuest },
 });

@@ -470,7 +470,6 @@ const it: UI = {
       tabs: { drinks: 'Bevande', drinksSub: 'cocktail, vini, bottiglie', food: 'Snack', foodSub: 'Night Menu by The Cork' },
       groups: {
         cocktails: 'Cocktail',
-        mocktails: 'Cocktail 0%',
         wines: 'Vini polacchi - bottiglia 750 ml',
         champagne: 'Champagne - bottiglia 750 ml',
         bottles: 'Bottle service',
@@ -490,6 +489,12 @@ const it: UI = {
         guests: 'ospiti',
         empty: 'Aggiungi voci dal menu per vedere una stima.',
         note: 'Stima ai prezzi attuali del menu SiSi. Il costo finale dell’evento viene concordato individualmente - questo riepilogo non è un’offerta.',
+      },
+      cork: {
+        heading: 'Calcolatore del ristorante The Cork',
+        intro: 'Hai scelto solo il ristorante The Cork. Menu e prezzi di una festa al ristorante li definisce il suo team - usa il configuratore di The Cork qui sotto e inviaci il resto della richiesta come di consueto.',
+        frameTitle: 'Configuratore feste del ristorante The Cork',
+        open: 'Apri il configuratore di The Cork in una nuova scheda',
       },
     },
     extras: {
@@ -521,6 +526,7 @@ const it: UI = {
       },
       toBeAgreed: 'da concordare',
       none: 'nessuna selezione',
+      corkCalculator: 'secondo il configuratore di The Cork',
       guestsUnit: 'pers.',
       terms: {
         heading: 'Condizioni di prenotazione',

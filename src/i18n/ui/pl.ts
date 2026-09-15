@@ -483,7 +483,6 @@ const pl = {
       tabs: { drinks: 'Napoje', drinksSub: 'koktajle, wina, butelki', food: 'Przekąski', foodSub: 'Night Menu by The Cork' },
       groups: {
         cocktails: 'Koktajle',
-        mocktails: 'Koktajle 0%',
         wines: 'Wina polskie - butelka 750 ml',
         champagne: 'Szampan - butelka 750 ml',
         bottles: 'Bottle service',
@@ -503,6 +502,12 @@ const pl = {
         guests: 'gości',
         empty: 'Dodaj pozycje z karty, aby zobaczyć szacunek.',
         note: 'Szacunek według aktualnych cen z karty SiSi. Ostateczny koszt wydarzenia ustalamy indywidualnie - to podsumowanie nie jest ofertą.',
+      },
+      cork: {
+        heading: 'Kalkulator restauracji The Cork',
+        intro: 'Wybrano samą restaurację The Cork. Menu i ceny przyjęcia w restauracji ustala jej zespół - skorzystaj z konfiguratora The Cork poniżej, a resztę zapytania wyślij do nas jak zwykle.',
+        frameTitle: 'Konfigurator imprez restauracji The Cork',
+        open: 'Otwórz konfigurator The Cork w nowej karcie',
       },
     },
     extras: {
@@ -534,6 +539,7 @@ const pl = {
       },
       toBeAgreed: 'do ustalenia',
       none: 'nie wybrano',
+      corkCalculator: 'według konfiguratora The Cork',
       guestsUnit: 'os.',
       terms: {
         heading: 'Zasady rezerwacji',

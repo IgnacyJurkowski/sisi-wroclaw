@@ -123,7 +123,8 @@ test('renders the complete launch policy without wildcard CORS', () => {
     "form-action 'self'",
     "base-uri 'self'",
     "object-src 'none'",
-    "frame-ancestors 'none'",
+    "frame-src https://thecork.pl",
+  "frame-ancestors 'none'",
   ].join('; ');
 
   assert.deepEqual(rules.map(({ pattern }) => pattern), ['/*', '/assets/*', '/fonts/*']);
