@@ -51,15 +51,15 @@ const plSpaces = useTranslations('pl').configurator.space.options;
 </section>
 
 <style>
-  .cfg-space-grid { display: grid; grid-template-columns: minmax(0, 360px) minmax(0, 1fr); gap: 20px; align-items: start; }
+  .cfg-space-grid { display: grid; grid-template-columns: minmax(0, 330px) minmax(0, 560px); gap: 20px; align-items: start; }
   .cfg-plan { margin: 0; padding: 16px 16px 12px; text-align: center; }
-  .cfg-map { display: inline-block; width: min(100%, 300px); }
+  .cfg-map { display: inline-block; width: min(100%, 256px); }
   .cfg-plan figcaption { font-size: 12px; color: var(--text-faint); margin-top: 10px; line-height: 1.5; }
   .cfg-spaces { border: none; margin: 0; padding: 0; min-width: 0; }
-  .cfg-spaces-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .cfg-spaces-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
   .cfg-space-selected { font-size: 13px; color: var(--text-faint); margin-top: 12px; }
   .cfg-space-selected strong { color: var(--cream); }
   .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-  @media (max-width: 900px) { .cfg-space-grid { grid-template-columns: 1fr; } }
-  @media (max-width: 520px) { .cfg-spaces-grid { grid-template-columns: 1fr; } }
+  /* Phones: the choices come first, the plan below them. */
+  @media (max-width: 900px) { .cfg-space-grid { grid-template-columns: 1fr; } .cfg-plan { order: 2; } }
 </style>

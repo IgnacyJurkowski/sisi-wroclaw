@@ -503,6 +503,7 @@ const cs: UI = {
         drinks: 'Bar SiSi',
         food: 'Občerstvení SiSi',
         decor: 'Dekorace',
+        cake: 'Dort (od)',
         value: 'Hodnota před servisem',
         service: 'Servisní poplatek The Cork 10 %',
         total: 'Celkem',

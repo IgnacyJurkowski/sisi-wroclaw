@@ -503,6 +503,7 @@ const de: UI = {
         drinks: 'Bar SiSi',
         food: 'Snacks SiSi',
         decor: 'Dekoration',
+        cake: 'Torte (ab)',
         value: 'Wert vor Service',
         service: 'Servicegebühr The Cork 10 %',
         total: 'Summe',

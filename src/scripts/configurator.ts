@@ -386,8 +386,9 @@ function initConfigurator(form: HTMLFormElement): void {
       corkNoticeEl.hidden = !message;
     }
 
-    // Included time at The Cork
+    // Included time at The Cork (the block waits for a group size)
     const baseHours = corkBaseHours(adults, strings.cork.baseHours);
+    show(q<HTMLElement>('[data-duration]'), cork && adults > 0);
     text('[data-duration-base]', adults > 0 ? fill(strings.duration.base, { guests: adults }) : '');
     text('[data-duration-hours]', adults === 0 ? '—' : baseHours === null ? strings.duration.individual : fill(strings.duration.hours, { hours: baseHours }));
     const extension = checkedRadio('extension');
@@ -420,12 +421,18 @@ function initConfigurator(form: HTMLFormElement): void {
     const sisiResult = sisi ? estimate({ guests: adults, lines: all }) : { drinks: 0, food: 0, total: 0, perGuest: 0, lineCount: 0 };
     const decorFlat = qa<HTMLInputElement>('[data-decor-flat]:checked').reduce((sum, input) => sum + (Number(input.getAttribute('data-price')) || 0), 0);
 
-    const total = corkResult.total + sisiResult.total + decorFlat;
-    const hasLines = corkResult.value > 0 || sisiResult.lineCount > 0 || decorFlat > 0;
+    // Cake: the size's published "from" price, counted so the total moves with the choice.
+    const cakeWanted = checkedRadio('cake')?.getAttribute('data-key') === 'with';
+    show(cakeOptions, cakeWanted);
+    suggestCakeSize(adults, cakeWanted);
+    const cakeFrom = cakeWanted ? Number(checkedRadio('cake_size')?.getAttribute('data-price-from') || 0) : 0;
+
+    const total = corkResult.total + sisiResult.total + decorFlat + cakeFrom;
+    const hasLines = corkResult.value > 0 || sisiResult.lineCount > 0 || decorFlat > 0 || cakeFrom > 0;
     const menuEmpty = corkResult.value === 0 && sisiResult.lineCount === 0;
 
     // Starting-menu offer while the menu is empty; "clear" once something is picked.
-    show(q<HTMLElement>('[data-propose]'), menuEmpty && adults > 0);
+    qa<HTMLElement>('[data-propose]').forEach((el) => show(el, menuEmpty && adults > 0));
     show(q<HTMLElement>('[data-clear-menu]'), !menuEmpty);
     show(q<HTMLElement>('[data-need-guests]'), adults === 0);
     // Wine / open-bar length that matches the included time at The Cork.
@@ -445,6 +452,7 @@ function initConfigurator(form: HTMLFormElement): void {
     row('corkDrinks', corkDrinksValue, cork && corkDrinksValue > 0);
     row('drinks', sisiResult.drinks, sisi && sisiResult.drinks > 0);
     row('food', sisiResult.food, sisi && sisiResult.food > 0);
+    row('cake', cakeFrom, cakeFrom > 0);
     row('decor', decorFlat, decorFlat > 0);
     row('service', corkResult.service, corkResult.service > 0);
     text('[data-est-total]', formatZl(total));
@@ -460,11 +468,6 @@ function initConfigurator(form: HTMLFormElement): void {
     text('[data-cork-total]', formatZl(corkResult.total));
     text('[data-cork-deposit]', formatZl(corkResult.deposit));
     text('[data-cork-balance]', formatZl(corkResult.balance));
-
-    // Cake options only when a cake is wanted; size matched to the group by default
-    const cakeWanted = checkedRadio('cake')?.getAttribute('data-key') === 'with';
-    show(cakeOptions, cakeWanted);
-    suggestCakeSize(adults, cakeWanted);
 
     // Gentle suggestions from the occasion: a cake for birthdays and
     // anniversaries, the presentation screens for company events.
@@ -509,7 +512,7 @@ function initConfigurator(form: HTMLFormElement): void {
       corkDrinks: { value: drinksCork.length ? drinksCork.join(', ') : none, on: cork },
       drinks: { value: describe(picked.filter((l) => l.group === 'drinks'), false) || none, on: sisi },
       food: { value: describe(picked.filter((l) => l.group === 'food'), false) || none, on: sisi },
-      cake: { value: cakeWanted ? (cakeParts.length ? cakeParts.join(' · ') : labelOf(checkedRadio('cake'), '')) : none, on: true },
+      cake: { value: cakeWanted ? `${cakeParts.length ? cakeParts.join(' · ') : labelOf(checkedRadio('cake'), '')}${cakeFrom ? ` · od ${formatZl(cakeFrom)}` : ''}` : none, on: true },
       decor: { value: decorParts.length ? decorParts.join(', ') : none, on: true },
       extras: { value: extras.length ? extras.join(', ') : none, on: true },
     };
@@ -541,6 +544,7 @@ function initConfigurator(form: HTMLFormElement): void {
         parts.push(`The Cork: menu ${formatZl(corkResult.food)}, napoje ${formatZl(corkDrinksValue)}, serwis 10% ${formatZl(corkResult.service)}, razem ${formatZl(corkResult.total)} (zadatek 50% ${formatZl(corkResult.deposit)})`);
       }
       if (sisiResult.lineCount > 0) parts.push(`SiSi wg karty: bar ${formatZl(sisiResult.drinks)}, przekąski ${formatZl(sisiResult.food)}`);
+      if (cakeFrom > 0) parts.push(`tort od ${formatZl(cakeFrom)}`);
       if (decorFlat > 0) parts.push(`dekoracje ${formatZl(decorFlat)}`);
       hidden.estimate.value = hasLines
         ? `${parts.join('; ')}; łącznie ${formatZl(total)} (${adults} gości${cork && extPct ? `, przedłużenie +${extPct}%` : ''})`

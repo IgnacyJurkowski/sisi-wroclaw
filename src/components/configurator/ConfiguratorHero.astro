@@ -64,7 +64,9 @@ const STEP_KEYS = ['space', 'details', 'menu', 'extras', 'summary'] as const;
      clip-path polygon (point on the right, notch on the left), overlapping the
      previous one so a thin channel of the strip background stays between them. */
   .cfg-strip { --arrow: 14px; --channel: 3px; }
-  .cfg-strip-list { list-style: none; margin: 0; padding: var(--channel); display: flex; border: 1px solid var(--line); border-radius: 12px; background: rgba(39,7,15,0.55); overflow: hidden; }
+  /* No inner padding: the list's rounded overflow clips the first and last
+     segments, so their outer corners share the outline's radius. */
+  .cfg-strip-list { list-style: none; margin: 0; padding: 0; display: flex; border: 1px solid var(--line); border-radius: 12px; background: rgba(39,7,15,0.55); overflow: hidden; }
   .cfg-strip-item { flex: 1; display: flex; align-items: stretch; min-width: 0; }
   .cfg-strip-item + .cfg-strip-item { margin-left: calc(var(--channel) - var(--arrow)); }
   .cfg-strip-step {

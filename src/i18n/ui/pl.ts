@@ -515,6 +515,7 @@ const pl = {
         drinks: 'Bar SiSi',
         food: 'Przekąski SiSi',
         decor: 'Dekoracje',
+        cake: 'Tort (cena od)',
         value: 'Wartość przed serwisem',
         service: 'Opłata serwisowa The Cork 10%',
         total: 'Razem',

@@ -502,6 +502,7 @@ const it: UI = {
         drinks: 'Bar SiSi',
         food: 'Snack SiSi',
         decor: 'Decorazioni',
+        cake: 'Torta (da)',
         value: 'Valore prima del servizio',
         service: 'Servizio The Cork 10%',
         total: 'Totale',

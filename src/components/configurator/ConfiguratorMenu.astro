@@ -50,23 +50,21 @@ const TAB_ICONS = { corkFood: UI_ICONS.utensils, corkDrinks: DRINK_ICONS.wine, d
       <h2 class="display cfg-step-title">{m.heading}</h2>
     </div>
 
-    <!-- One-click starting point (script): packages matched to the group, the
-         included time and the occasion; every pick stays editable. -->
-    <div class="cfg-propose" data-reveal>
-      <p class="cfg-notice cfg-need-guests" data-need-guests hidden>{c.wizard.needGuests}</p>
-      <div class="cfg-propose-row" data-propose hidden>
-        <button type="button" class="btn-outline cfg-propose-btn" data-propose-btn>{c.wizard.propose}</button>
-        <span class="cfg-propose-hint">{c.wizard.proposeHint}</span>
+    <p class="cfg-notice cfg-need-guests" data-need-guests hidden>{c.wizard.needGuests}</p>
+    <div class="cfg-menu-toolbar" data-reveal>
+      <div class="cfg-tabs" role="tablist" aria-label={c.progress.steps.menu}>
+        {TABS.map((tab, index) => (
+          <button type="button" class="cfg-tab" role="tab" id={`cfg-tab-${tab.key}`} aria-controls={`cfg-panel-${tab.key}`} aria-selected={index === 0 ? 'true' : 'false'} tabindex={index === 0 ? 0 : -1} data-cfg-tab={tab.key} data-venue={tab.venue}>
+            <svg class="cfg-tab-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={TAB_ICONS[tab.key]} />{tab.label}<span class="cfg-tab-sub">{tab.sub}</span>
+          </button>
+        ))}
       </div>
-      <button type="button" class="cfg-link-btn" data-clear-menu hidden>{c.wizard.clearMenu}</button>
-    </div>
-
-    <div class="cfg-tabs" role="tablist" aria-label={c.progress.steps.menu} data-reveal>
-      {TABS.map((tab, index) => (
-        <button type="button" class="cfg-tab" role="tab" id={`cfg-tab-${tab.key}`} aria-controls={`cfg-panel-${tab.key}`} aria-selected={index === 0 ? 'true' : 'false'} tabindex={index === 0 ? 0 : -1} data-cfg-tab={tab.key} data-venue={tab.venue}>
-          <svg class="cfg-tab-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={TAB_ICONS[tab.key]} />{tab.label}<span class="cfg-tab-sub">{tab.sub}</span>
-        </button>
-      ))}
+      <!-- One-click starting point (script): packages matched to the group, the
+           included time and the occasion; every pick stays editable. -->
+      <div class="cfg-menu-actions">
+        <button type="button" class="btn-outline cfg-propose-btn" data-propose hidden data-propose-btn>{c.wizard.propose}</button>
+        <button type="button" class="cfg-link-btn" data-clear-menu hidden>{c.wizard.clearMenu}</button>
+      </div>
     </div>
 
     <div class="cfg-menu-grid">
@@ -96,22 +94,28 @@ const TAB_ICONS = { corkFood: UI_ICONS.utensils, corkDrinks: DRINK_ICONS.wine, d
                   ))}
                 </div>
               )}
-              {!course.included && (
-                <button type="button" class="cfg-dish-toggle" data-dish-toggle aria-expanded="false" data-label-open={c.wizard.chooseDishes} data-label-close={c.wizard.hideDishes}>
-                  {c.wizard.chooseDishes}<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg>
-                </button>
+              {course.included ? (
+                <p class="cfg-course-included">
+                  {course.dishes.map((dish) => <span><strong>{dish.name}</strong> · {dish.desc}</span>)}
+                </p>
+              ) : (
+                <>
+                  <button type="button" class="cfg-dish-toggle" data-dish-toggle aria-expanded="false" data-label-open={c.wizard.chooseDishes} data-label-close={c.wizard.hideDishes}>
+                    {c.wizard.chooseDishes}<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg>
+                  </button>
+                  <div class="cfg-pills cfg-course-dishes cfg-dish-list" data-dish-list hidden>
+                    {course.dishes.map((dish) => (
+                      <label class="cfg-pill cfg-dish" title={dish.desc}>
+                        <input type="checkbox" data-cork-dish data-course={course.key} data-dish={dish.name} />
+                        <span class="cfg-pill-body">
+                          {dish.name}
+                          <span class="cfg-pill-sub">{dish.desc}{dish.note ? ` · ${dish.note}` : ''}</span>
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </>
               )}
-              <div class:list={['cfg-pills', 'cfg-course-dishes', { 'cfg-dish-list': !course.included }]} data-dish-list hidden={!course.included}>
-                {course.dishes.map((dish) => (
-                  <label class="cfg-pill cfg-dish" title={dish.desc}>
-                    <input type="checkbox" data-cork-dish data-course={course.key} data-dish={dish.name} checked={course.included} disabled={course.included} />
-                    <span class="cfg-pill-body">
-                      {dish.name}
-                      <span class="cfg-pill-sub">{dish.desc}{dish.note ? ` · ${dish.note}` : ''}</span>
-                    </span>
-                  </label>
-                ))}
-              </div>
             </article>
           ))}
         </div>
@@ -229,12 +233,16 @@ const TAB_ICONS = { corkFood: UI_ICONS.utensils, corkDrinks: DRINK_ICONS.wine, d
 
       <aside class="sisi-card cfg-estimate" aria-live="polite">
         <p class="cfg-subhead">{m.estimate.heading}</p>
-        <p class="cfg-estimate-empty" data-est-empty>{m.estimate.empty}</p>
+        <div data-est-empty>
+          <p class="cfg-estimate-empty">{m.estimate.empty}</p>
+          <p class="cfg-estimate-empty cfg-estimate-hint" data-propose hidden>{c.wizard.proposeHint}</p>
+        </div>
         <dl class="cfg-estimate-rows" data-est-rows hidden>
           <div data-est-row="corkFood" hidden><dt>{m.estimate.corkFood}</dt><dd data-est-corkFood>0 zł</dd></div>
           <div data-est-row="corkDrinks" hidden><dt>{m.estimate.corkDrinks}</dt><dd data-est-corkDrinks>0 zł</dd></div>
           <div data-est-row="drinks" hidden><dt>{m.estimate.drinks}</dt><dd data-est-drinks>0 zł</dd></div>
           <div data-est-row="food" hidden><dt>{m.estimate.food}</dt><dd data-est-food>0 zł</dd></div>
+          <div data-est-row="cake" hidden><dt>{m.estimate.cake}</dt><dd data-est-cake>0 zł</dd></div>
           <div data-est-row="decor" hidden><dt>{m.estimate.decor}</dt><dd data-est-decor>0 zł</dd></div>
           <div data-est-row="service" hidden><dt>{m.estimate.service}</dt><dd data-est-service>0 zł</dd></div>
           <div class="cfg-estimate-total">
@@ -252,15 +260,13 @@ const TAB_ICONS = { corkFood: UI_ICONS.utensils, corkDrinks: DRINK_ICONS.wine, d
 </section>
 
 <style>
-  .cfg-propose { display: flex; align-items: center; gap: 12px 18px; flex-wrap: wrap; margin-bottom: 14px; }
-  .cfg-propose:empty { display: none; }
-  .cfg-need-guests { flex: 1 1 100%; margin: 0; }
-  .cfg-propose-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
-  .cfg-propose-btn { padding: 10px 18px; font-size: 13px; }
-  .cfg-propose-hint { font-size: 12.5px; color: var(--text-faint); max-width: 520px; line-height: 1.5; }
-  .cfg-link-btn { margin-left: auto; border: none; background: none; padding: 6px 0; color: var(--text-faint); font: inherit; font-size: 12.5px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+  .cfg-need-guests { margin: 0 0 14px; }
+  .cfg-menu-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 10px 18px; flex-wrap: wrap; margin-bottom: 16px; }
+  .cfg-menu-actions { display: flex; align-items: center; gap: 14px; margin-left: auto; }
+  .cfg-propose-btn { padding: 9px 16px; font-size: 12.5px; }
+  .cfg-link-btn { border: none; background: none; padding: 6px 0; color: var(--text-faint); font: inherit; font-size: 12.5px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
   .cfg-link-btn:hover { color: var(--cream); }
-  .cfg-tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .cfg-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
   .cfg-tab {
     display: flex; align-items: baseline; gap: 8px; padding: 9px 14px; border-radius: 11px; border: 1px solid var(--line);
     background: rgba(39,7,15,0.42); color: var(--text-dim); font: inherit; font-size: 13px; font-weight: 600; cursor: pointer;
@@ -281,7 +287,9 @@ const TAB_ICONS = { corkFood: UI_ICONS.utensils, corkDrinks: DRINK_ICONS.wine, d
   .cfg-course-icon { width: 24px; height: 24px; flex-shrink: 0; align-self: center; fill: none; stroke: var(--gold); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
   .cfg-course-title { font-family: var(--font-display); font-weight: 400; font-size: 1.05rem; text-transform: uppercase; letter-spacing: 0.03em; color: var(--cream); }
   .cfg-course-meta { margin-left: auto; font-size: 11.5px; color: var(--text-faint); letter-spacing: 0.04em; }
-  .cfg-course-packages { margin-bottom: 12px; }
+  .cfg-course-packages { margin-bottom: 12px; grid-template-columns: repeat(auto-fit, minmax(180px, 250px)); }
+  .cfg-course-included { font-size: 13px; color: var(--text-dim); line-height: 1.55; display: flex; flex-direction: column; gap: 4px; }
+  .cfg-course-included strong { color: var(--cream); font-weight: 600; }
   .cfg-dish .cfg-pill-body { max-width: 260px; }
   .cfg-dish .cfg-pill-sub { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   .cfg-sommelier { display: block; }
@@ -305,6 +313,7 @@ const TAB_ICONS = { corkFood: UI_ICONS.utensils, corkDrinks: DRINK_ICONS.wine, d
 
   .cfg-estimate { position: sticky; top: 12px; padding: 20px 22px 20px; border-color: rgba(251,210,149,0.28); }
   .cfg-estimate-empty { font-size: 13px; color: var(--text-faint); line-height: 1.6; }
+  .cfg-estimate-hint { margin-top: 10px; color: var(--text-mute); font-size: 12px; }
   .cfg-estimate-rows { margin: 0; display: flex; flex-direction: column; gap: 8px; }
   .cfg-estimate-rows > div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 13px; color: var(--text-dim); }
   .cfg-estimate-rows dd { margin: 0; color: var(--cream); font-weight: 600; white-space: nowrap; }

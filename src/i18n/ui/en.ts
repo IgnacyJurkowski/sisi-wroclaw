@@ -503,6 +503,7 @@ const en: UI = {
         drinks: 'SiSi bar',
         food: 'SiSi snacks',
         decor: 'Decorations',
+        cake: 'Cake (from)',
         value: 'Value before service',
         service: 'The Cork service fee 10%',
         total: 'Total',
