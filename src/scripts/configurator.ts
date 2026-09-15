@@ -270,8 +270,8 @@ function initConfigurator(form: HTMLFormElement): void {
 
     // Included time at The Cork
     const baseHours = corkBaseHours(adults, strings.cork.baseHours);
-    text('[data-duration-base]', fill(strings.duration.base, { guests: adults }));
-    text('[data-duration-hours]', baseHours === null ? strings.duration.individual : fill(strings.duration.hours, { hours: baseHours }));
+    text('[data-duration-base]', adults > 0 ? fill(strings.duration.base, { guests: adults }) : '');
+    text('[data-duration-hours]', adults === 0 ? '—' : baseHours === null ? strings.duration.individual : fill(strings.duration.hours, { hours: baseHours }));
     const extension = checkedRadio('extension');
     const extPct = Number(extension?.getAttribute('data-pct') || 0);
 
