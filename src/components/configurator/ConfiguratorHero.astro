@@ -38,7 +38,6 @@ const STEP_KEYS = ['space', 'details', 'menu', 'extras', 'summary'] as const;
       <ol class="cfg-strip-list">
         {STEP_KEYS.map((key, index) => (
           <li class="cfg-strip-item">
-            {index > 0 && <svg class="cfg-strip-chev" viewBox="0 0 8 16" aria-hidden="true"><path d="m1 1 6 7-6 7" /></svg>}
             <a href={`#cfg-${key}`} class="cfg-strip-step" data-step={key} aria-current={index === 0 ? 'step' : undefined}>
               <span class="cfg-strip-num" aria-hidden="true">{index + 1}</span>
               <span class="cfg-strip-label">{c.progress.steps[key]}</span>
@@ -61,19 +60,27 @@ const STEP_KEYS = ['space', 'details', 'menu', 'extras', 'summary'] as const;
   .cfg-occasions legend { padding: 0; margin-bottom: 6px; }
   .cfg-occasion-pills .cfg-pill-body { padding: 7px 11px; font-size: 12px; }
 
-  /* One strip, five segments joined by chevrons. */
-  .cfg-strip-list { list-style: none; margin: 0; padding: 0; display: flex; border: 1px solid var(--line); border-radius: 12px; background: rgba(39,7,15,0.42); overflow: hidden; }
+  /* One strip of interlocking arrows: |>>>|>>>|>>>|>>>|>>>|. Each segment is a
+     clip-path polygon (point on the right, notch on the left), overlapping the
+     previous one so a thin channel of the strip background stays between them. */
+  .cfg-strip { --arrow: 14px; --channel: 3px; }
+  .cfg-strip-list { list-style: none; margin: 0; padding: var(--channel); display: flex; border: 1px solid var(--line); border-radius: 12px; background: rgba(39,7,15,0.55); overflow: hidden; }
   .cfg-strip-item { flex: 1; display: flex; align-items: stretch; min-width: 0; }
-  .cfg-strip-chev { flex-shrink: 0; width: 8px; margin: 0 2px; align-self: center; stroke: var(--text-mute); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .cfg-strip-item + .cfg-strip-item { margin-left: calc(var(--channel) - var(--arrow)); }
   .cfg-strip-step {
-    flex: 1; display: flex; align-items: center; justify-content: center; gap: 9px; min-width: 0; padding: 9px 10px;
-    color: var(--text-dim); text-decoration: none; font-size: 12.5px; font-weight: 600; letter-spacing: 0.02em; transition: color 150ms ease, background 150ms ease;
+    flex: 1; display: flex; align-items: center; justify-content: center; gap: 9px; min-width: 0; padding: 9px calc(var(--arrow) + 4px) 9px calc(var(--arrow) + 8px);
+    color: var(--text-dim); text-decoration: none; font-size: 12.5px; font-weight: 600; letter-spacing: 0.02em; background: rgba(237,219,194,0.07);
+    clip-path: polygon(0 0, calc(100% - var(--arrow)) 0, 100% 50%, calc(100% - var(--arrow)) 100%, 0 100%, var(--arrow) 50%);
+    transition: color 150ms ease, background 150ms ease;
   }
-  .cfg-strip-step:hover { color: var(--cream); background: rgba(237,219,194,0.05); }
-  .cfg-strip-step[aria-current='step'] { color: var(--cream); background: rgba(251,210,149,0.1); }
-  .cfg-strip-step:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
-  .cfg-strip-num { width: 22px; height: 22px; flex-shrink: 0; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--line); font-size: 11px; font-weight: 700; }
-  .cfg-strip-step[aria-current='step'] .cfg-strip-num { border-color: var(--gold); color: var(--gold); }
+  .cfg-strip-item:first-child .cfg-strip-step { padding-left: 14px; clip-path: polygon(0 0, calc(100% - var(--arrow)) 0, 100% 50%, calc(100% - var(--arrow)) 100%, 0 100%); }
+  .cfg-strip-item:last-child .cfg-strip-step { padding-right: 14px; clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, var(--arrow) 50%); }
+  .cfg-strip-step:hover { color: var(--cream); background: rgba(237,219,194,0.12); }
+  .cfg-strip-step[data-done='true'] { color: var(--cream); background: rgba(237,219,194,0.1); }
+  .cfg-strip-step[aria-current='step'] { color: #1a120b; background: var(--gold); }
+  .cfg-strip-step:focus-visible { outline: 2px solid var(--gold); outline-offset: -4px; }
+  .cfg-strip-num { width: 22px; height: 22px; flex-shrink: 0; border-radius: 50%; display: grid; place-items: center; border: 1px solid currentColor; font-size: 11px; font-weight: 700; }
+  .cfg-strip-step[aria-current='step'] .cfg-strip-num { border-color: rgba(26,18,11,0.6); }
   .cfg-strip-step[data-done='true'] .cfg-strip-num { background: var(--gold); color: #1a120b; border-color: var(--gold); }
   .cfg-strip-label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
@@ -81,7 +88,10 @@ const STEP_KEYS = ['space', 'details', 'menu', 'extras', 'summary'] as const;
     .cfg-head-row { align-items: flex-start; margin-bottom: 10px; }
     .cfg-head-body { display: none; }
     .cfg-head-inner { padding-top: 10px; }
-    .cfg-strip-step { padding: 9px 6px; gap: 6px; }
+    .cfg-strip { --arrow: 10px; }
+    .cfg-strip-step { padding: 9px calc(var(--arrow) + 2px) 9px calc(var(--arrow) + 6px); gap: 6px; }
+    .cfg-strip-item:first-child .cfg-strip-step { padding-left: 10px; }
+    .cfg-strip-item:last-child .cfg-strip-step { padding-right: 10px; }
     .cfg-strip-label { display: none; }
     .cfg-strip-step[aria-current='step'] .cfg-strip-label { display: inline; }
     .cfg-strip-item:not(:has([aria-current='step'])) { flex: 0 0 auto; }
