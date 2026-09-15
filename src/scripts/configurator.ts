@@ -698,7 +698,7 @@ function initConfigurator(form: HTMLFormElement): void {
     const limit = firstUnmet();
     if (calcBar.next) {
       calcBar.next.setAttribute('aria-disabled', limit === current ? 'true' : 'false');
-      calcBar.next.setAttribute('data-tip', limit === current ? hint : '');
+      (calcBar.next.closest<HTMLElement>('[data-wizard-next-wrap]') ?? calcBar.next).setAttribute('data-tip', limit === current ? hint : '');
     }
     progress.forEach((link, i) => {
       if (limit >= 0 && i > limit) link.setAttribute('aria-disabled', 'true');

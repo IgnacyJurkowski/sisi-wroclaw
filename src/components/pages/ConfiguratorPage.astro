@@ -130,7 +130,7 @@ const clientStrings = JSON.stringify({
         <p class="cfg-bar-total"><strong data-bar-total>0 zł</strong> <span class="cfg-bar-per" data-bar-per></span></p>
         <div class="cfg-bar-actions">
           <button type="button" class="btn-outline cfg-bar-btn" data-wizard-back>{c.wizard.back}</button>
-          <button type="button" class="btn-cta cfg-bar-btn" data-wizard-next>{c.wizard.next}</button>
+          <span class="cfg-bar-next" data-wizard-next-wrap><button type="button" class="btn-cta cfg-bar-btn" data-wizard-next>{c.wizard.next}</button></span>
         </div>
       </div>
     </div>
@@ -186,7 +186,8 @@ const clientStrings = JSON.stringify({
   [data-tip=""]::after { content: none; }
   .cfg-bar [data-tip]::after { left: auto; right: 0; transform: translateY(2px); }
   .cfg-bar [data-tip]:hover::after, .cfg-bar [data-tip]:focus-visible::after { transform: translateY(0); }
-  .cfg-bar-btn[aria-disabled='true'] { opacity: 0.45; cursor: not-allowed; }
+  .cfg-bar-next { display: inline-flex; }
+  .cfg-bar-btn[aria-disabled='true'] { background: rgba(237,219,194,0.3); color: rgba(26,18,11,0.75); cursor: not-allowed; }
   /* "Why can't I continue" notice, shaken on each blocked attempt. */
   .cfg-block { margin-top: 14px; }
   .cfg-block.is-shaking { animation: cfg-shake 320ms ease; }
