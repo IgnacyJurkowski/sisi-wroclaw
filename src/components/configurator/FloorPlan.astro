@@ -1,0 +1,153 @@
+---
+/* Hand-drawn vector plan of the R32 floor: the SiSi club (top-left L-shape),
+   The Cork restaurant (right column + lower block) and the shared area that
+   joins them (the two-seat tables between the club and the restaurant),
+   traced from the venue's functional layout and simplified to clean shapes in
+   the brand burgundy / cream. Each venue is one <g data-map-space> that the
+   configurator script wires up as a button; the shared area lights up with
+   either venue. Furniture is decorative and never intercepts pointer events.
+   Coordinates are in a 468x649 box. */
+interface Props {
+  labels: { sisi: string; cork: string; shared: string };
+  hint: string;
+}
+const { labels, hint } = Astro.props;
+
+const round4 = (cx: number, cy: number) => ({ cx, cy, chairs: [[-15, -15], [15, -15], [-15, 15], [15, 15]] });
+const pair = (cx: number, cy: number) => ({ cx, cy });
+
+const SISI_ROUND = [[192, 34], [236, 62], [274, 40], [254, 92]];
+const SHARED_PAIRS = [145, 170, 215, 240, 268, 293].map((y) => pair(300, y));
+const SHARED_ROUND = [165, 220, 275, 330].map((y) => round4(370, y));
+const SHARED_SQUARE = [165, 220, 275, 330];
+const CORK_LOWER_PAIRS = [[205, 500], [205, 530], [205, 560]].map(([x, y]) => pair(x, y));
+const CORK_RIGHT_PAIRS = [[440, 490], [440, 520], [440, 550]].map(([x, y]) => pair(x, y));
+const CORK_BOTTOM_ROUND = [[165, 612], [215, 612], [365, 612], [415, 612]].map(([x, y]) => round4(x, y));
+const CORK_UPPER_ROUND = [[375, 472], [375, 516]].map(([x, y]) => round4(x, y));
+const COMMUNITY_CHAIRS = [350, 372, 394, 416];
+---
+
+<svg class="cfg-map-svg" viewBox="0 0 468 649" role="group" aria-label={hint} focusable="false">
+  <!-- SiSi club -->
+  <g class="cfg-map-region" role="button" tabindex="0" aria-pressed="false" aria-label={labels.sisi} data-map-space="sisi">
+    <path class="room" d="M4 4H306V105H270V300H4Z" />
+    <g class="furniture">
+      <rect class="soft" x="14" y="12" width="140" height="16" rx="6" />
+      {[45, 85, 125].map((x) => <circle class="table" cx={x} cy="40" r="9" />)}
+      <rect class="soft" x="12" y="58" width="22" height="158" rx="8" />
+      {[86, 126, 166, 204].map((y) => <circle class="table" cx="52" cy={y} r="9" />)}
+      {SISI_ROUND.map(([x, y]) => (
+        <>
+          <circle class="table" cx={x} cy={y} r="8" />
+          {[[0, -13], [11, 7], [-11, 7]].map(([dx, dy]) => <circle class="chair" cx={x + dx} cy={y + dy} r="3.2" />)}
+        </>
+      ))}
+      <rect class="stage" x="140" y="110" width="118" height="82" rx="10" />
+      <rect class="bar" x="78" y="212" width="184" height="72" rx="14" />
+      <rect class="counter" x="98" y="228" width="140" height="40" rx="8" />
+    </g>
+    <text class="label" x="199" y="160" text-anchor="middle">SiSi</text>
+  </g>
+
+  <!-- Shared area: the upper column between the club and the restaurant, used by both (no label by design) -->
+  <g class="cfg-map-shared" aria-label={labels.shared} data-map-shared>
+    <path class="room shared" d="M270 105H464V362H270Z" />
+    <g class="furniture">
+      <rect class="soft" x="346" y="114" width="114" height="18" rx="5" />
+      {SHARED_PAIRS.map((t) => (
+        <>
+          <rect class="table" x={t.cx - 8} y={t.cy - 5} width="16" height="10" rx="2" />
+          <circle class="chair" cx={t.cx - 15} cy={t.cy} r="4" />
+          <circle class="chair" cx={t.cx + 15} cy={t.cy} r="4" />
+        </>
+      ))}
+      {SHARED_ROUND.map((t) => (
+        <>
+          <circle class="table" cx={t.cx} cy={t.cy} r="11" />
+          {t.chairs.map(([dx, dy]) => <circle class="chair" cx={t.cx + dx} cy={t.cy + dy} r="4.5" />)}
+        </>
+      ))}
+      {SHARED_SQUARE.map((y) => (
+        <>
+          <rect class="soft" x="436" y={y - 14} width="20" height="28" rx="4" />
+          <rect class="table" x="404" y={y - 9} width="22" height="18" rx="3" />
+          <circle class="chair" cx="392" cy={y - 6} r="4" />
+          <circle class="chair" cx="392" cy={y + 6} r="4" />
+        </>
+      ))}
+    </g>
+  </g>
+
+  <!-- The Cork restaurant -->
+  <g class="cfg-map-region" role="button" tabindex="0" aria-pressed="false" aria-label={labels.cork} data-map-space="cork">
+    <path class="room" d="M270 362H464V645H139V430H229V300H270Z" />
+    <g class="furniture">
+      {[...CORK_BOTTOM_ROUND, ...CORK_UPPER_ROUND].map((t) => (
+        <>
+          <circle class="table" cx={t.cx} cy={t.cy} r="11" />
+          {t.chairs.map(([dx, dy]) => <circle class="chair" cx={t.cx + dx} cy={t.cy + dy} r="4.5" />)}
+        </>
+      ))}
+      {[...CORK_LOWER_PAIRS, ...CORK_RIGHT_PAIRS].map((t) => (
+        <>
+          <rect class="table" x={t.cx - 8} y={t.cy - 5} width="16" height="10" rx="2" />
+          <circle class="chair" cx={t.cx - 15} cy={t.cy} r="4" />
+          <circle class="chair" cx={t.cx + 15} cy={t.cy} r="4" />
+        </>
+      ))}
+      <rect class="table" x="335" y="544" width="90" height="44" rx="5" />
+      {COMMUNITY_CHAIRS.map((x) => (
+        <>
+          <circle class="chair" cx={x} cy="534" r="4.5" />
+          <circle class="chair" cx={x} cy="598" r="4.5" />
+        </>
+      ))}
+    </g>
+    <text class="label" x="292" y="466" text-anchor="middle">The Cork</text>
+  </g>
+
+  <!-- Selection outlines: one border around the chosen venue together with the shared area -->
+  <g class="outlines" aria-hidden="true">
+    <path class="outline outline-all" d="M4 4H306V105H464V645H139V430H229V300H4Z" />
+    <path class="outline outline-sisi" d="M4 4H306V105H464V362H270V300H4Z" />
+    <path class="outline outline-cork" d="M270 105H464V645H139V430H229V300H270Z" />
+  </g>
+</svg>
+
+<style>
+  .cfg-map-svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .cfg-map-region { cursor: pointer; outline: none; }
+  /* Rooms carry only a fill; borders are drawn once by the outline paths. */
+  .room { fill: #2f0a17; stroke: rgba(237,219,194,0.18); stroke-width: 1; stroke-linejoin: round; transition: fill 150ms ease; }
+  .furniture { pointer-events: none; }
+  .table { fill: rgba(237,219,194,0.55); }
+  .chair { fill: rgba(237,219,194,0.35); }
+  .soft { fill: rgba(237,219,194,0.25); }
+  .stage { fill: #3d1020; stroke: rgba(237,219,194,0.25); stroke-width: 1.5; }
+  .bar { fill: #3d1020; stroke: rgba(237,219,194,0.5); stroke-width: 3; }
+  .counter { fill: #23060f; }
+  .label {
+    fill: rgba(237,219,194,0.7); font-family: var(--font-display); font-size: 24px; letter-spacing: 0.04em; text-transform: uppercase;
+    paint-order: stroke; stroke: rgba(39,6,15,0.75); stroke-width: 6px; stroke-linejoin: round; pointer-events: none;
+  }
+  .outlines { pointer-events: none; }
+  .outline { fill: none; stroke: rgba(237,219,194,0.55); stroke-width: 3; stroke-linejoin: round; }
+  .outline-sisi, .outline-cork { display: none; stroke: var(--gold); stroke-width: 3.5; }
+  .cfg-map-region:hover .room { fill: #4a1424; }
+  .cfg-map-region:focus-visible .room { fill: #4a1424; stroke: var(--gold); stroke-width: 2; }
+  /* Selected venue (and the shared area with it): lighter fill, full-strength furniture, gold border. */
+  .is-selected .room { fill: #63203a; }
+  .is-recommended:not(.is-selected) .room { fill: #4a1629; }
+  .is-blocked { opacity: 0.45; pointer-events: none; }
+  .is-selected .table { fill: rgba(237,219,194,0.9); }
+  .is-selected .chair { fill: rgba(237,219,194,0.6); }
+  .is-selected .soft { fill: rgba(237,219,194,0.42); }
+  .is-selected .stage { fill: #5e1a2d; }
+  .is-selected .bar { fill: #5e1a2d; stroke: rgba(237,219,194,0.85); }
+  .is-selected .counter { fill: #330c19; }
+  .is-selected .label { fill: var(--gold); }
+  .cfg-map-svg[data-mode='sisi'] .outline-sisi { display: block; }
+  .cfg-map-svg[data-mode='cork'] .outline-cork { display: block; }
+  .cfg-map-svg[data-mode='sisi'] .outline-all, .cfg-map-svg[data-mode='cork'] .outline-all { stroke: rgba(237,219,194,0.3); }
+  .cfg-map-svg[data-mode='r32'] .outline-all { stroke: var(--gold); stroke-width: 3.5; }
+</style>

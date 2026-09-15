@@ -1,10 +1,13 @@
 ---
 import { type Locale } from '../../i18n/config';
+import { localizedPath } from '../../i18n/routes';
 import { useTranslations } from '../../i18n/t';
 
 interface Props { locale: Locale }
 const { locale } = Astro.props;
-const pricing = useTranslations(locale).privateEvents.pricing;
+const t = useTranslations(locale);
+const pricing = t.privateEvents.pricing;
+const configuratorHref = localizedPath('configurator', locale);
 ---
 
 <section class="private-pricing">
@@ -14,6 +17,7 @@ const pricing = useTranslations(locale).privateEvents.pricing;
       <div>
         <h2 class="display private-pricing-title">{pricing.heading}</h2>
         <p class="private-pricing-body">{pricing.body}</p>
+        <a href={configuratorHref} class="btn-outline private-pricing-cta">{t.nav.configurator}</a>
       </div>
     </article>
   </div>
@@ -25,5 +29,6 @@ const pricing = useTranslations(locale).privateEvents.pricing;
   .private-pricing-icon { width: 28px; height: 28px; flex-shrink: 0; fill: none; stroke: var(--gold); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
   .private-pricing-title { font-size: clamp(1.35rem, 3vw, 1.9rem); text-transform: uppercase; margin-bottom: 10px; }
   .private-pricing-body { color: var(--text-dim); font-size: 15px; line-height: 1.75; }
+  .private-pricing-cta { margin-top: 18px; }
   @media (max-width: 540px) { .private-pricing-card { padding: 28px 24px; gap: 16px; } }
 </style>

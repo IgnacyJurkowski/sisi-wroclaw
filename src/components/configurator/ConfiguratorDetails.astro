@@ -1,0 +1,139 @@
+---
+import { SEATINGS } from '../../data/configurator';
+import { CONFIGURATOR_LIMITS, DURATIONS } from '../../data/configurator';
+import { type Locale } from '../../i18n/config';
+import { useTranslations } from '../../i18n/t';
+import DatePicker from '../DatePicker.astro';
+import NumberStepper from '../NumberStepper.astro';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const c = t.configurator;
+const d = c.details;
+const shared = t.b2b.form;
+const pl = useTranslations('pl').configurator.details;
+const seatingHints = { seated: d.seating.seatedHint, standing: d.seating.standingHint, mixed: d.seating.mixedHint } as const;
+---
+
+<section id="cfg-details" class="cfg-step" data-cfg-step="details">
+  <div class="container">
+    <div class="cfg-step-head" data-reveal>
+      <h2 class="display cfg-step-title">{d.heading}</h2>
+    </div>
+
+    <div class="sisi-card cfg-card cfg-details" data-reveal>
+      <div class="cfg-details-grid">
+        <div class="cfg-field cfg-field-date">
+          <label class="cfg-label" for="cfg-date">{shared.date} <span class="req" aria-hidden="true">*</span></label>
+          <DatePicker
+            id="cfg-date"
+            name="preferred_date"
+            locale={locale}
+            required
+            describedby="cfg-err-preferred_date"
+            placeholder={shared.datePlaceholder}
+            modeSingle={shared.dateModeSingle}
+            modeRange={shared.dateModeRange}
+            prevMonth={shared.datePrevMonth}
+            nextMonth={shared.dateNextMonth}
+            clear={shared.dateClear}
+            singleOnly
+          />
+          <p class="cfg-field-error" id="cfg-err-preferred_date" data-error-for="preferred_date" hidden></p>
+        </div>
+
+        <div class="cfg-field">
+          <label class="cfg-label" for="cfg-time">{d.time} <span class="req" aria-hidden="true">*</span></label>
+          <select id="cfg-time" name="start_time" class="cfg-select" required aria-describedby="cfg-err-start_time" data-cfg-time>
+            <option value="">—</option>
+          </select>
+          <p class="cfg-field-error" id="cfg-err-start_time" data-error-for="start_time" hidden></p>
+        </div>
+
+        <fieldset class="cfg-field cfg-length">
+          <legend class="cfg-label"><span data-tip={c.wizard.tips.duration} tabindex="0">{d.length}</span> <span class="req" aria-hidden="true">*</span></legend>
+          <div class="cfg-pills cfg-length-pills">
+            {DURATIONS.map((hours) => (
+              <label class="cfg-pill">
+                <input type="radio" name="duration" value={`${hours} h`} data-hours={hours} data-label={d.hoursShort.replace('{hours}', String(hours))} aria-describedby="cfg-err-duration" />
+                <span class="cfg-pill-body">{d.hoursShort.replace('{hours}', String(hours))}</span>
+              </label>
+            ))}
+          </div>
+          <p class="cfg-field-error" id="cfg-err-duration" data-error-for="duration" hidden></p>
+        </fieldset>
+
+        <div class="cfg-field">
+          <label class="cfg-label" for="cfg-guests"><span data-tip={c.wizard.tips.guests}>{d.adults}</span> <span class="req" aria-hidden="true">*</span></label>
+          <NumberStepper id="cfg-guests" name="guests" min={CONFIGURATOR_LIMITS.minGuests} required describedby="cfg-err-guests" decreaseLabel={shared.guestsDecrease} increaseLabel={shared.guestsIncrease} />
+          <p class="cfg-field-error" id="cfg-err-guests" data-error-for="guests" hidden></p>
+        </div>
+
+      </div>
+
+      <fieldset class="cfg-fieldset">
+        <legend class="cfg-label">{d.seating.label}</legend>
+        <div class="cfg-grid-3">
+          {SEATINGS.map((key) => (
+            <label class="cfg-choice">
+              <input type="radio" name="seating" value={pl.seating[key]} data-key={key} data-label={d.seating[key]} checked={key === 'standing'} />
+              <span class="cfg-choice-body">
+                <span class="cfg-choice-title">{d.seating[key]}</span>
+                <span class="cfg-choice-sub">{seatingHints[key]}</span>
+              </span>
+              <span class="cfg-choice-check" aria-hidden="true">✓</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <!-- Evening plan: which venue hosts which hours (script) -->
+      <p class="cfg-plan" data-plan hidden><span class="cfg-label">{d.plan}</span> <strong data-plan-text></strong></p>
+      <p class="cfg-notice" data-cork-window hidden><span data-cork-window-text></span> <button type="button" class="cfg-inline-btn" data-cork-window-fix></button></p>
+      <p class="cfg-notice" data-night-fee hidden></p>
+
+      <!-- Time at The Cork: the included hours for the group, and the paid
+           extension derived from the chosen end time (script). The value
+           submitted is the Polish extension label. -->
+      <div class="cfg-fieldset cfg-duration-block" data-cork-only data-duration>
+        <p class="cfg-label">{d.duration.label}</p>
+        <p class="cfg-duration"><span data-duration-base></span> <strong data-duration-hours></strong></p>
+        <p class="cfg-duration cfg-duration-ext" data-duration-ext hidden></p>
+        <p class="cfg-hint" data-duration-note hidden></p>
+        <input type="hidden" name="extension" value={pl.duration.none} data-field-extension />
+      </div>
+
+      <p class="cfg-notice" data-capacity-notice role="status" hidden></p>
+      <p class="cfg-notice" data-cork-notice role="status" hidden></p>
+
+      <div class="cfg-actions" data-step-actions>
+        <a href="#cfg-menu" class="btn-cta cfg-next">{c.buttons.toMenu}<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10m-4-4 4 4-4 4"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cfg-details-grid { display: grid; grid-template-columns: 1.2fr 0.7fr 1.5fr 0.8fr; gap: 14px 16px; }
+  .cfg-length { border: none; margin: 0; padding: 0; }
+  .cfg-length legend { padding: 0; }
+  .cfg-length-pills .cfg-pill-body { padding: 10px 14px; font-size: 13px; }
+  .cfg-plan { font-size: 13px; color: var(--text-faint); margin-top: 16px; }
+  .cfg-plan strong { color: var(--cream); }
+  .cfg-plan .cfg-label { display: inline; margin: 0 6px 0 0; }
+  .cfg-inline-btn { margin-left: 8px; padding: 4px 10px; border-radius: 8px; border: 1px solid var(--gold); background: transparent; color: var(--gold); font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; }
+  .cfg-inline-btn:hover { background: rgba(251,210,149,0.12); }
+  .cfg-details-grid > * { min-width: 0; }
+  .cfg-fieldset { border: none; margin: 18px 0 0; padding: 0; min-width: 0; }
+  .cfg-fieldset legend { padding: 0; }
+  .cfg-duration { font-size: 13px; color: var(--text-faint); margin: -2px 0 6px; }
+  .cfg-duration-ext { color: var(--gold); }
+  .cfg-duration strong { color: var(--cream); }
+  @media (max-width: 960px) {
+    .cfg-details-grid { grid-template-columns: 1fr 1fr; }
+    .cfg-field-date { grid-column: 1 / -1; }
+    .cfg-length { grid-column: 1 / -1; }
+  }
+  @media (max-width: 560px) { .cfg-details-grid { grid-template-columns: 1fr; } }
+</style>

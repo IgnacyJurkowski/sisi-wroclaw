@@ -10,6 +10,8 @@ import { cacheAssetInventory, headersForPath, parseHeaderRules } from './generat
 // Shared with the content syncs, so a syndicated article carrying one of these
 // claims is skipped at sync time instead of failing this gate for every page.
 import { UNVERIFIED_CLAIMS } from '../src/lib/claims.mjs';
+// The Cork's ported party offer: the only other source of prices the configurator may show.
+import { corkPriceLabels } from '../src/data/cork-configurator.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = join(ROOT, 'dist');
@@ -595,6 +597,154 @@ for (const locale of LOCALES) {
     errorStatus.includes('events@r32.com.pl') && errorStatus.includes('+48 514 032 930'),
   );
 }
+// --- event configurator: one wrapping Netlify form, verified facts only ---
+const CONFIGURATOR = {
+  pl: 'konfigurator-imprezy',
+  en: 'event-configurator',
+  de: 'event-konfigurator',
+  it: 'configuratore-eventi',
+  cs: 'konfigurator-akce',
+};
+for (const locale of LOCALES) {
+  const routePath = `/${locale}/${CONFIGURATOR[locale]}/`;
+  assert(`configurator builds: ${routePath}`, exists(`${locale}/${CONFIGURATOR[locale]}/index.html`));
+  const html = exists(`${locale}/${CONFIGURATOR[locale]}/index.html`) ? read(`${locale}/${CONFIGURATOR[locale]}/index.html`) : '';
+  assert(
+    `${locale} configurator canonical and five hreflang alternates are present`,
+    html.includes(`rel="canonical" href="${CANONICAL_ORIGIN}${routePath}"`)
+      && (html.match(/rel="alternate" hreflang="(pl|en|de|it|cs)"/g) || []).length === 5
+      && html.includes('hreflang="x-default"'),
+  );
+  // App-like page: fills the viewport, no footer of its own; it is reached from
+  // every other page's footer and from the private-events CTA.
+  assert(
+    `${locale} configurator is linked from the shared footer and the private-events page`,
+    read(`${locale}/index.html`).includes(`href="${routePath}"`)
+      && privateEventPages[locale].includes(`href="${routePath}"`),
+  );
+  assert(`${locale} configurator renders as a full-viewport shell without the footer`, !html.includes('<footer') && html.includes('data-cfg-body'));
+  const forms = html.match(/<form\b[^>]*\bname="event-configurator"[^>]*>[\s\S]*?<\/form>/g) ?? [];
+  const form = forms[0] ?? '';
+  const openTag = form.match(/^<form\b[^>]*>/)?.[0] ?? '';
+  const registersForm = locale === 'pl';
+  assert(`${locale} has exactly one event-configurator form`, forms.length === 1);
+  assert(
+    `${locale} configurator form has Netlify POST attributes ${registersForm ? 'and registers' : 'without registering'} the form`,
+    openTag.includes('method="POST"')
+      && openTag.includes('data-netlify="true"') === registersForm
+      && openTag.includes('netlify-honeypot="bot-field"') === registersForm
+      && openTag.includes('data-configurator')
+      && openTag.includes('data-event-enquiry-form'),
+  );
+  const renderedFields = [...new Set([...form.matchAll(/<(?:input|select|textarea)\b[^>]*\bname="([^"]+)"/g)].map((m) => m[1]))].sort();
+  const expectedFields = [
+    'bot-field', 'cake', 'cake_base', 'cake_decor', 'cake_flavour', 'cake_size', 'consent',
+    'cork_bar', 'cork_desserts', 'cork_dishes', 'cork_mains', 'cork_premium', 'cork_sommelier', 'cork_starters', 'cork_wine',
+    'decor_extras', 'decor_idea', 'decor_photo', 'decor_tables', 'drinks', 'duration', 'email', 'estimate', 'extension', 'extras', 'food',
+    'form-name', 'guests', 'locale', 'message', 'name', 'occasion', 'page', 'phone', 'preferred_date', 'preferred_date_iso', 'recommended_space',
+    'seating', 'space', 'start_time', 'subject', 'utm',
+  ];
+  assert(
+    `${locale} configurator form submits exactly the approved field set`,
+    JSON.stringify(renderedFields) === JSON.stringify(expectedFields),
+  );
+  // Nothing is pre-chosen for the occasion or the space; the wizard blocks
+  // "next" until both are picked, and the group size starts at the owner's minimum.
+  assert(
+    `${locale} configurator pre-selects no occasion or space and starts at 10 guests`,
+    ![...form.matchAll(/<input type="radio" name="(?:occasion|space)"[^>]*>/g)].some((m) => /\bchecked\b/.test(m[0]))
+      && /<input[^>]*\bname="guests"[^>]*\bmin="10"/.test(form),
+  );
+  assert(
+    `${locale} configurator form requires contact, guests, date, hours and consent`,
+    ['name', 'email', 'guests', 'preferred_date', 'start_time', 'consent'].every((name) =>
+      new RegExp(`<(?:input|select|textarea)\\b(?=[^>]*\\bname="${name}")(?=[^>]*\\brequired(?:\\s|=|>))[^>]*>`).test(form)),
+  );
+  // Every option the visitor can pick submits its Polish label so the Netlify
+  // notification reads in Polish whichever language the visitor used.
+  const optionValues = [...form.matchAll(/<input type="(?:radio|checkbox)" name="(?:occasion|seating|space|extras)" value="([^"]+)"/g)].map((m) => m[1]);
+  assert(
+    `${locale} configurator options submit the Polish labels`,
+    optionValues.length === 16
+      && ['Urodziny', 'Bufet i stojąco', 'Nie wiem jeszcze', 'Wynajem na wyłączność'].every((label) => optionValues.includes(label)),
+  );
+  // The floor plan is an inline vector (no raster from the reference site) and
+  // the page never names a zone, table count or zone capacity.
+  assert(
+    `${locale} configurator draws the R32 floor plan as an inline SVG with no restaurant zones`,
+    html.includes('class="cfg-map-svg"') && !html.includes('/images/plan-r32') && !/strefa [123]|zone [123]|\d+ stołów/i.test(html),
+  );
+  assert(
+    `${locale} configurator plan has one clickable region per venue plus the shared area`,
+    html.split('data-map-space="sisi"').length === 2 && html.split('data-map-space="cork"').length === 2
+      && html.split('data-map-shared').length === 2,
+  );
+  // The owner's event lengths are the only durations offered, and the space
+  // step comes after the details so the tool can propose a space.
+  assert(
+    `${locale} configurator offers the owner's durations and asks for details before the space`,
+    ['4 h', '5 h', '6 h', '8 h', '10 h'].every((v) => form.includes(`name="duration" value="${v}"`))
+      && form.indexOf('data-cfg-step="details"') < form.indexOf('data-cfg-step="space"')
+      && form.includes('data-recommend'),
+  );
+  // Adults-only venue: no child head-counts, child rates or under-18 copy.
+  assert(
+    `${locale} configurator has nothing for guests under 18`,
+    // ("Kinder Bueno" is a cake flavour brand, not a child rate.)
+    !/name="children|dzieci|\bchildren\b|\bkinder\b(?![ -]bueno)|bambini|děti|menu dziecięce/i.test(form),
+  );
+  // Only the owner-verified limits appear as capacities; the reference site's
+  // per-zone numbers (30 / 52 / 42 guests, 60-guest exclusivity) must not.
+  assert(
+    `${locale} configurator names only the verified 150 / 500 capacities`,
+    /\b150\b/.test(html) && /\b500\b/.test(html) && !/\b(?:30|42|52|60) (?:gości|guests|Gäste|ospiti|hostů)\b/.test(html),
+  );
+  // Every "N zł" the configurator lists must come from one of three sources:
+  // the localized SiSi menu page, the two flat event cocktail prices the owner
+  // set on 2026-09-15 (38 zł cocktail, 35 zł 0%), or The Cork's ported offer
+  // (src/data/cork-configurator.mjs). '0 zł' is the empty state of the estimate.
+  const menuHtml = read(`${locale}/menu/index.html`);
+  const menuPrices = new Set((menuHtml.match(/\b\d+ zł/g) || []));
+  // ... plus the SiSi Friday hire fee the owner set the same day (5000 zł; Saturdays are blocked, not priced).
+  const OWNER_EVENT_PRICES = new Set(['38 zł', '35 zł', '0 zł', '5000 zł']);
+  const corkPrices = new Set(corkPriceLabels());
+  const configuratorPrices = [...new Set(form.match(/\b\d+ zł/g) || [])]
+    .filter((price) => !OWNER_EVENT_PRICES.has(price) && !corkPrices.has(price));
+  assert(
+    `${locale} configurator prices cocktails at the owner's flat 38 zł / 35 zł per drink`,
+    form.includes('data-id="cocktail-per-guest"') && form.includes('data-price="38"')
+      && form.includes('data-id="mocktail-per-guest"') && form.includes('data-price="35"')
+      && !form.includes('data-id="cocktail-hugo-spritz"'),
+  );
+  assert(
+    `${locale} configurator lists only SiSi menu, owner event or The Cork prices (${configuratorPrices.length} menu prices)`,
+    configuratorPrices.length > 20 && configuratorPrices.every((price) => menuPrices.has(price)),
+  );
+  // The owner dropped the "à la carte" choice (2026-09-15): a course or wine
+  // package is picked or left out, and nothing is pre-selected.
+  assert(
+    `${locale} configurator has no à la carte option and no pre-selected restaurant package`,
+    !/à la carte/i.test(form)
+      && ![...form.matchAll(/<input type="radio" name="cork_(?:starters|mains|desserts|wine)"[^>]*>/g)].some((m) => /\bchecked\b/.test(m[0])),
+  );
+  // The Cork's dinner is priced in-page (no iframe, no link-out to a second tool).
+  assert(
+    `${locale} configurator ports The Cork packages in-page`,
+    !html.includes('<iframe') && !html.includes('thecork.pl/konfigurator_imprez')
+      && form.includes('name="cork_starters"') && form.includes('data-price="139"') && form.includes('name="cake_flavour"'),
+  );
+  const errorStatus = form.match(/<div class="cfg-form-status cfg-status-error"[\s\S]*?<\/div>/)?.[0] ?? '';
+  assert(
+    `${locale} configurator error fallback contains the events contacts`,
+    errorStatus.includes('events@r32.com.pl') && errorStatus.includes('+48 514 032 930'),
+  );
+}
+assert(
+  'configurator Polish copy states the estimate is not an offer and pricing is individual',
+  read('pl/konfigurator-imprezy/index.html').includes('to podsumowanie nie jest ofertą')
+    && read('pl/konfigurator-imprezy/index.html').includes('Koszt ustalamy indywidualnie po omówieniu szczegółów wydarzenia.'),
+);
+
 // --- case studies: publish proof only when a real, approved project exists ---
 for (const locale of LOCALES) {
   assert(
@@ -853,7 +1003,7 @@ const blogCounts = Object.fromEntries(
 );
 const articleCount = Object.values(blogCounts).reduce((total, count) => total + count, 0);
 const localesWithArticles = LOCALES.filter((locale) => blogCounts[locale] > 0);
-const sitemapBaseCount = 50 + (eventCount > 0 ? 5 : 0) + localesWithArticles.length;
+const sitemapBaseCount = 55 + (eventCount > 0 ? 5 : 0) + localesWithArticles.length;
 assert(
   `sitemap urls = ${sitemapBaseCount} base + ${eventCount} events x5 + ${articleCount} articles`,
   (read('sitemap.xml').match(/<loc>/g) || []).length
@@ -1208,8 +1358,8 @@ if (eventCount === 0) {
 assert('no leaked {tokens} in html', leaked.length === 0);
 assert('no synced vendor metadata leaks into the html', !allHtml.includes('heroSource'));
 assert(
-  `html pages = 62 base + ${eventCount} events x5 + ${articleCount} articles`,
-  htmls.length === 62 + eventCount * 5 + articleCount,
+  `html pages = 67 base + ${eventCount} events x5 + ${articleCount} articles`,
+  htmls.length === 67 + eventCount * 5 + articleCount,
 );
 
 // --- report ---

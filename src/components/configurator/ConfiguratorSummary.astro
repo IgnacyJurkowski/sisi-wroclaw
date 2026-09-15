@@ -1,0 +1,150 @@
+---
+import { CONTACT } from '../../data/site';
+import { type Locale } from '../../i18n/config';
+import { localizedPath } from '../../i18n/routes';
+import { useTranslations } from '../../i18n/t';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const c = t.configurator;
+const s = c.summary;
+const shared = t.b2b.form;
+const privacyHref = localizedPath('privacy', locale);
+const consentParts = shared.consent.split('{privacy}');
+const ROWS = ['occasion', 'date', 'time', 'guests', 'seating', 'space', 'duration', 'corkMenu', 'corkDrinks', 'drinks', 'food', 'cake', 'decor', 'extras'] as const;
+---
+
+<section id="cfg-summary" class="cfg-step cfg-summary" data-cfg-step="summary">
+  <div class="container">
+    <div class="cfg-step-head" data-reveal>
+      <h2 class="display cfg-step-title">{s.heading}</h2>
+    </div>
+
+    <div class="cfg-summary-grid">
+      <div class="cfg-summary-cards" data-reveal>
+        <article class="sisi-card cfg-card">
+          <p class="cfg-subhead">{s.planCard}</p>
+          <dl class="cfg-summary-rows">
+            {ROWS.map((key) => (
+              <div data-sum-row={key}><dt>{s.labels[key]}</dt><dd data-sum={key}>{s.toBeAgreed}</dd></div>
+            ))}
+            <div class="cfg-summary-estimate"><dt>{s.labels.estimate}</dt><dd data-sum="estimate">{s.none}</dd></div>
+          </dl>
+          <p class="cfg-summary-note">{c.menu.estimate.note}</p>
+        </article>
+
+        <!-- The Cork's payment rules, shown only when a restaurant package is in the estimate -->
+        <article class="sisi-card cfg-card cfg-cork-terms" data-cork-terms hidden>
+          <p class="cfg-subhead">{s.cork.heading}</p>
+          <dl class="cfg-summary-rows">
+            <div><dt>{s.cork.value}</dt><dd data-cork-value>0 zł</dd></div>
+            <div><dt>{s.cork.service}</dt><dd data-cork-service>0 zł</dd></div>
+            <div class="cfg-summary-estimate"><dt>{s.cork.total}</dt><dd data-cork-total>0 zł</dd></div>
+            <div><dt>{s.cork.deposit}<span class="cfg-summary-hint">{s.cork.depositHint}</span></dt><dd data-cork-deposit>0 zł</dd></div>
+            <div><dt>{s.cork.balance}<span class="cfg-summary-hint">{s.cork.balanceHint}</span></dt><dd data-cork-balance>0 zł</dd></div>
+          </dl>
+          <p class="cfg-summary-note">{s.cork.vat}</p>
+        </article>
+
+        <article class="sisi-card cfg-card cfg-terms">
+          <p class="cfg-subhead">{s.terms.heading}</p>
+          <p class="cfg-terms-body">{s.terms.body}</p>
+        </article>
+      </div>
+
+      <div class="sisi-card cfg-card cfg-contact" data-reveal>
+        <p class="cfg-subhead">{s.form.heading}</p>
+        <p class="cfg-contact-intro">{shared.requiredHint}</p>
+        <div class="cfg-form-errors" data-form-errors role="alert" tabindex="-1" hidden>{shared.errorSummary}</div>
+
+        <!-- Configuration lines the script fills in Polish for the notification email. -->
+        <input type="hidden" name="drinks" data-field-drinks value="" />
+        <input type="hidden" name="food" data-field-food value="" />
+        <input type="hidden" name="cork_dishes" data-field-cork-dishes value="" />
+        <input type="hidden" name="estimate" data-field-estimate value="" />
+        <input type="hidden" name="recommended_space" data-field-recommended value="" />
+
+        <div class="cfg-contact-fields">
+          <div class="cfg-field">
+            <label class="cfg-label" for="cfg-name">{t.privateEvents.form.name} <span class="req" aria-hidden="true">*</span></label>
+            <input id="cfg-name" name="name" type="text" required autocomplete="name" aria-describedby="cfg-err-name" />
+            <p class="cfg-field-error" id="cfg-err-name" data-error-for="name" hidden></p>
+          </div>
+          <div class="cfg-field">
+            <label class="cfg-label" for="cfg-email">{shared.email} <span class="req" aria-hidden="true">*</span></label>
+            <input id="cfg-email" name="email" type="email" required autocomplete="email" aria-describedby="cfg-err-email" />
+            <p class="cfg-field-error" id="cfg-err-email" data-error-for="email" hidden></p>
+          </div>
+          <div class="cfg-field">
+            <label class="cfg-label" for="cfg-phone">{shared.phone} <span class="opt">{shared.optional}</span></label>
+            <input id="cfg-phone" name="phone" type="tel" autocomplete="tel" />
+          </div>
+          <div class="cfg-field">
+            <label class="cfg-label" for="cfg-message">{shared.message} <span class="opt">{shared.optional}</span></label>
+            <textarea id="cfg-message" name="message" rows="3" placeholder={s.form.messagePlaceholder}></textarea>
+          </div>
+          <div class="cfg-field">
+            <label class="cfg-consent">
+              <input type="checkbox" name="consent" value="yes" required aria-describedby="cfg-err-consent" data-field-consent />
+              <span>{consentParts[0]}<a href={privacyHref}>{shared.consentPrivacyLink}</a>{consentParts[1]}</span>
+            </label>
+            <p class="cfg-field-error" id="cfg-err-consent" data-error-for="consent" hidden></p>
+          </div>
+        </div>
+
+        <div class="cfg-actions cfg-submit">
+          <button type="submit" class="btn-cta" data-submit>{shared.submit}</button>
+        </div>
+
+        <div class="cfg-form-status" data-status-success aria-live="polite" tabindex="-1" hidden>
+          <p class="cfg-status-title">{s.form.success}</p>
+        </div>
+        <div class="cfg-form-status cfg-status-error" data-status-error aria-live="assertive" tabindex="-1" hidden>
+          <p class="cfg-status-title">{shared.error.title}</p>
+          <p class="cfg-status-body">{shared.error.body} <a href={CONTACT.eventsPhoneHref}>{CONTACT.eventsPhone}</a> · <a href={`mailto:${CONTACT.eventsEmail}`}>{CONTACT.eventsEmail}</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cfg-summary { padding-bottom: 88px; }
+  .cfg-summary-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+  .cfg-summary-cards { display: flex; flex-direction: column; gap: 14px; }
+  .cfg-summary-rows { margin: 0; display: flex; flex-direction: column; gap: 8px; }
+  .cfg-summary-rows > div { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 10px; font-size: 13px; line-height: 1.5; }
+  .cfg-summary-rows dt { color: var(--text-faint); display: flex; flex-direction: column; }
+  .cfg-summary-rows dd { margin: 0; color: var(--cream); overflow-wrap: anywhere; }
+  .cfg-summary-hint { font-size: 11px; color: var(--text-mute); }
+  .cfg-summary-estimate { padding-top: 8px; border-top: 1px solid rgba(237,219,194,0.16); }
+  .cfg-summary-estimate dd { font-weight: 600; }
+  .cfg-summary-note { font-size: 11px; color: var(--text-mute); line-height: 1.5; margin-top: 12px; }
+  .cfg-cork-terms, .cfg-terms { border-color: rgba(251,210,149,0.28); }
+  .cfg-terms-body { color: var(--text-dim); font-size: 13.5px; line-height: 1.7; }
+  .cfg-contact-intro { color: var(--text-dim); font-size: 14px; line-height: 1.6; margin-bottom: 16px; }
+  .cfg-hint-inline { color: var(--text-faint); font-size: 12px; }
+  .cfg-form-errors { margin-bottom: 16px; padding: 12px 16px; border-radius: 10px; border: 1px solid #a8475f; background: rgba(168,71,95,0.15); color: var(--cream); font-size: 14px; }
+  .cfg-contact-fields { display: flex; flex-direction: column; gap: 14px; }
+  .cfg-consent { display: flex; align-items: flex-start; gap: 11px; font-size: 13px; line-height: 1.5; color: var(--text-faint); cursor: pointer; }
+  .cfg-consent > span { min-width: 0; }
+  .cfg-consent a { color: var(--cream); text-decoration: underline; text-underline-offset: 3px; }
+  .cfg-consent input[type='checkbox'] {
+    appearance: none; -webkit-appearance: none; flex-shrink: 0; width: 18px; height: 18px; margin: 0; margin-top: calc((1.5em - 18px) / 2); padding: 0;
+    border: 1px solid var(--line); border-radius: 5px; background: rgba(255,255,255,0.03); cursor: pointer; position: relative; transition: background 150ms ease, border-color 150ms ease;
+  }
+  .cfg-consent input[type='checkbox']:hover { border-color: rgba(237,219,194,0.4); }
+  .cfg-consent input[type='checkbox']:checked { background: var(--cream); border-color: var(--cream); }
+  .cfg-consent input[type='checkbox']:checked::after { content: ''; position: absolute; left: 50%; top: 50%; width: 4px; height: 8px; border: solid #1a120b; border-width: 0 2px 2px 0; transform: translate(-50%, -50%) rotate(45deg); }
+  .cfg-consent input[type='checkbox']:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .cfg-consent input[type='checkbox'][aria-invalid='true'] { border-color: #c25c74; }
+  .cfg-submit { justify-content: flex-start; }
+  .cfg-form-status { margin-top: 20px; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--line); }
+  .cfg-status-title { color: var(--cream); font-size: 15px; line-height: 1.6; }
+  .cfg-status-body { color: var(--text-dim); font-size: 14px; line-height: 1.6; margin-top: 4px; }
+  .cfg-status-error { border-color: #a8475f; }
+  .cfg-status-error a { color: var(--cream); }
+  @media (max-width: 900px) { .cfg-summary-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 480px) { .cfg-summary-rows > div { grid-template-columns: 1fr; gap: 2px; } }
+</style>

@@ -9,6 +9,7 @@ import ReservationsPage from '../components/pages/ReservationsPage.astro';
 import ContactPage from '../components/pages/ContactPage.astro';
 import CorporatePage from '../components/pages/CorporatePage.astro';
 import PrivateEventsPage from '../components/pages/PrivateEventsPage.astro';
+import ConfiguratorPage from '../components/pages/ConfiguratorPage.astro';
 import LegalPage from '../components/pages/LegalPage.astro';
 import EventDetailPage from '../components/pages/EventDetailPage.astro';
 import BlogPage from '../components/pages/BlogPage.astro';
@@ -59,6 +60,7 @@ const { locale, routeKey, event, article } = Astro.props;
 {routeKey === 'reservations' && <ReservationsPage locale={locale} />}
 {routeKey === 'corporate' && <CorporatePage locale={locale} />}
 {routeKey === 'privateEvents' && <PrivateEventsPage locale={locale} />}
+{routeKey === 'configurator' && <ConfiguratorPage locale={locale} />}
 {routeKey === 'contact' && <ContactPage locale={locale} />}
 {!article && routeKey === 'blog' && <BlogPage locale={locale} />}
 {(routeKey === 'terms' || routeKey === 'privacy' || routeKey === 'cookies') && (
