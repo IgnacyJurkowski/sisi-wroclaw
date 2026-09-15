@@ -1,0 +1,65 @@
+---
+import { SPACES } from '../../data/configurator';
+import { type Locale } from '../../i18n/config';
+import { useTranslations } from '../../i18n/t';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const c = useTranslations(locale).configurator;
+const plSpaces = useTranslations('pl').configurator.space.options;
+// The plan is The Cork / SiSi functional layout with the restaurant's zone
+// markers removed - the same R32 footprint the B2B page describes.
+const PLAN = '/images/plan-r32';
+---
+
+<section id="cfg-space" class="cfg-step" data-cfg-step="space">
+  <div class="container">
+    <div class="cfg-step-head" data-reveal>
+      <p class="cfg-step-kicker">{c.progress.stepLabel.replace('{n}', '2')} · {c.progress.steps.space}</p>
+      <h2 class="display cfg-step-title">{c.space.heading}</h2>
+      <p class="cfg-step-intro">{c.space.intro}</p>
+    </div>
+
+    <div class="cfg-space-grid" data-reveal>
+      <figure class="sisi-card cfg-plan">
+        <picture>
+          <source type="image/avif" srcset={`${PLAN}-600.avif 600w, ${PLAN}-896.avif 896w`} sizes="(max-width: 900px) 92vw, 560px" />
+          <source type="image/webp" srcset={`${PLAN}-600.webp 600w, ${PLAN}-896.webp 896w`} sizes="(max-width: 900px) 92vw, 560px" />
+          <img src={`${PLAN}.webp`} width="896" height="787" alt={c.space.planAlt} loading="lazy" decoding="async" />
+        </picture>
+        <figcaption>{c.space.planCaption}</figcaption>
+      </figure>
+
+      <fieldset class="cfg-spaces">
+        <legend class="visually-hidden">{c.space.heading}</legend>
+        {SPACES.map((key) => (
+          <label class="cfg-choice">
+            <input type="radio" name="space" value={plSpaces[key].title} data-key={key} data-label={c.space.options[key].title} checked={key === 'unsure'} />
+            <span class="cfg-choice-body">
+              <span class="cfg-choice-title">{c.space.options[key].title}</span>
+              <span class="cfg-choice-sub">{c.space.options[key].body}</span>
+            </span>
+            <span class="cfg-choice-check" aria-hidden="true">✓</span>
+          </label>
+        ))}
+        <p class="cfg-space-selected">{c.space.selected} <strong data-space-selected>{c.space.options.unsure.title}</strong></p>
+        <div class="cfg-actions">
+          <a href="#cfg-menu" class="btn-cta cfg-next">{c.buttons.toMenu}<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10m-4-4 4 4-4 4"/></svg></a>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cfg-space-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 24px; align-items: start; }
+  .cfg-plan { margin: 0; padding: 18px; background: rgba(247,245,232,0.96); border-color: rgba(237,219,194,0.35); }
+  .cfg-plan img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  .cfg-plan figcaption { font-size: 12px; color: #4a2a33; margin-top: 12px; line-height: 1.5; }
+  .cfg-spaces { border: none; margin: 0; padding: 0; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+  .cfg-spaces .cfg-choice-body { padding-right: 44px; }
+  .cfg-space-selected { font-size: 13px; color: var(--text-faint); margin-top: 6px; }
+  .cfg-space-selected strong { color: var(--cream); }
+  .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  @media (max-width: 900px) { .cfg-space-grid { grid-template-columns: 1fr; } }
+</style>

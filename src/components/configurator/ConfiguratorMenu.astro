@@ -1,0 +1,176 @@
+---
+import { PICK_GROUPS, pickText, type PickGroup } from '../../data/configurator';
+import { ICONS as DRINK_ICONS, localizeDesc } from '../../data/bar-menu';
+import { UI_ICONS } from '../../data/ui-icons';
+import { type Locale } from '../../i18n/config';
+import { localizedPath } from '../../i18n/routes';
+import { useTranslations } from '../../i18n/t';
+import MenuFold from '../MenuFold.astro';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const c = useTranslations(locale).configurator;
+const menuHref = localizedPath('menu', locale);
+const GROUP_ICONS = {
+  cocktails: DRINK_ICONS.martini,
+  mocktails: DRINK_ICONS.leaf,
+  wines: DRINK_ICONS.wine,
+  champagne: DRINK_ICONS.champagne,
+  bottles: DRINK_ICONS.bottle,
+  food: UI_ICONS.utensils,
+} as const;
+const drinkGroups = PICK_GROUPS.filter((g) => g.tab === 'drinks');
+const foodGroups = PICK_GROUPS.filter((g) => g.tab === 'food');
+// Cocktail ingredient lists are localized token-by-token like on the menu page;
+// other details (winery, house, portion) are brand-invariant or already localized.
+const detailFor = (group: PickGroup, detail: string | undefined) =>
+  detail && (group.key === 'cocktails' || group.key === 'mocktails') ? localizeDesc(detail, locale) : detail;
+const unitFor = (group: PickGroup) => (group.hint === 'perGuest' ? c.menu.units.perGuest : group.hint === 'bottles' ? c.menu.units.bottle : c.menu.units.portion);
+---
+
+<section id="cfg-menu" class="cfg-step" data-cfg-step="menu">
+  <div class="container">
+    <div class="cfg-step-head" data-reveal>
+      <p class="cfg-step-kicker">{c.progress.stepLabel.replace('{n}', '3')} · {c.progress.steps.menu}</p>
+      <h2 class="display cfg-step-title">{c.menu.heading}</h2>
+      <p class="cfg-step-intro">{c.menu.intro}</p>
+    </div>
+
+    <div class="cfg-tabs" role="tablist" aria-label={c.progress.steps.menu} data-reveal>
+      <button type="button" class="cfg-tab" role="tab" id="cfg-tab-drinks" aria-controls="cfg-panel-drinks" aria-selected="true" data-cfg-tab="drinks">
+        <span class="cfg-tab-num">01</span>{c.menu.tabs.drinks}<span class="cfg-tab-sub">{c.menu.tabs.drinksSub}</span>
+      </button>
+      <button type="button" class="cfg-tab" role="tab" id="cfg-tab-food" aria-controls="cfg-panel-food" aria-selected="false" tabindex="-1" data-cfg-tab="food">
+        <span class="cfg-tab-num">02</span>{c.menu.tabs.food}<span class="cfg-tab-sub">{c.menu.tabs.foodSub}</span>
+      </button>
+    </div>
+
+    <div class="cfg-menu-grid">
+      <div class="cfg-menu-panels">
+        {[['drinks', drinkGroups], ['food', foodGroups]].map(([tab, groups]) => (
+          <div id={`cfg-panel-${tab}`} class="cfg-panel" role="tabpanel" aria-labelledby={`cfg-tab-${tab}`} data-cfg-panel={tab} hidden={tab !== 'drinks'}>
+            {(groups as PickGroup[]).map((group, index) => (
+              <MenuFold label={c.menu.groups[group.key]} icon={GROUP_ICONS[group.key]} count={group.items.length} note={c.menu.hints[group.hint]} open={index === 0}>
+                <ul class="cfg-picks">
+                  {group.items.map((item) => (
+                    <li
+                      class="cfg-pick"
+                      data-pick
+                      data-id={item.id}
+                      data-group={item.group}
+                      data-kind={item.kind}
+                      data-price={item.price}
+                      data-name={pickText(item.name, locale)}
+                      data-name-pl={pickText(item.name, 'pl')}
+                      data-unit={unitFor(group)}
+                      data-unit-pl={group.hint === 'perGuest' ? 'na gościa' : group.hint === 'bottles' ? 'but.' : 'porcji'}
+                    >
+                      <div class="cfg-pick-main">
+                        <p class="cfg-pick-name">{pickText(item.name, locale)}</p>
+                        {item.detail && <p class="cfg-pick-detail">{detailFor(group, pickText(item.detail, locale))}</p>}
+                      </div>
+                      <span class="cfg-pick-price">{item.priceLabel}<span class="cfg-pick-unit"> / {unitFor(group)}</span></span>
+                      <div class="cfg-qty" data-qty-control>
+                        <button type="button" class="cfg-qty-btn" data-qty-step="-1" aria-label={`${c.menu.decrease}: ${pickText(item.name, locale)}`} tabindex="-1">−</button>
+                        <input class="cfg-qty-input" type="number" inputmode="numeric" min="0" max="999" value="0" aria-label={pickText(item.name, locale)} data-qty />
+                        <button type="button" class="cfg-qty-btn" data-qty-step="1" aria-label={`${c.menu.increase}: ${pickText(item.name, locale)}`} tabindex="-1">+</button>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </MenuFold>
+            ))}
+          </div>
+        ))}
+        <p class="cfg-menu-link"><a href={menuHref}>{c.menu.fullMenu}</a></p>
+      </div>
+
+      <aside class="sisi-card cfg-estimate" aria-live="polite">
+        <p class="cfg-step-kicker">{c.menu.estimate.heading}</p>
+        <p class="cfg-estimate-empty" data-est-empty>{c.menu.estimate.empty}</p>
+        <dl class="cfg-estimate-rows" data-est-rows hidden>
+          <div><dt>{c.menu.estimate.drinks}</dt><dd data-est-drinks>0 zł</dd></div>
+          <div><dt>{c.menu.estimate.food}</dt><dd data-est-food>0 zł</dd></div>
+          <div class="cfg-estimate-total">
+            <dt>{c.menu.estimate.total}<span class="cfg-estimate-guests"><span data-est-guests>0</span> {c.menu.estimate.guests}</span></dt>
+            <dd data-est-total>0 zł</dd>
+          </div>
+          <div class="cfg-estimate-per"><dt>{c.menu.estimate.perGuest}</dt><dd data-est-per-guest>0 zł</dd></div>
+        </dl>
+        <p class="cfg-estimate-note">{c.menu.estimate.note}</p>
+        <div class="cfg-actions">
+          <a href="#cfg-extras" class="btn-cta cfg-next">{c.buttons.toExtras}<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10m-4-4 4 4-4 4"/></svg></a>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cfg-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+  .cfg-tab {
+    display: flex; align-items: baseline; gap: 10px; padding: 12px 18px; border-radius: 12px;
+    border: 1px solid var(--line); background: rgba(39,7,15,0.42); color: var(--text-dim);
+    font: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
+    transition: border-color 150ms ease, color 150ms ease, background 150ms ease;
+  }
+  .cfg-tab:hover { border-color: rgba(237,219,194,0.45); color: var(--cream); }
+  .cfg-tab[aria-selected='true'] { border-color: var(--gold); color: var(--cream); background: rgba(251,210,149,0.1); }
+  .cfg-tab:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .cfg-tab-num { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; color: var(--gold); }
+  .cfg-tab-sub { font-size: 12px; font-weight: 400; color: var(--text-faint); }
+
+  .cfg-menu-grid { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 24px; align-items: start; }
+  .cfg-panel { display: flex; flex-direction: column; gap: 14px; }
+  .cfg-panel[hidden] { display: none; }
+  .cfg-picks { list-style: none; margin: 0; padding: 0; }
+  .cfg-pick {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 10px 16px;
+    padding: 12px 0; border-bottom: 1px solid rgba(237,219,194,0.1);
+  }
+  .cfg-pick:last-child { border-bottom: none; }
+  .cfg-pick.is-picked .cfg-pick-name { color: var(--gold); }
+  .cfg-pick-name { font-size: 14px; font-weight: 600; color: var(--text); }
+  .cfg-pick-detail { font-size: 12px; color: var(--text-faint); line-height: 1.5; margin-top: 2px; }
+  .cfg-pick-price { font-size: 13px; color: var(--cream); white-space: nowrap; }
+  .cfg-pick-unit { color: var(--text-mute); font-size: 11px; }
+  .cfg-qty { display: flex; align-items: stretch; border: 1px solid var(--line); border-radius: 9px; overflow: hidden; background: rgba(255,255,255,0.03); }
+  .cfg-qty:focus-within { outline: 2px solid rgba(237,219,194,0.5); outline-offset: 1px; }
+  .cfg-qty-btn {
+    width: 34px; border: none; background: rgba(237,219,194,0.05); color: var(--cream);
+    font-size: 16px; cursor: pointer; transition: background 150ms ease;
+  }
+  .cfg-qty-btn:hover { background: rgba(237,219,194,0.14); }
+  .cfg-qty-input {
+    width: 44px; text-align: center; border: none; background: transparent; color: var(--cream);
+    font: inherit; font-size: 14px; padding: 8px 2px; outline: none; -moz-appearance: textfield; appearance: textfield;
+  }
+  .cfg-qty-input::-webkit-outer-spin-button, .cfg-qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .cfg-menu-link { margin-top: 18px; font-size: 13px; }
+  .cfg-menu-link a { color: var(--cream); text-decoration: underline; text-underline-offset: 3px; }
+
+  .cfg-estimate { position: sticky; top: calc(var(--nav-height) + 16px); padding: 26px 26px 24px; border-color: rgba(251,210,149,0.28); }
+  .cfg-estimate-empty { font-size: 13px; color: var(--text-faint); line-height: 1.6; }
+  .cfg-estimate-empty[hidden], .cfg-estimate-rows[hidden] { display: none; }
+  .cfg-estimate-rows { margin: 0; display: flex; flex-direction: column; gap: 10px; }
+  .cfg-estimate-rows > div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 13px; color: var(--text-dim); }
+  .cfg-estimate-rows dd { margin: 0; color: var(--cream); font-weight: 600; white-space: nowrap; }
+  .cfg-estimate-total { padding-top: 10px; border-top: 1px solid rgba(237,219,194,0.16); }
+  .cfg-estimate-total dt { display: flex; flex-direction: column; gap: 2px; color: var(--cream); }
+  .cfg-estimate-total dd { font-family: var(--font-display); font-size: 1.5rem; font-weight: 400; }
+  .cfg-estimate-guests { font-size: 11px; color: var(--text-mute); }
+  .cfg-estimate-per dt { font-size: 12px; }
+  .cfg-estimate-note { font-size: 11px; color: var(--text-mute); line-height: 1.55; margin-top: 16px; }
+  .cfg-estimate .cfg-actions { justify-content: stretch; }
+  .cfg-estimate .cfg-actions .btn-cta { width: 100%; }
+
+  @media (max-width: 960px) {
+    .cfg-menu-grid { grid-template-columns: 1fr; }
+    .cfg-estimate { position: static; }
+  }
+  @media (max-width: 560px) {
+    .cfg-pick { grid-template-columns: minmax(0, 1fr) auto; }
+    .cfg-pick-price { grid-column: 1; }
+    .cfg-qty { grid-column: 2; grid-row: 1 / span 2; }
+  }
+</style>

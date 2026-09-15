@@ -47,6 +47,13 @@ const pl = {
       ogDescription:
         'Zorganizuj urodziny, rocznicę lub prywatne przyjęcie w SiSi, The Cork albo całym R32. Wynajem na wyłączność, bar, catering, muzyka i indywidualna oferta.',
     },
+    configurator: {
+      title: 'Konfigurator imprezy - zaplanuj wydarzenie w SiSi | SiSi Wrocław',
+      description:
+        'Zaplanuj urodziny, przyjęcie lub imprezę firmową w SiSi, The Cork albo całym R32: wybierz termin, liczbę gości, przestrzeń, koktajle i przekąski z karty i wyślij zapytanie o indywidualną propozycję.',
+      ogDescription:
+        'Wybierz termin, gości, przestrzeń i pozycje z karty SiSi. Wyślij konfigurację, a zespół przygotuje indywidualną propozycję.',
+    },
     contact: {
       title: 'Kontakt do klubu SiSi Wrocław – adres i dane firmy',
       description:
@@ -92,6 +99,7 @@ const pl = {
     careers: 'Kariera',
     corporate: 'Dla firm',
     privateEvents: 'Imprezy prywatne',
+    configurator: 'Konfigurator imprezy',
     reservations: 'Rezerwacje',
     contact: 'Kontakt',
     blog: 'Blog',
@@ -413,6 +421,140 @@ const pl = {
   // B2B service claims in this section (open bar, bringing a cake, external
   // photographer, deposit / payment terms, continuous cleaning) confirmed
   // accurate by the owner on 2026-06-24.
+  configurator: {
+    hero: {
+      eyebrow: 'Twoja impreza w R32',
+      title: 'Zaplanuj swoje wydarzenie',
+      body: 'Wybierz rodzaj wydarzenia, przestrzeń, koktajle i przekąski z naszej karty. Na końcu zobaczysz podsumowanie i wyślesz je do zespołu, który przygotuje indywidualną propozycję.',
+      start: 'Zaczynamy',
+    },
+    progress: {
+      label: 'Postęp konfiguracji',
+      stepLabel: 'Krok {n}',
+      steps: { details: 'Szczegóły', space: 'Przestrzeń', menu: 'Menu', extras: 'Dodatki', summary: 'Podsumowanie' },
+    },
+    occasion: {
+      heading: 'Wybierz rodzaj wydarzenia',
+      options: {
+        birthday: 'Urodziny',
+        anniversary: 'Rocznica',
+        celebration: 'Prywatne przyjęcie',
+        corporate: 'Impreza firmowa',
+        other: 'Inna okazja',
+      },
+    },
+    details: {
+      heading: 'Podstawowe informacje',
+      intro: 'Podaj termin, liczbę gości i formułę spotkania. Na tej podstawie dobierzemy przestrzeń.',
+      time: 'Godzina rozpoczęcia',
+      timeHint: 'Orientacyjnie - dokładny harmonogram ustalimy razem.',
+      guestsHint: 'Orientacyjna liczba - można ją później zmienić.',
+      seating: {
+        label: 'Formuła spotkania',
+        seated: 'Kolacja przy stołach',
+        seatedHint: 'do 150 miejsc siedzących w The Cork',
+        standing: 'Bufet i stojąco',
+        standingHint: 'do 500 gości w całym R32',
+        mixed: 'Kolacja i część wieczorna',
+        mixedHint: 'zasiadana kolacja, potem klub',
+      },
+      capacity: {
+        seated: 'Przy {guests} gościach kolacja przy stołach przekracza {capacity} miejsc siedzących w The Cork. Zaproponujemy formułę bufetową albo podział wieczoru na dwie części.',
+        standing: 'Więcej niż {capacity} gości wykracza poza pojemność R32. Napisz do nas, a sprawdzimy, co jest możliwe.',
+      },
+    },
+    space: {
+      heading: 'Wybierz przestrzeń',
+      intro: 'Zaznacz preferowaną przestrzeń. Ostateczny układ i dostępność potwierdzi nasz zespół.',
+      planAlt: 'Plan funkcjonalny kompleksu R32: klub SiSi i restauracja The Cork',
+      planCaption: 'Układ funkcjonalny R32 - klub SiSi i restauracja The Cork przy Rzeźniczej 32-33',
+      selected: 'Wybrano:',
+      options: {
+        sisi: { title: 'Klub SiSi', body: 'Klub muzyczny z barem, DJ-ami i muzyką na żywo - na wieczorne przyjęcia i imprezy.' },
+        cork: { title: 'Restauracja The Cork', body: 'Restauracja na zasiadaną kolację - do 150 miejsc siedzących.' },
+        r32: { title: 'Cały kompleks R32', body: 'SiSi i The Cork razem - łącznie 663 m² przestrzeni, do 500 gości na stojąco (bufet).' },
+        unsure: { title: 'Nie wiem jeszcze', body: 'Doradzimy przestrzeń na podstawie liczby gości i charakteru wydarzenia.' },
+      },
+    },
+    menu: {
+      heading: 'Skomponuj bar i przekąski',
+      intro: 'Wybierz pozycje z aktualnej karty SiSi i podaj ilości. Kwoty liczymy według cen z karty - to punkt wyjścia do rozmowy, nie oferta.',
+      tabs: { drinks: 'Napoje', drinksSub: 'koktajle, wina, butelki', food: 'Przekąski', foodSub: 'Night Menu by The Cork' },
+      groups: {
+        cocktails: 'Koktajle',
+        mocktails: 'Koktajle 0%',
+        wines: 'Wina polskie - butelka 750 ml',
+        champagne: 'Szampan - butelka 750 ml',
+        bottles: 'Bottle service',
+        food: 'Night Menu',
+      },
+      hints: { perGuest: 'liczba na gościa', bottles: 'liczba butelek', portions: 'liczba porcji' },
+      units: { perGuest: 'na gościa', bottle: 'but.', portion: 'porcji' },
+      decrease: 'Mniej',
+      increase: 'Więcej',
+      fullMenu: 'Zobacz pełną kartę',
+      estimate: {
+        heading: 'Twój szacunek',
+        drinks: 'Napoje',
+        food: 'Przekąski',
+        total: 'Razem według karty',
+        perGuest: 'na gościa',
+        guests: 'gości',
+        empty: 'Dodaj pozycje z karty, aby zobaczyć szacunek.',
+        note: 'Szacunek według aktualnych cen z karty SiSi. Ostateczny koszt wydarzenia ustalamy indywidualnie - to podsumowanie nie jest ofertą.',
+      },
+    },
+    extras: {
+      heading: 'Dodatki i oprawa',
+      intro: 'Zaznacz, co jeszcze mamy uwzględnić. Te elementy wyceniamy indywidualnie.',
+      quoted: 'wycena indywidualna',
+      items: {
+        exclusive: { title: 'Wynajem na wyłączność', body: 'SiSi, The Cork lub cały kompleks R32 tylko dla Twoich gości.' },
+        music: { title: 'Oprawa muzyczna', body: 'DJ lub muzyka na żywo dopasowane do charakteru wydarzenia.' },
+        screens: { title: 'Ekrany do prezentacji', body: 'Dwa ekrany do prezentacji, życzeń lub pokazu.' },
+        catering: { title: 'Catering', body: 'Propozycja menu dla całej grupy, ustalona z naszym zespołem.' },
+      },
+    },
+    summary: {
+      heading: 'Twoje wydarzenie w R32',
+      intro: 'Sprawdź wybrane elementy i zostaw kontakt. Na tej podstawie przygotujemy indywidualną propozycję.',
+      planCard: 'Plan wydarzenia',
+      labels: {
+        occasion: 'Rodzaj',
+        date: 'Termin',
+        time: 'Godzina',
+        guests: 'Goście',
+        seating: 'Formuła',
+        space: 'Przestrzeń',
+        drinks: 'Napoje',
+        food: 'Przekąski',
+        extras: 'Dodatki',
+        estimate: 'Szacunek według karty',
+      },
+      toBeAgreed: 'do ustalenia',
+      none: 'nie wybrano',
+      guestsUnit: 'os.',
+      terms: {
+        heading: 'Zasady rezerwacji',
+        body: 'Koszt ustalamy indywidualnie po omówieniu szczegółów wydarzenia. Termin potwierdzamy umową i zaliczką, a pozostała część jest płatna przed wydarzeniem.',
+      },
+      form: {
+        heading: 'Gdzie mamy wysłać propozycję?',
+        intro: 'Podsumowanie konfiguracji dołączymy do zapytania.',
+        configLabel: 'Konfiguracja',
+        messagePlaceholder: 'Napisz, co jeszcze powinniśmy wiedzieć o Twoim wydarzeniu.',
+        success: 'Dziękujemy! Otrzymaliśmy Twoją konfigurację i odezwiemy się z indywidualną propozycją.',
+        subject: 'Zapytanie z konfiguratora imprezy - SiSi Wrocław',
+      },
+    },
+    buttons: {
+      toSpace: 'Wybierz przestrzeń',
+      toMenu: 'Skomponuj menu',
+      toExtras: 'Dodaj oprawę',
+      toSummary: 'Przejdź do podsumowania',
+    },
+  },
+
   b2b: {
     hero: {
       eyebrow: 'Eventy firmowe w centrum Wrocławia',

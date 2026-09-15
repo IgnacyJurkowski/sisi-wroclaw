@@ -1,0 +1,107 @@
+---
+import { SEATINGS } from '../../data/configurator';
+import { type Locale } from '../../i18n/config';
+import { useTranslations } from '../../i18n/t';
+import DatePicker from '../DatePicker.astro';
+import NumberStepper from '../NumberStepper.astro';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const c = t.configurator;
+const shared = t.b2b.form;
+const plSeating = useTranslations('pl').configurator.details.seating;
+const seatingHints = { seated: c.details.seating.seatedHint, standing: c.details.seating.standingHint, mixed: c.details.seating.mixedHint } as const;
+---
+
+<section id="cfg-details" class="cfg-step" data-cfg-step="details">
+  <div class="container">
+    <div class="cfg-step-head" data-reveal>
+      <p class="cfg-step-kicker">{c.progress.stepLabel.replace('{n}', '1')} · {c.progress.steps.details}</p>
+      <h2 class="display cfg-step-title">{c.details.heading}</h2>
+      <p class="cfg-step-intro">{c.details.intro}</p>
+    </div>
+
+    <div class="sisi-card cfg-card cfg-details" data-reveal>
+      <div class="cfg-details-grid">
+        <div class="cfg-field">
+          <label class="cfg-label" for="cfg-date">{shared.date} <span class="req" aria-hidden="true">*</span></label>
+          <DatePicker
+            id="cfg-date"
+            name="preferred_date"
+            locale={locale}
+            required
+            describedby="cfg-err-preferred_date"
+            placeholder={shared.datePlaceholder}
+            modeSingle={shared.dateModeSingle}
+            modeRange={shared.dateModeRange}
+            prevMonth={shared.datePrevMonth}
+            nextMonth={shared.dateNextMonth}
+            clear={shared.dateClear}
+          />
+          <p class="cfg-field-error" id="cfg-err-preferred_date" data-error-for="preferred_date" hidden></p>
+        </div>
+
+        <div class="cfg-field">
+          <label class="cfg-label" for="cfg-time">{c.details.time} <span class="opt">{shared.optional}</span></label>
+          <input id="cfg-time" name="start_time" type="time" step="900" data-cfg-time />
+          <p class="cfg-hint">{c.details.timeHint}</p>
+        </div>
+
+        <div class="cfg-field">
+          <label class="cfg-label" for="cfg-guests">{shared.guests} <span class="req" aria-hidden="true">*</span></label>
+          <NumberStepper
+            id="cfg-guests"
+            name="guests"
+            min={1}
+            required
+            describedby="cfg-err-guests"
+            decreaseLabel={shared.guestsDecrease}
+            increaseLabel={shared.guestsIncrease}
+          />
+          <p class="cfg-field-error" id="cfg-err-guests" data-error-for="guests" hidden></p>
+          <p class="cfg-hint">{c.details.guestsHint}</p>
+        </div>
+      </div>
+
+      <fieldset class="cfg-seating">
+        <legend class="cfg-label">{c.details.seating.label}</legend>
+        <div class="cfg-seating-grid">
+          {SEATINGS.map((key) => (
+            <label class="cfg-choice">
+              <input type="radio" name="seating" value={plSeating[key]} data-key={key} data-label={c.details.seating[key]} checked={key === 'standing'} />
+              <span class="cfg-choice-body">
+                <span class="cfg-choice-title">{c.details.seating[key]}</span>
+                <span class="cfg-choice-sub">{seatingHints[key]}</span>
+              </span>
+              <span class="cfg-choice-check" aria-hidden="true">✓</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <p class="cfg-notice" data-capacity-notice role="status" hidden></p>
+
+      <div class="cfg-actions">
+        <a href="#cfg-space" class="btn-cta cfg-next">{c.buttons.toSpace}<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10m-4-4 4 4-4 4"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cfg-details { max-width: 960px; margin: 0 auto; }
+  .cfg-details-grid { display: grid; grid-template-columns: 1.2fr 0.8fr 0.8fr; gap: 18px 22px; }
+  .cfg-details-grid > * { min-width: 0; }
+  .cfg-seating { border: none; margin: 26px 0 0; padding: 0; min-width: 0; }
+  .cfg-seating legend { padding: 0; }
+  .cfg-seating-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  @media (max-width: 820px) {
+    .cfg-details-grid { grid-template-columns: 1fr 1fr; }
+    .cfg-details-grid > :first-child { grid-column: 1 / -1; }
+  }
+  @media (max-width: 560px) {
+    .cfg-details-grid { grid-template-columns: 1fr; }
+    .cfg-seating-grid { grid-template-columns: 1fr; }
+  }
+</style>

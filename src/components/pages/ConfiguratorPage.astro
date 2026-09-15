@@ -1,0 +1,169 @@
+---
+import ConfiguratorDetails from '../configurator/ConfiguratorDetails.astro';
+import ConfiguratorExtras from '../configurator/ConfiguratorExtras.astro';
+import ConfiguratorHero from '../configurator/ConfiguratorHero.astro';
+import ConfiguratorMenu from '../configurator/ConfiguratorMenu.astro';
+import ConfiguratorSpace from '../configurator/ConfiguratorSpace.astro';
+import ConfiguratorSummary from '../configurator/ConfiguratorSummary.astro';
+import { CONFIGURATOR_LIMITS } from '../../data/configurator';
+import { privateEventsServiceSchema } from '../../data/site';
+import { type Locale } from '../../i18n/config';
+import { localizedPath } from '../../i18n/routes';
+import { useTranslations } from '../../i18n/t';
+import Base from '../../layouts/Base.astro';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const c = t.configurator;
+const shared = t.b2b.form;
+const pageUrl = new URL(localizedPath('configurator', locale), Astro.site).href;
+const homeUrl = new URL(localizedPath('home', locale), Astro.site).href;
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'SiSi Wrocław', item: homeUrl },
+    { '@type': 'ListItem', position: 2, name: t.nav.configurator, item: pageUrl },
+  ],
+};
+
+// Netlify keeps one field-label set per form name, captured from the first page it
+// parses. Register from the Polish page only; every locale still POSTs by form-name.
+const registersNetlifyForm = locale === 'pl';
+const formMessages = JSON.stringify({
+  required: shared.errors.required,
+  email: shared.errors.email,
+  consent: shared.errors.consent,
+  sending: shared.sending,
+  submit: shared.submit,
+});
+// Strings the client script needs to render live text (capacity notices, summary).
+const clientStrings = JSON.stringify({
+  capacity: c.details.capacity,
+  limits: CONFIGURATOR_LIMITS,
+  summary: { toBeAgreed: c.summary.toBeAgreed, none: c.summary.none, guestsUnit: c.summary.guestsUnit },
+  units: c.menu.units,
+  estimate: { drinks: c.menu.estimate.drinks, food: c.menu.estimate.food, total: c.menu.estimate.total, guests: c.menu.estimate.guests, perGuest: c.menu.estimate.perGuest },
+});
+---
+
+<Base
+  locale={locale}
+  routeKey="configurator"
+  title={t.meta.configurator.title}
+  description={t.meta.configurator.description}
+  ogTitle={t.meta.configurator.title}
+  ogDescription={t.meta.configurator.ogDescription}
+  schema={[privateEventsServiceSchema(locale), breadcrumb]}
+>
+  <form
+    class="cfg"
+    name="event-configurator"
+    method="POST"
+    data-netlify={registersNetlifyForm ? 'true' : undefined}
+    netlify-honeypot={registersNetlifyForm ? 'bot-field' : undefined}
+    data-messages={formMessages}
+    data-strings={clientStrings}
+    data-required-fields="name,email,guests,preferred_date"
+    data-event-enquiry-form
+    data-configurator
+    novalidate
+  >
+    <input type="hidden" name="form-name" value="event-configurator" />
+    <input type="hidden" name="subject" value={c.summary.form.subject} />
+    <input type="hidden" name="locale" value={locale} />
+    <input type="hidden" name="page" data-field-page value="" />
+    <input type="hidden" name="utm" data-field-utm value="" />
+    <p class="cfg-hp" aria-hidden="true">
+      <input type="text" name="bot-field" tabindex="-1" autocomplete="off" />
+    </p>
+
+    <ConfiguratorHero locale={locale} />
+    <ConfiguratorDetails locale={locale} />
+    <ConfiguratorSpace locale={locale} />
+    <ConfiguratorMenu locale={locale} />
+    <ConfiguratorExtras locale={locale} />
+    <ConfiguratorSummary locale={locale} />
+  </form>
+</Base>
+
+<script>
+  import '../../scripts/event-enquiry-form';
+  import '../../scripts/configurator';
+</script>
+
+<style is:global>
+  /* Shared configurator chrome. Global (not scoped) because the six step
+     components share the same section, card, chip and button recipes. */
+  .cfg { display: block; }
+  .cfg-hp { position: absolute; left: -9999px; }
+  .cfg-step { padding: 56px 0 24px; scroll-margin-top: calc(var(--nav-height) + 16px); }
+  .cfg-step-head { max-width: 720px; margin: 0 auto 32px; text-align: center; }
+  .cfg-step-kicker {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 12px;
+  }
+  .cfg-step-title { font-size: clamp(1.5rem, 3.4vw, 2.2rem); text-transform: uppercase; }
+  .cfg-step-intro { color: var(--text-dim); font-size: 15px; line-height: 1.75; margin-top: 12px; }
+  .cfg-card { padding: 30px 32px; }
+  .cfg-label { display: block; font-size: 13px; color: var(--text-dim); margin-bottom: 7px; }
+  .cfg-hint { font-size: 12px; color: var(--text-faint); margin-top: 6px; line-height: 1.5; }
+  .req { color: var(--gold); }
+  .opt { color: var(--text-faint); font-size: 11px; }
+
+  /* Choice chips (occasion, format, space, extras): a real radio/checkbox
+     stays in the DOM for keyboard + form submission; the label is the visual. */
+  .cfg-choice { position: relative; display: block; cursor: pointer; }
+  .cfg-choice input {
+    position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer;
+  }
+  .cfg-choice-body {
+    display: flex; flex-direction: column; gap: 4px; height: 100%;
+    padding: 16px 18px; border-radius: 12px;
+    border: 1px solid var(--line); background: rgba(255,255,255,0.03);
+    transition: border-color 150ms ease, background 150ms ease;
+  }
+  .cfg-choice:hover .cfg-choice-body { border-color: rgba(237,219,194,0.45); }
+  .cfg-choice input:checked + .cfg-choice-body {
+    border-color: var(--gold); background: rgba(251,210,149,0.1);
+  }
+  .cfg-choice input:focus-visible + .cfg-choice-body { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .cfg-choice-title { font-size: 14px; font-weight: 600; color: var(--cream); }
+  .cfg-choice-sub { font-size: 12px; color: var(--text-faint); line-height: 1.5; }
+  .cfg-choice-check {
+    position: absolute; top: 12px; right: 12px; width: 20px; height: 20px; border-radius: 50%;
+    border: 1px solid var(--line); display: grid; place-items: center;
+    font-size: 11px; color: transparent; transition: background 150ms ease, color 150ms ease;
+  }
+  .cfg-choice input:checked ~ .cfg-choice-check { background: var(--gold); border-color: var(--gold); color: #1a120b; }
+
+  .cfg-actions { display: flex; justify-content: flex-end; gap: 12px; flex-wrap: wrap; margin-top: 26px; }
+  .cfg-next { gap: 10px; }
+  .cfg-next svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  .cfg-notice {
+    margin-top: 16px; padding: 12px 16px; border-radius: 10px;
+    border: 1px solid rgba(251,210,149,0.45); background: rgba(251,210,149,0.08);
+    color: var(--cream); font-size: 13px; line-height: 1.6;
+  }
+  .cfg-notice[hidden] { display: none; }
+
+  .cfg input[type='text'], .cfg input[type='email'], .cfg input[type='tel'], .cfg input[type='time'], .cfg textarea {
+    width: 100%; padding: 11px 13px; border-radius: 9px;
+    border: 1px solid var(--line); background: rgba(255,255,255,0.03);
+    color: var(--cream); font: inherit; font-size: 14px; transition: border-color 150ms ease;
+  }
+  .cfg input[type='time'] { color-scheme: dark; }
+  .cfg input:not([type='checkbox']):not([type='radio']):hover, .cfg textarea:hover { border-color: rgba(237,219,194,0.4); }
+  .cfg input:not([type='checkbox']):not([type='radio']):focus, .cfg textarea:focus {
+    outline: 2px solid rgba(237,219,194,0.5); outline-offset: 1px; border-color: transparent;
+  }
+  .cfg [aria-invalid='true'] { border-color: #c25c74; }
+  .cfg-field-error { color: #e7889b; font-size: 12px; margin-top: 6px; }
+
+  @media (max-width: 640px) {
+    .cfg-step { padding: 44px 0 16px; }
+    .cfg-card { padding: 24px 20px; }
+  }
+</style>

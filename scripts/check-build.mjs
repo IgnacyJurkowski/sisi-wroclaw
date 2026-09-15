@@ -595,6 +595,99 @@ for (const locale of LOCALES) {
     errorStatus.includes('events@r32.com.pl') && errorStatus.includes('+48 514 032 930'),
   );
 }
+// --- event configurator: one wrapping Netlify form, verified facts only ---
+const CONFIGURATOR = {
+  pl: 'konfigurator-imprezy',
+  en: 'event-configurator',
+  de: 'event-konfigurator',
+  it: 'configuratore-eventi',
+  cs: 'konfigurator-akce',
+};
+for (const locale of LOCALES) {
+  const routePath = `/${locale}/${CONFIGURATOR[locale]}/`;
+  assert(`configurator builds: ${routePath}`, exists(`${locale}/${CONFIGURATOR[locale]}/index.html`));
+  const html = exists(`${locale}/${CONFIGURATOR[locale]}/index.html`) ? read(`${locale}/${CONFIGURATOR[locale]}/index.html`) : '';
+  assert(
+    `${locale} configurator canonical and five hreflang alternates are present`,
+    html.includes(`rel="canonical" href="${CANONICAL_ORIGIN}${routePath}"`)
+      && (html.match(/rel="alternate" hreflang="(pl|en|de|it|cs)"/g) || []).length === 5
+      && html.includes('hreflang="x-default"'),
+  );
+  assert(
+    `${locale} configurator is linked from the footer and the private-events page`,
+    html.includes(`href="${routePath}"`)
+      && privateEventPages[locale].includes(`href="${routePath}"`),
+  );
+  const forms = html.match(/<form\b[^>]*\bname="event-configurator"[^>]*>[\s\S]*?<\/form>/g) ?? [];
+  const form = forms[0] ?? '';
+  const openTag = form.match(/^<form\b[^>]*>/)?.[0] ?? '';
+  const registersForm = locale === 'pl';
+  assert(`${locale} has exactly one event-configurator form`, forms.length === 1);
+  assert(
+    `${locale} configurator form has Netlify POST attributes ${registersForm ? 'and registers' : 'without registering'} the form`,
+    openTag.includes('method="POST"')
+      && openTag.includes('data-netlify="true"') === registersForm
+      && openTag.includes('netlify-honeypot="bot-field"') === registersForm
+      && openTag.includes('data-configurator')
+      && openTag.includes('data-event-enquiry-form'),
+  );
+  const renderedFields = [...new Set([...form.matchAll(/<(?:input|select|textarea)\b[^>]*\bname="([^"]+)"/g)].map((m) => m[1]))].sort();
+  const expectedFields = [
+    'bot-field', 'consent', 'drinks', 'email', 'estimate', 'extras', 'food', 'form-name', 'guests', 'locale',
+    'message', 'name', 'occasion', 'page', 'phone', 'preferred_date', 'preferred_date_iso', 'seating', 'space',
+    'start_time', 'subject', 'utm',
+  ];
+  assert(
+    `${locale} configurator form submits exactly the approved field set`,
+    JSON.stringify(renderedFields) === JSON.stringify(expectedFields),
+  );
+  assert(
+    `${locale} configurator form requires contact, guests, date and consent`,
+    ['name', 'email', 'guests', 'preferred_date', 'consent'].every((name) =>
+      new RegExp(`<(?:input|select|textarea)\\b(?=[^>]*\\bname="${name}")(?=[^>]*\\brequired(?:\\s|=|>))[^>]*>`).test(form)),
+  );
+  // Every option the visitor can pick submits its Polish label so the Netlify
+  // notification reads in Polish whichever language the visitor used.
+  const optionValues = [...form.matchAll(/<input type="(?:radio|checkbox)" name="(?:occasion|seating|space|extras)" value="([^"]+)"/g)].map((m) => m[1]);
+  assert(
+    `${locale} configurator options submit the Polish labels`,
+    optionValues.length === 16
+      && ['Urodziny', 'Bufet i stojąco', 'Nie wiem jeszcze', 'Wynajem na wyłączność'].every((label) => optionValues.includes(label)),
+  );
+  // The floor plan ships without The Cork's zone markers and the page never
+  // names a zone, table count or zone capacity.
+  assert(
+    `${locale} configurator shows the cleaned R32 floor plan and no restaurant zones`,
+    html.includes('/images/plan-r32-896.avif') && html.includes('/images/plan-r32.webp') && !/strefa [123]|zone [123]|stołów/i.test(html),
+  );
+  // Only the owner-verified limits appear as capacities; the reference site's
+  // per-zone numbers (30 / 52 / 42 guests, 60-guest exclusivity) must not.
+  assert(
+    `${locale} configurator names only the verified 150 / 500 capacities`,
+    /\b150\b/.test(html) && /\b500\b/.test(html) && !/\b(?:30|42|52|60) (?:gości|guests|Gäste|ospiti|hostů)\b/.test(html),
+  );
+  // Prices on the page are the menu's own: every "N zł" the configurator lists
+  // must also appear on the localized menu page.
+  const menuHtml = read(`${locale}/menu/index.html`);
+  const menuPrices = new Set((menuHtml.match(/\b\d+ zł/g) || []));
+  // '0 zł' is the live estimate's empty state, not a menu price.
+  const configuratorPrices = [...new Set(form.match(/\b\d+ zł/g) || [])].filter((price) => price !== '0 zł');
+  assert(
+    `${locale} configurator lists only prices published on the menu page (${configuratorPrices.length} distinct)`,
+    configuratorPrices.length > 20 && configuratorPrices.every((price) => menuPrices.has(price)),
+  );
+  const errorStatus = form.match(/<div class="cfg-form-status cfg-status-error"[\s\S]*?<\/div>/)?.[0] ?? '';
+  assert(
+    `${locale} configurator error fallback contains the events contacts`,
+    errorStatus.includes('events@r32.com.pl') && errorStatus.includes('+48 514 032 930'),
+  );
+}
+assert(
+  'configurator Polish copy states the estimate is not an offer and pricing is individual',
+  read('pl/konfigurator-imprezy/index.html').includes('to podsumowanie nie jest ofertą')
+    && read('pl/konfigurator-imprezy/index.html').includes('Koszt ustalamy indywidualnie po omówieniu szczegółów wydarzenia.'),
+);
+
 // --- case studies: publish proof only when a real, approved project exists ---
 for (const locale of LOCALES) {
   assert(
@@ -853,7 +946,7 @@ const blogCounts = Object.fromEntries(
 );
 const articleCount = Object.values(blogCounts).reduce((total, count) => total + count, 0);
 const localesWithArticles = LOCALES.filter((locale) => blogCounts[locale] > 0);
-const sitemapBaseCount = 50 + (eventCount > 0 ? 5 : 0) + localesWithArticles.length;
+const sitemapBaseCount = 55 + (eventCount > 0 ? 5 : 0) + localesWithArticles.length;
 assert(
   `sitemap urls = ${sitemapBaseCount} base + ${eventCount} events x5 + ${articleCount} articles`,
   (read('sitemap.xml').match(/<loc>/g) || []).length
@@ -1208,8 +1301,8 @@ if (eventCount === 0) {
 assert('no leaked {tokens} in html', leaked.length === 0);
 assert('no synced vendor metadata leaks into the html', !allHtml.includes('heroSource'));
 assert(
-  `html pages = 62 base + ${eventCount} events x5 + ${articleCount} articles`,
-  htmls.length === 62 + eventCount * 5 + articleCount,
+  `html pages = 67 base + ${eventCount} events x5 + ${articleCount} articles`,
+  htmls.length === 67 + eventCount * 5 + articleCount,
 );
 
 // --- report ---
