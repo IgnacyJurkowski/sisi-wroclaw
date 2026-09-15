@@ -7,11 +7,18 @@ interface Props { locale: Locale }
 const { locale } = Astro.props;
 const c = useTranslations(locale).configurator;
 const plSpaces = useTranslations('pl').configurator.space.options;
-// The plan is The Cork / SiSi functional layout redrawn for this site: zone
-// markers, title and the toilet block removed, background transparent, and
-// the seating recoloured to the brand cream / gold - the same R32 footprint
-// the B2B page describes.
+// The plan is The Cork / SiSi functional layout redrawn for this site as a
+// burgundy / cream duotone: zone markers, titles and the toilet block removed,
+// background transparent - the same R32 footprint the B2B page describes.
+// MAP_REGIONS traces the two venues in the image's own 468x649 pixel space and
+// powers the clickable overlay (each region selects the matching radio).
 const PLAN = '/images/plan-r32';
+const PLAN_W = 468;
+const PLAN_H = 649;
+const MAP_REGIONS = [
+  { key: 'sisi', label: 'SiSi', points: '0,0 310,0 310,105 285,105 285,300 0,300', labelAt: [118, 205] },
+  { key: 'cork', label: 'The Cork', points: '310,105 468,105 468,649 135,649 135,430 225,430 225,300 285,300 285,105', labelAt: [318, 500] },
+] as const;
 ---
 
 <section id="cfg-space" class="cfg-step" data-cfg-step="space">
@@ -24,11 +31,21 @@ const PLAN = '/images/plan-r32';
 
     <div class="cfg-space-grid" data-reveal>
       <figure class="sisi-card cfg-plan">
-        <picture>
-          <source type="image/avif" srcset={`${PLAN}.avif`} />
-          <img src={`${PLAN}.webp`} width="468" height="649" alt={c.space.planAlt} loading="lazy" decoding="async" />
-        </picture>
-        <figcaption>{c.space.planCaption}</figcaption>
+        <div class="cfg-map" style={`--plan-w: ${PLAN_W}; --plan-h: ${PLAN_H};`}>
+          <picture>
+            <source type="image/avif" srcset={`${PLAN}.avif`} />
+            <img src={`${PLAN}.webp`} width={PLAN_W} height={PLAN_H} alt={c.space.planAlt} loading="lazy" decoding="async" />
+          </picture>
+          <svg class="cfg-map-overlay" viewBox={`0 0 ${PLAN_W} ${PLAN_H}`} aria-hidden="false" role="group" aria-label={c.space.planHint}>
+            {MAP_REGIONS.map((region) => (
+              <g class="cfg-map-region" role="button" tabindex="0" aria-pressed="false" aria-label={c.space.options[region.key].title} data-map-space={region.key}>
+                <polygon points={region.points} />
+                <text x={region.labelAt[0]} y={region.labelAt[1]} text-anchor="middle">{region.label}</text>
+              </g>
+            ))}
+          </svg>
+        </div>
+        <figcaption>{c.space.planHint} {c.space.planCaption}</figcaption>
       </figure>
 
       <fieldset class="cfg-spaces">
@@ -55,7 +72,22 @@ const PLAN = '/images/plan-r32';
 <style>
   .cfg-space-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 24px; align-items: start; }
   .cfg-plan { margin: 0; padding: 22px 22px 18px; text-align: center; }
-  .cfg-plan img { display: inline-block; width: min(100%, 468px); height: auto; }
+  .cfg-map { position: relative; display: inline-block; width: min(100%, 468px); aspect-ratio: var(--plan-w) / var(--plan-h); }
+  .cfg-map img { display: block; width: 100%; height: auto; }
+  .cfg-map-overlay { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .cfg-map-region { cursor: pointer; outline: none; }
+  .cfg-map-region polygon {
+    fill: rgba(237,219,194,0); stroke: rgba(237,219,194,0.35); stroke-width: 1.5; stroke-linejoin: round;
+    transition: fill 150ms ease, stroke 150ms ease;
+  }
+  .cfg-map-region text {
+    fill: var(--cream); font-family: var(--font-display); font-size: 26px; letter-spacing: 0.04em; text-transform: uppercase;
+    paint-order: stroke; stroke: rgba(39,6,15,0.7); stroke-width: 6px; stroke-linejoin: round; pointer-events: none;
+  }
+  .cfg-map-region:hover polygon { fill: rgba(237,219,194,0.14); stroke: rgba(237,219,194,0.7); }
+  .cfg-map-region:focus-visible polygon { stroke: var(--gold); stroke-width: 3; }
+  .cfg-map-region.is-selected polygon { fill: rgba(251,210,149,0.16); stroke: var(--gold); stroke-width: 2.5; }
+  .cfg-map-region.is-selected text { fill: var(--gold); }
   .cfg-plan figcaption { font-size: 12px; color: var(--text-faint); margin-top: 14px; line-height: 1.5; }
   .cfg-spaces { border: none; margin: 0; padding: 0; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
   .cfg-spaces .cfg-choice-body { padding-right: 44px; }

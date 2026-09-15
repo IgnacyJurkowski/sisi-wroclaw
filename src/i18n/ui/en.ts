@@ -456,6 +456,7 @@ const en: UI = {
       intro: 'Mark your preferred space. Our team will confirm the final layout and availability.',
       planAlt: 'Floor plan of the R32 complex: SiSi club and The Cork restaurant',
       planCaption: 'R32 floor plan - SiSi club and The Cork restaurant at Rzeźnicza 32-33',
+      planHint: 'Click SiSi or The Cork on the plan to choose a space.',
       selected: 'Selected:',
       options: {
         sisi: { title: 'SiSi club', body: 'A music club with a bar, DJs and live music - for evening parties and celebrations.' },

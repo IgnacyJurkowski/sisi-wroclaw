@@ -456,6 +456,7 @@ const cs: UI = {
       intro: 'Označte preferovaný prostor. Konečné rozvržení a dostupnost potvrdí náš tým.',
       planAlt: 'Půdorys komplexu R32: klub SiSi a restaurace The Cork',
       planCaption: 'Půdorys R32 - klub SiSi a restaurace The Cork, Rzeźnicza 32-33',
+      planHint: 'Kliknutím na SiSi nebo The Cork v půdorysu vyberete prostor.',
       selected: 'Vybráno:',
       options: {
         sisi: { title: 'Klub SiSi', body: 'Hudební klub s barem, DJ a živou hudbou - na večerní oslavy a párty.' },

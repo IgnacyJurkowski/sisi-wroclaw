@@ -468,6 +468,7 @@ const pl = {
       intro: 'Zaznacz preferowaną przestrzeń. Ostateczny układ i dostępność potwierdzi nasz zespół.',
       planAlt: 'Plan funkcjonalny kompleksu R32: klub SiSi i restauracja The Cork',
       planCaption: 'Układ funkcjonalny R32 - klub SiSi i restauracja The Cork przy Rzeźniczej 32-33',
+      planHint: 'Kliknij SiSi lub The Cork na planie, aby wybrać przestrzeń.',
       selected: 'Wybrano:',
       options: {
         sisi: { title: 'Klub SiSi', body: 'Klub muzyczny z barem, DJ-ami i muzyką na żywo - na wieczorne przyjęcia i imprezy.' },

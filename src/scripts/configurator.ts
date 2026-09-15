@@ -119,9 +119,16 @@ function initConfigurator(form: HTMLFormElement): void {
       }
     }
 
-    // Space "Selected:" line
+    // Space "Selected:" line + the clickable plan (r32 lights both venues)
     const space = checkedRadio('space');
     if (spaceSelected && space) spaceSelected.textContent = space.getAttribute('data-label') || '';
+    const spaceKey = space?.getAttribute('data-key') || '';
+    mapRegions.forEach((region) => {
+      const key = region.getAttribute('data-map-space') || '';
+      const on = spaceKey === key || spaceKey === 'r32';
+      region.classList.toggle('is-selected', on);
+      region.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
 
     // Summary card
     const label = (input: HTMLInputElement | null) => input?.getAttribute('data-label') || strings.summary.toBeAgreed;
@@ -159,6 +166,23 @@ function initConfigurator(form: HTMLFormElement): void {
         : '';
     }
   }
+
+  /* --- clickable plan: each venue region selects its radio --------------- */
+  const mapRegions = qa<SVGGElement>('[data-map-space]');
+  mapRegions.forEach((region) => {
+    const choose = () => {
+      const radio = q<HTMLInputElement>(`input[name="space"][data-key="${region.getAttribute('data-map-space')}"]`);
+      if (!radio || radio.checked) return;
+      radio.checked = true;
+      radio.dispatchEvent(new Event('change', { bubbles: true }));
+    };
+    region.addEventListener('click', choose);
+    region.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      choose();
+    });
+  });
 
   form.addEventListener('input', update);
   form.addEventListener('change', update);

@@ -660,6 +660,10 @@ for (const locale of LOCALES) {
     `${locale} configurator shows the cleaned R32 floor plan and no restaurant zones`,
     html.includes('/images/plan-r32.avif') && html.includes('/images/plan-r32.webp') && !/strefa [123]|zone [123]|stołów/i.test(html),
   );
+  assert(
+    `${locale} configurator plan has one clickable region per venue`,
+    html.split('data-map-space="sisi"').length === 2 && html.split('data-map-space="cork"').length === 2,
+  );
   // Only the owner-verified limits appear as capacities; the reference site's
   // per-zone numbers (30 / 52 / 42 guests, 60-guest exclusivity) must not.
   assert(
