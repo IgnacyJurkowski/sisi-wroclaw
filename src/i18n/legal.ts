@@ -185,7 +185,7 @@ const pl_cookies: LegalDoc = {
       heading: '3. Jakie dane przechowujemy',
       paragraphs: ['Pamięć niezbędna do działania strony:'],
       items: [
-        'sisi-analytics-consent (localStorage) - przechowuje wartość "granted" albo "denied", czyli Twoją decyzję dotyczącą analityki.',
+        'sisi-analytics-consent-v2 (localStorage) - przechowuje wartość "granted" albo "denied", czyli Twoją decyzję dotyczącą analityki.',
         'Niezbędny stan formularzy i nawigacji - przechowywany tylko na potrzeby bieżącej interakcji ze stroną.',
       ],
     },
@@ -382,7 +382,7 @@ const en_cookies: LegalDoc = {
       heading: '3. What we store',
       paragraphs: ['Storage essential to the site:'],
       items: [
-        'sisi-analytics-consent (localStorage) - stores the value "granted" or "denied", i.e. your analytics decision.',
+        'sisi-analytics-consent-v2 (localStorage) - stores the value "granted" or "denied", i.e. your analytics decision.',
         'Essential form and navigation state - stored only for the current interaction with the site.',
       ],
     },

@@ -6,13 +6,18 @@
    reads fall back to "no decision", writes report false, and callers keep a
    page-local decision so the UI still responds. */
 
-export const CONSENT_KEY = 'sisi-analytics-consent';
+export const CONSENT_KEY = 'sisi-analytics-consent-v2';
 export const CONSENT_GRANTED = 'granted';
 export const CONSENT_DENIED = 'denied';
 /* CustomEvent name the banner and withdraw control dispatch on document. */
 export const CONSENT_EVENT = 'sisi-consent-change';
-/* Retired records from the dismiss-only notice era; removal-only forever. */
-export const LEGACY_KEYS = ['sisi-cookie-notice', 'sisi-cookie-consent'];
+/* Retired notice and consent records; removal-only forever. */
+export const LEGACY_KEYS = [
+  'sisi-cookie-notice',
+  'sisi-cookie-consent',
+  // Consent collected before Google Analytics was added covered PostHog only.
+  'sisi-analytics-consent',
+];
 
 export function safeLocalStorage() {
   try {

@@ -1112,7 +1112,7 @@ assert(
   // and the accessors it uses.
   [
     'sisi-cookie-notice', // legacy cleanup only
-    'sisi-analytics-consent',
+    'sisi-analytics-consent-v2',
     'granted',
     'denied',
     'globalThis.localStorage',
