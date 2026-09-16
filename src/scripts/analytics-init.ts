@@ -16,9 +16,12 @@
    visitor sees depends on it. So it loads after `load` + idle, off the
    critical path: the vendor chunk is not in any page's startup module graph.
    Conversion events fired before then queue in src/lib/analytics.ts and
-   flush once the client attaches. Automatic pageviews and DOM autocapture
-   stay disabled so analytics traffic is limited to those explicit,
-   data-minimized events. Consent is read at init time, so a decision made
+   flush once the client attaches; the pageview is captured at init as
+   before, a moment later. Anonymous $pageview is the funnel entry step on
+   the Conversions dashboard, so it stays on. DOM autocapture is off: the
+   funnels use only the explicit, data-minimized events in
+   src/lib/analytics.ts, and autocapture would ship element text and click
+   context nobody reads. Consent is read at init time, so a decision made
    while PostHog was still loading is honoured. */
 import { attachAnalyticsClient } from '../lib/analytics';
 import {
@@ -71,7 +74,6 @@ async function boot(): Promise<void> {
       ui_host: 'https://eu.posthog.com',
       persistence: 'memory',
       disable_session_recording: true,
-      capture_pageview: false,
       autocapture: false,
       person_profiles: 'identified_only',
       session_recording: { maskAllInputs: true },

@@ -1129,9 +1129,9 @@ assert(
     && /api_host\s*:\s*[`"']\/ph[`"']/.test(executableBuiltText),
 );
 assert(
-  'posthog automatic pageviews and DOM autocapture stay disabled',
-  /capture_pageview\s*:\s*!1/.test(executableBuiltText)
-    && /autocapture\s*:\s*!1/.test(executableBuiltText),
+  'posthog DOM autocapture stays disabled while $pageview stays on',
+  /autocapture\s*:\s*!1/.test(executableBuiltText)
+    && !/capture_pageview\s*:\s*!1/.test(executableBuiltText),
 );
 assert(
   'B2B UTM call site passes location.search through the bounded helper',
