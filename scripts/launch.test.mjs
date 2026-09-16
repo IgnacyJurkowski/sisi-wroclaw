@@ -33,9 +33,9 @@ test('browser storage stays within the disclosed launch inventory', async () => 
   const legal = await readFile('src/i18n/legal.ts', 'utf8');
   assert.equal(/\bsessionStorage\b/.test(source), false, 'sessionStorage is outside the disclosed launch inventory');
   assert.match(source, /sisi-cookie-notice/); // legacy cleanup only
-  assert.match(source, /sisi-analytics-consent/);
+  assert.match(source, /sisi-analytics-consent-v2/);
   assert.doesNotMatch(source, /sisi-summer-fri/); // retired with the 2026 summer break
-  assert.match(legal, /sisi-analytics-consent \(localStorage\)/);
+  assert.match(legal, /sisi-analytics-consent-v2 \(localStorage\)/);
   assert.doesNotMatch(legal, /sisi-summer-fri/);
   assert.match(legal, /sessionStorage/);
 });

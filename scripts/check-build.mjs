@@ -555,7 +555,7 @@ for (const locale of LOCALES) {
   const openTag = form.match(/^<form\b[^>]*>/)?.[0] ?? '';
   const errorStatus = form.match(/<div class="private-form-status private-status-error"[\s\S]*?<\/div>/)?.[0] ?? '';
   const submittedFields = [
-    'form-name', 'subject', 'locale', 'page', 'utm', 'bot-field', 'name', 'email', 'phone',
+    'form-name', 'locale', 'page', 'utm', 'bot-field', 'name', 'email', 'phone',
     'occasion', 'guests', 'preferred_date', 'preferred_date_iso', 'message', 'consent',
   ];
   const renderedFields = [...form.matchAll(/<(?:input|select|textarea)\b[^>]*\bname="([^"]+)"/g)]
@@ -574,9 +574,9 @@ for (const locale of LOCALES) {
       && openTag.includes('data-private-events-form'),
   );
   assert(
-    `${locale} private form has its own detector and notification subject`,
+    `${locale} private form has its own detector and no client-controlled notification subject`,
     form.includes('type="hidden" name="form-name" value="private-enquiry"')
-      && form.includes('type="hidden" name="subject"'),
+      && !/\bname="subject"/.test(form),
   );
   assert(
     `${locale} private form submits exactly the approved field set`,
@@ -644,8 +644,8 @@ assert('form name and POST method preserved', /<form[^>]*name="b2b-enquiry"[^>]*
 assert('form-name field preserved', enB2B.includes('name="form-name" value="b2b-enquiry"'));
 const enB2BForm = enB2B.match(/<form\b[^>]*data-b2b-form[^>]*>[\s\S]*?<\/form>/)?.[0] ?? '';
 assert(
-  'corporate form has a neutral notification subject',
-  enB2BForm.includes('type="hidden" name="subject"'),
+  'corporate form has no client-controlled notification subject',
+  !/\bname="subject"/.test(enB2BForm),
 );
 const submittedFields = [
   'form-name', 'locale', 'page', 'utm', 'bot-field', 'company', 'contact_person', 'email', 'phone',
@@ -1112,7 +1112,7 @@ assert(
   // and the accessors it uses.
   [
     'sisi-cookie-notice', // legacy cleanup only
-    'sisi-analytics-consent',
+    'sisi-analytics-consent-v2',
     'granted',
     'denied',
     'globalThis.localStorage',
@@ -1127,6 +1127,11 @@ assert(
   'first-party runtime initializes posthog through the /ph proxy',
   executableBuiltText.includes('phc_xGAJevJfPpYyrixXMnpJb43nDCz2fVHpnJBbaoDyNgeu')
     && /api_host\s*:\s*[`"']\/ph[`"']/.test(executableBuiltText),
+);
+assert(
+  'posthog DOM autocapture stays disabled while $pageview stays on',
+  /autocapture\s*:\s*!1/.test(executableBuiltText)
+    && !/capture_pageview\s*:\s*!1/.test(executableBuiltText),
 );
 assert(
   'B2B UTM call site passes location.search through the bounded helper',

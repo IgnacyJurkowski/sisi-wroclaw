@@ -3,7 +3,15 @@ import assert from 'node:assert/strict';
 
 import { createServer } from 'node:http';
 
-import { apiBase, articleId, asArticle, asArticleList, listAllArticles, listArticles } from './api.mjs';
+import {
+  apiBase,
+  articleId,
+  asArticle,
+  asArticleList,
+  downloadImage,
+  listAllArticles,
+  listArticles,
+} from './api.mjs';
 
 test('the API base is the documented integrations endpoint, override-able for tests', () => {
   const original = process.env.BABYLOVEGROWTH_API_BASE;
@@ -86,4 +94,51 @@ test('a redirect is refused rather than forwarding the API key', async () => {
     else process.env.BABYLOVEGROWTH_API_KEY = previousKey;
     await new Promise((resolve) => server.close(resolve));
   }
+});
+
+test('hero downloads reject a declared body that is too large', async () => {
+  const response = {
+    ok: true,
+    url: 'https://images.test/hero.png',
+    headers: new Headers({ 'content-type': 'image/png', 'content-length': '11' }),
+    get body() {
+      assert.fail('an oversized declared body must not be read');
+    },
+  };
+
+  await assert.rejects(
+    downloadImage('https://images.test/hero.png', { fetchImpl: async () => response, maxBytes: 10 }),
+    /exceeds 10 bytes/,
+  );
+});
+
+test('hero downloads enforce the byte limit while streaming', async () => {
+  const response = new Response(
+    new ReadableStream({
+      start(controller) {
+        controller.enqueue(new Uint8Array(6));
+        controller.enqueue(new Uint8Array(5));
+        controller.close();
+      },
+    }),
+    { headers: { 'content-type': 'image/png' } },
+  );
+
+  await assert.rejects(
+    downloadImage('https://images.test/hero.png', { fetchImpl: async () => response, maxBytes: 10 }),
+    /exceeds 10 bytes/,
+  );
+});
+
+test('hero downloads reject a redirect whose final URL is not https', async () => {
+  const response = {
+    ok: true,
+    url: 'http://internal.test/hero.png',
+    headers: new Headers({ 'content-type': 'image/png' }),
+  };
+
+  await assert.rejects(
+    downloadImage('https://images.test/hero.png', { fetchImpl: async () => response }),
+    /redirected to a non-https URL/,
+  );
 });

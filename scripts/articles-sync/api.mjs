@@ -13,6 +13,7 @@ const DEFAULT_BASE = 'https://api.babylovegrowth.ai/api/integrations';
 const PAGE_SIZE = 50;
 const MAX_PAGES = 20; // hard stop: 1000 articles is far past anything realistic
 const REQUEST_TIMEOUT_MS = 20_000;
+const MAX_IMAGE_BYTES = 10 * 1024 * 1024;
 const RETRIES = 3;
 const RETRY_BASE_MS = 2000;
 const SPACING_MS = 250;
@@ -76,14 +77,34 @@ export function articleId(summary) {
   return null;
 }
 
-/** Fetch a hero image; returns a Buffer, or null when it is not a usable image. */
-export async function downloadImage(url, { fetchImpl = fetch } = {}) {
-  // No API key on this request, so following the CDN's redirects is safe.
+/** Fetch a hero image without allowing a remote server to exhaust sync memory. */
+export async function downloadImage(url, { fetchImpl = fetch, maxBytes = MAX_IMAGE_BYTES } = {}) {
   const res = await fetchImpl(url, { signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) });
   if (!res.ok) throw new Error(`hero image ${url} -> ${res.status}`);
+  const finalUrl = res.url || url;
+  if (new URL(finalUrl).protocol !== 'https:') {
+    throw new Error(`hero image ${url} redirected to a non-https URL`);
+  }
   const type = res.headers.get('content-type') || '';
   if (type && !/^image\//i.test(type)) throw new Error(`hero image ${url} is ${type}`);
-  return Buffer.from(await res.arrayBuffer());
+
+  const declaredLength = res.headers.get('content-length');
+  if (/^\d+$/.test(declaredLength || '') && Number(declaredLength) > maxBytes) {
+    throw new Error(`hero image ${url} exceeds ${maxBytes} bytes`);
+  }
+  if (!res.body) throw new Error(`hero image ${url} has no response body`);
+
+  const chunks = [];
+  let bytes = 0;
+  for await (const chunk of res.body) {
+    bytes += chunk.byteLength;
+    if (bytes > maxBytes) {
+      await res.body.cancel().catch(() => {});
+      throw new Error(`hero image ${url} exceeds ${maxBytes} bytes`);
+    }
+    chunks.push(Buffer.from(chunk));
+  }
+  return Buffer.concat(chunks, bytes);
 }
 
 async function get(path) {

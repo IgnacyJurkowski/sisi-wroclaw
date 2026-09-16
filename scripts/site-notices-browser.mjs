@@ -83,7 +83,7 @@ async function verifyConsentChoices(browser, origin) {
     await page.locator(selector).click();
     await banner.waitFor({ state: 'hidden' });
     assert.equal(
-      await page.evaluate(() => localStorage.getItem('sisi-analytics-consent')),
+      await page.evaluate(() => localStorage.getItem('sisi-analytics-consent-v2')),
       expected,
       `consent decision ${expected} was not persisted`,
     );
@@ -121,7 +121,7 @@ async function verifyWithdrawControl(browser, origin) {
   await page.locator('[data-consent-withdraw]').click();
   await page.locator('[data-consent-withdraw-done]').waitFor({ state: 'visible' });
   assert.equal(
-    await page.evaluate(() => localStorage.getItem('sisi-analytics-consent')),
+    await page.evaluate(() => localStorage.getItem('sisi-analytics-consent-v2')),
     'denied',
     'withdrawal did not store the denied decision',
   );

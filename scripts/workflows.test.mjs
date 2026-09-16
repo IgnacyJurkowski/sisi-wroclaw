@@ -125,14 +125,26 @@ test('event sync uses the pinned runtime, complete gate, and fail-closed hook', 
   const source = await workflow('sync-events');
   assert.match(source, /^\s{2}contents:\s*read\s*$/m);
   assert.doesNotMatch(source, /^\s{2}contents:\s*write\s*$/m);
-  assert.match(source, /ssh-key:\s*\$\{\{ secrets\.EVENT_SYNC_DEPLOY_KEY \}\}/);
+  assert.match(source, /persist-credentials:\s*false/);
+  assert.doesNotMatch(source, /ssh-key:\s*\$\{\{ secrets\.EVENT_SYNC_DEPLOY_KEY \}\}/);
   assertNodeGate(source);
   assertFailClosedHook(source);
 
-  const pullIndex = source.indexOf('git pull --rebase --autostash origin main');
+  const pullIndex = source.indexOf('pull --rebase --autostash origin main');
   const postRebaseGateIndex = source.indexOf('npm test', pullIndex);
-  const pushIndex = source.indexOf('git push', pullIndex);
-  assert.ok(pullIndex >= 0 && pullIndex < postRebaseGateIndex && postRebaseGateIndex < pushIndex);
+  const deployKeyIndex = source.indexOf('EVENT_SYNC_DEPLOY_KEY: ${{ secrets.EVENT_SYNC_DEPLOY_KEY }}');
+  const pushIndex = source.indexOf('git push', deployKeyIndex);
+  assert.ok(pullIndex >= 0 && pullIndex < postRebaseGateIndex && postRebaseGateIndex < deployKeyIndex && deployKeyIndex < pushIndex);
+});
+
+test('event sync generates, tracks, and prunes every responsive banner format', async () => {
+  const source = await readFile('scripts/sync-events.mjs', 'utf8');
+
+  assert.match(source, /const BANNER_VARIANT_WIDTHS = \[450, 900\]/);
+  assert.match(source, /for \(const width of BANNER_VARIANT_WIDTHS\)/);
+  assert.match(source, /\['avif', \{ quality: 50 \}\], \['webp', \{ quality: 74 \}\]/);
+  assert.match(source, /usedImages\.add\(variantName\)/);
+  assert.match(source, /\/\\\.\(\?:avif\|webp\)\$\/i\.test\(name\)/);
 });
 
 test('article sync uses the pinned runtime, complete gate, and fail-closed hook', async () => {

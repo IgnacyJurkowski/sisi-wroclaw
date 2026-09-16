@@ -29,11 +29,15 @@ const throwingStorage = {
 };
 
 test('constants match the disclosed inventory', () => {
-  assert.equal(CONSENT_KEY, 'sisi-analytics-consent');
+  assert.equal(CONSENT_KEY, 'sisi-analytics-consent-v2');
   assert.equal(CONSENT_GRANTED, 'granted');
   assert.equal(CONSENT_DENIED, 'denied');
   assert.equal(CONSENT_EVENT, 'sisi-consent-change');
-  assert.deepEqual(LEGACY_KEYS, ['sisi-cookie-notice', 'sisi-cookie-consent']);
+  assert.deepEqual(LEGACY_KEYS, [
+    'sisi-cookie-notice',
+    'sisi-cookie-consent',
+    'sisi-analytics-consent',
+  ]);
 });
 
 test('safeLocalStorage returns null outside the browser', () => {
@@ -43,6 +47,7 @@ test('safeLocalStorage returns null outside the browser', () => {
 test('readConsent returns only the two valid decisions', () => {
   assert.equal(readConsent(memoryStorage({ [CONSENT_KEY]: 'granted' })), 'granted');
   assert.equal(readConsent(memoryStorage({ [CONSENT_KEY]: 'denied' })), 'denied');
+  assert.equal(readConsent(memoryStorage({ 'sisi-analytics-consent': 'granted' })), null);
   assert.equal(readConsent(memoryStorage({ [CONSENT_KEY]: 'dismissed' })), null);
   assert.equal(readConsent(memoryStorage()), null);
 });
@@ -71,11 +76,13 @@ test('removeLegacyKeys clears retired records and survives denial', () => {
   const storage = memoryStorage({
     'sisi-cookie-notice': 'dismissed',
     'sisi-cookie-consent': 'x',
+    'sisi-analytics-consent': 'granted',
     keep: '1',
   });
   removeLegacyKeys(storage);
   assert.equal(storage.map.has('sisi-cookie-notice'), false);
   assert.equal(storage.map.has('sisi-cookie-consent'), false);
+  assert.equal(storage.map.has('sisi-analytics-consent'), false);
   assert.equal(storage.getItem('keep'), '1');
   removeLegacyKeys(null);
   removeLegacyKeys(throwingStorage);
