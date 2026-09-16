@@ -27,7 +27,7 @@ jobs:
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
-          ssh-key: ${{ secrets.EVENT_SYNC_DEPLOY_KEY }}
+          persist-credentials: false
 
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
@@ -48,21 +48,36 @@ jobs:
       - name: Build + test
         run: npm test
 
-      - name: Commit, push, and deploy if changed
+      - name: Commit and re-test if changed
+        id: commit
         env:
-          NETLIFY_DEPLOY_HOOK: ${{ secrets.NETLIFY_DEPLOY_HOOK }}
+          GH_READ_TOKEN: ${{ github.token }}
         run: |
           if [ -z "$(git status --porcelain src/data/events.generated.ts public/events)" ]; then
             echo "No event changes; nothing to publish."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
+          echo "changed=true" >> "$GITHUB_OUTPUT"
           git config user.name "sisi-events-bot"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add src/data/events.generated.ts public/events
           git commit -m "chore(events): sync lineup from Drive"
-          git pull --rebase --autostash origin main
+          git -c http.extraheader="AUTHORIZATION: bearer $GH_READ_TOKEN" pull --rebase --autostash origin main
           # Re-test the exact rebased commit so concurrent main changes cannot
           # bypass the release gate before the protected-branch push.
           npm test
-          git push
+
+      - name: Push and deploy if changed
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          EVENT_SYNC_DEPLOY_KEY: ${{ secrets.EVENT_SYNC_DEPLOY_KEY }}
+          NETLIFY_DEPLOY_HOOK: ${{ secrets.NETLIFY_DEPLOY_HOOK }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$EVENT_SYNC_DEPLOY_KEY" > ~/.ssh/event-sync-deploy-key
+          chmod 600 ~/.ssh/event-sync-deploy-key
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          git remote set-url origin "git@github.com:${GITHUB_REPOSITORY}.git"
+          GIT_SSH_COMMAND="ssh -i ~/.ssh/event-sync-deploy-key -o IdentitiesOnly=yes" git push
           curl --fail-with-body --silent --show-error -X POST "$NETLIFY_DEPLOY_HOOK"
