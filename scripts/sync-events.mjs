@@ -39,6 +39,7 @@ const OUT_DATA = path.join(REPO, 'src/data/events.generated.ts');
 const IMG_DIR = path.join(REPO, 'public/events');
 const IMG_URL_PREFIX = '/events';
 const BANNER_WIDTH = 1000; // card media is small; 1000px covers retina
+const BANNER_VARIANT_WIDTHS = [450, 900];
 const DROP_THRESHOLD = 0.5; // fail if valid count drops below half the last-good
 
 async function run() {
@@ -102,7 +103,8 @@ async function run() {
 
     const slug = eventSlug(dateKey, fields.title);
     const fileName = `${slug}.webp`;
-    const optimized = await sharp(await downloadFile(token, banner.id))
+    const source = await downloadFile(token, banner.id);
+    const optimized = await sharp(source)
       .rotate()
       .resize({ width: BANNER_WIDTH, withoutEnlargement: true })
       .webp({ quality: 82 })
@@ -111,6 +113,18 @@ async function run() {
     bannerRecords.push({ dateKey, digest });
     pendingImages.push({ fileName, optimized });
     usedImages.add(fileName);
+    for (const width of BANNER_VARIANT_WIDTHS) {
+      for (const [extension, options] of [['avif', { quality: 50 }], ['webp', { quality: 74 }]]) {
+        const variantName = `${slug}-${width}.${extension}`;
+        const variant = await sharp(source)
+          .rotate()
+          .resize({ width, withoutEnlargement: true })
+          [extension](options)
+          .toBuffer();
+        pendingImages.push({ fileName: variantName, optimized: variant });
+        usedImages.add(variantName);
+      }
+    }
 
     events.push(toEvent(dateKey, fields, `${IMG_URL_PREFIX}/${fileName}`, slug));
   }
@@ -184,7 +198,7 @@ async function pruneImages(used) {
     return;
   }
   for (const name of entries) {
-    if (name.endsWith('.webp') && !used.has(name)) {
+    if (/\.(?:avif|webp)$/i.test(name) && !used.has(name)) {
       await rm(path.join(IMG_DIR, name));
       console.log(`  pruned stale image ${name}`);
     }

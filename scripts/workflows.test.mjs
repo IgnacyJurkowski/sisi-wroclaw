@@ -137,6 +137,16 @@ test('event sync uses the pinned runtime, complete gate, and fail-closed hook', 
   assert.ok(pullIndex >= 0 && pullIndex < postRebaseGateIndex && postRebaseGateIndex < deployKeyIndex && deployKeyIndex < pushIndex);
 });
 
+test('event sync generates, tracks, and prunes every responsive banner format', async () => {
+  const source = await readFile('scripts/sync-events.mjs', 'utf8');
+
+  assert.match(source, /const BANNER_VARIANT_WIDTHS = \[450, 900\]/);
+  assert.match(source, /for \(const width of BANNER_VARIANT_WIDTHS\)/);
+  assert.match(source, /\['avif', \{ quality: 50 \}\], \['webp', \{ quality: 74 \}\]/);
+  assert.match(source, /usedImages\.add\(variantName\)/);
+  assert.match(source, /\/\\\.\(\?:avif\|webp\)\$\/i\.test\(name\)/);
+});
+
 test('article sync uses the pinned runtime, complete gate, and fail-closed hook', async () => {
   const source = await workflow('sync-articles');
   assert.match(source, /^\s{2}contents:\s*read\s*$/m);
