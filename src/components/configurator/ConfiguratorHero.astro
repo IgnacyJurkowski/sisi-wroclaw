@@ -1,0 +1,80 @@
+---
+import { type Locale } from '../../i18n/config';
+import { useTranslations } from '../../i18n/t';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const c = useTranslations(locale).configurator;
+const STEP_KEYS = ['occasion', 'details', 'space', 'menu', 'extras', 'summary'] as const;
+// Compact app header: one line of copy and a single progress strip whose
+// segments the page script drives (aria-current / data-done).
+---
+
+<header class="cfg-head">
+  <div class="container cfg-head-inner">
+    <div class="cfg-head-copy">
+      <h1 class="display cfg-head-title">{c.hero.title}</h1>
+      <p class="cfg-head-body">{c.hero.body}</p>
+    </div>
+
+    <nav class="cfg-strip" aria-label={c.progress.label} data-cfg-progress>
+      <ol class="cfg-strip-list">
+        {STEP_KEYS.map((key, index) => (
+          <li class="cfg-strip-item">
+            <a href={`#cfg-${key}`} class="cfg-strip-step" data-step={key} aria-current={index === 0 ? 'step' : undefined}>
+              <span class="cfg-strip-num" aria-hidden="true">{index + 1}</span>
+              <span class="cfg-strip-label">{c.progress.steps[key]}</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .cfg-head { flex-shrink: 0; border-bottom: 1px solid rgba(237,219,194,0.14); background: rgba(39,7,15,0.55); backdrop-filter: blur(8px); }
+  .cfg-head-inner { padding-top: 14px; padding-bottom: 12px; }
+  .cfg-head-copy { min-width: 0; margin-bottom: 12px; }
+  .cfg-head-title { font-size: clamp(1.35rem, 2.6vw, 1.8rem); line-height: 1.05; text-transform: uppercase; color: var(--cream); margin: 0 0 4px; }
+  .cfg-head-body { color: var(--text-faint); font-size: 13px; line-height: 1.5; margin: 0; }
+
+  /* One strip of interlocking arrows: |>>>|>>>|>>>|>>>|>>>|. Each segment is a
+     clip-path polygon (point on the right, notch on the left), overlapping the
+     previous one so a thin channel of the strip background stays between them. */
+  .cfg-strip { --arrow: 14px; --channel: 3px; }
+  /* No inner padding: the list's rounded overflow clips the first and last
+     segments, so their outer corners share the outline's radius. */
+  .cfg-strip-list { list-style: none; margin: 0; padding: 0; display: flex; border: 1px solid var(--line); border-radius: 12px; background: rgba(39,7,15,0.55); overflow: hidden; }
+  .cfg-strip-item { flex: 1; display: flex; align-items: stretch; min-width: 0; }
+  .cfg-strip-item + .cfg-strip-item { margin-left: calc(var(--channel) - var(--arrow)); }
+  .cfg-strip-step {
+    flex: 1; display: flex; align-items: center; justify-content: center; gap: 9px; min-width: 0; padding: 9px calc(var(--arrow) + 4px) 9px calc(var(--arrow) + 8px);
+    color: var(--text-dim); text-decoration: none; font-size: 12.5px; font-weight: 600; letter-spacing: 0.02em; background: rgba(237,219,194,0.07);
+    clip-path: polygon(0 0, calc(100% - var(--arrow)) 0, 100% 50%, calc(100% - var(--arrow)) 100%, 0 100%, var(--arrow) 50%);
+    transition: color 150ms ease, background 150ms ease;
+  }
+  .cfg-strip-item:first-child .cfg-strip-step { padding-left: 14px; clip-path: polygon(0 0, calc(100% - var(--arrow)) 0, 100% 50%, calc(100% - var(--arrow)) 100%, 0 100%); }
+  .cfg-strip-item:last-child .cfg-strip-step { padding-right: 14px; clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, var(--arrow) 50%); }
+  .cfg-strip-step:hover { color: var(--cream); background: rgba(237,219,194,0.12); }
+  .cfg-strip-step[data-done='true'] { color: var(--cream); background: rgba(237,219,194,0.1); }
+  .cfg-strip-step[aria-current='step'] { color: #1a120b; background: var(--gold); }
+  .cfg-strip-step:focus-visible { outline: 2px solid var(--gold); outline-offset: -4px; }
+  .cfg-strip-num { width: 22px; height: 22px; flex-shrink: 0; border-radius: 50%; display: grid; place-items: center; border: 1px solid currentColor; font-size: 11px; font-weight: 700; }
+  .cfg-strip-step[aria-current='step'] .cfg-strip-num { border-color: rgba(26,18,11,0.6); }
+  .cfg-strip-step[data-done='true'] .cfg-strip-num { background: var(--gold); color: #1a120b; border-color: var(--gold); }
+  .cfg-strip-label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  @media (max-width: 760px) {
+    .cfg-head-copy { margin-bottom: 10px; }
+    .cfg-head-body { display: none; }
+    .cfg-head-inner { padding-top: 10px; }
+    .cfg-strip { --arrow: 10px; }
+    .cfg-strip-step { padding: 9px calc(var(--arrow) + 2px) 9px calc(var(--arrow) + 6px); gap: 6px; }
+    .cfg-strip-item:first-child .cfg-strip-step { padding-left: 10px; }
+    .cfg-strip-item:last-child .cfg-strip-step { padding-right: 10px; }
+    .cfg-strip-label { display: none; }
+    .cfg-strip-step[aria-current='step'] .cfg-strip-label { display: inline; }
+    .cfg-strip-item:not(:has([aria-current='step'])) { flex: 0 0 auto; }
+  }
+</style>

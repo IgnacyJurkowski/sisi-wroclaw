@@ -1,0 +1,307 @@
+---
+import ConfiguratorDetails from '../configurator/ConfiguratorDetails.astro';
+import ConfiguratorExtras from '../configurator/ConfiguratorExtras.astro';
+import ConfiguratorHero from '../configurator/ConfiguratorHero.astro';
+import ConfiguratorMenu from '../configurator/ConfiguratorMenu.astro';
+import ConfiguratorOccasion from '../configurator/ConfiguratorOccasion.astro';
+import ConfiguratorSpace from '../configurator/ConfiguratorSpace.astro';
+import ConfiguratorSummary from '../configurator/ConfiguratorSummary.astro';
+import { CONFIGURATOR_LIMITS, DURATIONS, EVENING_FROM, SISI_BLOCKED_DAYS, SISI_NIGHT_FEES } from '../../data/configurator';
+import {
+  CORK_BASE_HOURS, CORK_CHILD_SHARE, CORK_CLOSE, CORK_DEPOSIT_SHARE, CORK_EXCLUSIVE_FROM, CORK_EXTENSIONS, CORK_MIN_GUESTS, CORK_SERVICE_FEE, CORK_START_WINDOWS, DECOR_TABLE_SEATS,
+} from '../../data/cork-configurator.mjs';
+import { privateEventsServiceSchema } from '../../data/site';
+import { type Locale } from '../../i18n/config';
+import { localizedPath } from '../../i18n/routes';
+import { useTranslations } from '../../i18n/t';
+import Base from '../../layouts/Base.astro';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const c = t.configurator;
+const shared = t.b2b.form;
+const pageUrl = new URL(localizedPath('configurator', locale), Astro.site).href;
+const homeUrl = new URL(localizedPath('home', locale), Astro.site).href;
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'SiSi Wrocław', item: homeUrl },
+    { '@type': 'ListItem', position: 2, name: t.nav.configurator, item: pageUrl },
+  ],
+};
+
+// Netlify keeps one field-label set per form name, captured from the first page it
+// parses. Register from the Polish page only; every locale still POSTs by form-name.
+const registersNetlifyForm = locale === 'pl';
+const formMessages = JSON.stringify({
+  required: shared.errors.required,
+  email: shared.errors.email,
+  consent: shared.errors.consent,
+  sending: shared.sending,
+  submit: shared.submit,
+});
+// Strings and rules the client script needs to render live text. Rules come
+// from the same data modules the markup renders from.
+const clientStrings = JSON.stringify({
+  capacity: c.details.capacity,
+  limits: CONFIGURATOR_LIMITS,
+  cork: {
+    minGuests: CORK_MIN_GUESTS,
+    exclusiveFrom: CORK_EXCLUSIVE_FROM,
+    baseHours: CORK_BASE_HOURS,
+    startWindows: CORK_START_WINDOWS,
+    close: CORK_CLOSE,
+    extensions: CORK_EXTENSIONS,
+    rules: { childShare: CORK_CHILD_SHARE, serviceFee: CORK_SERVICE_FEE, depositShare: CORK_DEPOSIT_SHARE },
+  },
+  duration: c.details.duration,
+  details: { plan: c.details.plan, planCork: c.details.planCork, planSisi: c.details.planSisi, corkWindow: c.details.corkWindow, corkWindowFix: c.details.corkWindowFix, extensionSave: c.details.extensionSave, nightFee: c.details.nightFee, sisiBlocked: c.details.sisiBlocked },
+  recommend: c.space.recommend,
+  spaceTitles: { sisi: c.space.options.sisi.title, cork: c.space.options.cork.title, r32: c.space.options.r32.title },
+  spaceTitlesPl: { sisi: useTranslations('pl').configurator.space.options.sisi.title, cork: useTranslations('pl').configurator.space.options.cork.title, r32: useTranslations('pl').configurator.space.options.r32.title },
+  nightFees: SISI_NIGHT_FEES,
+  sisiBlockedDays: SISI_BLOCKED_DAYS,
+  eveningFrom: EVENING_FROM,
+  decorSeats: DECOR_TABLE_SEATS,
+  perTable: c.extras.decor.perTable,
+  durations: DURATIONS,
+  durationPl: useTranslations('pl').configurator.details.duration,
+  corkClosing: c.menu.corkClosing,
+  time: { other: c.details.timeOther },
+  summary: { toBeAgreed: c.summary.toBeAgreed, none: c.summary.none, guestsUnit: c.summary.guestsUnit },
+  estimate: c.menu.estimate,
+  units: c.menu.units,
+  chosen: c.menu.cork.chosen,
+  hints: c.wizard.hints,
+  blocked: c.wizard.blocked,
+});
+---
+
+<Base
+  locale={locale}
+  routeKey="configurator"
+  title={t.meta.configurator.title}
+  description={t.meta.configurator.description}
+  ogTitle={t.meta.configurator.title}
+  ogDescription={t.meta.configurator.ogDescription}
+  schema={[privateEventsServiceSchema(locale), breadcrumb]}
+  noFooter
+>
+  <form
+    class="cfg"
+    name="event-configurator"
+    method="POST"
+    data-netlify={registersNetlifyForm ? 'true' : undefined}
+    netlify-honeypot={registersNetlifyForm ? 'bot-field' : undefined}
+    data-messages={formMessages}
+    data-strings={clientStrings}
+    data-required-fields="name,email,guests,preferred_date,start_time,duration"
+    data-event-enquiry-form
+    data-configurator
+    novalidate
+  >
+    <input type="hidden" name="form-name" value="event-configurator" />
+    <input type="hidden" name="subject" value={c.summary.form.subject} />
+    <input type="hidden" name="locale" value={locale} />
+    <input type="hidden" name="page" data-field-page value="" />
+    <input type="hidden" name="utm" data-field-utm value="" />
+    <p class="cfg-hp" aria-hidden="true">
+      <input type="text" name="bot-field" tabindex="-1" autocomplete="off" />
+    </p>
+
+    <ConfiguratorHero locale={locale} />
+
+    <!-- The steps scroll inside this pane; the header and the calculator bar stay put. -->
+    <div class="cfg-body" data-cfg-body>
+      <ConfiguratorOccasion locale={locale} />
+      <ConfiguratorDetails locale={locale} />
+      <ConfiguratorSpace locale={locale} />
+      <ConfiguratorMenu locale={locale} />
+      <ConfiguratorExtras locale={locale} />
+      <ConfiguratorSummary locale={locale} />
+    </div>
+
+    <!-- Calculator bar (shown by the script, which turns the steps into a wizard) -->
+    <div class="cfg-bar" data-cfg-bar hidden>
+      <div class="container cfg-bar-inner">
+        <p class="cfg-bar-line" aria-live="polite"><span data-bar-line></span><span class="cfg-bar-hint" data-bar-hint hidden></span></p>
+        <p class="cfg-bar-total"><strong data-bar-total>0 zł</strong> <span class="cfg-bar-per" data-bar-per></span></p>
+        <div class="cfg-bar-actions">
+          <button type="button" class="btn-outline cfg-bar-btn" data-wizard-back>{c.wizard.back}</button>
+          <span class="cfg-bar-next" data-wizard-next-wrap><button type="button" class="btn-cta cfg-bar-btn" data-wizard-next>{c.wizard.next}</button></span>
+        </div>
+      </div>
+    </div>
+  </form>
+</Base>
+
+<script>
+  import '../../scripts/event-enquiry-form';
+  import '../../scripts/configurator';
+</script>
+
+<style is:global>
+  /* Shared configurator chrome. Global (not scoped) because the six step
+     components share the same section, card, chip and button recipes. */
+  /* App shell: the site nav floats above, the page fills the viewport, the
+     header and the calculator bar stay put and only the step pane scrolls. */
+  .cfg { display: flex; flex-direction: column; min-height: 100dvh; padding-top: var(--nav-height); }
+  .cfg .container { max-width: min(1400px, 100%); }
+  .cfg-body { flex: 1; min-height: 0; }
+  .cfg-hp { position: absolute; left: -9999px; }
+  /* Wizard mode (script on): one step at a time, in-step "next" links hidden. */
+  .cfg-wizard { height: 100dvh; overflow: hidden; }
+  .cfg-wizard .cfg-body { overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
+  .cfg-wizard [data-step-actions] { display: none; }
+  .cfg-wizard .cfg-step { padding: 20px 0 20px; }
+  .cfg-wizard .cfg-step-head { margin-bottom: 14px; }
+  .cfg-wizard .cfg-step-title { font-size: clamp(1.25rem, 2.4vw, 1.6rem); }
+  .cfg-bar {
+    flex-shrink: 0; z-index: 40;
+    background: rgba(39,7,15,0.9); backdrop-filter: blur(12px); border-top: 1px solid rgba(237,219,194,0.2);
+    padding: 10px 0 calc(10px + env(safe-area-inset-bottom, 0px));
+  }
+  .cfg-bar-inner { display: flex; align-items: center; gap: 16px; }
+  .cfg-bar-line { flex: 1; min-width: 0; display: flex; align-items: baseline; gap: 10px; font-size: 13px; color: var(--text-dim); white-space: nowrap; overflow: hidden; }
+  .cfg-bar-line > span { overflow: hidden; text-overflow: ellipsis; }
+  .cfg-bar-hint { color: var(--gold); font-size: 12.5px; }
+  .cfg-bar-hint::before { content: '·'; margin-right: 10px; color: var(--text-mute); }
+  .cfg-bar-hint:first-child::before, [data-bar-line]:empty + .cfg-bar-hint::before { content: none; }
+  .cfg-bar-total { display: flex; align-items: baseline; gap: 8px; white-space: nowrap; }
+  .cfg-bar-total strong { font-family: var(--font-display); font-weight: 400; font-size: 1.35rem; color: var(--cream); }
+  .cfg-bar-per { font-size: 12px; color: var(--text-faint); }
+  .cfg-bar-actions { display: flex; gap: 8px; }
+  .cfg-bar-btn { padding: 11px 20px; }
+  /* Tooltips: data-tip on any hoverable / focusable element. */
+  [data-tip] { position: relative; }
+  [data-tip]::after {
+    content: attr(data-tip); position: absolute; left: 50%; bottom: calc(100% + 8px); transform: translateX(-50%) translateY(2px); z-index: 60;
+    width: max-content; max-width: 260px; padding: 7px 10px; border-radius: 8px; border: 1px solid rgba(237,219,194,0.25);
+    background: #2a0912; color: var(--cream); font-size: 12px; font-weight: 400; line-height: 1.45; letter-spacing: 0; text-transform: none; white-space: normal; text-align: left;
+    opacity: 0; pointer-events: none; transition: opacity 120ms ease, transform 120ms ease;
+  }
+  [data-tip]:hover::after, [data-tip]:focus-visible::after, [data-tip]:focus-within::after { opacity: 1; transform: translateX(-50%) translateY(0); }
+  [data-tip=""]::after { content: none; }
+  .cfg-bar [data-tip]::after { left: auto; right: 0; transform: translateY(2px); }
+  .cfg-bar [data-tip]:hover::after, .cfg-bar [data-tip]:focus-visible::after { transform: translateY(0); }
+  .cfg-bar-next { display: inline-flex; }
+  .cfg-bar-btn[aria-disabled='true'] { background: rgba(237,219,194,0.3); color: rgba(26,18,11,0.75); cursor: not-allowed; }
+  /* "Why can't I continue" notice, shaken on each blocked attempt. */
+  .cfg-block { margin-top: 14px; }
+  .cfg-block.is-shaking { animation: cfg-shake 320ms ease; }
+  @keyframes cfg-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+  .cfg-badge {
+    display: inline-block; margin-left: 8px; padding: 2px 8px; border-radius: 999px; vertical-align: middle;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #1a120b; background: var(--gold);
+  }
+  .cfg-dish-toggle {
+    display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 9px; border: 1px solid var(--line);
+    background: rgba(255,255,255,0.03); color: var(--cream); font: inherit; font-size: 12.5px; font-weight: 600; cursor: pointer;
+    transition: border-color 150ms ease;
+  }
+  .cfg-dish-toggle:hover { border-color: rgba(237,219,194,0.45); }
+  .cfg-dish-toggle:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .cfg-dish-toggle svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform 150ms ease; }
+  .cfg-dish-toggle[aria-expanded='true'] svg { transform: rotate(180deg); }
+  .cfg-dish-list { margin-top: 12px; }
+  .cfg-step { padding: 40px 0 8px; scroll-margin-top: 12px; }
+  .cfg-step-head { margin: 0 0 18px; }
+  .cfg-step-kicker {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 8px;
+  }
+  .cfg-step-title { font-size: clamp(1.35rem, 3vw, 1.9rem); text-transform: uppercase; }
+  .cfg-card { padding: 24px 26px; }
+  .cfg-label { display: block; font-size: 13px; color: var(--text-dim); margin-bottom: 6px; }
+  .cfg-hint { font-size: 12px; color: var(--text-faint); margin-top: 5px; line-height: 1.5; }
+  .cfg-subhead { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin: 0 0 10px; }
+  .cfg-note { font-size: 12px; color: var(--text-faint); line-height: 1.55; margin-top: 10px; }
+  .req { color: var(--gold); }
+  .opt { color: var(--text-faint); font-size: 11px; }
+  [hidden] { display: none !important; }
+
+  /* Choice chips (occasion, format, space, packages, cake, decorations): a real
+     radio/checkbox stays in the DOM for keyboard + form submission. */
+  .cfg-choice { position: relative; display: block; cursor: pointer; min-width: 0; }
+  .cfg-choice input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+  .cfg-choice-body {
+    display: flex; flex-direction: column; gap: 3px; height: 100%; padding: 12px 34px 12px 14px; border-radius: 11px;
+    border: 1px solid var(--line); background: rgba(255,255,255,0.03); transition: border-color 150ms ease, background 150ms ease;
+  }
+  .cfg-choice:hover .cfg-choice-body { border-color: rgba(237,219,194,0.45); }
+  .cfg-choice input:checked + .cfg-choice-body { border-color: var(--gold); background: rgba(251,210,149,0.1); }
+  .cfg-choice input:focus-visible + .cfg-choice-body { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .cfg-choice input:disabled + .cfg-choice-body { opacity: 0.45; }
+  .cfg-choice-title { font-size: 13.5px; font-weight: 600; color: var(--cream); line-height: 1.3; }
+  .cfg-choice-sub { font-size: 12px; color: var(--text-faint); line-height: 1.45; }
+  .cfg-choice-price { font-size: 12px; color: var(--gold); margin-top: 2px; }
+  .cfg-choice-check {
+    position: absolute; top: 10px; right: 10px; width: 18px; height: 18px; border-radius: 50%; border: 1px solid var(--line);
+    display: grid; place-items: center; font-size: 10px; color: transparent; transition: background 150ms ease, color 150ms ease;
+  }
+  .cfg-choice input:checked ~ .cfg-choice-check { background: var(--gold); border-color: var(--gold); color: #1a120b; }
+  .cfg-grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .cfg-grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .cfg-grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+
+  /* Small toggle pills (dishes, flavours, attractions). */
+  .cfg-pill { position: relative; display: inline-flex; cursor: pointer; min-width: 0; }
+  .cfg-pill input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+  .cfg-pill-body {
+    display: inline-flex; flex-direction: column; gap: 1px; padding: 8px 12px; border-radius: 9px; border: 1px solid var(--line);
+    background: rgba(255,255,255,0.03); font-size: 12.5px; color: var(--cream); line-height: 1.3; transition: border-color 150ms ease, background 150ms ease;
+  }
+  .cfg-pill-sub { font-size: 11px; color: var(--text-faint); }
+  .cfg-pill:hover .cfg-pill-body { border-color: rgba(237,219,194,0.45); }
+  .cfg-pill input:checked + .cfg-pill-body { border-color: var(--gold); background: rgba(251,210,149,0.12); }
+  .cfg-pill input:focus-visible + .cfg-pill-body { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .cfg-pill input:disabled + .cfg-pill-body { opacity: 0.4; }
+  .cfg-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  .cfg-actions { display: flex; justify-content: flex-end; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+  .cfg-next { gap: 10px; }
+  .cfg-next svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  .cfg-notice {
+    margin-top: 14px; padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(251,210,149,0.45);
+    background: rgba(251,210,149,0.08); color: var(--cream); font-size: 13px; line-height: 1.55;
+  }
+
+  .cfg input[type='text'], .cfg input[type='email'], .cfg input[type='tel'], .cfg textarea, .cfg select.cfg-select {
+    width: 100%; padding: 10px 12px; border-radius: 9px; border: 1px solid var(--line); background: rgba(255,255,255,0.03);
+    color: var(--cream); font: inherit; font-size: 14px; transition: border-color 150ms ease;
+  }
+  .cfg select.cfg-select { color-scheme: dark; appearance: none; -webkit-appearance: none; padding-right: 32px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 16 16'><path d='M4 6l4 4 4-4' fill='none' stroke='%23eddbc2' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-repeat: no-repeat; background-position: right 12px center; }
+  .cfg select.cfg-select option { background: #34101a; color: var(--cream); }
+  .cfg input:not([type='checkbox']):not([type='radio']):hover, .cfg textarea:hover, .cfg select.cfg-select:hover { border-color: rgba(237,219,194,0.4); }
+  .cfg input:not([type='checkbox']):not([type='radio']):focus, .cfg textarea:focus, .cfg select.cfg-select:focus {
+    outline: 2px solid rgba(237,219,194,0.5); outline-offset: 1px; border-color: transparent;
+  }
+  .cfg textarea { resize: vertical; }
+  .cfg [aria-invalid='true'] { border-color: #c25c74; }
+  .cfg-field-error { color: #e7889b; font-size: 12px; margin-top: 5px; }
+
+  /* Folds reuse the menu-fold recipe from global.css but sit tighter. */
+  .cfg .menu-fold-summary { padding: 18px 24px; }
+  .cfg .menu-fold-body { padding: 0 24px 22px; }
+  .cfg .menu-fold-title { font-size: 1.05rem; }
+
+  @media (max-width: 900px) { .cfg-grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } .cfg-grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 640px) {
+    .cfg-bar-line > span:first-child { display: none; }
+    .cfg-bar-line { white-space: normal; font-size: 12px; line-height: 1.3; }
+    .cfg-bar-hint::before { content: none; }
+    .cfg-bar-inner { justify-content: space-between; }
+    .cfg-bar-btn { padding: 10px 14px; }
+    .cfg-step { padding: 32px 0 6px; }
+    .cfg-wizard .cfg-step { padding: 16px 0 24px; }
+    .cfg-card { padding: 20px 18px; }
+    .cfg-grid-2, .cfg-grid-3, .cfg-grid-4 { grid-template-columns: 1fr; }
+    .cfg .menu-fold-summary { padding: 16px 18px; }
+    .cfg .menu-fold-body { padding: 0 18px 18px; }
+  }
+</style>
