@@ -18,47 +18,62 @@ Labels: Confirmed (seen in code, output or a real browser), Rec (recommendation)
 
 lighthouse 13.5.0, html-validate 11.16.1, culori 4.0.2, pixelmatch 7.2.0, pngjs 7.0.0, @axe-core/playwright 4.13.0, playwright-core 1.63.0, sharp 0.35.5 (in /home/user/sisi-tools); repo pins playwright-core 1.61.1, axe 4.12.1, sharp 0.35.2. Python: pillow 12.3.0, opencv-python-headless 5.0.0.93, numpy 2.4.6, imageio-ffmpeg 0.6.0 (ffmpeg 7.0.2). Chromium 141.0.7390.37.
 
+## CHECKPOINT 2026-09-29 (Ignacy asked to checkpoint and stop)
+
+State: Phase 0 partly done, Phase 1 done, Phase 3a mostly done, Phase 5.1 done, Phase 5.2 barely started. Nothing in Phases 2 (main audit), 4, 5.3 to 5.5, 6, 7 is done. See `RESUME.md` for exact paths, what was stopped mid-flight, and the Track A queue. All agents were stopped; none are running.
+
 ## Checklist
 
 ### Phase 0: bootstrap and baseline
 - [x] 0.1 git log, main SHA, worktree (`/home/user/sisi-elevate`, branch `sisi-elevate/base`)
-- [x] 0.2 RESEARCH.md (committed f8ccc58)
-- [ ] 0.3 import earlier audits and specs (agent running -> IMPORTED.md)
+- [x] 0.2 RESEARCH.md
+- [x] 0.3 import earlier audits and specs: `IMPORTED.md`. No standalone VVS audit of SiSi, og:image fix doc, entry-point doc or funnel design doc exists in Drive, repo or git; section C is assembled from the PostHog spec and code. Notion not connected.
 - [x] 0.4 build, lint, tests baseline (above)
-- [ ] 0.5 crawl (local build; live blocked) (agent running -> baseline/CRAWL.md)
-- [ ] 0.6 Lighthouse + axe (after crawl agent finishes, quiet CPU) + screenshots (crawl agent)
-- [ ] 0.7 verify Context leads (agent running -> LEADS.md, GUEST-TASKS.md)
+- [ ] 0.5 crawl: PARTIAL. 87 screenshots exist (`baseline/screens/`); no `CRAWL.md`. Live crawl blocked by network policy.
+- [ ] 0.6 Lighthouse + axe: NOT RUN (needs a quiet CPU). Screenshots: done for pl and en at 375/768/1440 (unreviewed).
+- [ ] 0.7 verify Context leads: PARTIAL. Raw evidence in `baseline/guest/`; no `LEADS.md`.
 
-### Phase 1: contract tests (branch `sisi-elevate/contract`, agent running)
-- [ ] URL, SEO, link, BLG, facts scaffold contracts; proof of catching breakage
+### Phase 1: contract tests (branch `sisi-elevate/contract`, tip fb32d53)
+- [x] URL, SEO, link, BLG, facts (inventory) contracts; 43 new unit tests; CI step; `CONTRACT.md`, `contract-proof.md`
+- [x] Proof it catches breakage: slug rename, dropped hreflang, price change all fail; untouched branch green (I reran: PASS, 21 s, offline)
+- Known limits: snapshot is a local build of main, not production (UNVERIFIED banner); Emenago HEAD and external og:image not checked (network); 4 known defects waived in `contract/waivers.json` (Track A fixes must remove them).
 
 ### Phase 2: audit
-- [ ] docs/audits/2026-09-29-sisi-site.md (fingerprints, severities)
-- [ ] blog audit (agent running -> audit-blog.md)
-- [ ] guest tasks 1-7
+- [ ] `docs/audits/2026-09-29-sisi-site.md` NOT WRITTEN (inputs exist: RESEARCH, IMPORTED, BRAND, audit-blog, CONTRACT waivers, baseline data)
+- [x] blog audit: `audit-blog.md`, `blog-audit.json` (31 posts; 10 rewrite, 11 merge, 10 remove, 0 keep; 20 of 117 SiSi claims contradict a source; 9 posts hard-contradict)
+- [ ] guest tasks 1-7: PARTIAL raw data only
 
-### Phase 3: source of truth
-- [ ] 3a content file + inventory + GAPS.md (branch `sisi-elevate/venue-truth`, agent running)
+### Phase 3: source of truth (branch `sisi-elevate/venue-truth`)
+- [x] 3a typed content files with provenance (`src/content/venue/*`), 38 tests pass, `astro check` clean
+- [ ] 3a `VENUE-INVENTORY.md`, `GAPS.md`, finished inventory script
 - [ ] 3b consumers read from it; facts contract enforced
 
 ### Phase 4: Track A fixes (stacked draft PRs)
-- [ ] to be planned from the audit
+- [ ] NOT STARTED. Queue in `RESUME.md`.
 
 ### Phase 5: creative direction and playground
-- [ ] 5.1 BRAND.md (agent running)
-- [ ] 5.2 three directions
-- [ ] 5.3 components, 5.4 feedback controls, 5.5 quality bar + ban list (DIRECTIONS.md)
+- [x] 5.1 `BRAND.md`
+- [ ] 5.2 three directions: fonts and images only (`directions/*`), no ideas/heroes
+- [ ] 5.3 components, 5.4 feedback controls, 5.5 quality bar + `DIRECTIONS.md` ban list
 
 ### Phase 6: innovation
-- [ ] I1 night clock (logic agent running), I2 adapter (research agent running), I3, I4, I5, parking lot, three own ideas
+- [x] I1 logic: `playground-src/lib/night.mjs` (228 tests x 3 timezones, both clock-change nights)
+- [x] I2 research: `SERVED-ADAPTER.md` (holdSlot and cancelBooking have no server support; confirmBooking creates a pending request and takes no payment)
+- [ ] I1 UI/timeline contact sheet, I2 UI, I3, I4, I5, parking lot, three own ideas
 
 ### Phase 7: verification
-- [ ] contract green, Lighthouse/axe not worse, playground checks, motion contact sheet, VVS/Booking Path Scan if available
+- [ ] NOT STARTED
 
 ## Parked (with evidence)
 
-(none yet)
+None parked. Stopped by request, not by failure.
 
 ## PENDING decisions for Ignacy
 
-1. Allow `www.sisiwroclaw.pl` and `sisiwroclaw.pl` in the environment network policy so the live crawl, live contract snapshot and "before" readings can run.
+1. Allow `www.sisiwroclaw.pl` and `sisiwroclaw.pl` in the environment Network access setting so the live crawl, live contract snapshot, Emenago HEAD checks and "before" readings can run.
+2. Terms vs reservation page: Saturday entry 30 zł or 40 zł; pick-up window 22:00-23:00 or 22:00-23:30. Which is true?
+3. PostHog anonymous measurement before consent: keep, or require consent? (legal)
+4. Blog: apply the audit's recommendations? (noindex the 9 contradicting posts as an interim; rewrite, merge, remove). Also: is the "Ignacy Jurkowski" byline under first-person opinions intended?
+5. DJ handover time and lineup source (`[DJ-START?]`, `[LINEUP?]`); phase lengths in the night clock (doors 30 min, last hour 60 min, closing 15 min are defaults); whether the 30-minute release counts from arrival or from 23:00.
+6. VVS scoring type for SiSi (spec gives weights for 3 of 15 templates, none for SiSi).
+7. Alcohol promotion (Chivas Regal Zone, brand marks in 6 of 12 stills) and age notice: question for you and a lawyer, untouched.

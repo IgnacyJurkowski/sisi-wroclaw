@@ -1,0 +1,67 @@
+{
+ "secs": [
+  {
+   "cls": "hero",
+   "id": "start",
+   "h": 900,
+   "text": "THE HEART OF WROCŁAW BEATS AT SiSi Music club, live acts, DJs and cocktails in central Wrocław. RESERVATIONS SEE MORE",
+   "links": [
+    "/en/reservations/",
+    "#ewolucja-onas"
+   ]
+  },
+  {
+   "cls": "about",
+   "id": "ewolucja-onas",
+   "h": 787,
+   "text": "THE MUSICAL EVOLUTION OF THE NIGHT Fridays and Saturdays at SiSi, in the R32 complex on Rzeźnicza. The first cocktail Meet us at the bar. Th",
+   "links": []
+  },
+  {
+   "cls": "r32",
+   "id": "",
+   "h": 677,
+   "text": "R32 DINNER AND THE CLUB AT ONE ADDRESS Start the evening with dinner at The Cork and walk straight into SISI - the restaurant and the club s",
+   "links": [
+    "https://www.r32.com.pl"
+   ]
+  },
+  {
+   "cls": "menu-teaser",
+   "id": "menu",
+   "h": 863,
+   "text": "Bar menu A good beginning. A cocktail at the bar. The night is yours. Cocktails Alcohol-free Wine list Night Menu Hugo Spritz St-Germain / L",
+   "links": [
+    "/en/menu/#cocktails",
+    "/en/menu/#non-alcoholic",
+    "/en/menu/#wines",
+    "/en/menu/#food",
+    "/en/menu/"
+   ]
+  },
+  {
+   "cls": "home-b2b",
+   "id": "",
+   "h": 480,
+   "text": "CORPORATE EVENTS HOST YOUR COMPANY EVENT AT SiSi Conferences, presentations, dinners, launches and evening corporate events. Combine the res",
+   "links": [
+    "/en/corporate-events/"
+   ]
+  },
+  {
+   "cls": "chivas",
+   "id": "",
+   "h": 420,
+   "text": "CHIVAS REGAL ZONE",
+   "links": []
+  }
+ ],
+ "chInfo": {
+  "text": "CHIVAS REGAL ZONE",
+  "links": 0,
+  "bg": "url(\"http://localhost:4410/framerusercontent.com/images/bHchRJgtNrxKTYRK56SCdUph2g.webp\")",
+  "ariaHidden": "true",
+  "imgs": 0,
+  "h2": "CHIVAS REGAL ZONE"
+ }
+}

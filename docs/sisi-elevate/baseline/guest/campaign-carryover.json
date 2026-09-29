@@ -1,0 +1,31 @@
+{
+ "landing": {
+  "url": "http://localhost:4410/pl/?utm_source=instagram&utm_medium=social&utm_campaign=fri-promo&utm_content=bio&gclid=TESTCLICK",
+  "hrefsOnHome": [
+   "/pl/rezerwacje/",
+   "/pl/rezerwacje/",
+   "/pl/rezerwacje/"
+  ]
+ },
+ "afterNavTap": {
+  "url": "http://localhost:4410/pl/rezerwacje/",
+  "queryKept": false,
+  "ctaHref": "https://emenago.com/inner/cart/6619/0519b014958d73fb0d5d2d58c360a661/pl?utm_source=website&utm_medium=cta&utm_campaign=reservation&utm_content=reservations_section"
+ },
+ "directReservations": {
+  "ctaHref": "https://emenago.com/inner/cart/6619/0519b014958d73fb0d5d2d58c360a661/pl?utm_source=website&utm_medium=cta&utm_campaign=reservation&utm_content=reservations_section"
+ },
+ "b2bDirect": {
+  "utm": "utm_source=instagram&utm_medium=social&utm_campaign=fri-promo&utm_content=bio",
+  "page": "/pl/eventy-firmowe/"
+ },
+ "b2bAfterNav": {
+  "url": "http://localhost:4410/pl/eventy-firmowe/",
+  "utm": ""
+ },
+ "storage": {
+  "ls": [],
+  "ss": [],
+  "ck": ""
+ }
+}

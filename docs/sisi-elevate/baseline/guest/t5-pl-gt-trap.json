@@ -1,0 +1,44 @@
+{
+ "locale": "pl",
+ "target": "gt-trap",
+ "found": true,
+ "answer": {
+  "tonicInGinFold": false,
+  "firstRows": [
+   "Beefeater | 22 zł",
+   "Beefeater 24 | 28 zł",
+   "Beefeater Blood Orange | 22 zł"
+  ],
+  "note": "PORCJA 4 CL"
+ },
+ "at": {
+  "taps": 3,
+  "swipes": 1,
+  "seconds": 9.1
+ },
+ "steps": [
+  {
+   "step": "goto /pl/",
+   "t": 2.808,
+   "dt": 2.81
+  },
+  {
+   "step": "tap hamburger",
+   "t": 3.143,
+   "taps": 1,
+   "swipes": 0
+  },
+  {
+   "step": "tap menu link",
+   "t": 3.717,
+   "taps": 2,
+   "swipes": 0
+  },
+  {
+   "step": "tap fold: gin (a guest looking for gin and tonic)",
+   "t": 7.911,
+   "taps": 3,
+   "swipes": 1
+  }
+ ]
+}

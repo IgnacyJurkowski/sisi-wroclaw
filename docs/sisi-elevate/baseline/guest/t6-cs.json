@@ -1,0 +1,222 @@
+{
+ "locale": "cs",
+ "path": {
+  "toCorporatePage": {
+   "taps": 2,
+   "swipes": 0,
+   "seconds": 5.6
+  },
+  "toForm": {
+   "taps": 3,
+   "swipes": 0,
+   "seconds": 7.9
+  },
+  "afterEmptySubmit": {
+   "taps": 4,
+   "swipes": 3,
+   "seconds": 13.7
+  }
+ },
+ "heroCtaTapped": true,
+ "fields": {
+  "action": null,
+  "method": "post",
+  "name": "b2b-enquiry",
+  "netlify": null,
+  "honeypot": null,
+  "novalidate": true,
+  "hint": "Pole označená * jsou povinná.",
+  "list": [
+   {
+    "name": "form-name",
+    "type": "input:hidden",
+    "required": false,
+    "label": null,
+    "hidden": true,
+    "value": "b2b-enquiry"
+   },
+   {
+    "name": "locale",
+    "type": "input:hidden",
+    "required": false,
+    "label": null,
+    "hidden": true,
+    "value": "cs"
+   },
+   {
+    "name": "page",
+    "type": "input:hidden",
+    "required": false,
+    "label": null,
+    "hidden": true,
+    "value": "/cs/firemni-akce/"
+   },
+   {
+    "name": "utm",
+    "type": "input:hidden",
+    "required": false,
+    "label": null,
+    "hidden": true,
+    "value": ""
+   },
+   {
+    "name": "bot-field",
+    "type": "input:text",
+    "required": false,
+    "label": null,
+    "autocomplete": "off",
+    "hidden": true
+   },
+   {
+    "name": "company",
+    "type": "input:text",
+    "required": true,
+    "label": "Název firmy *",
+    "autocomplete": "organization"
+   },
+   {
+    "name": "contact_person",
+    "type": "input:text",
+    "required": true,
+    "label": "Kontaktní osoba *",
+    "autocomplete": "name"
+   },
+   {
+    "name": "email",
+    "type": "input:email",
+    "required": true,
+    "label": "E-mail *",
+    "autocomplete": "email"
+   },
+   {
+    "name": "phone",
+    "type": "input:tel",
+    "required": false,
+    "label": "Telefon (nepovinné)",
+    "autocomplete": "tel"
+   },
+   {
+    "name": "event_type",
+    "type": "select:select-one",
+    "required": true,
+    "label": "Typ akce *"
+   },
+   {
+    "name": "guests",
+    "type": "input:number",
+    "required": true,
+    "label": "Odhadovaný počet hostů *"
+   },
+   {
+    "name": "preferred_date",
+    "type": "input:text",
+    "required": true,
+    "label": "Preferovaný termín *",
+    "placeholder": "Vyberte datum",
+    "autocomplete": "off"
+   },
+   {
+    "name": "preferred_date_iso",
+    "type": "input:hidden",
+    "required": false,
+    "label": null,
+    "hidden": true,
+    "value": ""
+   },
+   {
+    "name": "date_flexible",
+    "type": "input:checkbox",
+    "required": false,
+    "label": "Termín je flexibilní"
+   },
+   {
+    "name": "space",
+    "type": "select:select-one",
+    "required": false,
+    "label": "Preferovaný prostor (nepovinné)"
+   },
+   {
+    "name": "duration",
+    "type": "input:text",
+    "required": false,
+    "label": "Délka akce (nepovinné)",
+    "placeholder": "např. 6 hodin"
+   },
+   {
+    "name": "message",
+    "type": "textarea:textarea",
+    "required": true,
+    "label": "Zpráva *",
+    "placeholder": "Stručně popište svou akci."
+   },
+   {
+    "name": "consent",
+    "type": "input:checkbox",
+    "required": true,
+    "label": "Souhlasím s kontaktováním ohledně své poptávky a potvrzuji, že jsem se seznámil(a) se Zásadami ochrany soukromí."
+   }
+  ],
+  "consentLabel": "Souhlasím s kontaktováním ohledně své poptávky a potvrzuji, že jsem se seznámil(a) se Zásadami ochrany soukromí.",
+  "consentLink": "/cs/ochrana-soukromi/",
+  "submitText": "ODESLAT POPTÁVKU",
+  "successText": "Děkujeme za vaši poptávku.Ozveme se vám s nabídkou. V naléhavém případě nám zavolejte nebo napište.",
+  "errorText": "Formulář se nepodařilo odeslat.Zkuste to prosím za chvíli znovu, nebo nás kontaktujte přímo: +48 514 032 930 · events@r32.com.pl"
+ },
+ "errorsOnEmptySubmit": {
+  "summary": "Opravte zvýrazněná pole, abyste mohli formulář odeslat.",
+  "summaryRole": "alert",
+  "fieldErrors": [
+   "company: Toto pole je povinné.",
+   "contact_person: Toto pole je povinné.",
+   "email: Toto pole je povinné.",
+   "event_type: Toto pole je povinné.",
+   "guests: Toto pole je povinné.",
+   "preferred_date: Toto pole je povinné.",
+   "message: Toto pole je povinné.",
+   "consent: Souhlas je nutný k odeslání poptávky."
+  ],
+  "invalid": [
+   "company",
+   "contact_person",
+   "email",
+   "event_type",
+   "guests",
+   "preferred_date",
+   "message",
+   "consent"
+  ],
+  "focused": "company"
+ },
+ "nonGetRequestsDuringEmptySubmit": [],
+ "steps": [
+  {
+   "step": "goto /cs/",
+   "t": 2.691,
+   "dt": 2.69
+  },
+  {
+   "step": "tap hamburger",
+   "t": 2.895,
+   "taps": 1,
+   "swipes": 0
+  },
+  {
+   "step": "tap menu: corporate",
+   "t": 3.48,
+   "taps": 2,
+   "swipes": 0
+  },
+  {
+   "step": "tap hero CTA -> enquiry",
+   "t": 6.674,
+   "taps": 3,
+   "swipes": 0
+  },
+  {
+   "step": "tap submit (empty)",
+   "t": 12.48,
+   "taps": 4,
+   "swipes": 3
+  }
+ ]
+}

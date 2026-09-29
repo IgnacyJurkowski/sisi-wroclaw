@@ -1,0 +1,51 @@
+{
+ "locale": "it",
+ "atAddress": {
+  "taps": 1,
+  "swipes": 11,
+  "seconds": 19.1,
+  "visible": true,
+  "dismissedBanner": true
+ },
+ "addrText": "Rzeźnicza 32-33, 50-130 Wrocław",
+ "attrs": {
+  "href": "https://www.google.com/maps/search/?api=1&query=SISI%20%7C%20Music%20Club%20Wroc%C5%82aw&query_place_id=ChIJS14DTYDDD0cRWrK8z0wRcsM",
+  "target": "_blank",
+  "rel": "noopener"
+ },
+ "popupUrl": "chrome-error://chromewebdata/",
+ "mapRequests": [],
+ "entranceOrAccessKeywordHits": {
+  "/it/": [],
+  "/it/prenotazioni/": [
+   "nerdì, con la prenotazione, l'ingresso è gratuito.",
+   "volo; il sabato si applica un ingresso aggiuntivo di 40 zł a persona",
+   "Il venerdì l'ingresso è gratuito per gli ospiti con",
+   "a prenotazione si aggiunge un ingresso di 40 PLN a persona.",
+   "L'ingresso è riservato agli ospiti con d",
+   "i applicano una selezione all'ingresso e un dress code smart casual.",
+   "ale si riserva di rifiutare l'ingresso senza fornire motivazioni, an"
+  ],
+  "/it/contatti/": [],
+  "/it/menu/": []
+ },
+ "steps": [
+  {
+   "step": "goto /it/",
+   "t": 2.625,
+   "dt": 2.63
+  },
+  {
+   "step": "tap cookie banner decline (covered address)",
+   "t": 18.723,
+   "taps": 1,
+   "swipes": 11
+  },
+  {
+   "step": "tap tap address (map link)",
+   "t": 19.451,
+   "taps": 2,
+   "swipes": 11
+  }
+ ]
+}

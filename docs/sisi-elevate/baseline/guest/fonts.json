@@ -1,0 +1,103 @@
+{
+ "/pl/": {
+  "faces": [
+   "Cal Sans 400 loaded U+0-FF, U+131, U+152-153, U+2B",
+   "Cal Sans 400 loaded U+100-2BA, U+2BD-2C5, U+2C7-2C",
+   "Montserrat 400 700 loaded U+0-10FFFF"
+  ],
+  "fontRes": [
+   "/fonts/cal-sans-400-latin.woff2 21764",
+   "/fonts/cal-sans-400-latext.woff2 13908"
+  ],
+  "fam": [
+   "Montserrat",
+   "Arial",
+   "\"Cal Sans\""
+  ],
+  "blocked": 0
+ },
+ "/pl/menu/": {
+  "faces": [
+   "Cal Sans 400 loaded U+0-FF, U+131, U+152-153, U+2B",
+   "Cal Sans 400 loaded U+100-2BA, U+2BD-2C5, U+2C7-2C",
+   "Montserrat 400 700 loaded U+0-10FFFF"
+  ],
+  "fontRes": [
+   "/fonts/cal-sans-400-latin.woff2 21764",
+   "/fonts/cal-sans-400-latext.woff2 13908"
+  ],
+  "fam": [
+   "Montserrat",
+   "Arial",
+   "\"Cal Sans\""
+  ],
+  "blocked": 0
+ },
+ "/en/": {
+  "faces": [
+   "Cal Sans 400 loaded U+0-FF, U+131, U+152-153, U+2B",
+   "Cal Sans 400 loaded U+100-2BA, U+2BD-2C5, U+2C7-2C",
+   "Montserrat 400 700 loaded U+0-10FFFF"
+  ],
+  "fontRes": [
+   "/fonts/cal-sans-400-latin.woff2 21764",
+   "/fonts/cal-sans-400-latext.woff2 13908"
+  ],
+  "fam": [
+   "Montserrat",
+   "Arial",
+   "\"Cal Sans\""
+  ],
+  "blocked": 0
+ },
+ "/pl/kontakt/": {
+  "faces": [
+   "Cal Sans 400 loaded U+0-FF, U+131, U+152-153, U+2B",
+   "Cal Sans 400 unloaded U+100-2BA, U+2BD-2C5, U+2C7-2C",
+   "Montserrat 400 700 loaded U+0-10FFFF"
+  ],
+  "fontRes": [
+   "/fonts/cal-sans-400-latin.woff2 21764"
+  ],
+  "fam": [
+   "Montserrat",
+   "Arial",
+   "\"Cal Sans\""
+  ],
+  "blocked": 0
+ },
+ "/pl/blog/mezcal-vs-tequila/": {
+  "faces": [
+   "Cal Sans 400 loaded U+0-FF, U+131, U+152-153, U+2B",
+   "Cal Sans 400 loaded U+100-2BA, U+2BD-2C5, U+2C7-2C",
+   "Montserrat 400 700 loaded U+0-10FFFF"
+  ],
+  "fontRes": [
+   "/fonts/cal-sans-400-latin.woff2 21764",
+   "/fonts/cal-sans-400-latext.woff2 13908"
+  ],
+  "fam": [
+   "Montserrat",
+   "Arial",
+   "\"Cal Sans\""
+  ],
+  "blocked": 0
+ },
+ "/pl/eventy-firmowe/": {
+  "faces": [
+   "Cal Sans 400 loaded U+0-FF, U+131, U+152-153, U+2B",
+   "Cal Sans 400 loaded U+100-2BA, U+2BD-2C5, U+2C7-2C",
+   "Montserrat 400 700 loaded U+0-10FFFF"
+  ],
+  "fontRes": [
+   "/fonts/cal-sans-400-latin.woff2 21764",
+   "/fonts/cal-sans-400-latext.woff2 13908"
+  ],
+  "fam": [
+   "Montserrat",
+   "Arial",
+   "\"Cal Sans\""
+  ],
+  "blocked": 0
+ }
+}

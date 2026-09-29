@@ -1,0 +1,971 @@
+{
+ "375/pl/": {
+  "words": 266,
+  "lines": 22,
+  "orphans": 4,
+  "numunit": 0,
+  "ex": [
+   {
+    "w": "w",
+    "ctx": "ub muzyczny, live acts, DJ-e i koktajle w centrum Wrocławia.",
+    "tag": "P.hero-descriptor"
+   },
+   {
+    "w": "i",
+    "ctx": "my się przy barze. Jest czas na rozmowę i pierwszy toast.",
+    "tag": "P."
+   },
+   {
+    "w": "i",
+    "ctx": "Zacznij wieczór od kolacji w The Cork i przejdź prosto do SISI - restaur",
+    "tag": "P.r32-body"
+   },
+   {
+    "w": "w",
+    "ctx": "i i przygotuj wszystko w jednym miejscu w centrum Wrocławia.",
+    "tag": "P.home-b2b-body"
+   }
+  ],
+  "exn": []
+ },
+ "375/pl/rezerwacje/": {
+  "words": 290,
+  "lines": 32,
+  "orphans": 5,
+  "numunit": 0,
+  "ex": [
+   {
+    "w": "z",
+    "ctx": "W piątki wstęp do klubu dla osób z rezerwacją jest bezpłatny.",
+    "tag": "LI."
+   },
+   {
+    "w": "w",
+    "ctx": "Rezerwację należy odebrać w godzinach 22:00-23:00. W przypadku",
+    "tag": "LI."
+   },
+   {
+    "w": "z",
+    "ctx": "u bez podania przyczyny, również osobom z rezerwacją (wpłacona kwota zostaje ",
+    "tag": "LI."
+   },
+   {
+    "w": "o",
+    "ctx": "Po dokonaniu rezerwacji prosimy o oczekiwanie na jej akceptację i prze",
+    "tag": "LI."
+   },
+   {
+    "w": "i",
+    "ctx": "prosimy o oczekiwanie na jej akceptację i przesłanie szczegółowych warunków.",
+    "tag": "LI."
+   }
+  ],
+  "exn": []
+ },
+ "375/pl/menu/": {
+  "words": 1789,
+  "lines": 68,
+  "orphans": 4,
+  "numunit": 0,
+  "ex": [
+   {
+    "w": "i",
+    "ctx": "Szampan i musujące",
+    "tag": "SPAN.menu-fold-title"
+   },
+   {
+    "w": "i",
+    "ctx": "li, przez charakterne wino pomarańczowe i rosé, po eleganckie czerwienie",
+    "tag": "P.fw-lead"
+   },
+   {
+    "w": "i",
+    "ctx": "Wermuty i aperitify",
+    "tag": "SPAN.menu-fold-title"
+   },
+   {
+    "w": "z",
+    "ctx": "Chcesz zarezerwować stolik i zamówić z wyprzedzeniem? Skontaktuj się z nami.",
+    "tag": "P."
+   }
+  ],
+  "exn": []
+ },
+ "375/pl/imprezy-prywatne/": {
+  "words": 238,
+  "lines": 23,
+  "orphans": 5,
+  "numunit": 0,
+  "ex": [
+   {
+    "w": "z",
+    "ctx": "ybierz przestrzeń na wyłączność i ustal z naszym zespołem bar, catering, ",
+    "tag": "P.private-hero-body"
+   },
+   {
+    "w": "w",
+    "ctx": "rywatna kolacja lub wieczorne przyjęcie w wybranej przestrzeni.",
+    "tag": "P.private-occasion-body"
+   },
+   {
+    "w": "z",
+    "ctx": "Wydarzenia dla zaproszonych gości z cateringiem, barem i oprawą muzyczną.",
+    "tag": "P.private-occasion-body"
+   },
+   {
+    "w": "i",
+    "ctx": "w wydarzenia. Termin potwierdzamy umową i zaliczką, a pozostała część jest p",
+    "tag": "P.private-pricing-body"
+   },
+   {
+    "w": "i",
+    "ctx": "Podaj planowany termin, liczbę gości i rodzaj okazji. Zespół przygotuj",
+    "tag": "P.private-enquiry-intro"
+   }
+  ],
+  "exn": []
+ },
+ "375/pl/eventy-firmowe/": {
+  "words": 848,
+  "lines": 93,
+  "orphans": 18,
+  "numunit": 0,
+  "ex": [
+   {
+    "w": "w",
+    "ctx": "Konferencja w dzień, klub wieczorem",
+    "tag": "H1.display b2b-hero-title"
+   },
+   {
+    "w": "i",
+    "ctx": "ntacji po kolacje, premiery, networking i wieczorne wydarzenia firmowe. Połą",
+    "tag": "P.b2b-hero-body"
+   },
+   {
+    "w": "i",
+    "ctx": "ącz restaurację The Cork z energią SiSi i zorganizuj cały event w jednym miej",
+    "tag": "P.b2b-hero-body"
+   },
+   {
+    "w": "i",
+    "ctx": "Gotowe zaplecze do prezentacji i paneli.",
+    "tag": "P.b2b-why-body"
+   },
+   {
+    "w": "z",
+    "ctx": "Bezpośredni kontakt z zespołem",
+    "tag": "H3.b2b-why-title"
+   },
+   {
+    "w": "i",
+    "ctx": "Pokazy produktów, podsumowania i wystąpienia firmowe.",
+    "tag": "P.b2b-format-body"
+   },
+   {
+    "w": "w",
+    "ctx": "Spotkania branżowe i wieczory w swobodnej atmosferze.",
+    "tag": "P.b2b-format-body"
+   },
+   {
+    "w": "z",
+    "ctx": "Wieczory integracyjne i świętowanie z energią klubu SiSi.",
+    "tag": "P.b2b-format-body"
+   },
+   {
+    "w": "w",
+    "ctx": "Możliwość wydzielenia osobnych stref w przestrzeni, tak aby różne części wyd",
+    "tag": "P.b2b-included-body"
+   },
+   {
+    "w": "i",
+    "ctx": "- naturalna sceneria na część oficjalną i wieczór.",
+    "tag": "P.b2b-space-body"
+   },
+   {
+    "w": "i",
+    "ctx": "Zasiadane kolacje, prezentacje i spotkania w ciągu dnia",
+    "tag": "LI."
+   },
+   {
+    "w": "i",
+    "ctx": "Wieczorne programy, networking i świętowanie",
+    "tag": "LI."
+   }
+  ],
+  "exn": []
+ },
+ "375/pl/kariera/": {
+  "words": 182,
+  "lines": 8,
+  "orphans": 3,
+  "numunit": 0,
+  "ex": [
+   {
+    "w": "i",
+    "ctx": "Szukamy ludzi z pasją do dobrego drinka i muzyki. Klub pracuje w piątki i ",
+    "tag": "P.page-subtitle"
+   },
+   {
+    "w": "w",
+    "ctx": "oty - barmani również w ciągu tygodnia, w godzinach The Cork.",
+    "tag": "P.page-subtitle"
+   },
+   {
+    "w": "i",
+    "ctx": "W tytule wiadomości wpisz stanowisko i swoje imię i nazwisko, np. ",
+    "tag": "P.how-note"
+   }
+  ],
+  "exn": []
+ },
+ "375/pl/kontakt/": {
+  "words": 145,
+  "lines": 6,
+  "orphans": 0,
+  "numunit": 0,
+  "ex": [],
+  "exn": []
+ },
+ "375/pl/regulamin/": {
+  "words": 509,
+  "lines": 71,
+  "orphans": 8,
+  "numunit": 0,
+  "ex": [
+   {
+    "w": "i",
+    "ctx": "Koszt rezerwacji wynosi 100 zł od osoby i jest do wykorzystania przy st",
+    "tag": "LI."
+   },
+   {
+    "w": "u",
+    "ctx": "by i jest do wykorzystania przy stoliku u obsługi. W piątki wstęp dla osób ",
+    "tag": "LI."
+   },
+   {
+    "w": "z",
+    "ctx": "liku u obsługi. W piątki wstęp dla osób z rezerwacją jest bezpłatny, w soboty",
+    "tag": "LI."
+   },
+   {
+    "w": "i",
+    "ctx": " w celu zapewnienia bezpieczeństwa osób i mienia. Zasady przetwarzania nag",
+    "tag": "LI."
+   },
+   {
+    "w": "w",
+    "ctx": "eżeń. Organizator rozpatruje reklamacje w terminie 14 dni od dnia ich otrzy",
+    "tag": "P."
+   },
+   {
+    "w": "w",
+    "ctx": "osowanie mają przepisy prawa polskiego, w szczególności Kodeksu cywilnego.",
+    "tag": "LI."
+   },
+   {
+    "w": "w",
+    "ctx": "wo do zmiany Regulaminu. Zmiany wchodzą w życie z chwilą publikacji na s",
+    "tag": "LI."
+   },
+   {
+    "w": "z",
+    "ctx": "Konsument może skorzystać z pozasądowych sposobów rozpatrywania r",
+    "tag": "LI."
+   }
+  ],
+  "exn": []
+ },
+ "375/pl/polityka-prywatnosci/": {
+  "words": 596,
+  "lines": 76,
+  "orphans": 5,
+  "numunit": 0,
+  "ex": [
+   {
+    "w": "i",
+    "ctx": "wej i firmy) - w celu obsługi zapytania i przygotowania oferty. Podstawa: art. 6",
+    "tag": "LI."
+   },
+   {
+    "w": "w",
+    "ctx": "Rozliczenia i obowiązki podatkowe - w zakresie wymaganym przepisami. Po",
+    "tag": "LI."
+   },
+   {
+    "w": "a",
+    "ctx": " niezbędny stan formularzy i nawigacji, a po wyrażeniu zgody identyfi",
+    "tag": "LI."
+   },
+   {
+    "w": "a",
+    "ctx": "tawa prawna: zgoda - art. 6 ust. 1 lit. a RODO; anonimowe statystyki bez",
+    "tag": "LI."
+   },
+   {
+    "w": "i",
+    "ctx": "dostawcom usług IT, księgowych i prawnych;",
+    "tag": "LI."
+   }
+  ],
+  "exn": []
+ },
+ "375/pl/polityka-cookies/": {
+  "words": 412,
+  "lines": 54,
+  "orphans": 9,
+  "numunit": 0,
+  "ex": [
+   {
+    "w": "i",
+    "ctx": "dnej do obsługi komunikatów, formularzy i nawigacji.",
+    "tag": "P.page-subtitle"
+   },
+   {
+    "w": "w",
+    "ctx": "Strona korzysta z pamięci przeglądarki w dwóch celach: aby zapamiętać T",
+    "tag": "P."
+   },
+   {
+    "w": "i",
+    "ctx": " zgody - do działania analityki PostHog i Google Analytics opisanej poniż",
+    "tag": "P."
+   },
+   {
+    "w": "i",
+    "ctx": " Europejskiej), które mierzy odwiedziny i konwersje (np. kliknięcia rezerwac",
+    "tag": "P."
+   },
+   {
+    "w": "w",
+    "ctx": "Bez zgody analityka działa wyłącznie w trybie anonimowym: zdarzenia ni",
+    "tag": "P."
+   },
+   {
+    "w": "i",
+    "ctx": "o 365 dni) - identyfikator przeglądarki i sesji oraz ustawienia analityk",
+    "tag": "LI."
+   },
+   {
+    "w": "i",
+    "ctx": " wycofaniu zgody przestajemy je wysyłać i usuwamy te cookies.",
+    "tag": "LI."
+   },
+   {
+    "w": "w",
+    "ctx": "Pamięcią strony można zarządzać w ustawieniach przeglądarki. Ograniczen",
+    "tag": "LI."
+   },
+   {
+    "w": "o",
+    "ctx": "https://posthog.com/privacy. Informacje o prywatności Google Analytics: https:",
+    "tag": "P."
+   }
+  ],
+  "exn": []
+ },
+ "375/pl/blog/rezerwacja-stolika-koszt-wroclaw/": {
+  "words": 1130,
+  "lines": 187,
+  "orphans": 19,
+  "numunit": 0,
+  "ex": [
+   {
+    "w": "i",
+    "ctx": "acja stolika we Wrocławiu: ile kosztuje i co sprawdzić przed płatnośc",
+    "tag": "H1.display ba-title"
+   },
+   {
+    "w": "i",
+    "ctx": "wymaga przedpłaty, zwłaszcza w weekendy i przy większych grupach. Zawsz",
+    "tag": "P."
+   },
+   {
+    "w": "o",
+    "ctx": "cia mają inne skutki prawne. Poproś też o potwierdzenie płatności i rezerwacji n",
+    "tag": "P."
+   },
+   {
+    "w": "z",
+    "ctx": "ezerwacji we Wrocławiu, warto korzystać z platform rezerwacyjnych z przejrz",
+    "tag": "LI."
+   },
+   {
+    "w": "z",
+    "ctx": "rto korzystać z platform rezerwacyjnych z przejrzystymi warunkami, aby chronić s",
+    "tag": "LI."
+   },
+   {
+    "w": "w",
+    "ctx": "Zaplanuj wieczór w SiSiPołącz rezerwację stolika z kok",
+    "tag": "DIV.ba-body is-in"
+   },
+   {
+    "w": "z",
+    "ctx": "wieczór w SiSiPołącz rezerwację stolika z koktajlami, muzyką na żywo i występe",
+    "tag": "DIV.ba-body is-in"
+   },
+   {
+    "w": "i",
+    "ctx": "ję stolika z koktajlami, muzyką na żywo i występem DJ-a w centrum Wrocławia",
+    "tag": "DIV.ba-body is-in"
+   },
+   {
+    "w": "w",
+    "ctx": "ściej podczas rozmowy telefonicznej lub w formularzu online, jak wyjaśnia ",
+    "tag": "P."
+   },
+   {
+    "w": "i",
+    "ctx": "kartą, nigdy gotówką bez potwierdzenia, i zachowaj dowód wpłaty na wypadek ",
+    "tag": "LI."
+   },
+   {
+    "w": "z",
+    "ctx": "tą kulinarną przygotowaną we współpracy z restauracją The Cork. Zamiast zgadyw",
+    "tag": "P."
+   },
+   {
+    "w": "o",
+    "ctx": "ń rezerwacji opierają się na przepisach o zadatku i zaliczce z Kodeksu cyw",
+    "tag": "P."
+   }
+  ],
+  "exn": []
+ },
+ "768/pl/": {
+  "words": 273,
+  "lines": 10,
+  "orphans": 1,
+  "numunit": 0,
+  "ex": [
+   {
+    "w": "a",
+    "ctx": "Później za konsoletę wchodzą DJ-e, a wieczór przenosi się na parkiet.",
+    "tag": "P."
+   }
+  ],
+  "exn": []
+ },
+ "768/pl/rezerwacje/": {
+  "words": 290,
+  "lines": 17,
+  "orphans": 1,
+  "numunit": 1,
+  "ex": [
+   {
+    "w": "W",
+    "ctx": "należy odebrać w godzinach 22:00-23:00. W przypadku spóźnienia powyżej 30 mi",
+    "tag": "LI."
+   }
+  ],
+  "exn": [
+   {
+    "w": "40|zł",
+    "ctx": "rwacji doliczany jest wstęp w wysokości 40 zł od osoby.",
+    "tag": "LI."
+   }
+  ]
+ },
+ "768/pl/menu/": {
+  "words": 1789,
+  "lines": 25,
+  "orphans": 1,
+  "numunit": 0,
+  "ex": [
+   {
+    "w": "z",
+    "ctx": "Chcesz zarezerwować stolik i zamówić z wyprzedzeniem? Skontaktuj się z nami.",
+    "tag": "P."
+   }
+  ],
+  "exn": []
+ },
+ "768/pl/imprezy-prywatne/": {
+  "words": 238,
+  "lines": 11,
+  "orphans": 2,
+  "numunit": 0,
+  "ex": [
+   {
+    "w": "w",
+    "ctx": "rywatna kolacja lub wieczorne przyjęcie w wybranej przestrzeni.",
+    "tag": "P.private-occasion-body"
+   },
+   {
+    "w": "z",
+    "ctx": "Wydarzenia dla zaproszonych gości z cateringiem, barem i oprawą muzyczną.",
+    "tag": "P.private-occasion-body"
+   }
+  ],
+  "exn": []
+ },
+ "768/pl/eventy-firmowe/": {
+  "words": 848,
+  "lines": 52,
+  "orphans": 10,
+  "numunit": 0,
+  "ex": [
+   {
+    "w": "i",
+    "ctx": "ntacji po kolacje, premiery, networking i wieczorne wydarzenia firmowe. Połą",
+    "tag": "P.b2b-hero-body"
+   },
+   {
+    "w": "i",
+    "ctx": "Gotowe zaplecze do prezentacji i paneli.",
+    "tag": "P.b2b-why-body"
+   },
+   {
+    "w": "z",
+    "ctx": "Bezpośredni kontakt z zespołem",
+    "tag": "H3.b2b-why-title"
+   },
+   {
+    "w": "i",
+    "ctx": "Pokazy produktów, podsumowania i wystąpienia firmowe.",
+    "tag": "P.b2b-format-body"
+   },
+   {
+    "w": "z",
+    "ctx": "Wieczory integracyjne i świętowanie z energią klubu SiSi.",
+    "tag": "P.b2b-format-body"
+   },
+   {
+    "w": "w",
+    "ctx": "Możliwość wydzielenia osobnych stref w przestrzeni, tak aby różne części wyd",
+    "tag": "P.b2b-included-body"
+   },
+   {
+    "w": "i",
+    "ctx": "Zasiadane kolacje, prezentacje i spotkania w ciągu dnia",
+    "tag": "LI."
+   },
+   {
+    "w": "i",
+    "ctx": "Wieczorne programy, networking i świętowanie",
+    "tag": "LI."
+   },
+   {
+    "w": "w",
+    "ctx": "płynnie połączyć z wieczornym programem w SiSi.",
+    "tag": "P."
+   },
+   {
+    "w": "a",
+    "ctx": "enia. Opisz swoje potrzeby w zapytaniu, a zespół potwierdzi dostępne opcj",
+    "tag": "P."
+   }
+  ],
+  "exn": []
+ },
+ "768/pl/kariera/": {
+  "words": 182,
+  "lines": 4,
+  "orphans": 0,
+  "numunit": 0,
+  "ex": [],
+  "exn": []
+ },
+ "768/pl/kontakt/": {
+  "words": 145,
+  "lines": 6,
+  "orphans": 0,
+  "numunit": 0,
+  "ex": [],
+  "exn": []
+ },
+ "768/pl/regulamin/": {
+  "words": 509,
+  "lines": 27,
+  "orphans": 6,
+  "numunit": 0,
+  "ex": [
+   {
+    "w": "i",
+    "ctx": "iSi Wrocław - wstęp, rezerwacje, zasady i reklamacje.",
+    "tag": "P.page-subtitle"
+   },
+   {
+    "w": "w",
+    "ctx": "wo odmowy wstępu bez podania przyczyny, w szczególności osobom nietrzeźwym, pod ",
+    "tag": "LI."
+   },
+   {
+    "w": "W",
+    "ctx": "o wykorzystania przy stoliku u obsługi. W piątki wstęp dla osób z rezerwa",
+    "tag": "LI."
+   },
+   {
+    "w": "w",
+    "ctx": "ezpłatny, w soboty doliczany jest wstęp w wysokości 30 zł od osoby.",
+    "tag": "LI."
+   },
+   {
+    "w": "z",
+    "ctx": "iany Regulaminu. Zmiany wchodzą w życie z chwilą publikacji na stronie.",
+    "tag": "LI."
+   },
+   {
+    "w": "i",
+    "ctx": "owych sposobów rozpatrywania reklamacji i dochodzenia roszczeń. Informacje o d",
+    "tag": "LI."
+   }
+  ],
+  "exn": []
+ },
+ "768/pl/polityka-prywatnosci/": {
+  "words": 596,
+  "lines": 24,
+  "orphans": 4,
+  "numunit": 0,
+  "ex": [
+   {
+    "w": "i",
+    "ctx": "il, dane rezerwacji) - w celu przyjęcia i obsługi rezerwacji. Podstawa: ar",
+    "tag": "LI."
+   },
+   {
+    "w": "i",
+    "ctx": "wej i firmy) - w celu obsługi zapytania i przygotowania oferty. Podstawa: art. 6",
+    "tag": "LI."
+   },
+   {
+    "w": "i",
+    "ctx": " w celu zapewnienia bezpieczeństwa osób i mienia. Podstawa: art. 6 ust. 1 ",
+    "tag": "LI."
+   },
+   {
+    "w": "i",
+    "ctx": " Google Analytics (statystyki odwiedzin i nagrania sesji; podstawa prawna: ",
+    "tag": "LI."
+   }
+  ],
+  "exn": []
+ },
+ "768/pl/polityka-cookies/": {
+  "words": 412,
+  "lines": 21,
+  "orphans": 2,
+  "numunit": 0,
+  "ex": [
+   {
+    "w": "z",
+    "ctx": "ie anonimowym: zdarzenia nie są łączone z żadnym identyfikatorem zapisany",
+    "tag": "P."
+   },
+   {
+    "w": "o",
+    "ctx": "e są w Polityce prywatności. Informacje o prywatności PostHog: https://posthog",
+    "tag": "P."
+   }
+  ],
+  "exn": []
+ },
+ "768/pl/blog/rezerwacja-stolika-koszt-wroclaw/": {
+  "words": 1130,
+  "lines": 64,
+  "orphans": 6,
+  "numunit": 0,
+  "ex": [
+   {
+    "w": "o",
+    "ctx": "cia mają inne skutki prawne. Poproś też o potwierdzenie płatności i rezerwacji n",
+    "tag": "P."
+   },
+   {
+    "w": "w",
+    "ctx": "A wymaga potwierdzenia SMS oraz zadatku w wysokości ",
+    "tag": "P."
+   },
+   {
+    "w": "i",
+    "ctx": "ątki i soboty, przy stolikach dla ośmiu i więcej osób oraz podczas wydarz",
+    "tag": "P."
+   },
+   {
+    "w": "w",
+    "ctx": " w odniesieniu do artykułu 394 Kodeksu ",
+    "tag": "P."
+   },
+   {
+    "w": "z",
+    "ctx": "wia, który łączy muzykę na żywo i DJ-ów z ofertą kulinarną przygotowaną w",
+    "tag": "P."
+   },
+   {
+    "w": "w",
+    "ctx": "u, a każdy lokal ustala własną praktykę w regulaminie rezerwacji. Najbezpieczn",
+    "tag": "P."
+   }
+  ],
+  "exn": []
+ },
+ "1440/pl/": {
+  "words": 279,
+  "lines": 8,
+  "orphans": 1,
+  "numunit": 0,
+  "ex": [
+   {
+    "w": "i",
+    "ctx": "my się przy barze. Jest czas na rozmowę i pierwszy toast.",
+    "tag": "P."
+   }
+  ],
+  "exn": []
+ },
+ "1440/pl/rezerwacje/": {
+  "words": 296,
+  "lines": 19,
+  "orphans": 3,
+  "numunit": 0,
+  "ex": [
+   {
+    "w": "w",
+    "ctx": "boty do rezerwacji doliczany jest wstęp w wysokości 40 zł od osoby.",
+    "tag": "LI."
+   },
+   {
+    "w": "z",
+    "ctx": "u bez podania przyczyny, również osobom z rezerwacją (wpłacona kwota zostaje ",
+    "tag": "LI."
+   },
+   {
+    "w": "w",
+    "ctx": "Dostępne są również specjalne pakiety w promocyjnych cenach.",
+    "tag": "LI."
+   }
+  ],
+  "exn": []
+ },
+ "1440/pl/menu/": {
+  "words": 1795,
+  "lines": 19,
+  "orphans": 1,
+  "numunit": 0,
+  "ex": [
+   {
+    "w": "z",
+    "ctx": "Chcesz zarezerwować stolik i zamówić z wyprzedzeniem? Skontaktuj się z nami.",
+    "tag": "P."
+   }
+  ],
+  "exn": []
+ },
+ "1440/pl/imprezy-prywatne/": {
+  "words": 244,
+  "lines": 12,
+  "orphans": 1,
+  "numunit": 0,
+  "ex": [
+   {
+    "w": "w",
+    "ctx": "Imprezy prywatne w sercu Wrocławia",
+    "tag": "H1.display private-hero-title"
+   }
+  ],
+  "exn": []
+ },
+ "1440/pl/eventy-firmowe/": {
+  "words": 854,
+  "lines": 44,
+  "orphans": 10,
+  "numunit": 0,
+  "ex": [
+   {
+    "w": "w",
+    "ctx": "Konferencja w dzień, klub wieczorem",
+    "tag": "H1.display b2b-hero-title"
+   },
+   {
+    "w": "i",
+    "ctx": "ntacji po kolacje, premiery, networking i wieczorne wydarzenia firmowe. Połą",
+    "tag": "P.b2b-hero-body"
+   },
+   {
+    "w": "w",
+    "ctx": "Część oficjalna i wieczór w jednym miejscu",
+    "tag": "H3.b2b-why-title"
+   },
+   {
+    "w": "w",
+    "ctx": "ferencja lub kolacja płynnie przechodzą w wieczorny program.",
+    "tag": "P.b2b-why-body"
+   },
+   {
+    "w": "z",
+    "ctx": "Bezpośredni kontakt z zespołem",
+    "tag": "H3.b2b-why-title"
+   },
+   {
+    "w": "i",
+    "ctx": "Pokazy produktów, podsumowania i wystąpienia firmowe.",
+    "tag": "P.b2b-format-body"
+   },
+   {
+    "w": "z",
+    "ctx": "Premiera produktu lub marki - z barem, cateringiem i muzyką na ",
+    "tag": "P.b2b-format-body"
+   },
+   {
+    "w": "w",
+    "ctx": "Spotkania branżowe i wieczory w swobodnej atmosferze.",
+    "tag": "P.b2b-format-body"
+   },
+   {
+    "w": "i",
+    "ctx": "- naturalna sceneria na część oficjalną i wieczór.",
+    "tag": "P.b2b-space-body"
+   },
+   {
+    "w": "i",
+    "ctx": "je firmowe, networking, imprezy firmowe i zamknięte eventy marek.",
+    "tag": "P."
+   }
+  ],
+  "exn": []
+ },
+ "1440/pl/kariera/": {
+  "words": 188,
+  "lines": 4,
+  "orphans": 1,
+  "numunit": 0,
+  "ex": [
+   {
+    "w": "w",
+    "ctx": "Praca w piątki i soboty, możliwe zmiany w tygodniu (godziny The Cork)",
+    "tag": "LI."
+   }
+  ],
+  "exn": []
+ },
+ "1440/pl/kontakt/": {
+  "words": 151,
+  "lines": 5,
+  "orphans": 0,
+  "numunit": 0,
+  "ex": [],
+  "exn": []
+ },
+ "1440/pl/regulamin/": {
+  "words": 515,
+  "lines": 26,
+  "orphans": 3,
+  "numunit": 0,
+  "ex": [
+   {
+    "w": "i",
+    "ctx": "iSi Wrocław - wstęp, rezerwacje, zasady i reklamacje.",
+    "tag": "P.page-subtitle"
+   },
+   {
+    "w": "w",
+    "ctx": "ym w związku z rezerwacjami, opisane są w Polityce prywatności.",
+    "tag": "P."
+   },
+   {
+    "w": "i",
+    "ctx": "owych sposobów rozpatrywania reklamacji i dochodzenia roszczeń. Informacje o d",
+    "tag": "LI."
+   }
+  ],
+  "exn": []
+ },
+ "1440/pl/polityka-prywatnosci/": {
+  "words": 602,
+  "lines": 24,
+  "orphans": 4,
+  "numunit": 0,
+  "ex": [
+   {
+    "w": "i",
+    "ctx": "il, dane rezerwacji) - w celu przyjęcia i obsługi rezerwacji. Podstawa: ar",
+    "tag": "LI."
+   },
+   {
+    "w": "i",
+    "ctx": " w celu zapewnienia bezpieczeństwa osób i mienia. Podstawa: art. 6 ust. 1 ",
+    "tag": "LI."
+   },
+   {
+    "w": "w",
+    "ctx": "a RODO; anonimowe statystyki bez zapisu w przeglądarce: prawnie uzasadniony inte",
+    "tag": "LI."
+   },
+   {
+    "w": "o",
+    "ctx": "dokonania rezerwacji, obsługi zapytania o event, uzyskania odpowiedzi lub",
+    "tag": "P."
+   }
+  ],
+  "exn": []
+ },
+ "1440/pl/polityka-cookies/": {
+  "words": 418,
+  "lines": 21,
+  "orphans": 3,
+  "numunit": 0,
+  "ex": [
+   {
+    "w": "i",
+    "ctx": "j. Stan niezbędny do obsługi formularzy i nawigacji jest używany podczas int",
+    "tag": "P."
+   },
+   {
+    "w": "i",
+    "ctx": " do 2 lat) - identyfikator przeglądarki i stan sesji, używane do statys",
+    "tag": "LI."
+   },
+   {
+    "w": "o",
+    "ctx": "e są w Polityce prywatności. Informacje o prywatności PostHog: https://posthog",
+    "tag": "P."
+   }
+  ],
+  "exn": []
+ },
+ "1440/pl/blog/rezerwacja-stolika-koszt-wroclaw/": {
+  "words": 1136,
+  "lines": 56,
+  "orphans": 7,
+  "numunit": 0,
+  "ex": [
+   {
+    "w": "o",
+    "ctx": "cia mają inne skutki prawne. Poproś też o potwierdzenie płatności i rezerwacji n",
+    "tag": "P."
+   },
+   {
+    "w": "a",
+    "ctx": "lka modeli opłat za rezerwację stolika, a wybór zależy głównie od dnia t",
+    "tag": "P."
+   },
+   {
+    "w": "w",
+    "ctx": "A wymaga potwierdzenia SMS oraz zadatku w wysokości ",
+    "tag": "P."
+   },
+   {
+    "w": "w",
+    "ctx": "ez SMS lub e-mail. Formularz online sam w sobie nie gwarantuje stolika, ",
+    "tag": "LI."
+   },
+   {
+    "w": "w",
+    "ctx": " lokalu w kontaktach przed wizytą, żeby w razie spóźnienia nie szukać go",
+    "tag": "EM."
+   },
+   {
+    "w": "z",
+    "ctx": "wia, który łączy muzykę na żywo i DJ-ów z ofertą kulinarną przygotowaną w",
+    "tag": "P."
+   },
+   {
+    "w": "i",
+    "ctx": "ji opierają się na przepisach o zadatku i zaliczce z Kodeksu cywilnego, opi",
+    "tag": "P."
+   }
+  ],
+  "exn": []
+ }
+}

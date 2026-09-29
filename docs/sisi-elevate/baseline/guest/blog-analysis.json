@@ -1,0 +1,89 @@
+{
+ "hub": {
+  "cards": 68,
+  "links": 31,
+  "navBlog": true,
+  "footerBlog": [
+   "Blog"
+  ],
+  "h1": "BLOG"
+ },
+ "article": {
+  "title": "Prawie 50 gatunków agawy: co odróżnia mezcal od tequili | SiSi Wrocław",
+  "hreflang": [
+   "pl https://www.sisiwroclaw.pl/pl/blog/mezcal-vs-tequila/",
+   "x-default https://www.sisiwroclaw.pl/pl/blog/mezcal-vs-tequila/"
+  ],
+  "canonical": "https://www.sisiwroclaw.pl/pl/blog/mezcal-vs-tequila/",
+  "sw": [
+   "/pl/blog/",
+   "/en/blog/",
+   "/de/blog/",
+   "/it/blog/",
+   "/cs/blog/"
+  ],
+  "ctaLinks": [
+   "https://www.sisiwroclaw.pl/pl/rezerwacje",
+   "/pl/rezerwacje/"
+  ],
+  "extImgs": [
+   "https://csuxjmfbwmkxiegfpljm.supabase.co/storage/v1/object/public/blog-images/organization-52814/1788377514392_Tequila-jako-podkategoria-mezcalu.jpeg",
+   "https://csuxjmfbwmkxiegfpljm.supabase.co/storage/v1/object/public/blog-images/organization-52814/1788377501836_Degustacja-mezcalu-i-tequili-przy-stole.jpeg",
+   "https://csuxjmfbwmkxiegfpljm.supabase.co/storage/v1/object/public/blog-images/organization-52814/1788265204433_sisiwroclaw.jpg"
+  ],
+  "imgs": 4
+ },
+ "articleBlockedOnScroll": [
+  "https://csuxjmfbwmkxiegfpljm.supabase.co/storage/v1/object/public/blog-images/organization-52814/1788377514392_Tequila-jako-podkategoria-mezcalu.jpeg",
+  "https://csuxjmfbwmkxiegfpljm.supabase.co/storage/v1/object/public/blog-images/organization-52814/1788377501836_Degustacja-mezcalu-i-tequili-przy-stole.jpeg",
+  "https://csuxjmfbwmkxiegfpljm.supabase.co/storage/v1/object/public/blog-images/organization-52814/1788265204433_sisiwroclaw.jpg"
+ ],
+ "switch_en": {
+  "url": "/en/blog/",
+  "h1": "BLOG",
+  "robots": "noindex, nofollow",
+  "cards": 0,
+  "text": "FROM THE BLOG\nBLOG\n\nGuides to Wrocław nightlife, ideas for the evening and notes straight from the club.\n\nThe first posts are coming soon."
+ },
+ "switch_de": {
+  "url": "/de/blog/",
+  "h1": "BLOG",
+  "robots": "noindex, nofollow",
+  "cards": 0,
+  "text": "AUS DEM BLOG\nBLOG\n\nGuides zum Breslauer Nachtleben, Ideen für den Abend und Notizen direkt aus dem Club.\n\nDie ersten Beiträge erscheinen bald."
+ },
+ "switch_it": {
+  "url": "/it/blog/",
+  "h1": "BLOG",
+  "robots": "noindex, nofollow",
+  "cards": 0,
+  "text": "DAL BLOG\nBLOG\n\nGuide alla vita notturna di Breslavia, idee per la serata e appunti direttamente dal club.\n\nI primi articoli arriveranno presto."
+ },
+ "switch_cs": {
+  "url": "/cs/blog/",
+  "h1": "BLOG",
+  "robots": "noindex, nofollow",
+  "cards": 0,
+  "text": "Z BLOGU\nBLOG\n\nPrůvodce nočním životem ve Vratislavi, tipy na večer a poznámky přímo z klubu.\n\nPrvní příspěvky se objeví brzy."
+ },
+ "hub_en": {
+  "h1": "BLOG",
+  "main": "FROM THE BLOG\nBLOG\n\nGuides to Wrocław nightlife, ideas for the evening and notes straight from the club.\n\nThe first posts are coming soon.",
+  "hreflang": []
+ },
+ "hub_de": {
+  "h1": "BLOG",
+  "main": "AUS DEM BLOG\nBLOG\n\nGuides zum Breslauer Nachtleben, Ideen für den Abend und Notizen direkt aus dem Club.\n\nDie ersten Beiträge erscheinen bald.",
+  "hreflang": []
+ },
+ "hub_it": {
+  "h1": "BLOG",
+  "main": "DAL BLOG\nBLOG\n\nGuide alla vita notturna di Breslavia, idee per la serata e appunti direttamente dal club.\n\nI primi articoli arriveranno presto.",
+  "hreflang": []
+ },
+ "hub_cs": {
+  "h1": "BLOG",
+  "main": "Z BLOGU\nBLOG\n\nPrůvodce nočním životem ve Vratislavi, tipy na večer a poznámky přímo z klubu.\n\nPrvní příspěvky se objeví brzy.",
+  "hreflang": []
+ }
+}

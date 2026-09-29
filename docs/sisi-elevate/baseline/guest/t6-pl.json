@@ -1,0 +1,326 @@
+{
+ "locale": "pl",
+ "path": {
+  "toCorporatePage": {
+   "taps": 2,
+   "swipes": 0,
+   "seconds": 5.7
+  },
+  "toForm": {
+   "taps": 3,
+   "swipes": 0,
+   "seconds": 7.9
+  },
+  "afterEmptySubmit": {
+   "taps": 4,
+   "swipes": 3,
+   "seconds": 13.2
+  }
+ },
+ "heroCtaTapped": true,
+ "fields": {
+  "action": null,
+  "method": "post",
+  "name": "b2b-enquiry",
+  "netlify": "true",
+  "honeypot": "bot-field",
+  "novalidate": true,
+  "hint": "Pola oznaczone * są wymagane.",
+  "list": [
+   {
+    "name": "form-name",
+    "type": "input:hidden",
+    "required": false,
+    "label": null,
+    "hidden": true,
+    "value": "b2b-enquiry"
+   },
+   {
+    "name": "locale",
+    "type": "input:hidden",
+    "required": false,
+    "label": null,
+    "hidden": true,
+    "value": "pl"
+   },
+   {
+    "name": "page",
+    "type": "input:hidden",
+    "required": false,
+    "label": null,
+    "hidden": true,
+    "value": "/pl/eventy-firmowe/"
+   },
+   {
+    "name": "utm",
+    "type": "input:hidden",
+    "required": false,
+    "label": null,
+    "hidden": true,
+    "value": ""
+   },
+   {
+    "name": "bot-field",
+    "type": "input:text",
+    "required": false,
+    "label": null,
+    "autocomplete": "off",
+    "hidden": true
+   },
+   {
+    "name": "company",
+    "type": "input:text",
+    "required": true,
+    "label": "Nazwa firmy *",
+    "autocomplete": "organization"
+   },
+   {
+    "name": "contact_person",
+    "type": "input:text",
+    "required": true,
+    "label": "Osoba kontaktowa *",
+    "autocomplete": "name"
+   },
+   {
+    "name": "email",
+    "type": "input:email",
+    "required": true,
+    "label": "E-mail *",
+    "autocomplete": "email"
+   },
+   {
+    "name": "phone",
+    "type": "input:tel",
+    "required": false,
+    "label": "Telefon (opcjonalnie)",
+    "autocomplete": "tel"
+   },
+   {
+    "name": "event_type",
+    "type": "select:select-one",
+    "required": true,
+    "label": "Rodzaj wydarzenia *"
+   },
+   {
+    "name": "guests",
+    "type": "input:number",
+    "required": true,
+    "label": "Szacowana liczba gości *"
+   },
+   {
+    "name": "preferred_date",
+    "type": "input:text",
+    "required": true,
+    "label": "Preferowany termin *",
+    "placeholder": "Wybierz datę",
+    "autocomplete": "off"
+   },
+   {
+    "name": "preferred_date_iso",
+    "type": "input:hidden",
+    "required": false,
+    "label": null,
+    "hidden": true,
+    "value": ""
+   },
+   {
+    "name": "date_flexible",
+    "type": "input:checkbox",
+    "required": false,
+    "label": "Termin jest elastyczny"
+   },
+   {
+    "name": "space",
+    "type": "select:select-one",
+    "required": false,
+    "label": "Preferowana przestrzeń (opcjonalnie)"
+   },
+   {
+    "name": "duration",
+    "type": "input:text",
+    "required": false,
+    "label": "Czas trwania wydarzenia (opcjonalnie)",
+    "placeholder": "np. 6 godzin"
+   },
+   {
+    "name": "message",
+    "type": "textarea:textarea",
+    "required": true,
+    "label": "Wiadomość *",
+    "placeholder": "Opisz krótko swoje wydarzenie."
+   },
+   {
+    "name": "consent",
+    "type": "input:checkbox",
+    "required": true,
+    "label": "Wyrażam zgodę na kontakt w sprawie mojego zapytania i potwierdzam zapoznanie się z Polityką prywatności."
+   }
+  ],
+  "consentLabel": "Wyrażam zgodę na kontakt w sprawie mojego zapytania i potwierdzam zapoznanie się z Polityką prywatności.",
+  "consentLink": "/pl/polityka-prywatnosci/",
+  "submitText": "WYŚLIJ ZAPYTANIE",
+  "successText": "Dziękujemy za zapytanie.Odezwiemy się z propozycją. W pilnej sprawie zadzwoń lub napisz.",
+  "errorText": "Nie udało się wysłać formularza.Spróbuj ponownie za chwilę lub skontaktuj się z nami bezpośrednio: +48 514 032 930 · events@r32.com.pl"
+ },
+ "errorsOnEmptySubmit": {
+  "summary": "Popraw zaznaczone pola, aby wysłać formularz.",
+  "summaryRole": "alert",
+  "fieldErrors": [
+   "company: To pole jest wymagane.",
+   "contact_person: To pole jest wymagane.",
+   "email: To pole jest wymagane.",
+   "event_type: To pole jest wymagane.",
+   "guests: To pole jest wymagane.",
+   "preferred_date: To pole jest wymagane.",
+   "message: To pole jest wymagane.",
+   "consent: Zgoda jest niezbędna, aby wysłać zapytanie."
+  ],
+  "invalid": [
+   "company",
+   "contact_person",
+   "email",
+   "event_type",
+   "guests",
+   "preferred_date",
+   "message",
+   "consent"
+  ],
+  "focused": "company"
+ },
+ "nonGetRequestsDuringEmptySubmit": [],
+ "fill": {
+  "taps": 10,
+  "swipes": 4,
+  "seconds": 9.6,
+  "eventTypeOptions": [
+   "Konferencja",
+   "Panel dyskusyjny",
+   "Prezentacja",
+   "Premiera produktu",
+   "Kolacja firmowa",
+   "Networking",
+   "Impreza firmowa",
+   "Zamknięty event marki",
+   "Inne"
+  ],
+  "optTapped": true,
+  "dayTapped": true,
+  "formData": {
+   "form-name": "b2b-enquiry",
+   "locale": "pl",
+   "page": "/pl/eventy-firmowe/",
+   "utm": "",
+   "bot-field": "",
+   "company": "TEST Firma Sp. z o.o. (nie wysylac)",
+   "contact_person": "Jan Testowy",
+   "email": "test@example.invalid",
+   "phone": "",
+   "event_type": "Konferencja",
+   "guests": "20",
+   "preferred_date": "29 wrz 2026",
+   "preferred_date_iso": "2026-09-29",
+   "space": "",
+   "duration": "",
+   "message": "TEST - to jest formularz testowy, prosze nie odpowiadac.",
+   "consent": "yes"
+  },
+  "submitted": false
+ },
+ "totalToFilledForm": {
+  "taps": 14,
+  "swipes": 7,
+  "seconds": 22.8
+ },
+ "nonGetRequestsTotal": [],
+ "steps": [
+  {
+   "step": "goto /pl/",
+   "t": 2.754,
+   "dt": 2.75
+  },
+  {
+   "step": "tap hamburger",
+   "t": 2.989,
+   "taps": 1,
+   "swipes": 0
+  },
+  {
+   "step": "tap menu: corporate",
+   "t": 3.529,
+   "taps": 2,
+   "swipes": 0
+  },
+  {
+   "step": "tap hero CTA -> enquiry",
+   "t": 6.709,
+   "taps": 3,
+   "swipes": 0
+  },
+  {
+   "step": "tap submit (empty)",
+   "t": 11.975,
+   "taps": 4,
+   "swipes": 3
+  },
+  {
+   "step": "tap company",
+   "t": 13.242,
+   "taps": 5,
+   "swipes": 3
+  },
+  {
+   "step": "tap person",
+   "t": 13.891,
+   "taps": 6,
+   "swipes": 3
+  },
+  {
+   "step": "tap email (invalid first)",
+   "t": 15.339,
+   "taps": 7,
+   "swipes": 4
+  },
+  {
+   "step": "tap event type button",
+   "t": 15.909,
+   "taps": 8,
+   "swipes": 4
+  },
+  {
+   "step": "tap event type option",
+   "t": 16.348,
+   "taps": 9,
+   "swipes": 4
+  },
+  {
+   "step": "tap guests",
+   "t": 16.703,
+   "taps": 10,
+   "swipes": 4
+  },
+  {
+   "step": "tap date input (opens picker)",
+   "t": 18.001,
+   "taps": 11,
+   "swipes": 5
+  },
+  {
+   "step": "tap date: first free day",
+   "t": 19.665,
+   "taps": 12,
+   "swipes": 6
+  },
+  {
+   "step": "tap message",
+   "t": 21.279,
+   "taps": 13,
+   "swipes": 7
+  },
+  {
+   "step": "tap consent checkbox",
+   "t": 22.138,
+   "taps": 14,
+   "swipes": 7
+  }
+ ]
+}

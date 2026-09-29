@@ -1,0 +1,375 @@
+{
+ "A_pre": {
+  "ls": {},
+  "ss": {},
+  "ck": "",
+  "idb": [],
+  "bannerVisible": true,
+  "ctxCookies": []
+ },
+ "A_afterAccept": {
+  "ls": {
+   "sisi-analytics-consent-v2": "granted",
+   "ph_phc_xGAJevJfPpYyrixXMnpJb43nDCz2fVHpnJBbaoDyNgeu_posthog": "{\"$initialization_time\":\"2026-09-29T12:04:41.455Z\",\"$configured_session_timeout_ms\":1800000,\"$sdk_debug_extensions_init_method\":\"synchronous\",\"$sdk_debug_extensions_init_time_ms\":1,\"distinct_id\":\"01a0ed0d-8572-753f-9a4e-1608967d5b8b\",\"$device_id\":\"01a0ed0d-8572-753f-9a4e-1608967d5b8b\",\"$user_state\":\"anonymous\",\"$session_recording_remote_config\":{\"cache_timestamp\":1790683481473,\"enabled\":false,\"networkPayloadCapture\":{\"capturePerformance\":false},\"canvasRecording\":{},\"sampleRate\":null,\"minimumDurationMilliseconds\":null},\"$autocapture_disabled_server_side\":true,\"$heatmaps_enabled_server_side\":false,\"$web_vitals_enabled_server_side\":false,\"$exception_capture_enabled_server_side\":false,\"$dead_clicks_enabled_server_side\":false}"
+  },
+  "ss": {
+   "ph_phc_xGAJevJfPpYyrixXMnpJb43nDCz2fVHpnJBbaoDyNgeu_posthog": "{}"
+  },
+  "ck": "ph_phc_xGAJevJfPpYyrixXMnpJb43nDCz2fVHpnJBbaoDyNgeu_posthog=%7B%22%24device_id%22%3A%2201a0ed0d-8572-753f-9a4e-1608967d5b8b%22%2C%22distinct_id%22%3A%2201a0ed0d-8572-753f-9a4e-1608967d5b8b%22%2C%22%24user_state%22%3A%22anonymous%22%7D",
+  "idb": [],
+  "bannerVisible": false,
+  "ctxCookies": [
+   "ph_phc_xGAJevJfPpYyrixXMnpJb43nDCz2fVHpnJBbaoDyNgeu_posthog@localhost"
+  ]
+ },
+ "A_nextPage": {
+  "ls": {
+   "sisi-analytics-consent-v2": "granted",
+   "ph_phc_xGAJevJfPpYyrixXMnpJb43nDCz2fVHpnJBbaoDyNgeu_posthog": "{\"$initialization_time\":\"2026-09-29T12:04:54.513Z\",\"$configured_session_timeout_ms\":1800000,\"$sdk_debug_extensions_init_method\":\"synchronous\",\"$sdk_debug_extensions_init_time_ms\":0,\"distinct_id\":\"01a0ed0d-b872-7707-8625-7f190ebb6bc7\",\"$device_id\":\"01a0ed0d-b872-7707-8625-7f190ebb6bc7\",\"$user_state\":\"anonymous\",\"$session_recording_remote_config\":{\"cache_timestamp\":1790683494536,\"enabled\":false,\"networkPayloadCapture\":{\"capturePerformance\":false},\"canvasRecording\":{},\"sampleRate\":null,\"minimumDurationMilliseconds\":null},\"$autocapture_disabled_server_side\":true,\"$heatmaps_enabled_server_side\":false,\"$web_vitals_enabled_server_side\":false,\"$exception_capture_enabled_server_side\":false,\"$dead_clicks_enabled_server_side\":false}"
+  },
+  "ss": {
+   "ph_phc_xGAJevJfPpYyrixXMnpJb43nDCz2fVHpnJBbaoDyNgeu_posthog": "{}"
+  },
+  "ck": "ph_phc_xGAJevJfPpYyrixXMnpJb43nDCz2fVHpnJBbaoDyNgeu_posthog=%7B%22%24device_id%22%3A%2201a0ed0d-b872-7707-8625-7f190ebb6bc7%22%2C%22distinct_id%22%3A%2201a0ed0d-b872-7707-8625-7f190ebb6bc7%22%2C%22%24user_state%22%3A%22anonymous%22%7D",
+  "idb": [],
+  "bannerVisible": false,
+  "ctxCookies": [
+   "ph_phc_xGAJevJfPpYyrixXMnpJb43nDCz2fVHpnJBbaoDyNgeu_posthog@localhost"
+  ]
+ },
+ "withdrawControlFound": true,
+ "A_afterWithdraw": {
+  "ls": {
+   "sisi-analytics-consent-v2": "denied"
+  },
+  "ss": {
+   "ph_phc_xGAJevJfPpYyrixXMnpJb43nDCz2fVHpnJBbaoDyNgeu_posthog": "{}"
+  },
+  "ck": "",
+  "idb": [],
+  "bannerVisible": false,
+  "ctxCookies": []
+ },
+ "A_withdrawPageText": "nie w trybie anonimowym: zdarzenia nie są łączone z żadnym identyfikatorem zapisanym w Twojej przeglądarce i nic nie jest zapisywane w jej pamięci. Nagrywanie sesji jest wtedy wyłączone.\n\nZgodę można wycofać w każdej chwili przyciskiem na tej stronie; wycofanie zatrzymuje nagrywanie i usuwa identyfikatory analityczne z przeglądarki.\n\n3. JAKIE DANE PRZECHOWUJEMY\n\nPamięć niezbędna do działania strony:\n\nsisi-analytics-consent-v2 (localStorage) - przechowuje wartość \"granted\" albo \"denied\", czyli Twoją d",
+ "A_afterWithdrawReload": {
+  "ls": {
+   "sisi-analytics-consent-v2": "denied"
+  },
+  "ss": {
+   "ph_phc_xGAJevJfPpYyrixXMnpJb43nDCz2fVHpnJBbaoDyNgeu_posthog": "{}"
+  },
+  "ck": "",
+  "idb": [],
+  "bannerVisible": false,
+  "ctxCookies": []
+ },
+ "A_log": [
+  {
+   "t": 380,
+   "phase": "A0 navigate /pl/ (no decision yet)",
+   "url": "/assets/analytics.IH32HT3L.js",
+   "type": "script",
+   "method": "GET",
+   "via": "same-origin asset"
+  },
+  {
+   "t": 620,
+   "phase": "A0 navigate /pl/ (no decision yet)",
+   "url": "/assets/posthog.DS-pQbJJ.js",
+   "type": "script",
+   "method": "GET",
+   "via": "same-origin asset"
+  },
+  {
+   "t": 687,
+   "url": "/ph/array/phc_xGAJevJfPpYyrixXMnpJb43nDCz2fVHpnJBbaoDyNgeu/config?ver=1.407.2",
+   "type": "fetch",
+   "method": "GET",
+   "via": "first-party /ph proxy (would reach eu.i.posthog.com)",
+   "phase": "A0 navigate /pl/ (no decision yet)"
+  },
+  {
+   "t": 7188,
+   "url": "https://www.googletagmanager.com/gtag/js?id=G-ZNZDE3DTGP",
+   "type": "script",
+   "method": "GET",
+   "via": "third-party host, aborted"
+  },
+  {
+   "t": 7189,
+   "phase": "A1 click Accept",
+   "url": "/assets/posthog-recorder.CSmgeyQp.js",
+   "type": "script",
+   "method": "GET",
+   "via": "same-origin asset"
+  },
+  {
+   "t": 13427,
+   "phase": "A2 navigate /pl/menu/ (consent stored)",
+   "url": "/assets/analytics.IH32HT3L.js",
+   "type": "script",
+   "method": "GET",
+   "via": "same-origin asset"
+  },
+  {
+   "t": 13547,
+   "url": "https://www.googletagmanager.com/gtag/js?id=G-ZNZDE3DTGP",
+   "type": "script",
+   "method": "GET",
+   "via": "third-party host, aborted",
+   "phase": "A2 navigate /pl/menu/ (consent stored)"
+  },
+  {
+   "t": 13677,
+   "phase": "A2 navigate /pl/menu/ (consent stored)",
+   "url": "/assets/posthog.DS-pQbJJ.js",
+   "type": "script",
+   "method": "GET",
+   "via": "same-origin asset"
+  },
+  {
+   "t": 13745,
+   "url": "/ph/array/phc_xGAJevJfPpYyrixXMnpJb43nDCz2fVHpnJBbaoDyNgeu/config?ver=1.407.2",
+   "type": "fetch",
+   "method": "GET",
+   "via": "first-party /ph proxy (would reach eu.i.posthog.com)",
+   "body": ""
+  },
+  {
+   "t": 13747,
+   "phase": "A2 navigate /pl/menu/ (consent stored)",
+   "url": "/assets/posthog-recorder.CSmgeyQp.js",
+   "type": "script",
+   "method": "GET",
+   "via": "same-origin asset"
+  },
+  {
+   "t": 18829,
+   "phase": "A3 withdraw on cookie policy page",
+   "url": "/assets/analytics.IH32HT3L.js",
+   "type": "script",
+   "method": "GET",
+   "via": "same-origin asset"
+  },
+  {
+   "t": 18846,
+   "url": "https://www.googletagmanager.com/gtag/js?id=G-ZNZDE3DTGP",
+   "type": "script",
+   "method": "GET",
+   "via": "third-party host, aborted",
+   "phase": "A3 withdraw on cookie policy page"
+  },
+  {
+   "t": 18876,
+   "phase": "A3 withdraw on cookie policy page",
+   "url": "/assets/posthog.DS-pQbJJ.js",
+   "type": "script",
+   "method": "GET",
+   "via": "same-origin asset"
+  },
+  {
+   "t": 18964,
+   "url": "/ph/array/phc_xGAJevJfPpYyrixXMnpJb43nDCz2fVHpnJBbaoDyNgeu/config?ver=1.407.2",
+   "type": "fetch",
+   "method": "GET",
+   "via": "first-party /ph proxy (would reach eu.i.posthog.com)",
+   "body": ""
+  },
+  {
+   "t": 18968,
+   "phase": "A3 withdraw on cookie policy page",
+   "url": "/assets/posthog-recorder.CSmgeyQp.js",
+   "type": "script",
+   "method": "GET",
+   "via": "same-origin asset"
+  },
+  {
+   "t": 22175,
+   "url": "/ph/flags/?v=2&ver=1.407.2&compression=base64",
+   "type": "fetch",
+   "method": "POST",
+   "via": "first-party /ph proxy (would reach eu.i.posthog.com)",
+   "phase": "A3 withdraw on cookie policy page",
+   "events": "(undecoded) data=eyJ0b2tlbiI6InBoY194R0FKZXZKZlBwWXlyaXhYTW5wSmI0M25EQ3o"
+  },
+  {
+   "t": 26516,
+   "phase": "A4 navigate /pl/ after withdrawal",
+   "url": "/assets/analytics.IH32HT3L.js",
+   "type": "script",
+   "method": "GET",
+   "via": "same-origin asset"
+  },
+  {
+   "t": 26884,
+   "phase": "A4 navigate /pl/ after withdrawal",
+   "url": "/assets/posthog.DS-pQbJJ.js",
+   "type": "script",
+   "method": "GET",
+   "via": "same-origin asset"
+  },
+  {
+   "t": 27035,
+   "url": "/ph/array/phc_xGAJevJfPpYyrixXMnpJb43nDCz2fVHpnJBbaoDyNgeu/config?ver=1.407.2",
+   "type": "fetch",
+   "method": "GET",
+   "via": "first-party /ph proxy (would reach eu.i.posthog.com)",
+   "phase": "A4 navigate /pl/ after withdrawal"
+  }
+ ],
+ "B_afterDecline": {
+  "ls": {
+   "sisi-analytics-consent-v2": "denied"
+  },
+  "ss": {},
+  "ck": "",
+  "idb": [],
+  "bannerVisible": false,
+  "ctxCookies": []
+ },
+ "B_afterCta": {
+  "ls": {
+   "sisi-analytics-consent-v2": "denied"
+  },
+  "ss": {},
+  "ck": "",
+  "idb": [],
+  "bannerVisible": false,
+  "ctxCookies": []
+ },
+ "B_log": [
+  {
+   "t": 32189,
+   "phase": "B0 navigate /pl/",
+   "url": "/assets/analytics.IH32HT3L.js",
+   "type": "script",
+   "method": "GET",
+   "via": "same-origin asset"
+  },
+  {
+   "t": 32370,
+   "phase": "B0 navigate /pl/",
+   "url": "/assets/posthog.DS-pQbJJ.js",
+   "type": "script",
+   "method": "GET",
+   "via": "same-origin asset"
+  },
+  {
+   "t": 32423,
+   "url": "/ph/array/phc_xGAJevJfPpYyrixXMnpJb43nDCz2fVHpnJBbaoDyNgeu/config?ver=1.407.2",
+   "type": "fetch",
+   "method": "GET",
+   "via": "first-party /ph proxy (would reach eu.i.posthog.com)",
+   "phase": "B0 navigate /pl/"
+  },
+  {
+   "t": 36434,
+   "url": "/ph/flags/?v=2&ver=1.407.2&compression=base64",
+   "type": "fetch",
+   "method": "POST",
+   "via": "first-party /ph proxy (would reach eu.i.posthog.com)",
+   "phase": "B1 click Decline",
+   "events": "(undecoded) data=eyJ0b2tlbiI6InBoY194R0FKZXZKZlBwWXlyaXhYTW5wSmI0M25EQ3o"
+  },
+  {
+   "t": 41522,
+   "phase": "B2 click booking CTA pre-consent-equivalent (declined) on /pl/rezerwacje/",
+   "url": "/assets/analytics.IH32HT3L.js",
+   "type": "script",
+   "method": "GET",
+   "via": "same-origin asset"
+  },
+  {
+   "t": 41641,
+   "phase": "B2 click booking CTA pre-consent-equivalent (declined) on /pl/rezerwacje/",
+   "url": "/assets/posthog.DS-pQbJJ.js",
+   "type": "script",
+   "method": "GET",
+   "via": "same-origin asset"
+  },
+  {
+   "t": 41717,
+   "url": "/ph/array/phc_xGAJevJfPpYyrixXMnpJb43nDCz2fVHpnJBbaoDyNgeu/config?ver=1.407.2",
+   "type": "fetch",
+   "method": "GET",
+   "via": "first-party /ph proxy (would reach eu.i.posthog.com)",
+   "phase": "B2 click booking CTA pre-consent-equivalent (declined) on /pl/rezerwacje/"
+  }
+ ],
+ "C_after": {
+  "ls": {},
+  "ss": {},
+  "ck": "",
+  "idb": [],
+  "bannerVisible": true,
+  "ctxCookies": []
+ },
+ "C_log": [
+  {
+   "t": 48701,
+   "phase": "C0 /pl/rezerwacje/ no decision",
+   "url": "/assets/analytics.IH32HT3L.js",
+   "type": "script",
+   "method": "GET",
+   "via": "same-origin asset"
+  },
+  {
+   "t": 48924,
+   "phase": "C0 /pl/rezerwacje/ no decision",
+   "url": "/assets/posthog.DS-pQbJJ.js",
+   "type": "script",
+   "method": "GET",
+   "via": "same-origin asset"
+  },
+  {
+   "t": 48995,
+   "url": "/ph/array/phc_xGAJevJfPpYyrixXMnpJb43nDCz2fVHpnJBbaoDyNgeu/config?ver=1.407.2",
+   "type": "fetch",
+   "method": "GET",
+   "via": "first-party /ph proxy (would reach eu.i.posthog.com)",
+   "phase": "C0 /pl/rezerwacje/ no decision"
+  }
+ ],
+ "timeline": [
+  {
+   "phase": "A0 navigate /pl/ (no decision yet)",
+   "t": 160
+  },
+  {
+   "phase": "A1 click Accept",
+   "t": 7097
+  },
+  {
+   "phase": "A2 navigate /pl/menu/ (consent stored)",
+   "t": 13235
+  },
+  {
+   "phase": "A3 withdraw on cookie policy page",
+   "t": 18560
+  },
+  {
+   "phase": "A4 navigate /pl/ after withdrawal",
+   "t": 26219
+  },
+  {
+   "phase": "B0 navigate /pl/",
+   "t": 32000
+  },
+  {
+   "phase": "B1 click Decline",
+   "t": 36324
+  },
+  {
+   "phase": "B2 click booking CTA pre-consent-equivalent (declined) on /pl/rezerwacje/",
+   "t": 41417
+  },
+  {
+   "phase": "C0 /pl/rezerwacje/ no decision",
+   "t": 48618
+  },
+  {
+   "phase": "C1 click booking CTA with no decision",
+   "t": 53226
+  }
+ ]
+}

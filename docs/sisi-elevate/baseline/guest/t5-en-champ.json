@@ -1,0 +1,40 @@
+{
+ "locale": "en",
+ "target": "champ",
+ "found": true,
+ "answer": [
+  "Grand Cordon | 125 ml 69 zł · 750 ml 420 zł · 1,5 l 900 zł · 3 l 2300 zł",
+  "Grand Cordon Rosé | 750 ml 479 zł · 1,5 l 950 zł",
+  "Demi Sec | 750 ml 450 zł"
+ ],
+ "at": {
+  "taps": 3,
+  "swipes": 2,
+  "seconds": 9
+ },
+ "steps": [
+  {
+   "step": "goto /en/",
+   "t": 2.724,
+   "dt": 2.72
+  },
+  {
+   "step": "tap hamburger",
+   "t": 2.956,
+   "taps": 1,
+   "swipes": 0
+  },
+  {
+   "step": "tap menu link",
+   "t": 3.521,
+   "taps": 2,
+   "swipes": 0
+  },
+  {
+   "step": "tap fold: champagne",
+   "t": 8.489,
+   "taps": 3,
+   "swipes": 2
+  }
+ ]
+}

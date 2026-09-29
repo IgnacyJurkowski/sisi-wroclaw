@@ -1,0 +1,73 @@
+{
+ "locale": "de",
+ "profile": "Lighthouse mobile: 1.6 Mbps down / 750 kbps up / 150 ms RTT, CPU x4, 375x812 DPR2 touch, dark scheme",
+ "homeReadySeconds": 2.7,
+ "cookieBannerCoversViewport": 0.31,
+ "T2": {
+  "tappedNavCta": true,
+  "reachedAt": {
+   "taps": 1,
+   "swipes": 0,
+   "seconds": 4.5
+  },
+  "foundPriceText": true,
+  "termsLine": "Eine Tischreservierung kostet 100 zł pro Person, am Tisch anrechenbar; samstags gilt ein zusätzlicher Eintritt von 40 zł pro Person.",
+  "bodyLine": "Die Online-Buchung dauert nur einen Moment, und der volle Reservierungsbetrag wird am Tisch angerechnet. Freitags ist der Eintritt mit Reservierung frei.",
+  "totalOrSumShownOnPage": true,
+  "mentionsPartySizeOrTable": false,
+  "termsFullyVisibleAbovebanner": true,
+  "computedByGuest": "6 x 100 + 6 x 40 = 840 zl (Inference: the page states per-person amounts only)"
+ },
+ "T3": {
+  "ctaAttrs": {
+   "href": "https://emenago.com/inner/cart/6619/0519b014958d73fb0d5d2d58c360a661/de?utm_source=website&utm_medium=cta&utm_campaign=reservation&utm_content=reservations_section",
+   "target": "_blank",
+   "rel": "noopener",
+   "text": "Online buchen"
+  },
+  "ctaBeforeTap": {
+   "taps": 1,
+   "swipes": 0
+  },
+  "bannerDismissedToReachCta": false,
+  "localeNote": null,
+  "popupUrl": "chrome-error://chromewebdata/",
+  "opener": "null",
+  "outboundRequests": [],
+  "afterTap": {
+   "taps": 2,
+   "swipes": 0,
+   "seconds": 6.2
+  },
+  "parsed": {
+   "host": "emenago.com",
+   "path": "/inner/cart/6619/0519b014958d73fb0d5d2d58c360a661/de",
+   "localeSegment": "de",
+   "params": {
+    "utm_source": "website",
+    "utm_medium": "cta",
+    "utm_campaign": "reservation",
+    "utm_content": "reservations_section"
+   }
+  }
+ },
+ "steps": [
+  {
+   "step": "goto /de/",
+   "t": 2.615,
+   "dt": 2.62
+  },
+  {
+   "step": "tap nav CTA (Rezerwacje)",
+   "t": 2.835,
+   "taps": 1,
+   "swipes": 0
+  },
+  {
+   "step": "tap CTA: book online",
+   "t": 5.246,
+   "taps": 2,
+   "swipes": 0
+  }
+ ]
+}

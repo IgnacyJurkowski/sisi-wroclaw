@@ -1,0 +1,73 @@
+{
+ "locale": "cs",
+ "profile": "Lighthouse mobile: 1.6 Mbps down / 750 kbps up / 150 ms RTT, CPU x4, 375x812 DPR2 touch, dark scheme",
+ "homeReadySeconds": 2.8,
+ "cookieBannerCoversViewport": 0.28,
+ "T2": {
+  "tappedNavCta": true,
+  "reachedAt": {
+   "taps": 1,
+   "swipes": 0,
+   "seconds": 4.5
+  },
+  "foundPriceText": true,
+  "termsLine": "Rezervace stolu je 100 zł za osobu k útratě u stolu; v sobotu se účtuje vstupné navíc 40 zł za osobu.",
+  "bodyLine": "Online rezervace zabere chvíli a celá částka rezervace je k útratě u stolu. V pátek je vstup s rezervací zdarma.",
+  "totalOrSumShownOnPage": false,
+  "mentionsPartySizeOrTable": false,
+  "termsFullyVisibleAbovebanner": true,
+  "computedByGuest": "6 x 100 + 6 x 40 = 840 zl (Inference: the page states per-person amounts only)"
+ },
+ "T3": {
+  "ctaAttrs": {
+   "href": "https://emenago.com/inner/cart/6619/0519b014958d73fb0d5d2d58c360a661/pl?utm_source=website&utm_medium=cta&utm_campaign=reservation&utm_content=reservations_section",
+   "target": "_blank",
+   "rel": "noopener",
+   "text": "Rezervovat online"
+  },
+  "ctaBeforeTap": {
+   "taps": 1,
+   "swipes": 0
+  },
+  "bannerDismissedToReachCta": false,
+  "localeNote": "Rezervační systém se otevře v polštině.",
+  "popupUrl": "chrome-error://chromewebdata/",
+  "opener": "null",
+  "outboundRequests": [],
+  "afterTap": {
+   "taps": 2,
+   "swipes": 0,
+   "seconds": 6.2
+  },
+  "parsed": {
+   "host": "emenago.com",
+   "path": "/inner/cart/6619/0519b014958d73fb0d5d2d58c360a661/pl",
+   "localeSegment": "pl",
+   "params": {
+    "utm_source": "website",
+    "utm_medium": "cta",
+    "utm_campaign": "reservation",
+    "utm_content": "reservations_section"
+   }
+  }
+ },
+ "steps": [
+  {
+   "step": "goto /cs/",
+   "t": 2.679,
+   "dt": 2.68
+  },
+  {
+   "step": "tap nav CTA (Rezerwacje)",
+   "t": 2.87,
+   "taps": 1,
+   "swipes": 0
+  },
+  {
+   "step": "tap CTA: book online",
+   "t": 5.409,
+   "taps": 2,
+   "swipes": 0
+  }
+ ]
+}

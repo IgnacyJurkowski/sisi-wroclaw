@@ -1,0 +1,222 @@
+{
+ "locale": "de",
+ "path": {
+  "toCorporatePage": {
+   "taps": 2,
+   "swipes": 0,
+   "seconds": 6
+  },
+  "toForm": {
+   "taps": 3,
+   "swipes": 1,
+   "seconds": 10.5
+  },
+  "afterEmptySubmit": {
+   "taps": 4,
+   "swipes": 4,
+   "seconds": 16.2
+  }
+ },
+ "heroCtaTapped": true,
+ "fields": {
+  "action": null,
+  "method": "post",
+  "name": "b2b-enquiry",
+  "netlify": null,
+  "honeypot": null,
+  "novalidate": true,
+  "hint": "Mit * markierte Felder sind Pflichtfelder.",
+  "list": [
+   {
+    "name": "form-name",
+    "type": "input:hidden",
+    "required": false,
+    "label": null,
+    "hidden": true,
+    "value": "b2b-enquiry"
+   },
+   {
+    "name": "locale",
+    "type": "input:hidden",
+    "required": false,
+    "label": null,
+    "hidden": true,
+    "value": "de"
+   },
+   {
+    "name": "page",
+    "type": "input:hidden",
+    "required": false,
+    "label": null,
+    "hidden": true,
+    "value": "/de/firmenevents/"
+   },
+   {
+    "name": "utm",
+    "type": "input:hidden",
+    "required": false,
+    "label": null,
+    "hidden": true,
+    "value": ""
+   },
+   {
+    "name": "bot-field",
+    "type": "input:text",
+    "required": false,
+    "label": null,
+    "autocomplete": "off",
+    "hidden": true
+   },
+   {
+    "name": "company",
+    "type": "input:text",
+    "required": true,
+    "label": "Firmenname *",
+    "autocomplete": "organization"
+   },
+   {
+    "name": "contact_person",
+    "type": "input:text",
+    "required": true,
+    "label": "Ansprechperson *",
+    "autocomplete": "name"
+   },
+   {
+    "name": "email",
+    "type": "input:email",
+    "required": true,
+    "label": "E-Mail *",
+    "autocomplete": "email"
+   },
+   {
+    "name": "phone",
+    "type": "input:tel",
+    "required": false,
+    "label": "Telefon (optional)",
+    "autocomplete": "tel"
+   },
+   {
+    "name": "event_type",
+    "type": "select:select-one",
+    "required": true,
+    "label": "Art der Veranstaltung *"
+   },
+   {
+    "name": "guests",
+    "type": "input:number",
+    "required": true,
+    "label": "Geschätzte Gästezahl *"
+   },
+   {
+    "name": "preferred_date",
+    "type": "input:text",
+    "required": true,
+    "label": "Wunschtermin *",
+    "placeholder": "Datum wählen",
+    "autocomplete": "off"
+   },
+   {
+    "name": "preferred_date_iso",
+    "type": "input:hidden",
+    "required": false,
+    "label": null,
+    "hidden": true,
+    "value": ""
+   },
+   {
+    "name": "date_flexible",
+    "type": "input:checkbox",
+    "required": false,
+    "label": "Der Termin ist flexibel"
+   },
+   {
+    "name": "space",
+    "type": "select:select-one",
+    "required": false,
+    "label": "Bevorzugter Raum (optional)"
+   },
+   {
+    "name": "duration",
+    "type": "input:text",
+    "required": false,
+    "label": "Dauer der Veranstaltung (optional)",
+    "placeholder": "z. B. 6 Stunden"
+   },
+   {
+    "name": "message",
+    "type": "textarea:textarea",
+    "required": true,
+    "label": "Nachricht *",
+    "placeholder": "Beschreibe dein Event kurz."
+   },
+   {
+    "name": "consent",
+    "type": "input:checkbox",
+    "required": true,
+    "label": "Ich willige ein, zu meiner Anfrage kontaktiert zu werden, und bestätige, die Datenschutzerklärung gelesen zu haben."
+   }
+  ],
+  "consentLabel": "Ich willige ein, zu meiner Anfrage kontaktiert zu werden, und bestätige, die Datenschutzerklärung gelesen zu haben.",
+  "consentLink": "/de/datenschutz/",
+  "submitText": "ANFRAGE SENDEN",
+  "successText": "Danke für deine Anfrage.Wir melden uns mit einem Angebot. Bei dringenden Anliegen ruf an oder schreib uns.",
+  "errorText": "Das Formular konnte nicht gesendet werden.Bitte versuche es gleich noch einmal oder kontaktiere uns direkt: +48 514 032 930 · events@r32.com.pl"
+ },
+ "errorsOnEmptySubmit": {
+  "summary": "Bitte korrigiere die markierten Felder, um das Formular zu senden.",
+  "summaryRole": "alert",
+  "fieldErrors": [
+   "company: Dieses Feld ist erforderlich.",
+   "contact_person: Dieses Feld ist erforderlich.",
+   "email: Dieses Feld ist erforderlich.",
+   "event_type: Dieses Feld ist erforderlich.",
+   "guests: Dieses Feld ist erforderlich.",
+   "preferred_date: Dieses Feld ist erforderlich.",
+   "message: Dieses Feld ist erforderlich.",
+   "consent: Die Einwilligung ist erforderlich, um die Anfrage zu senden."
+  ],
+  "invalid": [
+   "company",
+   "contact_person",
+   "email",
+   "event_type",
+   "guests",
+   "preferred_date",
+   "message",
+   "consent"
+  ],
+  "focused": "company"
+ },
+ "nonGetRequestsDuringEmptySubmit": [],
+ "steps": [
+  {
+   "step": "goto /de/",
+   "t": 2.643,
+   "dt": 2.64
+  },
+  {
+   "step": "tap hamburger",
+   "t": 3.013,
+   "taps": 1,
+   "swipes": 0
+  },
+  {
+   "step": "tap menu: corporate",
+   "t": 3.599,
+   "taps": 2,
+   "swipes": 0
+  },
+  {
+   "step": "tap hero CTA -> enquiry",
+   "t": 9.242,
+   "taps": 3,
+   "swipes": 1
+  },
+  {
+   "step": "tap submit (empty)",
+   "t": 14.974,
+   "taps": 4,
+   "swipes": 4
+  }
+ ]
+}

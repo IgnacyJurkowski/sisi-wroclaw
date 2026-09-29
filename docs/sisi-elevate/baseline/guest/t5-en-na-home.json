@@ -1,0 +1,28 @@
+{
+ "locale": "en",
+ "target": "na-home",
+ "found": true,
+ "answer": [
+  "Mojito 0% | Lime / Mint / Sugar / Sparkling water | 38 zł",
+  "Cosmo 0% | Cranberry / Lime / Citrus | 38 zł",
+  "Piña Colada 0% | Pineapple / Coconut cream | 38 zł"
+ ],
+ "at": {
+  "taps": 1,
+  "swipes": 7,
+  "seconds": 12.1
+ },
+ "steps": [
+  {
+   "step": "goto /en/",
+   "t": 2.708,
+   "dt": 2.71
+  },
+  {
+   "step": "tap home teaser tab: alcohol-free",
+   "t": 10.39,
+   "taps": 1,
+   "swipes": 6
+  }
+ ]
+}

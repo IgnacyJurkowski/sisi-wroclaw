@@ -1,0 +1,37 @@
+{
+ "locale": "en",
+ "atAddress": {
+  "taps": 0,
+  "swipes": 11,
+  "seconds": 17.8,
+  "visible": true,
+  "dismissedBanner": false
+ },
+ "addrText": "Rzeźnicza 32-33, 50-130 Wrocław",
+ "attrs": {
+  "href": "https://www.google.com/maps/search/?api=1&query=SISI%20%7C%20Music%20Club%20Wroc%C5%82aw&query_place_id=ChIJS14DTYDDD0cRWrK8z0wRcsM",
+  "target": "_blank",
+  "rel": "noopener"
+ },
+ "popupUrl": "chrome-error://chromewebdata/",
+ "mapRequests": [],
+ "entranceOrAccessKeywordHits": {
+  "/en/": [],
+  "/en/reservations/": [],
+  "/en/contact/": [],
+  "/en/menu/": []
+ },
+ "steps": [
+  {
+   "step": "goto /en/",
+   "t": 2.701,
+   "dt": 2.7
+  },
+  {
+   "step": "tap tap address (map link)",
+   "t": 18.169,
+   "taps": 1,
+   "swipes": 11
+  }
+ ]
+}
