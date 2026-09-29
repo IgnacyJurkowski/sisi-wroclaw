@@ -30,6 +30,10 @@ State: Phase 0 partly done, Phase 1 done, Phase 3a mostly done, Phase 5.1 done, 
 | `sisi-elevate/base` (docs) | `main` | https://github.com/IgnacyJurkowski/sisi-wroclaw/pull/38 |
 | `sisi-elevate/venue-truth` | `sisi-elevate/base` | https://github.com/IgnacyJurkowski/sisi-wroclaw/pull/39 |
 
+## Only production-comparison reading so far (Netlify bot on PR #37, 1 path audited, not my measurement)
+
+Lighthouse via Netlify deploy preview: Performance 98, Accessibility 100, Best Practices 100, SEO 100, each "no change from production". Which path and which throttling profile Netlify used is not stated (Assumption: the home page, mobile). Inference: the site is already fast on the home page, so Track A performance work is second-order to the fact, i18n, blog and accessibility defects. My own throttled Lighthouse baseline (5 pages x pl/en) is still to be run.
+
 ## Checklist
 
 ### Phase 0: bootstrap and baseline
