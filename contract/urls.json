@@ -1,0 +1,145 @@
+{
+  "source": "local-build main e1feb25",
+  "buildContext": "production",
+  "origin": "https://www.sisiwroclaw.pl",
+  "note": "Sitemap URLs with their expected status; legacy redirect sources with their expected 301 target; nonIndexable = pages that carry noindex (production-context build) or, for a non-production build, are absent from the sitemap. lastmod is not tracked.",
+  "urls": {
+    "/cs/": 200,
+    "/cs/firemni-akce/": 200,
+    "/cs/kariera/": 200,
+    "/cs/kontakt/": 200,
+    "/cs/menu/": 200,
+    "/cs/ochrana-soukromi/": 200,
+    "/cs/pravidla/": 200,
+    "/cs/rezervace/": 200,
+    "/cs/soukrome-akce/": 200,
+    "/cs/zasady-cookies/": 200,
+    "/de/": 200,
+    "/de/agb/": 200,
+    "/de/cookie-richtlinie/": 200,
+    "/de/datenschutz/": 200,
+    "/de/firmenevents/": 200,
+    "/de/karriere/": 200,
+    "/de/kontakt/": 200,
+    "/de/menu/": 200,
+    "/de/private-feiern/": 200,
+    "/de/reservierungen/": 200,
+    "/en/": 200,
+    "/en/careers/": 200,
+    "/en/contact/": 200,
+    "/en/cookie-policy/": 200,
+    "/en/corporate-events/": 200,
+    "/en/menu/": 200,
+    "/en/privacy-policy/": 200,
+    "/en/private-events/": 200,
+    "/en/reservations/": 200,
+    "/en/terms/": 200,
+    "/it/": 200,
+    "/it/contatti/": 200,
+    "/it/cookie/": 200,
+    "/it/eventi-aziendali/": 200,
+    "/it/eventi-privati/": 200,
+    "/it/lavora-con-noi/": 200,
+    "/it/menu/": 200,
+    "/it/prenotazioni/": 200,
+    "/it/privacy/": 200,
+    "/it/regolamento/": 200,
+    "/pl/": 200,
+    "/pl/blog/": 200,
+    "/pl/blog/afterparty-co-to/": 200,
+    "/pl/blog/aperitif-co-to/": 200,
+    "/pl/blog/aperitivo-wroclaw/": 200,
+    "/pl/blog/aperol-vs-campari/": 200,
+    "/pl/blog/bourbon-vs-szkocka/": 200,
+    "/pl/blog/budzet-na-impreze-klubowa/": 200,
+    "/pl/blog/chardonnay-vs-sauvignon-blanc/": 200,
+    "/pl/blog/dekantacja-wina/": 200,
+    "/pl/blog/etykieta-na-parkiecie/": 200,
+    "/pl/blog/jazz-na-zywo-wroclaw/": 200,
+    "/pl/blog/kieliszki-do-wina/": 200,
+    "/pl/blog/koktajle-do-kolacji/": 200,
+    "/pl/blog/koncert-klubowy-co-to/": 200,
+    "/pl/blog/martini-dry-vs-wet/": 200,
+    "/pl/blog/mezcal-vs-tequila/": 200,
+    "/pl/blog/mocktail-co-to/": 200,
+    "/pl/blog/nocne-menu-co-to/": 200,
+    "/pl/blog/old-fashioned-vs-manhattan/": 200,
+    "/pl/blog/open-bar-vs-cash-bar/": 200,
+    "/pl/blog/pinot-grigio-vs-pinot-gris/": 200,
+    "/pl/blog/polskie-wina-musujace/": 200,
+    "/pl/blog/prosecco-vs-cava/": 200,
+    "/pl/blog/rezerwacja-stolika-koszt-wroclaw/": 200,
+    "/pl/blog/tapas-co-to/": 200,
+    "/pl/blog/tequila-blanco-vs-reposado/": 200,
+    "/pl/blog/tequila-reposado-vs-anejo/": 200,
+    "/pl/blog/urodziny-w-klubie-pomysly/": 200,
+    "/pl/blog/wino-kieliszek-czy-butelka/": 200,
+    "/pl/blog/wino-naturalne-vs-klasyczne/": 200,
+    "/pl/blog/wino-wytrawne-vs-polwytrawne/": 200,
+    "/pl/blog/zabawa-bez-alkoholu/": 200,
+    "/pl/eventy-firmowe/": 200,
+    "/pl/imprezy-prywatne/": 200,
+    "/pl/kariera/": 200,
+    "/pl/kontakt/": 200,
+    "/pl/menu/": 200,
+    "/pl/polityka-cookies/": 200,
+    "/pl/polityka-prywatnosci/": 200,
+    "/pl/regulamin/": 200,
+    "/pl/rezerwacje/": 200
+  },
+  "files": {
+    "/robots.txt": 200,
+    "/llms.txt": 200,
+    "/llms-full.txt": 200,
+    "/sitemap.xml": 200
+  },
+  "probes": {
+    "/__contract-probe-404__/": 404
+  },
+  "legacy": {
+    "/": {
+      "status": 301,
+      "location": "/pl/"
+    },
+    "/wydarzenia": {
+      "status": 301,
+      "location": "/pl/wydarzenia/"
+    },
+    "/menu": {
+      "status": 301,
+      "location": "/pl/menu/"
+    },
+    "/kariera": {
+      "status": 301,
+      "location": "/pl/kariera/"
+    },
+    "/rezerwacje": {
+      "status": 301,
+      "location": "/pl/rezerwacje/"
+    },
+    "/kontakt": {
+      "status": 301,
+      "location": "/pl/kontakt/"
+    },
+    "/regulamin": {
+      "status": 301,
+      "location": "/pl/regulamin/"
+    },
+    "/polityka-prywatnosci": {
+      "status": 301,
+      "location": "/pl/polityka-prywatnosci/"
+    },
+    "/polityka-cookies": {
+      "status": 301,
+      "location": "/pl/polityka-cookies/"
+    }
+  },
+  "nonIndexable": [
+    "/",
+    "/404.html",
+    "/cs/blog/",
+    "/de/blog/",
+    "/en/blog/",
+    "/it/blog/"
+  ]
+}

@@ -1,0 +1,2038 @@
+{
+  "source": "local-build main e1feb25",
+  "note": "Every distinct currency amount, clock time, phone, email and street address found in built pages, llms.txt and llms-full.txt, with the pages carrying it. blogFlags lists sentences in blog posts that state a price, an hour or a rule about SiSi (audit input). contradictions lists values that break contract/facts.json. Regenerated with --update-snapshot or --write-inventory; not a snapshot to diff.",
+  "buildContext": "production",
+  "values": {
+    "address": {
+      "Rzeźnicza 32-33": {
+        "count": 94,
+        "pages": [
+          "/404.html",
+          "/cs/",
+          "/cs/akce/",
+          "/cs/blog/",
+          "/cs/firemni-akce/",
+          "/cs/kariera/",
+          "/cs/kontakt/",
+          "/cs/menu/",
+          "/cs/ochrana-soukromi/",
+          "/cs/pravidla/",
+          "/cs/rezervace/",
+          "/cs/soukrome-akce/",
+          "/cs/zasady-cookies/",
+          "/de/",
+          "/de/agb/",
+          "/de/blog/",
+          "/de/cookie-richtlinie/",
+          "/de/datenschutz/",
+          "/de/firmenevents/",
+          "/de/karriere/",
+          "/de/kontakt/",
+          "/de/menu/",
+          "/de/private-feiern/",
+          "/de/reservierungen/",
+          "/de/veranstaltungen/",
+          "/en/",
+          "/en/blog/",
+          "/en/careers/",
+          "/en/contact/",
+          "/en/cookie-policy/",
+          "/en/corporate-events/",
+          "/en/events/",
+          "/en/menu/",
+          "/en/privacy-policy/",
+          "/en/private-events/",
+          "/en/reservations/",
+          "/en/terms/",
+          "/it/",
+          "/it/blog/",
+          "/it/contatti/",
+          "/it/cookie/",
+          "/it/eventi-aziendali/",
+          "/it/eventi-privati/",
+          "/it/eventi/",
+          "/it/lavora-con-noi/",
+          "/it/menu/",
+          "/it/prenotazioni/",
+          "/it/privacy/",
+          "/it/regolamento/",
+          "/llms-full.txt",
+          "/llms.txt",
+          "/pl/",
+          "/pl/blog/",
+          "/pl/blog/afterparty-co-to/",
+          "/pl/blog/aperitif-co-to/",
+          "/pl/blog/aperitivo-wroclaw/",
+          "/pl/blog/aperol-vs-campari/",
+          "/pl/blog/bourbon-vs-szkocka/",
+          "/pl/blog/budzet-na-impreze-klubowa/",
+          "/pl/blog/chardonnay-vs-sauvignon-blanc/",
+          "/pl/blog/dekantacja-wina/",
+          "/pl/blog/etykieta-na-parkiecie/",
+          "/pl/blog/jazz-na-zywo-wroclaw/",
+          "/pl/blog/kieliszki-do-wina/",
+          "/pl/blog/koktajle-do-kolacji/",
+          "/pl/blog/koncert-klubowy-co-to/",
+          "/pl/blog/martini-dry-vs-wet/",
+          "/pl/blog/mezcal-vs-tequila/",
+          "/pl/blog/mocktail-co-to/",
+          "/pl/blog/nocne-menu-co-to/",
+          "/pl/blog/old-fashioned-vs-manhattan/",
+          "/pl/blog/open-bar-vs-cash-bar/",
+          "/pl/blog/pinot-grigio-vs-pinot-gris/",
+          "/pl/blog/polskie-wina-musujace/",
+          "/pl/blog/prosecco-vs-cava/",
+          "/pl/blog/rezerwacja-stolika-koszt-wroclaw/",
+          "/pl/blog/tapas-co-to/",
+          "/pl/blog/tequila-blanco-vs-reposado/",
+          "/pl/blog/tequila-reposado-vs-anejo/",
+          "/pl/blog/urodziny-w-klubie-pomysly/",
+          "/pl/blog/wino-kieliszek-czy-butelka/",
+          "/pl/blog/wino-naturalne-vs-klasyczne/",
+          "/pl/blog/wino-wytrawne-vs-polwytrawne/",
+          "/pl/blog/zabawa-bez-alkoholu/",
+          "/pl/eventy-firmowe/",
+          "/pl/imprezy-prywatne/",
+          "/pl/kariera/",
+          "/pl/kontakt/",
+          "/pl/menu/",
+          "/pl/polityka-cookies/",
+          "/pl/polityka-prywatnosci/",
+          "/pl/regulamin/",
+          "/pl/rezerwacje/",
+          "/pl/wydarzenia/"
+        ]
+      },
+      "ul. Stawki 2": {
+        "count": 5,
+        "pages": [
+          "/cs/ochrana-soukromi/",
+          "/de/datenschutz/",
+          "/en/privacy-policy/",
+          "/it/privacy/",
+          "/pl/polityka-prywatnosci/"
+        ]
+      }
+    },
+    "currency": {
+      "10 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "13 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "14 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "15 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "16 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "18 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "20 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "22 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "24 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "25 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "26 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "28 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "30 zł": {
+        "count": 10,
+        "pages": [
+          "/cs/menu/",
+          "/cs/pravidla/",
+          "/de/agb/",
+          "/de/menu/",
+          "/en/menu/",
+          "/en/terms/",
+          "/it/menu/",
+          "/it/regolamento/",
+          "/pl/menu/",
+          "/pl/regulamin/"
+        ]
+      },
+      "32 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "33 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "35 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "36 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "37 zł": {
+        "count": 10,
+        "pages": [
+          "/cs/",
+          "/cs/menu/",
+          "/de/",
+          "/de/menu/",
+          "/en/",
+          "/en/menu/",
+          "/it/",
+          "/it/menu/",
+          "/pl/",
+          "/pl/menu/"
+        ]
+      },
+      "38 zł": {
+        "count": 10,
+        "pages": [
+          "/cs/",
+          "/cs/menu/",
+          "/de/",
+          "/de/menu/",
+          "/en/",
+          "/en/menu/",
+          "/it/",
+          "/it/menu/",
+          "/pl/",
+          "/pl/menu/"
+        ]
+      },
+      "39 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "40 zł": {
+        "count": 22,
+        "pages": [
+          "/cs/",
+          "/cs/menu/",
+          "/cs/rezervace/",
+          "/de/",
+          "/de/menu/",
+          "/de/reservierungen/",
+          "/en/",
+          "/en/menu/",
+          "/en/reservations/",
+          "/it/",
+          "/it/menu/",
+          "/it/prenotazioni/",
+          "/llms-full.txt",
+          "/llms.txt",
+          "/pl/",
+          "/pl/blog/afterparty-co-to/",
+          "/pl/blog/aperitivo-wroclaw/",
+          "/pl/blog/dekantacja-wina/",
+          "/pl/blog/nocne-menu-co-to/",
+          "/pl/blog/polskie-wina-musujace/",
+          "/pl/menu/",
+          "/pl/rezerwacje/"
+        ]
+      },
+      "42 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "44 zł": {
+        "count": 10,
+        "pages": [
+          "/cs/",
+          "/cs/menu/",
+          "/de/",
+          "/de/menu/",
+          "/en/",
+          "/en/menu/",
+          "/it/",
+          "/it/menu/",
+          "/pl/",
+          "/pl/menu/"
+        ]
+      },
+      "46 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "48 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "49 zł": {
+        "count": 10,
+        "pages": [
+          "/cs/",
+          "/cs/menu/",
+          "/de/",
+          "/de/menu/",
+          "/en/",
+          "/en/menu/",
+          "/it/",
+          "/it/menu/",
+          "/pl/",
+          "/pl/menu/"
+        ]
+      },
+      "50 zł": {
+        "count": 7,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/llms-full.txt",
+          "/pl/blog/rezerwacja-stolika-koszt-wroclaw/",
+          "/pl/menu/"
+        ]
+      },
+      "52 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "54 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "56 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "60 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "64 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "65 zł": {
+        "count": 10,
+        "pages": [
+          "/cs/",
+          "/cs/menu/",
+          "/de/",
+          "/de/menu/",
+          "/en/",
+          "/en/menu/",
+          "/it/",
+          "/it/menu/",
+          "/pl/",
+          "/pl/menu/"
+        ]
+      },
+      "66 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "68 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "69 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "76 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "82 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "84 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "85 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "99 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "100 zł": {
+        "count": 16,
+        "pages": [
+          "/cs/pravidla/",
+          "/cs/rezervace/",
+          "/de/agb/",
+          "/de/reservierungen/",
+          "/en/reservations/",
+          "/en/terms/",
+          "/it/prenotazioni/",
+          "/it/regolamento/",
+          "/llms-full.txt",
+          "/llms.txt",
+          "/pl/blog/afterparty-co-to/",
+          "/pl/blog/dekantacja-wina/",
+          "/pl/blog/jazz-na-zywo-wroclaw/",
+          "/pl/blog/nocne-menu-co-to/",
+          "/pl/regulamin/",
+          "/pl/rezerwacje/"
+        ]
+      },
+      "120 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "130 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "139 zł": {
+        "count": 2,
+        "pages": [
+          "/pl/",
+          "/pl/menu/"
+        ]
+      },
+      "150 zł": {
+        "count": 7,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/llms-full.txt",
+          "/pl/blog/tequila-reposado-vs-anejo/",
+          "/pl/menu/"
+        ]
+      },
+      "160 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "165 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "200 zł": {
+        "count": 5,
+        "pages": [
+          "/llms-full.txt",
+          "/llms.txt",
+          "/pl/blog/budzet-na-impreze-klubowa/",
+          "/pl/blog/open-bar-vs-cash-bar/",
+          "/pl/blog/tequila-reposado-vs-anejo/"
+        ]
+      },
+      "220 zł": {
+        "count": 10,
+        "pages": [
+          "/cs/",
+          "/cs/menu/",
+          "/de/",
+          "/de/menu/",
+          "/en/",
+          "/en/menu/",
+          "/it/",
+          "/it/menu/",
+          "/pl/",
+          "/pl/menu/"
+        ]
+      },
+      "240 zł": {
+        "count": 10,
+        "pages": [
+          "/cs/",
+          "/cs/menu/",
+          "/de/",
+          "/de/menu/",
+          "/en/",
+          "/en/menu/",
+          "/it/",
+          "/it/menu/",
+          "/pl/",
+          "/pl/menu/"
+        ]
+      },
+      "250 zł": {
+        "count": 2,
+        "pages": [
+          "/llms-full.txt",
+          "/pl/blog/budzet-na-impreze-klubowa/"
+        ]
+      },
+      "259 zł": {
+        "count": 1,
+        "pages": [
+          "/pl/menu/"
+        ]
+      },
+      "269 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "289 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "300 zł": {
+        "count": 2,
+        "pages": [
+          "/llms-full.txt",
+          "/pl/blog/budzet-na-impreze-klubowa/"
+        ]
+      },
+      "330 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "350 zł": {
+        "count": 9,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/llms-full.txt",
+          "/llms.txt",
+          "/pl/blog/",
+          "/pl/blog/budzet-na-impreze-klubowa/",
+          "/pl/menu/"
+        ]
+      },
+      "360 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "379 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "390 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "400 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "420 zł": {
+        "count": 10,
+        "pages": [
+          "/cs/",
+          "/cs/menu/",
+          "/de/",
+          "/de/menu/",
+          "/en/",
+          "/en/menu/",
+          "/it/",
+          "/it/menu/",
+          "/pl/",
+          "/pl/menu/"
+        ]
+      },
+      "450 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "479 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "480 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "500 zł": {
+        "count": 2,
+        "pages": [
+          "/llms-full.txt",
+          "/pl/blog/budzet-na-impreze-klubowa/"
+        ]
+      },
+      "600 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "630 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "650 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "700 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "730 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "790 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "800 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "890 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "900 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "950 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "1500 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "1700 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "2139 zł": {
+        "count": 8,
+        "pages": [
+          "/cs/",
+          "/cs/menu/",
+          "/de/",
+          "/de/menu/",
+          "/en/",
+          "/en/menu/",
+          "/it/",
+          "/it/menu/"
+        ]
+      },
+      "2300 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "4259 zł": {
+        "count": 4,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/"
+        ]
+      },
+      "4500 zł": {
+        "count": 5,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/",
+          "/pl/menu/"
+        ]
+      },
+      "6379 zł": {
+        "count": 4,
+        "pages": [
+          "/cs/menu/",
+          "/de/menu/",
+          "/en/menu/",
+          "/it/menu/"
+        ]
+      },
+      "10000 zł": {
+        "count": 2,
+        "pages": [
+          "/llms-full.txt",
+          "/pl/blog/budzet-na-impreze-klubowa/"
+        ]
+      },
+      "25000 zł": {
+        "count": 2,
+        "pages": [
+          "/llms-full.txt",
+          "/pl/blog/budzet-na-impreze-klubowa/"
+        ]
+      }
+    },
+    "email": {
+      "biuro@r32.com.pl": {
+        "count": 94,
+        "pages": [
+          "/404.html",
+          "/cs/",
+          "/cs/akce/",
+          "/cs/blog/",
+          "/cs/firemni-akce/",
+          "/cs/kariera/",
+          "/cs/kontakt/",
+          "/cs/menu/",
+          "/cs/ochrana-soukromi/",
+          "/cs/pravidla/",
+          "/cs/rezervace/",
+          "/cs/soukrome-akce/",
+          "/cs/zasady-cookies/",
+          "/de/",
+          "/de/agb/",
+          "/de/blog/",
+          "/de/cookie-richtlinie/",
+          "/de/datenschutz/",
+          "/de/firmenevents/",
+          "/de/karriere/",
+          "/de/kontakt/",
+          "/de/menu/",
+          "/de/private-feiern/",
+          "/de/reservierungen/",
+          "/de/veranstaltungen/",
+          "/en/",
+          "/en/blog/",
+          "/en/careers/",
+          "/en/contact/",
+          "/en/cookie-policy/",
+          "/en/corporate-events/",
+          "/en/events/",
+          "/en/menu/",
+          "/en/privacy-policy/",
+          "/en/private-events/",
+          "/en/reservations/",
+          "/en/terms/",
+          "/it/",
+          "/it/blog/",
+          "/it/contatti/",
+          "/it/cookie/",
+          "/it/eventi-aziendali/",
+          "/it/eventi-privati/",
+          "/it/eventi/",
+          "/it/lavora-con-noi/",
+          "/it/menu/",
+          "/it/prenotazioni/",
+          "/it/privacy/",
+          "/it/regolamento/",
+          "/llms-full.txt",
+          "/llms.txt",
+          "/pl/",
+          "/pl/blog/",
+          "/pl/blog/afterparty-co-to/",
+          "/pl/blog/aperitif-co-to/",
+          "/pl/blog/aperitivo-wroclaw/",
+          "/pl/blog/aperol-vs-campari/",
+          "/pl/blog/bourbon-vs-szkocka/",
+          "/pl/blog/budzet-na-impreze-klubowa/",
+          "/pl/blog/chardonnay-vs-sauvignon-blanc/",
+          "/pl/blog/dekantacja-wina/",
+          "/pl/blog/etykieta-na-parkiecie/",
+          "/pl/blog/jazz-na-zywo-wroclaw/",
+          "/pl/blog/kieliszki-do-wina/",
+          "/pl/blog/koktajle-do-kolacji/",
+          "/pl/blog/koncert-klubowy-co-to/",
+          "/pl/blog/martini-dry-vs-wet/",
+          "/pl/blog/mezcal-vs-tequila/",
+          "/pl/blog/mocktail-co-to/",
+          "/pl/blog/nocne-menu-co-to/",
+          "/pl/blog/old-fashioned-vs-manhattan/",
+          "/pl/blog/open-bar-vs-cash-bar/",
+          "/pl/blog/pinot-grigio-vs-pinot-gris/",
+          "/pl/blog/polskie-wina-musujace/",
+          "/pl/blog/prosecco-vs-cava/",
+          "/pl/blog/rezerwacja-stolika-koszt-wroclaw/",
+          "/pl/blog/tapas-co-to/",
+          "/pl/blog/tequila-blanco-vs-reposado/",
+          "/pl/blog/tequila-reposado-vs-anejo/",
+          "/pl/blog/urodziny-w-klubie-pomysly/",
+          "/pl/blog/wino-kieliszek-czy-butelka/",
+          "/pl/blog/wino-naturalne-vs-klasyczne/",
+          "/pl/blog/wino-wytrawne-vs-polwytrawne/",
+          "/pl/blog/zabawa-bez-alkoholu/",
+          "/pl/eventy-firmowe/",
+          "/pl/imprezy-prywatne/",
+          "/pl/kariera/",
+          "/pl/kontakt/",
+          "/pl/menu/",
+          "/pl/polityka-cookies/",
+          "/pl/polityka-prywatnosci/",
+          "/pl/regulamin/",
+          "/pl/rezerwacje/",
+          "/pl/wydarzenia/"
+        ]
+      },
+      "events@r32.com.pl": {
+        "count": 94,
+        "pages": [
+          "/404.html",
+          "/cs/",
+          "/cs/akce/",
+          "/cs/blog/",
+          "/cs/firemni-akce/",
+          "/cs/kariera/",
+          "/cs/kontakt/",
+          "/cs/menu/",
+          "/cs/ochrana-soukromi/",
+          "/cs/pravidla/",
+          "/cs/rezervace/",
+          "/cs/soukrome-akce/",
+          "/cs/zasady-cookies/",
+          "/de/",
+          "/de/agb/",
+          "/de/blog/",
+          "/de/cookie-richtlinie/",
+          "/de/datenschutz/",
+          "/de/firmenevents/",
+          "/de/karriere/",
+          "/de/kontakt/",
+          "/de/menu/",
+          "/de/private-feiern/",
+          "/de/reservierungen/",
+          "/de/veranstaltungen/",
+          "/en/",
+          "/en/blog/",
+          "/en/careers/",
+          "/en/contact/",
+          "/en/cookie-policy/",
+          "/en/corporate-events/",
+          "/en/events/",
+          "/en/menu/",
+          "/en/privacy-policy/",
+          "/en/private-events/",
+          "/en/reservations/",
+          "/en/terms/",
+          "/it/",
+          "/it/blog/",
+          "/it/contatti/",
+          "/it/cookie/",
+          "/it/eventi-aziendali/",
+          "/it/eventi-privati/",
+          "/it/eventi/",
+          "/it/lavora-con-noi/",
+          "/it/menu/",
+          "/it/prenotazioni/",
+          "/it/privacy/",
+          "/it/regolamento/",
+          "/llms-full.txt",
+          "/llms.txt",
+          "/pl/",
+          "/pl/blog/",
+          "/pl/blog/afterparty-co-to/",
+          "/pl/blog/aperitif-co-to/",
+          "/pl/blog/aperitivo-wroclaw/",
+          "/pl/blog/aperol-vs-campari/",
+          "/pl/blog/bourbon-vs-szkocka/",
+          "/pl/blog/budzet-na-impreze-klubowa/",
+          "/pl/blog/chardonnay-vs-sauvignon-blanc/",
+          "/pl/blog/dekantacja-wina/",
+          "/pl/blog/etykieta-na-parkiecie/",
+          "/pl/blog/jazz-na-zywo-wroclaw/",
+          "/pl/blog/kieliszki-do-wina/",
+          "/pl/blog/koktajle-do-kolacji/",
+          "/pl/blog/koncert-klubowy-co-to/",
+          "/pl/blog/martini-dry-vs-wet/",
+          "/pl/blog/mezcal-vs-tequila/",
+          "/pl/blog/mocktail-co-to/",
+          "/pl/blog/nocne-menu-co-to/",
+          "/pl/blog/old-fashioned-vs-manhattan/",
+          "/pl/blog/open-bar-vs-cash-bar/",
+          "/pl/blog/pinot-grigio-vs-pinot-gris/",
+          "/pl/blog/polskie-wina-musujace/",
+          "/pl/blog/prosecco-vs-cava/",
+          "/pl/blog/rezerwacja-stolika-koszt-wroclaw/",
+          "/pl/blog/tapas-co-to/",
+          "/pl/blog/tequila-blanco-vs-reposado/",
+          "/pl/blog/tequila-reposado-vs-anejo/",
+          "/pl/blog/urodziny-w-klubie-pomysly/",
+          "/pl/blog/wino-kieliszek-czy-butelka/",
+          "/pl/blog/wino-naturalne-vs-klasyczne/",
+          "/pl/blog/wino-wytrawne-vs-polwytrawne/",
+          "/pl/blog/zabawa-bez-alkoholu/",
+          "/pl/eventy-firmowe/",
+          "/pl/imprezy-prywatne/",
+          "/pl/kariera/",
+          "/pl/kontakt/",
+          "/pl/menu/",
+          "/pl/polityka-cookies/",
+          "/pl/polityka-prywatnosci/",
+          "/pl/regulamin/",
+          "/pl/rezerwacje/",
+          "/pl/wydarzenia/"
+        ]
+      }
+    },
+    "phone": {
+      "+48514032930": {
+        "count": 94,
+        "pages": [
+          "/404.html",
+          "/cs/",
+          "/cs/akce/",
+          "/cs/blog/",
+          "/cs/firemni-akce/",
+          "/cs/kariera/",
+          "/cs/kontakt/",
+          "/cs/menu/",
+          "/cs/ochrana-soukromi/",
+          "/cs/pravidla/",
+          "/cs/rezervace/",
+          "/cs/soukrome-akce/",
+          "/cs/zasady-cookies/",
+          "/de/",
+          "/de/agb/",
+          "/de/blog/",
+          "/de/cookie-richtlinie/",
+          "/de/datenschutz/",
+          "/de/firmenevents/",
+          "/de/karriere/",
+          "/de/kontakt/",
+          "/de/menu/",
+          "/de/private-feiern/",
+          "/de/reservierungen/",
+          "/de/veranstaltungen/",
+          "/en/",
+          "/en/blog/",
+          "/en/careers/",
+          "/en/contact/",
+          "/en/cookie-policy/",
+          "/en/corporate-events/",
+          "/en/events/",
+          "/en/menu/",
+          "/en/privacy-policy/",
+          "/en/private-events/",
+          "/en/reservations/",
+          "/en/terms/",
+          "/it/",
+          "/it/blog/",
+          "/it/contatti/",
+          "/it/cookie/",
+          "/it/eventi-aziendali/",
+          "/it/eventi-privati/",
+          "/it/eventi/",
+          "/it/lavora-con-noi/",
+          "/it/menu/",
+          "/it/prenotazioni/",
+          "/it/privacy/",
+          "/it/regolamento/",
+          "/llms-full.txt",
+          "/llms.txt",
+          "/pl/",
+          "/pl/blog/",
+          "/pl/blog/afterparty-co-to/",
+          "/pl/blog/aperitif-co-to/",
+          "/pl/blog/aperitivo-wroclaw/",
+          "/pl/blog/aperol-vs-campari/",
+          "/pl/blog/bourbon-vs-szkocka/",
+          "/pl/blog/budzet-na-impreze-klubowa/",
+          "/pl/blog/chardonnay-vs-sauvignon-blanc/",
+          "/pl/blog/dekantacja-wina/",
+          "/pl/blog/etykieta-na-parkiecie/",
+          "/pl/blog/jazz-na-zywo-wroclaw/",
+          "/pl/blog/kieliszki-do-wina/",
+          "/pl/blog/koktajle-do-kolacji/",
+          "/pl/blog/koncert-klubowy-co-to/",
+          "/pl/blog/martini-dry-vs-wet/",
+          "/pl/blog/mezcal-vs-tequila/",
+          "/pl/blog/mocktail-co-to/",
+          "/pl/blog/nocne-menu-co-to/",
+          "/pl/blog/old-fashioned-vs-manhattan/",
+          "/pl/blog/open-bar-vs-cash-bar/",
+          "/pl/blog/pinot-grigio-vs-pinot-gris/",
+          "/pl/blog/polskie-wina-musujace/",
+          "/pl/blog/prosecco-vs-cava/",
+          "/pl/blog/rezerwacja-stolika-koszt-wroclaw/",
+          "/pl/blog/tapas-co-to/",
+          "/pl/blog/tequila-blanco-vs-reposado/",
+          "/pl/blog/tequila-reposado-vs-anejo/",
+          "/pl/blog/urodziny-w-klubie-pomysly/",
+          "/pl/blog/wino-kieliszek-czy-butelka/",
+          "/pl/blog/wino-naturalne-vs-klasyczne/",
+          "/pl/blog/wino-wytrawne-vs-polwytrawne/",
+          "/pl/blog/zabawa-bez-alkoholu/",
+          "/pl/eventy-firmowe/",
+          "/pl/imprezy-prywatne/",
+          "/pl/kariera/",
+          "/pl/kontakt/",
+          "/pl/menu/",
+          "/pl/polityka-cookies/",
+          "/pl/polityka-prywatnosci/",
+          "/pl/regulamin/",
+          "/pl/rezerwacje/",
+          "/pl/wydarzenia/"
+        ]
+      },
+      "+48515126260": {
+        "count": 94,
+        "pages": [
+          "/404.html",
+          "/cs/",
+          "/cs/akce/",
+          "/cs/blog/",
+          "/cs/firemni-akce/",
+          "/cs/kariera/",
+          "/cs/kontakt/",
+          "/cs/menu/",
+          "/cs/ochrana-soukromi/",
+          "/cs/pravidla/",
+          "/cs/rezervace/",
+          "/cs/soukrome-akce/",
+          "/cs/zasady-cookies/",
+          "/de/",
+          "/de/agb/",
+          "/de/blog/",
+          "/de/cookie-richtlinie/",
+          "/de/datenschutz/",
+          "/de/firmenevents/",
+          "/de/karriere/",
+          "/de/kontakt/",
+          "/de/menu/",
+          "/de/private-feiern/",
+          "/de/reservierungen/",
+          "/de/veranstaltungen/",
+          "/en/",
+          "/en/blog/",
+          "/en/careers/",
+          "/en/contact/",
+          "/en/cookie-policy/",
+          "/en/corporate-events/",
+          "/en/events/",
+          "/en/menu/",
+          "/en/privacy-policy/",
+          "/en/private-events/",
+          "/en/reservations/",
+          "/en/terms/",
+          "/it/",
+          "/it/blog/",
+          "/it/contatti/",
+          "/it/cookie/",
+          "/it/eventi-aziendali/",
+          "/it/eventi-privati/",
+          "/it/eventi/",
+          "/it/lavora-con-noi/",
+          "/it/menu/",
+          "/it/prenotazioni/",
+          "/it/privacy/",
+          "/it/regolamento/",
+          "/llms-full.txt",
+          "/llms.txt",
+          "/pl/",
+          "/pl/blog/",
+          "/pl/blog/afterparty-co-to/",
+          "/pl/blog/aperitif-co-to/",
+          "/pl/blog/aperitivo-wroclaw/",
+          "/pl/blog/aperol-vs-campari/",
+          "/pl/blog/bourbon-vs-szkocka/",
+          "/pl/blog/budzet-na-impreze-klubowa/",
+          "/pl/blog/chardonnay-vs-sauvignon-blanc/",
+          "/pl/blog/dekantacja-wina/",
+          "/pl/blog/etykieta-na-parkiecie/",
+          "/pl/blog/jazz-na-zywo-wroclaw/",
+          "/pl/blog/kieliszki-do-wina/",
+          "/pl/blog/koktajle-do-kolacji/",
+          "/pl/blog/koncert-klubowy-co-to/",
+          "/pl/blog/martini-dry-vs-wet/",
+          "/pl/blog/mezcal-vs-tequila/",
+          "/pl/blog/mocktail-co-to/",
+          "/pl/blog/nocne-menu-co-to/",
+          "/pl/blog/old-fashioned-vs-manhattan/",
+          "/pl/blog/open-bar-vs-cash-bar/",
+          "/pl/blog/pinot-grigio-vs-pinot-gris/",
+          "/pl/blog/polskie-wina-musujace/",
+          "/pl/blog/prosecco-vs-cava/",
+          "/pl/blog/rezerwacja-stolika-koszt-wroclaw/",
+          "/pl/blog/tapas-co-to/",
+          "/pl/blog/tequila-blanco-vs-reposado/",
+          "/pl/blog/tequila-reposado-vs-anejo/",
+          "/pl/blog/urodziny-w-klubie-pomysly/",
+          "/pl/blog/wino-kieliszek-czy-butelka/",
+          "/pl/blog/wino-naturalne-vs-klasyczne/",
+          "/pl/blog/wino-wytrawne-vs-polwytrawne/",
+          "/pl/blog/zabawa-bez-alkoholu/",
+          "/pl/eventy-firmowe/",
+          "/pl/imprezy-prywatne/",
+          "/pl/kariera/",
+          "/pl/kontakt/",
+          "/pl/menu/",
+          "/pl/polityka-cookies/",
+          "/pl/polityka-prywatnosci/",
+          "/pl/regulamin/",
+          "/pl/rezerwacje/",
+          "/pl/wydarzenia/"
+        ]
+      }
+    },
+    "postal": {
+      "00-193 Warsaw": {
+        "count": 4,
+        "pages": [
+          "/cs/ochrana-soukromi/",
+          "/de/datenschutz/",
+          "/en/privacy-policy/",
+          "/it/privacy/"
+        ]
+      },
+      "00-193 Warszawa": {
+        "count": 1,
+        "pages": [
+          "/pl/polityka-prywatnosci/"
+        ]
+      },
+      "50-130 Wrocław": {
+        "count": 94,
+        "pages": [
+          "/404.html",
+          "/cs/",
+          "/cs/akce/",
+          "/cs/blog/",
+          "/cs/firemni-akce/",
+          "/cs/kariera/",
+          "/cs/kontakt/",
+          "/cs/menu/",
+          "/cs/ochrana-soukromi/",
+          "/cs/pravidla/",
+          "/cs/rezervace/",
+          "/cs/soukrome-akce/",
+          "/cs/zasady-cookies/",
+          "/de/",
+          "/de/agb/",
+          "/de/blog/",
+          "/de/cookie-richtlinie/",
+          "/de/datenschutz/",
+          "/de/firmenevents/",
+          "/de/karriere/",
+          "/de/kontakt/",
+          "/de/menu/",
+          "/de/private-feiern/",
+          "/de/reservierungen/",
+          "/de/veranstaltungen/",
+          "/en/",
+          "/en/blog/",
+          "/en/careers/",
+          "/en/contact/",
+          "/en/cookie-policy/",
+          "/en/corporate-events/",
+          "/en/events/",
+          "/en/menu/",
+          "/en/privacy-policy/",
+          "/en/private-events/",
+          "/en/reservations/",
+          "/en/terms/",
+          "/it/",
+          "/it/blog/",
+          "/it/contatti/",
+          "/it/cookie/",
+          "/it/eventi-aziendali/",
+          "/it/eventi-privati/",
+          "/it/eventi/",
+          "/it/lavora-con-noi/",
+          "/it/menu/",
+          "/it/prenotazioni/",
+          "/it/privacy/",
+          "/it/regolamento/",
+          "/llms-full.txt",
+          "/llms.txt",
+          "/pl/",
+          "/pl/blog/",
+          "/pl/blog/afterparty-co-to/",
+          "/pl/blog/aperitif-co-to/",
+          "/pl/blog/aperitivo-wroclaw/",
+          "/pl/blog/aperol-vs-campari/",
+          "/pl/blog/bourbon-vs-szkocka/",
+          "/pl/blog/budzet-na-impreze-klubowa/",
+          "/pl/blog/chardonnay-vs-sauvignon-blanc/",
+          "/pl/blog/dekantacja-wina/",
+          "/pl/blog/etykieta-na-parkiecie/",
+          "/pl/blog/jazz-na-zywo-wroclaw/",
+          "/pl/blog/kieliszki-do-wina/",
+          "/pl/blog/koktajle-do-kolacji/",
+          "/pl/blog/koncert-klubowy-co-to/",
+          "/pl/blog/martini-dry-vs-wet/",
+          "/pl/blog/mezcal-vs-tequila/",
+          "/pl/blog/mocktail-co-to/",
+          "/pl/blog/nocne-menu-co-to/",
+          "/pl/blog/old-fashioned-vs-manhattan/",
+          "/pl/blog/open-bar-vs-cash-bar/",
+          "/pl/blog/pinot-grigio-vs-pinot-gris/",
+          "/pl/blog/polskie-wina-musujace/",
+          "/pl/blog/prosecco-vs-cava/",
+          "/pl/blog/rezerwacja-stolika-koszt-wroclaw/",
+          "/pl/blog/tapas-co-to/",
+          "/pl/blog/tequila-blanco-vs-reposado/",
+          "/pl/blog/tequila-reposado-vs-anejo/",
+          "/pl/blog/urodziny-w-klubie-pomysly/",
+          "/pl/blog/wino-kieliszek-czy-butelka/",
+          "/pl/blog/wino-naturalne-vs-klasyczne/",
+          "/pl/blog/wino-wytrawne-vs-polwytrawne/",
+          "/pl/blog/zabawa-bez-alkoholu/",
+          "/pl/eventy-firmowe/",
+          "/pl/imprezy-prywatne/",
+          "/pl/kariera/",
+          "/pl/kontakt/",
+          "/pl/menu/",
+          "/pl/polityka-cookies/",
+          "/pl/polityka-prywatnosci/",
+          "/pl/regulamin/",
+          "/pl/rezerwacje/",
+          "/pl/wydarzenia/"
+        ]
+      }
+    },
+    "time": {
+      "4 rano": {
+        "count": 2,
+        "pages": [
+          "/llms-full.txt",
+          "/llms.txt"
+        ]
+      },
+      "4 uhr": {
+        "count": 12,
+        "pages": [
+          "/de/",
+          "/de/agb/",
+          "/de/blog/",
+          "/de/cookie-richtlinie/",
+          "/de/datenschutz/",
+          "/de/firmenevents/",
+          "/de/karriere/",
+          "/de/kontakt/",
+          "/de/menu/",
+          "/de/private-feiern/",
+          "/de/reservierungen/",
+          "/de/veranstaltungen/"
+        ]
+      },
+      "04:00": {
+        "count": 94,
+        "pages": [
+          "/404.html",
+          "/cs/",
+          "/cs/akce/",
+          "/cs/blog/",
+          "/cs/firemni-akce/",
+          "/cs/kariera/",
+          "/cs/kontakt/",
+          "/cs/menu/",
+          "/cs/ochrana-soukromi/",
+          "/cs/pravidla/",
+          "/cs/rezervace/",
+          "/cs/soukrome-akce/",
+          "/cs/zasady-cookies/",
+          "/de/",
+          "/de/agb/",
+          "/de/blog/",
+          "/de/cookie-richtlinie/",
+          "/de/datenschutz/",
+          "/de/firmenevents/",
+          "/de/karriere/",
+          "/de/kontakt/",
+          "/de/menu/",
+          "/de/private-feiern/",
+          "/de/reservierungen/",
+          "/de/veranstaltungen/",
+          "/en/",
+          "/en/blog/",
+          "/en/careers/",
+          "/en/contact/",
+          "/en/cookie-policy/",
+          "/en/corporate-events/",
+          "/en/events/",
+          "/en/menu/",
+          "/en/privacy-policy/",
+          "/en/private-events/",
+          "/en/reservations/",
+          "/en/terms/",
+          "/it/",
+          "/it/blog/",
+          "/it/contatti/",
+          "/it/cookie/",
+          "/it/eventi-aziendali/",
+          "/it/eventi-privati/",
+          "/it/eventi/",
+          "/it/lavora-con-noi/",
+          "/it/menu/",
+          "/it/prenotazioni/",
+          "/it/privacy/",
+          "/it/regolamento/",
+          "/llms-full.txt",
+          "/llms.txt",
+          "/pl/",
+          "/pl/blog/",
+          "/pl/blog/afterparty-co-to/",
+          "/pl/blog/aperitif-co-to/",
+          "/pl/blog/aperitivo-wroclaw/",
+          "/pl/blog/aperol-vs-campari/",
+          "/pl/blog/bourbon-vs-szkocka/",
+          "/pl/blog/budzet-na-impreze-klubowa/",
+          "/pl/blog/chardonnay-vs-sauvignon-blanc/",
+          "/pl/blog/dekantacja-wina/",
+          "/pl/blog/etykieta-na-parkiecie/",
+          "/pl/blog/jazz-na-zywo-wroclaw/",
+          "/pl/blog/kieliszki-do-wina/",
+          "/pl/blog/koktajle-do-kolacji/",
+          "/pl/blog/koncert-klubowy-co-to/",
+          "/pl/blog/martini-dry-vs-wet/",
+          "/pl/blog/mezcal-vs-tequila/",
+          "/pl/blog/mocktail-co-to/",
+          "/pl/blog/nocne-menu-co-to/",
+          "/pl/blog/old-fashioned-vs-manhattan/",
+          "/pl/blog/open-bar-vs-cash-bar/",
+          "/pl/blog/pinot-grigio-vs-pinot-gris/",
+          "/pl/blog/polskie-wina-musujace/",
+          "/pl/blog/prosecco-vs-cava/",
+          "/pl/blog/rezerwacja-stolika-koszt-wroclaw/",
+          "/pl/blog/tapas-co-to/",
+          "/pl/blog/tequila-blanco-vs-reposado/",
+          "/pl/blog/tequila-reposado-vs-anejo/",
+          "/pl/blog/urodziny-w-klubie-pomysly/",
+          "/pl/blog/wino-kieliszek-czy-butelka/",
+          "/pl/blog/wino-naturalne-vs-klasyczne/",
+          "/pl/blog/wino-wytrawne-vs-polwytrawne/",
+          "/pl/blog/zabawa-bez-alkoholu/",
+          "/pl/eventy-firmowe/",
+          "/pl/imprezy-prywatne/",
+          "/pl/kariera/",
+          "/pl/kontakt/",
+          "/pl/menu/",
+          "/pl/polityka-cookies/",
+          "/pl/polityka-prywatnosci/",
+          "/pl/regulamin/",
+          "/pl/rezerwacje/",
+          "/pl/wydarzenia/"
+        ]
+      },
+      "05:00": {
+        "count": 2,
+        "pages": [
+          "/llms-full.txt",
+          "/pl/blog/nocne-menu-co-to/"
+        ]
+      },
+      "17:00": {
+        "count": 2,
+        "pages": [
+          "/llms-full.txt",
+          "/pl/blog/aperitivo-wroclaw/"
+        ]
+      },
+      "19:00": {
+        "count": 2,
+        "pages": [
+          "/llms-full.txt",
+          "/pl/blog/aperitivo-wroclaw/"
+        ]
+      },
+      "20:00": {
+        "count": 2,
+        "pages": [
+          "/llms-full.txt",
+          "/pl/blog/nocne-menu-co-to/"
+        ]
+      },
+      "22 uhr": {
+        "count": 1,
+        "pages": [
+          "/de/reservierungen/"
+        ]
+      },
+      "22:00": {
+        "count": 94,
+        "pages": [
+          "/404.html",
+          "/cs/",
+          "/cs/akce/",
+          "/cs/blog/",
+          "/cs/firemni-akce/",
+          "/cs/kariera/",
+          "/cs/kontakt/",
+          "/cs/menu/",
+          "/cs/ochrana-soukromi/",
+          "/cs/pravidla/",
+          "/cs/rezervace/",
+          "/cs/soukrome-akce/",
+          "/cs/zasady-cookies/",
+          "/de/",
+          "/de/agb/",
+          "/de/blog/",
+          "/de/cookie-richtlinie/",
+          "/de/datenschutz/",
+          "/de/firmenevents/",
+          "/de/karriere/",
+          "/de/kontakt/",
+          "/de/menu/",
+          "/de/private-feiern/",
+          "/de/reservierungen/",
+          "/de/veranstaltungen/",
+          "/en/",
+          "/en/blog/",
+          "/en/careers/",
+          "/en/contact/",
+          "/en/cookie-policy/",
+          "/en/corporate-events/",
+          "/en/events/",
+          "/en/menu/",
+          "/en/privacy-policy/",
+          "/en/private-events/",
+          "/en/reservations/",
+          "/en/terms/",
+          "/it/",
+          "/it/blog/",
+          "/it/contatti/",
+          "/it/cookie/",
+          "/it/eventi-aziendali/",
+          "/it/eventi-privati/",
+          "/it/eventi/",
+          "/it/lavora-con-noi/",
+          "/it/menu/",
+          "/it/prenotazioni/",
+          "/it/privacy/",
+          "/it/regolamento/",
+          "/llms-full.txt",
+          "/llms.txt",
+          "/pl/",
+          "/pl/blog/",
+          "/pl/blog/afterparty-co-to/",
+          "/pl/blog/aperitif-co-to/",
+          "/pl/blog/aperitivo-wroclaw/",
+          "/pl/blog/aperol-vs-campari/",
+          "/pl/blog/bourbon-vs-szkocka/",
+          "/pl/blog/budzet-na-impreze-klubowa/",
+          "/pl/blog/chardonnay-vs-sauvignon-blanc/",
+          "/pl/blog/dekantacja-wina/",
+          "/pl/blog/etykieta-na-parkiecie/",
+          "/pl/blog/jazz-na-zywo-wroclaw/",
+          "/pl/blog/kieliszki-do-wina/",
+          "/pl/blog/koktajle-do-kolacji/",
+          "/pl/blog/koncert-klubowy-co-to/",
+          "/pl/blog/martini-dry-vs-wet/",
+          "/pl/blog/mezcal-vs-tequila/",
+          "/pl/blog/mocktail-co-to/",
+          "/pl/blog/nocne-menu-co-to/",
+          "/pl/blog/old-fashioned-vs-manhattan/",
+          "/pl/blog/open-bar-vs-cash-bar/",
+          "/pl/blog/pinot-grigio-vs-pinot-gris/",
+          "/pl/blog/polskie-wina-musujace/",
+          "/pl/blog/prosecco-vs-cava/",
+          "/pl/blog/rezerwacja-stolika-koszt-wroclaw/",
+          "/pl/blog/tapas-co-to/",
+          "/pl/blog/tequila-blanco-vs-reposado/",
+          "/pl/blog/tequila-reposado-vs-anejo/",
+          "/pl/blog/urodziny-w-klubie-pomysly/",
+          "/pl/blog/wino-kieliszek-czy-butelka/",
+          "/pl/blog/wino-naturalne-vs-klasyczne/",
+          "/pl/blog/wino-wytrawne-vs-polwytrawne/",
+          "/pl/blog/zabawa-bez-alkoholu/",
+          "/pl/eventy-firmowe/",
+          "/pl/imprezy-prywatne/",
+          "/pl/kariera/",
+          "/pl/kontakt/",
+          "/pl/menu/",
+          "/pl/polityka-cookies/",
+          "/pl/polityka-prywatnosci/",
+          "/pl/regulamin/",
+          "/pl/rezerwacje/",
+          "/pl/wydarzenia/"
+        ]
+      },
+      "23:00": {
+        "count": 5,
+        "pages": [
+          "/cs/rezervace/",
+          "/de/reservierungen/",
+          "/en/reservations/",
+          "/it/prenotazioni/",
+          "/pl/rezerwacje/"
+        ]
+      },
+      "23:30": {
+        "count": 5,
+        "pages": [
+          "/cs/pravidla/",
+          "/de/agb/",
+          "/en/terms/",
+          "/it/regolamento/",
+          "/pl/regulamin/"
+        ]
+      }
+    },
+    "timeRange": {
+      "22:00-04:00": {
+        "count": 94,
+        "pages": [
+          "/404.html",
+          "/cs/",
+          "/cs/akce/",
+          "/cs/blog/",
+          "/cs/firemni-akce/",
+          "/cs/kariera/",
+          "/cs/kontakt/",
+          "/cs/menu/",
+          "/cs/ochrana-soukromi/",
+          "/cs/pravidla/",
+          "/cs/rezervace/",
+          "/cs/soukrome-akce/",
+          "/cs/zasady-cookies/",
+          "/de/",
+          "/de/agb/",
+          "/de/blog/",
+          "/de/cookie-richtlinie/",
+          "/de/datenschutz/",
+          "/de/firmenevents/",
+          "/de/karriere/",
+          "/de/kontakt/",
+          "/de/menu/",
+          "/de/private-feiern/",
+          "/de/reservierungen/",
+          "/de/veranstaltungen/",
+          "/en/",
+          "/en/blog/",
+          "/en/careers/",
+          "/en/contact/",
+          "/en/cookie-policy/",
+          "/en/corporate-events/",
+          "/en/events/",
+          "/en/menu/",
+          "/en/privacy-policy/",
+          "/en/private-events/",
+          "/en/reservations/",
+          "/en/terms/",
+          "/it/",
+          "/it/blog/",
+          "/it/contatti/",
+          "/it/cookie/",
+          "/it/eventi-aziendali/",
+          "/it/eventi-privati/",
+          "/it/eventi/",
+          "/it/lavora-con-noi/",
+          "/it/menu/",
+          "/it/prenotazioni/",
+          "/it/privacy/",
+          "/it/regolamento/",
+          "/llms-full.txt",
+          "/llms.txt",
+          "/pl/",
+          "/pl/blog/",
+          "/pl/blog/afterparty-co-to/",
+          "/pl/blog/aperitif-co-to/",
+          "/pl/blog/aperitivo-wroclaw/",
+          "/pl/blog/aperol-vs-campari/",
+          "/pl/blog/bourbon-vs-szkocka/",
+          "/pl/blog/budzet-na-impreze-klubowa/",
+          "/pl/blog/chardonnay-vs-sauvignon-blanc/",
+          "/pl/blog/dekantacja-wina/",
+          "/pl/blog/etykieta-na-parkiecie/",
+          "/pl/blog/jazz-na-zywo-wroclaw/",
+          "/pl/blog/kieliszki-do-wina/",
+          "/pl/blog/koktajle-do-kolacji/",
+          "/pl/blog/koncert-klubowy-co-to/",
+          "/pl/blog/martini-dry-vs-wet/",
+          "/pl/blog/mezcal-vs-tequila/",
+          "/pl/blog/mocktail-co-to/",
+          "/pl/blog/nocne-menu-co-to/",
+          "/pl/blog/old-fashioned-vs-manhattan/",
+          "/pl/blog/open-bar-vs-cash-bar/",
+          "/pl/blog/pinot-grigio-vs-pinot-gris/",
+          "/pl/blog/polskie-wina-musujace/",
+          "/pl/blog/prosecco-vs-cava/",
+          "/pl/blog/rezerwacja-stolika-koszt-wroclaw/",
+          "/pl/blog/tapas-co-to/",
+          "/pl/blog/tequila-blanco-vs-reposado/",
+          "/pl/blog/tequila-reposado-vs-anejo/",
+          "/pl/blog/urodziny-w-klubie-pomysly/",
+          "/pl/blog/wino-kieliszek-czy-butelka/",
+          "/pl/blog/wino-naturalne-vs-klasyczne/",
+          "/pl/blog/wino-wytrawne-vs-polwytrawne/",
+          "/pl/blog/zabawa-bez-alkoholu/",
+          "/pl/eventy-firmowe/",
+          "/pl/imprezy-prywatne/",
+          "/pl/kariera/",
+          "/pl/kontakt/",
+          "/pl/menu/",
+          "/pl/polityka-cookies/",
+          "/pl/polityka-prywatnosci/",
+          "/pl/regulamin/",
+          "/pl/rezerwacje/",
+          "/pl/wydarzenia/"
+        ]
+      },
+      "22:00-23:00": {
+        "count": 1,
+        "pages": [
+          "/pl/rezerwacje/"
+        ]
+      },
+      "22:00-23:30": {
+        "count": 1,
+        "pages": [
+          "/pl/regulamin/"
+        ]
+      }
+    }
+  },
+  "blogFlags": [
+    {
+      "page": "/pl/blog/afterparty-co-to/",
+      "kinds": [
+        "price",
+        "rule"
+      ],
+      "values": [
+        "100 zł",
+        "40 zł"
+      ],
+      "sentence": "W Sisi Wrocław rezerwacja stolika wynosi 100 zł od osoby , a wstęp do klubu w soboty kosztuje 40 zł od osoby."
+    },
+    {
+      "page": "/pl/blog/aperol-vs-campari/",
+      "kinds": [
+        "hour",
+        "rule"
+      ],
+      "values": [],
+      "sentence": "Wcześniejsze godziny, kiedy sala jeszcze się rozgrzewa i gra spokojniejsza muzyka, to czas na Aperol Spritz, często zamawiany jako wstęp do kolacji przygotowanej w duchu współpracy z restauracją The Cork."
+    },
+    {
+      "page": "/pl/blog/etykieta-na-parkiecie/",
+      "kinds": [
+        "rule"
+      ],
+      "values": [],
+      "sentence": "Rezerwacja stolika w SiSi daje Ci pewne miejsce na wieczór i ogranicza przypadkowy tłok wokół Twojej grupy, a wstęp w soboty można zarezerwować z góry."
+    },
+    {
+      "page": "/pl/blog/jazz-na-zywo-wroclaw/",
+      "kinds": [
+        "rule"
+      ],
+      "values": [],
+      "sentence": "Kluby takie jak SiSi mają tę przewagę, że łączą muzykę na żywo z kolacją, dzięki współpracy z restauracją The Cork, i pozwalają zarezerwować stolik zawczasu, zamiast liczyć na wolne miejsce przy wejściu."
+    },
+    {
+      "page": "/pl/blog/nocne-menu-co-to/",
+      "kinds": [
+        "price",
+        "rule"
+      ],
+      "values": [
+        "100 zł",
+        "40 zł"
+      ],
+      "sentence": "Rezerwacja stolika z nocnym menu w lokalu, takim jak SiSi, kosztuje około 100 zł od osoby, a wstęp na weekendowe wydarzenia wynosi około 40 zł od osoby."
+    },
+    {
+      "page": "/pl/blog/urodziny-w-klubie-pomysly/",
+      "kinds": [
+        "rule"
+      ],
+      "values": [],
+      "sentence": "Sprawdź szczegóły oferty na stronie imprez prywatnych SiSi i wyślij zapytanie z liczbą gości oraz preferowaną datą, żeby otrzymać dostępne terminy i wstępną propozycję pakietu."
+    }
+  ],
+  "contradictions": [
+    {
+      "page": "/cs/pravidla/",
+      "rule": "price-contradicts-allow-list",
+      "value": "30 zł",
+      "sentence": "On Fridays entry is free for guests with a reservation; on Saturdays an entry fee of PLN 30 per person is added."
+    },
+    {
+      "page": "/de/agb/",
+      "rule": "price-contradicts-allow-list",
+      "value": "30 zł",
+      "sentence": "On Fridays entry is free for guests with a reservation; on Saturdays an entry fee of PLN 30 per person is added."
+    },
+    {
+      "page": "/en/terms/",
+      "rule": "price-contradicts-allow-list",
+      "value": "30 zł",
+      "sentence": "On Fridays entry is free for guests with a reservation; on Saturdays an entry fee of PLN 30 per person is added."
+    },
+    {
+      "page": "/it/regolamento/",
+      "rule": "price-contradicts-allow-list",
+      "value": "30 zł",
+      "sentence": "On Fridays entry is free for guests with a reservation; on Saturdays an entry fee of PLN 30 per person is added."
+    },
+    {
+      "page": "/pl/regulamin/",
+      "rule": "price-contradicts-allow-list",
+      "value": "30 zł",
+      "sentence": "W piątki wstęp dla osób z rezerwacją jest bezpłatny, w soboty doliczany jest wstęp w wysokości 30 zł od osoby."
+    }
+  ]
+}

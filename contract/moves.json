@@ -1,0 +1,4 @@
+{
+  "note": "Declare an intentional URL move here, one entry per old URL: { \"from\": \"/pl/old/\", \"to\": \"/pl/new/\", \"note\": \"why\" }. The old URL must then answer one 301 (netlify.toml) straight to the new one, and the new one must be in the sitemap. Empty means no URL may move.",
+  "moves": []
+}
