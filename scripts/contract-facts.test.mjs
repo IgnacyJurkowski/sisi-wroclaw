@@ -82,6 +82,8 @@ test('blogFlags marks SiSi sentences that state a price, an hour or a rule', () 
   assert.deepEqual(flags('SiSi działa od 22:00 do 4:00.'), ['hour']);
   assert.deepEqual(flags('W SiSi obowiązuje dress code smart casual.'), ['rule']);
   assert.deepEqual(flags('Aperol Spritz pije się latem.'), []);
+  const paragraph = blogFlags('Zapraszamy do SiSi na wieczór. Rezerwacja stolika kosztuje 100 zł od osoby.', config);
+  assert.deepEqual(paragraph.map((f) => [f.scope, f.kinds.join('+')]), [['paragraph', 'price']], 'a price next to a SiSi sentence is flagged at paragraph scope');
   assert.deepEqual(flags('Zapraszamy do SiSi na koncert.'), []);
 });
 

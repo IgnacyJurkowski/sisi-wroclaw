@@ -4,7 +4,8 @@ import assert from 'node:assert/strict';
 import { buildSeoEntry, descDistance, diffSeoEntry, kindOf, DESC_MAX, DESC_MIN } from './contract/lib/seo.mjs';
 import { diffRedirects } from './contract/lib/netlify.mjs';
 import { createReport } from './contract/lib/report.mjs';
-import { classifyHead } from './contract/lib/net.mjs';
+import { createServer } from 'node:http';
+import { classifyHead, headCheck } from './contract/lib/net.mjs';
 import { fetchProductionSnapshot, productionRefreshHint } from './contract/lib/production.mjs';
 import { stableStringify } from './contract/lib/snapshot.mjs';
 
@@ -200,4 +201,24 @@ test('refresh-from-production issues one GET (the sitemap) and HEAD for everythi
 
 test('snapshots are written as pretty JSON with a trailing newline', () => {
   assert.equal(stableStringify({ a: 1 }), '{\n  "a": 1\n}\n');
+});
+
+test('headCheck sends HEAD only and reports the verdict', async () => {
+  const methods = [];
+  const server = createServer((req, res) => {
+    methods.push(req.method);
+    res.writeHead(req.url === '/gone' ? 404 : req.url === '/wall' ? 403 : 200);
+    res.end();
+  });
+  await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const base = `http://127.0.0.1:${server.address().port}`;
+  try {
+    assert.deepEqual(await headCheck(`${base}/ok`), { verdict: 'ok', status: 200 });
+    assert.deepEqual(await headCheck(`${base}/gone`), { verdict: 'fail', status: 404 });
+    assert.deepEqual(await headCheck(`${base}/wall`), { verdict: 'unverified', status: 403 });
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
+  assert.deepEqual(methods, ['HEAD', 'HEAD', 'HEAD']);
+  assert.equal((await headCheck('http://127.0.0.1:1/', { timeoutMs: 500 })).verdict, 'unverified', 'an unreachable host is unverified, not a failure');
 });

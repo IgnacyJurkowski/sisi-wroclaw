@@ -74,6 +74,9 @@ async function main() {
       ctx.model = model;
       ctx.server = server;
       ctx.rules = loadRedirects(REPO_ROOT);
+      if (opts.updateSnapshot && model.buildContext !== 'production') {
+        console.warn('WARNING: --update-snapshot from a non-production build: every robots meta reads "noindex, nofollow", so the snapshot cannot record real indexability. Use --build (or CONTEXT=production URL=https://www.sisiwroclaw.pl npm run build) first.');
+      }
       console.log(`Checking ${distDir}: ${model.pages.size} pages, ${model.sitemap.length} sitemap URLs, build context ${model.buildContext}, server ${server.base}`);
     }
     const runners = { url: runUrlContract, seo: runSeoContract, links: runLinksContract, blog: runBlogContract, facts: runFactsContract };

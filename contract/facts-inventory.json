@@ -1,5 +1,5 @@
 {
-  "source": "local-build main e1feb25",
+  "source": "local-build sisi-elevate/contract@8b01659",
   "note": "Every distinct currency amount, clock time, phone, email and street address found in built pages, llms.txt and llms-full.txt, with the pages carrying it. blogFlags lists sentences in blog posts that state a price, an hour or a rule about SiSi (audit input). contradictions lists values that break contract/facts.json. Regenerated with --update-snapshot or --write-inventory; not a snapshot to diff.",
   "buildContext": "production",
   "values": {
@@ -1947,6 +1947,7 @@
   "blogFlags": [
     {
       "page": "/pl/blog/afterparty-co-to/",
+      "scope": "sentence",
       "kinds": [
         "price",
         "rule"
@@ -1959,6 +1960,7 @@
     },
     {
       "page": "/pl/blog/aperol-vs-campari/",
+      "scope": "sentence",
       "kinds": [
         "hour",
         "rule"
@@ -1967,7 +1969,21 @@
       "sentence": "Wcześniejsze godziny, kiedy sala jeszcze się rozgrzewa i gra spokojniejsza muzyka, to czas na Aperol Spritz, często zamawiany jako wstęp do kolacji przygotowanej w duchu współpracy z restauracją The Cork."
     },
     {
+      "page": "/pl/blog/dekantacja-wina/",
+      "scope": "paragraph",
+      "kinds": [
+        "price",
+        "rule"
+      ],
+      "values": [
+        "100 zł",
+        "40 zł"
+      ],
+      "sentence": "Rezerwacja stolika kosztuje 100 zł od osoby, a w soboty obowiązuje dodatkowo wstęp w wysokości 40 zł od osoby, co można sprawdzić na stronie rezerwacji. Jeśli planujesz coś większego, na przykład rocznicę czy kolację firmową z odpowiednio dobranymi winami, sprawdź ofertę imprez prywatnych lub eventów firmowych . Menu nocne przygotowane wspólnie z restauracją The Cork świetnie komponuje się z kolejnymi kieliszkami wina, więc kolację i degustację można połączyć jednego wieczoru. Zarezerwuj stolik już teraz i zapytaj obsługę, które wino z karty warto dekantować."
+    },
+    {
       "page": "/pl/blog/etykieta-na-parkiecie/",
+      "scope": "sentence",
       "kinds": [
         "rule"
       ],
@@ -1976,6 +1992,7 @@
     },
     {
       "page": "/pl/blog/jazz-na-zywo-wroclaw/",
+      "scope": "sentence",
       "kinds": [
         "rule"
       ],
@@ -1984,6 +2001,7 @@
     },
     {
       "page": "/pl/blog/nocne-menu-co-to/",
+      "scope": "sentence",
       "kinds": [
         "price",
         "rule"
@@ -1996,6 +2014,7 @@
     },
     {
       "page": "/pl/blog/urodziny-w-klubie-pomysly/",
+      "scope": "sentence",
       "kinds": [
         "rule"
       ],

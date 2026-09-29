@@ -177,18 +177,29 @@ export function contradictions(block, where, config) {
   return out;
 }
 
-/** Blog paragraphs that state a price, an hour or a rule about SiSi. */
+/** Blog text that states a price, an hour or a rule about SiSi. Judged per
+    sentence; when no single sentence qualifies, a paragraph that names SiSi and
+    carries an amount or a time is flagged as a whole (scope "paragraph"). */
 export function blogFlags(block, config) {
   const matchers = contextMatchers(config);
+  const describe = (text) => {
+    const facts = extractFacts(text);
+    const kinds = new Set();
+    if (facts.some((f) => f.kind === 'currency')) kinds.add('price');
+    if (facts.some((f) => f.kind === 'time' || f.kind === 'timeRange') || matchers.hours.test(text)) kinds.add('hour');
+    if (matchers.rule.test(text)) kinds.add('rule');
+    const values = [...new Set(facts.filter((f) => ['currency', 'time', 'timeRange'].includes(f.kind)).map((f) => f.value))];
+    return { kinds: [...kinds].sort(), values };
+  };
   const flags = [];
   for (const sentence of splitSentences(block)) {
     if (!isAboutSisi(sentence)) continue;
-    const facts = extractFacts(sentence);
-    const kinds = new Set();
-    if (facts.some((f) => f.kind === 'currency')) kinds.add('price');
-    if (facts.some((f) => f.kind === 'time' || f.kind === 'timeRange') || matchers.hours.test(sentence)) kinds.add('hour');
-    if (matchers.rule.test(sentence)) kinds.add('rule');
-    if (kinds.size) flags.push({ kinds: [...kinds].sort(), values: [...new Set(facts.filter((f) => ['currency', 'time', 'timeRange'].includes(f.kind)).map((f) => f.value))], sentence });
+    const { kinds, values } = describe(sentence);
+    if (kinds.length) flags.push({ scope: 'sentence', kinds, values, sentence });
+  }
+  if (!flags.length && isAboutSisi(block)) {
+    const { kinds, values } = describe(block);
+    if (values.length) flags.push({ scope: 'paragraph', kinds, values, sentence: block });
   }
   return flags;
 }
