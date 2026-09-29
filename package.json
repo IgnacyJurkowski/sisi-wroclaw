@@ -18,6 +18,8 @@
     "test:unit": "node --test scripts/*.test.mjs scripts/events-sync/*.test.mjs scripts/articles-sync/*.test.mjs",
     "build:check": "npm run build && node scripts/check-build.mjs",
     "test:notices": "node scripts/site-notices-browser.mjs",
+    "contract": "node scripts/contract/run.mjs",
+    "contract:prod": "node scripts/contract/run.mjs --build",
     "test:build": "node scripts/check-build.mjs && npm run test:notices",
     "perf:backdrop": "node scripts/backdrop-fps.mjs"
   },

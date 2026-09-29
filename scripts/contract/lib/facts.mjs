@@ -145,8 +145,10 @@ export function contradictions(block, where, config) {
     if (where.kind === 'event') continue;
     const sisi = isAboutSisi(sentence);
     const money = facts.filter((f) => f.kind === 'currency');
-    const times = facts.filter((f) => f.kind === 'time');
     const ranges = facts.filter((f) => f.kind === 'timeRange');
+    // A time that is the end of a range is judged with the range, once.
+    const inRange = new Set(ranges.flatMap((f) => f.value.split('-')));
+    const times = facts.filter((f) => f.kind === 'time' && !inRange.has(f.value));
 
     const reservationClaim = matchers.reservation.test(sentence) && (where.kind === 'site' || sisi);
     if (reservationClaim || (where.kind === 'blog' && sisi)) {

@@ -74,7 +74,7 @@ export function summariseJsonLd(blocks) {
       if (root['@id'] && rootTypes.length) ids.add(String(root['@id']));
     }
     for (const node of jsonLdNodes(block)) {
-      const template = node.urlTemplate ?? node.target?.urlTemplate;
+      const template = node.urlTemplate;
       if (template) reserveTargets.push({ url: String(template), inLanguage: node.inLanguage });
     }
     strings.push(...jsonStrings(block));
