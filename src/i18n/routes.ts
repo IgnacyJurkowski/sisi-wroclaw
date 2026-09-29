@@ -12,6 +12,7 @@ export const ROUTE_KEYS = [
   'reservations',
   'corporate',
   'privateEvents',
+  'configurator',
   'contact',
   'blog',
   'terms',
@@ -29,6 +30,7 @@ export const SLUGS: Record<RouteKey, Record<Locale, string>> = {
   reservations: { pl: 'rezerwacje', en: 'reservations', de: 'reservierungen', it: 'prenotazioni', cs: 'rezervace' },
   corporate: { pl: 'eventy-firmowe', en: 'corporate-events', de: 'firmenevents', it: 'eventi-aziendali', cs: 'firemni-akce' },
   privateEvents: { pl: 'imprezy-prywatne', en: 'private-events', de: 'private-feiern', it: 'eventi-privati', cs: 'soukrome-akce' },
+  configurator: { pl: 'konfigurator-imprezy', en: 'event-configurator', de: 'event-konfigurator', it: 'configuratore-eventi', cs: 'konfigurator-akce' },
   contact: { pl: 'kontakt', en: 'contact', de: 'kontakt', it: 'contatti', cs: 'kontakt' },
   // "blog" is the established loanword in every locale we publish in, so the
   // article URLs stay stable if an article is later translated.
@@ -41,9 +43,10 @@ export const SLUGS: Record<RouteKey, Record<Locale, string>> = {
 /** Main navigation links, in order. Reservations is rendered as the CTA. */
 export const NAV_KEYS: RouteKey[] = ['events', 'menu', 'careers', 'privateEvents', 'corporate'];
 
-/** Footer "Pages" column: the nav plus the blog, which is deliberately kept out
-    of the fixed top bar (its five links + CTA already fill the 1120px rail). */
-export const FOOTER_PAGE_KEYS: RouteKey[] = [...NAV_KEYS, 'blog'];
+/** Footer "Pages" column: the nav plus the event configurator and the blog,
+    which are deliberately kept out of the fixed top bar (its five links + CTA
+    already fill the 1120px rail). */
+export const FOOTER_PAGE_KEYS: RouteKey[] = [...NAV_KEYS, 'configurator', 'blog'];
 
 /** Legal/utility links shown in the footer. */
 export const FOOTER_LEGAL_KEYS: RouteKey[] = ['terms', 'privacy', 'cookies', 'contact'];

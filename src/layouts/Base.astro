@@ -41,11 +41,14 @@ interface Props {
   noindex?: boolean;
   /** extra page-level JSON-LD objects (e.g. Event list) rendered in <head> */
   schema?: Record<string, unknown>[];
+  /** app-like pages (the event configurator) fill the viewport and skip the footer */
+  noFooter?: boolean;
 }
 
 const {
   locale,
   routeKey,
+  noFooter = false,
   path,
   altPaths,
   title,
@@ -158,7 +161,7 @@ const robotsContent = robotsDirective({
     <main id="main">
       <slot />
     </main>
-    <Footer locale={locale} />
+    {!noFooter && <Footer locale={locale} />}
     <CookieBanner locale={locale} />
     <script>import '../scripts/nav.ts';</script>
     <script>import '../scripts/scroll-animations.ts';</script>

@@ -25,7 +25,7 @@ import { DICTS } from '../i18n/ui';
 const PROGRAMME_KEYS: RouteKey[] = ['menu', 'events', 'blog'];
 
 /** Booking and hire pages. */
-const BOOKING_KEYS: RouteKey[] = ['reservations', 'privateEvents', 'corporate', 'careers'];
+const BOOKING_KEYS: RouteKey[] = ['reservations', 'privateEvents', 'configurator', 'corporate', 'careers'];
 
 /** Contact and legal pages. */
 const LEGAL_KEYS: RouteKey[] = ['contact', 'terms', 'privacy', 'cookies'];
