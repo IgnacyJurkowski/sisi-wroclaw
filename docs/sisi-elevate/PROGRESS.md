@@ -22,6 +22,14 @@ lighthouse 13.5.0, html-validate 11.16.1, culori 4.0.2, pixelmatch 7.2.0, pngjs 
 
 State: Phase 0 partly done, Phase 1 done, Phase 3a mostly done, Phase 5.1 done, Phase 5.2 barely started. Nothing in Phases 2 (main audit), 4, 5.3 to 5.5, 6, 7 is done. See `RESUME.md` for exact paths, what was stopped mid-flight, and the Track A queue. All agents were stopped; none are running.
 
+## Branches and draft PRs (all draft, none merged, none deployed; no PR subscription was set because Ignacy asked to stop)
+
+| Branch | Base | Draft PR |
+|---|---|---|
+| `sisi-elevate/contract` | `main` | https://github.com/IgnacyJurkowski/sisi-wroclaw/pull/37 |
+| `sisi-elevate/base` (docs) | `main` | https://github.com/IgnacyJurkowski/sisi-wroclaw/pull/38 |
+| `sisi-elevate/venue-truth` | `sisi-elevate/base` | https://github.com/IgnacyJurkowski/sisi-wroclaw/pull/39 |
+
 ## Checklist
 
 ### Phase 0: bootstrap and baseline
