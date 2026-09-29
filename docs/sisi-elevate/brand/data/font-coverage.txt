@@ -1,0 +1,5 @@
+pl: distinct non-ASCII=19; missing in Montserrat inline: ²(U+00B2)x3 | missing in Cal Sans: ²(U+00B2)x3 →(U+2192)x1
+en: distinct non-ASCII=10; missing in Montserrat inline: ²(U+00B2)x3 | missing in Cal Sans: ²(U+00B2)x3 →(U+2192)x1
+de: distinct non-ASCII=16; missing in Montserrat inline: ²(U+00B2)x3 ß(U+00DF)x10 | missing in Cal Sans: ²(U+00B2)x3 →(U+2192)x1
+it: distinct non-ASCII=15; missing in Montserrat inline: ²(U+00B2)x3 Ù(U+00D9)x1 ì(U+00EC)x18 ò(U+00F2)x5 ù(U+00F9)x2 | missing in Cal Sans: ²(U+00B2)x3 →(U+2192)x1
+cs: distinct non-ASCII=30; missing in Montserrat inline: ²(U+00B2)x3 ý(U+00FD)x70 Č(U+010C)x4 č(U+010D)x122 ď(U+010F)x5 ě(U+011B)x81 ň(U+0148)x5 Ř(U+0158)x2 ř(U+0159)x114 Š(U+0160)x3 š(U+0161)x53 ť(U+0165)x6 ů(U+016F)x52 Ž(U+017D)x4 ž(U+017E)x54 | missing in Cal Sans: ²(U+00B2)x3 →(U+2192)x1

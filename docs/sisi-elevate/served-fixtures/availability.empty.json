@@ -1,0 +1,26 @@
+{
+  "_meta": {
+    "derivedFrom": [
+      "served-app src/app/actions/reservation-availability.ts:203-205 (invalid date, invalid party)",
+      "served-app src/app/actions/reservation-availability.ts:215 (party above venue cap)",
+      "served-app src/app/actions/reservation-availability.ts:216-218 (beyond advance window)",
+      "served-app src/app/actions/reservation-availability.ts:224-226 (no published hours)",
+      "served-app src/app/actions/reservation-availability.ts:230 (day closed, no slots)",
+      "served-app src/test/unit/app/actions/reservation-availability.test.ts:111-114, 139-144, 153-159, 174-186"
+    ],
+    "provenance": "Shape: real. All of these causes return the same 200 with an empty slots array. The caller cannot tell which one it hit.",
+    "cases": [
+      { "cause": "invalid date, invalid party, party above the venue cap, service key missing, venue inactive after lookup", "capacityKnown": false },
+      { "cause": "date beyond the advance-booking window, no published hours, closed day, special-hours closure", "capacityKnown": "true when the venue has tables, else false" }
+    ]
+  },
+  "request": {
+    "method": "GET",
+    "path": "/api/booking/availability",
+    "query": { "venue": "[SLUG?]", "date": "2026-10-01", "party": "2" }
+  },
+  "response": {
+    "status": 200,
+    "body": { "date": "2026-10-01", "slots": [], "capacityKnown": true }
+  }
+}

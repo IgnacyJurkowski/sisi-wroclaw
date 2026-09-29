@@ -1,0 +1,6 @@
+skin-lit-singer              u3EOm1VtOnAT box=(250, 105, 285, 150) median=#c48363 L*=61 C=35 h=52
+neon-led-strip-orange        bHchRJgtNrxK box=(1250, 236, 1420, 246) median=#df4201 L*=51 C=86 h=47
+back-bar-tile-glow           YANjqHXpbp64 box=(1400, 420, 1700, 560) median=#b23007 L*=41 C=72 h=45
+brass-lamp-amber             RMGSDUbOPnta box=(135, 235, 165, 285) median=#d69f3b L*=69 C=59 h=79
+stage-blue-wash              cDJcCUEanjQS box=(280, 0, 480, 60) median=#041a6a L*=14 C=55 h=299
+spritz-orange                bar-cocktail box=(300, 60, 420, 140) median=#b03424 L*=41 C=62 h=38

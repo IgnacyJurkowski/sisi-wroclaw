@@ -1,0 +1,313 @@
+{
+  "_meta": {
+    "derivedFrom": [
+      "served-app src/app/api/booking/reserve/route.ts:18-31, 55-59",
+      "served-app src/app/actions/public-reservations.ts:24-60 (BOOKING_STATUS_MESSAGE, extracted by script, not retyped)",
+      "served-app src/test/unit/app/actions/public-reservations.test.ts:102-155"
+    ],
+    "provenance": "Strings: real, extracted from source. Two of them contain an em dash in Served's own copy, escaped here as \\u2014.",
+    "note": "Every failure is HTTP 400 with { error: string } except the route-level cases below. There is no error code and no locale parameter. Rate limiting is a 400, not a 429. Copy is English only.",
+    "minNoticeMessage": "Online bookings need at least {window} notice, then an em dash, then \"please call the venue.\" (public-reservations.ts:172-174). {window} comes from formatNoticeWindow (slots.ts:174-180), for example \"2 hours\"."
+  },
+  "routeLevel": [
+    {
+      "cause": "body is not JSON",
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "Invalid JSON body"
+        }
+      },
+      "sourceLine": "reserve/route.ts:19-24"
+    },
+    {
+      "cause": "venue field empty, unknown, or venue not active",
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "Venue not found"
+        }
+      },
+      "sourceLine": "reserve/route.ts:28-31"
+    }
+  ],
+  "rpcStatuses": [
+    {
+      "cause": "reserve_table_booking returned out_status 'venue_not_found'",
+      "sourceLine": "public-reservations.ts:25-55, mapped at 242-261",
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "Venue not found"
+        }
+      }
+    },
+    {
+      "cause": "reserve_table_booking returned out_status 'table_taken'",
+      "sourceLine": "public-reservations.ts:25-55, mapped at 242-261",
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "That table was just booked for this time. Please choose another."
+        }
+      }
+    },
+    {
+      "cause": "reserve_table_booking returned out_status 'table_too_small'",
+      "sourceLine": "public-reservations.ts:25-55, mapped at 242-261",
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "That table is too small for your party. Please choose a larger one."
+        }
+      }
+    },
+    {
+      "cause": "reserve_table_booking returned out_status 'full'",
+      "sourceLine": "public-reservations.ts:25-55, mapped at 242-261",
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "This time is fully booked. Please choose another slot."
+        }
+      }
+    },
+    {
+      "cause": "reserve_table_booking returned out_status 'party_too_large'",
+      "sourceLine": "public-reservations.ts:25-55, mapped at 242-261",
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "That party size is too large to book online \u2014 please contact the venue."
+        }
+      }
+    },
+    {
+      "cause": "reserve_table_booking returned out_status 'too_soon'",
+      "sourceLine": "public-reservations.ts:25-55, mapped at 242-261",
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "That time is too soon to book online \u2014 please call the venue."
+        }
+      }
+    },
+    {
+      "cause": "reserve_table_booking returned out_status 'too_far_ahead'",
+      "sourceLine": "public-reservations.ts:25-55, mapped at 242-261",
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "That date is not open for online bookings yet."
+        }
+      }
+    },
+    {
+      "cause": "reserve_table_booking returned out_status 'venue_paused'",
+      "sourceLine": "public-reservations.ts:25-55, mapped at 242-261",
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "This venue is not taking online bookings right now."
+        }
+      }
+    },
+    {
+      "cause": "reserve_table_booking returned out_status 'venue_closed'",
+      "sourceLine": "public-reservations.ts:25-55, mapped at 242-261",
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "The venue is closed on that date."
+        }
+      }
+    },
+    {
+      "cause": "reserve_table_booking returned out_status 'outside_hours'",
+      "sourceLine": "public-reservations.ts:25-55, mapped at 242-261",
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "The venue is not open at that time. Please choose another slot."
+        }
+      }
+    },
+    {
+      "cause": "reserve_table_booking returned out_status 'hours_not_set'",
+      "sourceLine": "public-reservations.ts:25-55, mapped at 242-261",
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "This venue has not published its opening hours yet. Please contact the venue to book."
+        }
+      }
+    },
+    {
+      "cause": "reserve_table_booking returned out_status 'intent_conflict'",
+      "sourceLine": "public-reservations.ts:25-55, mapped at 242-261",
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "This booking was already sent with different details. Refresh the page to start a new booking, or contact the venue to change the one you made."
+        }
+      }
+    },
+    {
+      "cause": "reserve_table_booking returned out_status 'rate_limited'",
+      "sourceLine": "public-reservations.ts:25-55, mapped at 242-261",
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "This venue is getting a lot of booking requests right now. Please try again in a few minutes or contact the venue."
+        }
+      }
+    },
+    {
+      "cause": "reserve_table_booking returned out_status 'past_time'",
+      "sourceLine": "public-reservations.ts:25-55, mapped at 242-261",
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "That time has already passed. Please choose a later slot."
+        }
+      }
+    }
+  ],
+  "actionErrors": [
+    {
+      "cause": "venue, name, phone, or time missing (public-reservations.ts:99-101)",
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "Missing required fields"
+        }
+      }
+    },
+    {
+      "cause": "email present and not name@host.tld shaped (103-105)",
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "Please enter a valid email address"
+        }
+      }
+    },
+    {
+      "cause": "intent_key present and not a UUID (107-109)",
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "Invalid booking request"
+        }
+      }
+    },
+    {
+      "cause": "more than 8 bookings per IP per hour, or 60 per venue per hour, at the app layer (111-119; rate-limit.ts:18, 21)",
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "Too many reservation requests. Please try again later."
+        }
+      }
+    },
+    {
+      "cause": "party not an integer from 1 to 20 (121-124)",
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "Invalid party size"
+        }
+      }
+    },
+    {
+      "cause": "location id did not resolve inside the action (134)",
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "Venue not found"
+        }
+      }
+    },
+    {
+      "cause": "venue inactive (135-137) or plan below the reservations module (146-158)",
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "This venue is not taking online bookings right now."
+        }
+      }
+    },
+    {
+      "cause": "party above locations.max_party_size (160-163)",
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "For parties of more than {max}, please contact the venue directly."
+        }
+      }
+    },
+    {
+      "cause": "reserved_at unparseable or not after now (165-169)",
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "Reservation date must be in the future"
+        }
+      }
+    },
+    {
+      "cause": "beyond max_booking_advance_days (175-178)",
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "Bookings open up to {n} days ahead."
+        }
+      }
+    },
+    {
+      "cause": "special_hours lookup failed (190-196)",
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "We could not confirm availability for that date. Please try again or contact the venue."
+        }
+      }
+    },
+    {
+      "cause": "special-hours closure without a label (197-203)",
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "The venue is closed on that date."
+        }
+      }
+    },
+    {
+      "cause": "special-hours closure with a label (197-203)",
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "The venue is closed on that date ({label})."
+        }
+      }
+    },
+    {
+      "cause": "RPC error that is not a slot conflict (234-240) or any thrown error (408-414)",
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "Something went wrong. Please try again."
+        }
+      }
+    },
+    {
+      "cause": "out_status with no copy, including source_not_allowed (57-60, 253-260)",
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "We could not make this booking. Please try again or contact the venue."
+        }
+      }
+    }
+  ]
+}

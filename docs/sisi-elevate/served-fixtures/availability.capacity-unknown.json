@@ -1,0 +1,35 @@
+{
+  "_meta": {
+    "derivedFrom": [
+      "served-app src/test/unit/app/actions/reservation-availability.test.ts:116-125 ('returns every generated slot as available when capacity is unknown (fail open)')",
+      "served-app src/app/actions/reservation-availability.ts:232-233, 269"
+    ],
+    "provenance": "Shape and rule: real (venue has no tables, so bookableCovers is null and nothing is blocked). Dates and hours: SiSi Friday.",
+    "note": "capacityKnown false with a non-empty slots array means the slots are unverified, not free. The RPC still checks capacity on booking."
+  },
+  "request": {
+    "method": "GET",
+    "path": "/api/booking/availability",
+    "query": { "venue": "[SLUG?]", "date": "2026-10-02", "party": "2" }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "date": "2026-10-02",
+      "slots": [
+        { "time": "22:00", "available": true },
+        { "time": "22:30", "available": true },
+        { "time": "23:00", "available": true },
+        { "time": "23:30", "available": true },
+        { "time": "00:00", "available": true },
+        { "time": "00:30", "available": true },
+        { "time": "01:00", "available": true },
+        { "time": "01:30", "available": true },
+        { "time": "02:00", "available": true },
+        { "time": "02:30", "available": true },
+        { "time": "03:00", "available": true }
+      ],
+      "capacityKnown": false
+    }
+  }
+}

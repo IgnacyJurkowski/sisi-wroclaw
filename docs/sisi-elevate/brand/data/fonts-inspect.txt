@@ -1,0 +1,196 @@
+global.css:24 inline Montserrat | 22052B | Montserrat / Thin | v=Version 9.000 | wght=100 | axes=wght=100-900 | glyphs=185 | cmap=167 | PL 18/18 miss=- | ASCII a-z=True | ital=False
+     copyright: Copyright 2011 The Montserrat Project Authors (https://github.com/JulietaUla/Montserrat)
+     licence: This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://openfontlicense.org | url: https://openfontlicense.org | vendor: Julieta Ulanovsky | designer: Julieta Ulanovsky
+     cmap min U+0020 max U+2215; has ł=True Ł=True €=True „=False ”=True –=True …=True ä=True ß=False č=False ě=False ř=False ů=False ì=False
+fonts.gstatic.com/s/dmsans/v15/rP2rp2ywxg089UriCZaSExd86J3t9jz86Mvy4qCRAL19DksVat-7DW32RmYJpso5.woff2 | 24832B | DM Sans / Medium Italic | v=Version 4.004;gftools[0.9.30 | wght=500 | axes=- | glyphs=486 | cmap=403 | PL 18/18 miss=- | ASCII a-z=True | ital=True
+     copyright: Copyright 2014 The DM Sans Project Authors (https://github.com/googlefonts/dm-fonts)
+     licence: This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL | url: https://scripts.sil.org/OFL | vendor: Colophon Foundry | designer: Colophon Foundry, Jonny Pinhorn
+     cmap min U+000D max U+FB02; has ł=True Ł=True €=True „=True ”=True –=True …=True ä=True ß=True č=True ě=True ř=True ů=True ì=True
+fonts.gstatic.com/s/dmsans/v15/rP2rp2ywxg089UriCZaSExd86J3t9jz86Mvy4qCRAL19DksVat8gCm32RmYJpso5.woff2 | 24948B | DM Sans / Black Italic | v=Version 4.004;gftools[0.9.30 | wght=900 | axes=- | glyphs=486 | cmap=403 | PL 18/18 miss=- | ASCII a-z=True | ital=True
+     copyright: Copyright 2014 The DM Sans Project Authors (https://github.com/googlefonts/dm-fonts)
+     licence: This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL | url: https://scripts.sil.org/OFL | vendor: Colophon Foundry | designer: Colophon Foundry, Jonny Pinhorn
+     cmap min U+000D max U+FB02; has ł=True Ł=True €=True „=True ”=True –=True …=True ä=True ß=True č=True ě=True ř=True ů=True ì=True
+fonts.gstatic.com/s/dmsans/v15/rP2rp2ywxg089UriCZaSExd86J3t9jz86Mvy4qCRAL19DksVat9uCm32RmYJpso5.woff2 | 24968B | DM Sans / Bold Italic | v=Version 4.004;gftools[0.9.30 | wght=700 | axes=- | glyphs=486 | cmap=403 | PL 18/18 miss=- | ASCII a-z=True | ital=True
+     copyright: Copyright 2014 The DM Sans Project Authors (https://github.com/googlefonts/dm-fonts)
+     licence: This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL | url: https://scripts.sil.org/OFL | vendor: Colophon Foundry | designer: Colophon Foundry, Jonny Pinhorn
+     cmap min U+000D max U+FB02; has ł=True Ł=True €=True „=True ”=True –=True …=True ä=True ß=True č=True ě=True ř=True ů=True ì=True
+fonts.gstatic.com/s/dmsans/v15/rP2tp2ywxg089UriI5-g4vlH9VoD8CmcqZG40F9JadbnoEwAC5thS2f3ZGMZpg.woff2 | 22092B | DM Sans / Black | v=Version 4.004;gftools[0.9.30 | wght=900 | axes=- | glyphs=486 | cmap=403 | PL 18/18 miss=- | ASCII a-z=True | ital=False
+     copyright: Copyright 2014 The DM Sans Project Authors (https://github.com/googlefonts/dm-fonts)
+     licence: This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL | url: https://scripts.sil.org/OFL | vendor: Colophon Foundry | designer: Colophon Foundry, Jonny Pinhorn
+     cmap min U+000D max U+FB02; has ł=True Ł=True €=True „=True ”=True –=True …=True ä=True ß=True č=True ě=True ř=True ů=True ì=True
+fonts.gstatic.com/s/dmsans/v15/rP2tp2ywxg089UriI5-g4vlH9VoD8CmcqZG40F9JadbnoEwARZthS2f3ZGMZpg.woff2 | 22092B | DM Sans / Bold | v=Version 4.004;gftools[0.9.30 | wght=700 | axes=- | glyphs=486 | cmap=403 | PL 18/18 miss=- | ASCII a-z=True | ital=False
+     copyright: Copyright 2014 The DM Sans Project Authors (https://github.com/googlefonts/dm-fonts)
+     licence: This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL | url: https://scripts.sil.org/OFL | vendor: Colophon Foundry | designer: Colophon Foundry, Jonny Pinhorn
+     cmap min U+000D max U+FB02; has ł=True Ł=True €=True „=True ”=True –=True …=True ä=True ß=True č=True ě=True ř=True ů=True ì=True
+fonts.gstatic.com/s/dmsans/v15/rP2tp2ywxg089UriI5-g4vlH9VoD8CmcqZG40F9JadbnoEwAkJxhS2f3ZGMZpg.woff2 | 22204B | DM Sans / Medium | v=Version 4.004;gftools[0.9.30 | wght=500 | axes=- | glyphs=486 | cmap=403 | PL 18/18 miss=- | ASCII a-z=True | ital=False
+     copyright: Copyright 2014 The DM Sans Project Authors (https://github.com/googlefonts/dm-fonts)
+     licence: This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL | url: https://scripts.sil.org/OFL | vendor: Colophon Foundry | designer: Colophon Foundry, Jonny Pinhorn
+     cmap min U+000D max U+FB02; has ł=True Ł=True €=True „=True ”=True –=True …=True ä=True ß=True č=True ě=True ř=True ů=True ì=True
+fonts.gstatic.com/s/dmsans/v17/rP2Wp2ywxg089UriCZaSExd86J3t9jz86MvyyKK58VXh.woff2 | 20808B | DM Sans 9pt / Italic | v=Version 4.004;gftools[0.9.30 | wght=400 | axes=wght=100-1000 | glyphs=198 | cmap=149 | PL 16/18 miss=óÓ | ASCII a-z=False | ital=True
+     copyright: Copyright 2014 The DM Sans Project Authors (https://github.com/googlefonts/dm-fonts)
+     licence:  | url: https://scripts.sil.org/OFL | vendor:  | designer: 
+     cmap min U+000D max U+2113; has ł=True Ł=True €=False „=False ”=False –=False …=False ä=False ß=False č=True ě=True ř=True ů=True ì=False
+fonts.gstatic.com/s/dmsans/v17/rP2Wp2ywxg089UriCZaSExd86J3t9jz86MvyyKy58Q.woff2 | 39712B | DM Sans 9pt / Italic | v=Version 4.004;gftools[0.9.30 | wght=400 | axes=wght=100-1000 | glyphs=263 | cmap=222 | PL 2/18 miss=ąćęłńśźżĄĆĘŁŃŚŹŻ | ASCII a-z=True | ital=True
+     copyright: Copyright 2014 The DM Sans Project Authors (https://github.com/googlefonts/dm-fonts)
+     licence:  | url: https://scripts.sil.org/OFL | vendor:  | designer: 
+     cmap min U+000D max U+2215; has ł=False Ł=False €=True „=True ”=True –=True …=True ä=True ß=True č=False ě=False ř=False ů=False ì=True
+fonts.gstatic.com/s/dmsans/v17/rP2Yp2ywxg089UriI5-g4vlH9VoD8Cmcqbu0-K4.woff2 | 36932B | DM Sans 9pt / Regular | v=Version 4.004;gftools[0.9.30 | wght=400 | axes=wght=100-1000 | glyphs=270 | cmap=222 | PL 2/18 miss=ąćęłńśźżĄĆĘŁŃŚŹŻ | ASCII a-z=True | ital=False
+     copyright: Copyright 2014 The DM Sans Project Authors (https://github.com/googlefonts/dm-fonts)
+     licence:  | url: https://scripts.sil.org/OFL | vendor:  | designer: 
+     cmap min U+000D max U+2215; has ł=False Ł=False €=True „=True ”=True –=True …=True ä=True ß=True č=False ě=False ř=False ů=False ì=True
+fonts.gstatic.com/s/dmsans/v17/rP2Yp2ywxg089UriI5-g4vlH9VoD8Cmcqbu6-K6h9Q.woff2 | 18228B | DM Sans 9pt / Regular | v=Version 4.004;gftools[0.9.30 | wght=400 | axes=wght=100-1000 | glyphs=216 | cmap=149 | PL 16/18 miss=óÓ | ASCII a-z=False | ital=False
+     copyright: Copyright 2014 The DM Sans Project Authors (https://github.com/googlefonts/dm-fonts)
+     licence:  | url: https://scripts.sil.org/OFL | vendor:  | designer: 
+     cmap min U+000D max U+2113; has ł=True Ł=True €=False „=False ”=False –=False …=False ä=False ß=False č=True ě=True ř=True ů=True ì=False
+fonts.gstatic.com/s/dmsans/v17/rP2rp2ywxg089UriCZaSExd86J3t9jz86Mvy4qCRAL19DksVat8gCl30TGc.woff2 | 15224B | DM Sans 9pt / Black Italic | v=Version 4.004;gftools[0.9.30 | wght=900 | axes=- | glyphs=263 | cmap=222 | PL 2/18 miss=ąćęłńśźżĄĆĘŁŃŚŹŻ | ASCII a-z=True | ital=True
+     copyright: Copyright 2014 The DM Sans Project Authors (https://github.com/googlefonts/dm-fonts)
+     licence:  | url: https://scripts.sil.org/OFL | vendor:  | designer: 
+     cmap min U+000D max U+2215; has ł=False Ł=False €=True „=True ”=True –=True …=True ä=True ß=True č=False ě=False ř=False ů=False ì=True
+fonts.gstatic.com/s/dmsans/v17/rP2rp2ywxg089UriCZaSExd86J3t9jz86Mvy4qCRAL19DksVat8gCl36TGc5pg.woff2 | 8188B | DM Sans 9pt / Black Italic | v=Version 4.004;gftools[0.9.30 | wght=900 | axes=- | glyphs=198 | cmap=149 | PL 16/18 miss=óÓ | ASCII a-z=False | ital=True
+     copyright: Copyright 2014 The DM Sans Project Authors (https://github.com/googlefonts/dm-fonts)
+     licence:  | url: https://scripts.sil.org/OFL | vendor:  | designer: 
+     cmap min U+000D max U+2113; has ł=True Ł=True €=False „=False ”=False –=False …=False ä=False ß=False č=True ě=True ř=True ů=True ì=False
+fonts.gstatic.com/s/dmsans/v17/rP2tp2ywxg089UriI5-g4vlH9VoD8CmcqZG40F9JadbnoEwAC5tRR232VGM.woff2 | 7448B | DM Sans 9pt / Black | v=Version 4.004;gftools[0.9.30 | wght=900 | axes=- | glyphs=216 | cmap=149 | PL 16/18 miss=óÓ | ASCII a-z=False | ital=False
+     copyright: Copyright 2014 The DM Sans Project Authors (https://github.com/googlefonts/dm-fonts)
+     licence:  | url: https://scripts.sil.org/OFL | vendor:  | designer: 
+     cmap min U+000D max U+2113; has ł=True Ł=True €=False „=False ”=False –=False …=False ä=False ß=False č=True ě=True ř=True ů=True ì=False
+fonts.gstatic.com/s/dmsans/v17/rP2tp2ywxg089UriI5-g4vlH9VoD8CmcqZG40F9JadbnoEwAC5tRSW32.woff2 | 14232B | DM Sans 9pt / Black | v=Version 4.004;gftools[0.9.30 | wght=900 | axes=- | glyphs=270 | cmap=222 | PL 2/18 miss=ąćęłńśźżĄĆĘŁŃŚŹŻ | ASCII a-z=True | ital=False
+     copyright: Copyright 2014 The DM Sans Project Authors (https://github.com/googlefonts/dm-fonts)
+     licence:  | url: https://scripts.sil.org/OFL | vendor:  | designer: 
+     cmap min U+000D max U+2215; has ł=False Ł=False €=True „=True ”=True –=True …=True ä=True ß=True č=False ě=False ř=False ů=False ì=True
+fonts.gstatic.com/s/dmsans/v17/rP2tp2ywxg089UriI5-g4vlH9VoD8CmcqZG40F9JadbnoEwAkJxhS2f3ZGMZpg.woff2 | 22196B | DM Sans / Medium | v=Version 4.004;gftools[0.9.30 | wght=500 | axes=- | glyphs=486 | cmap=403 | PL 18/18 miss=- | ASCII a-z=True | ital=False
+     copyright: Copyright 2014 The DM Sans Project Authors (https://github.com/googlefonts/dm-fonts)
+     licence: This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL | url: https://scripts.sil.org/OFL | vendor: Colophon Foundry | designer: Colophon Foundry, Jonny Pinhorn
+     cmap min U+000D max U+FB02; has ł=True Ł=True €=True „=True ”=True –=True …=True ä=True ß=True č=True ě=True ř=True ů=True ì=True
+fonts.gstatic.com/s/dmsans/v17/rP2tp2ywxg089UriI5-g4vlH9VoD8CmcqZG40F9JadbnoEwAopxhS2f3ZGMZpg.woff2 | 21828B | DM Sans / Regular | v=Version 4.004;gftools[0.9.30 | wght=400 | axes=- | glyphs=486 | cmap=403 | PL 18/18 miss=- | ASCII a-z=True | ital=False
+     copyright: Copyright 2014 The DM Sans Project Authors (https://github.com/googlefonts/dm-fonts)
+     licence: This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL | url: https://scripts.sil.org/OFL | vendor: Colophon Foundry | designer: Colophon Foundry, Jonny Pinhorn
+     cmap min U+000D max U+FB02; has ł=True Ł=True €=True „=True ”=True –=True …=True ä=True ß=True č=True ě=True ř=True ů=True ì=True
+fonts.gstatic.com/s/kronaone/v15/jAnEgHdjHcjgfIb1ZcUyNoWg.woff2 | 10416B | Krona One / Regular | v=Version 1.003 | wght=400 | axes=- | glyphs=222 | cmap=213 | PL 2/18 miss=ąćęłńśźżĄĆĘŁŃŚŹŻ | ASCII a-z=True | ital=False
+     copyright: Copyright (c) 2011, Sorkin Type Co (www.sorkintype.com) with Reserved Font Name "Krona".
+     licence:  | url: http://scripts.sil.org/OFL | vendor:  | designer: 
+     cmap min U+0020 max U+2212; has ł=False Ł=False €=True „=True ”=True –=True …=True ä=True ß=True č=False ě=False ř=False ů=False ì=True
+fonts.gstatic.com/s/kronaone/v15/jAnEgHdjHcjgfIb1ZcUyOIWg7cU.woff2 | 7972B | Krona One / Regular | v=Version 1.003 | wght=400 | axes=- | glyphs=232 | cmap=156 | PL 16/18 miss=óÓ | ASCII a-z=False | ital=False
+     copyright: Copyright (c) 2011, Sorkin Type Co (www.sorkintype.com) with Reserved Font Name "Krona".
+     licence:  | url: http://scripts.sil.org/OFL | vendor:  | designer: 
+     cmap min U+0020 max U+2020; has ł=True Ł=True €=False „=False ”=False –=False …=False ä=False ß=False č=True ě=True ř=True ů=True ì=False
+fonts.gstatic.com/s/opensans/v44/memQYaGs126MiZpBA-UFUIcVXSCEkx2cmqvXlWq8tWZ0Pw86hd0Rk_RkaVIUwaERZjA.woff2 | 63008B | Open Sans / Medium Italic | v=Version 3.003 | wght=500 | axes=- | glyphs=1152 | cmap=1010 | PL 18/18 miss=- | ASCII a-z=True | ital=True
+     copyright: Copyright 2020 The Open Sans Project Authors (https://github.com/googlefonts/opensans)
+     licence: This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL | url: http://scripts.sil.org/OFL | vendor: Monotype Imaging Inc. | designer: Monotype Design Team
+     cmap min U+0000 max U+FFFD; has ł=True Ł=True €=True „=True ”=True –=True …=True ä=True ß=True č=True ě=True ř=True ů=True ì=True
+fonts.gstatic.com/s/opensans/v44/memQYaGs126MiZpBA-UFUIcVXSCEkx2cmqvXlWq8tWZ0Pw86hd0RkyFjaVIUwaERZjA.woff2 | 60000B | Open Sans / Bold Italic | v=Version 3.003 | wght=700 | axes=- | glyphs=1152 | cmap=1010 | PL 18/18 miss=- | ASCII a-z=True | ital=True
+     copyright: Copyright 2020 The Open Sans Project Authors (https://github.com/googlefonts/opensans)
+     licence: This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL | url: http://scripts.sil.org/OFL | vendor: Monotype Imaging Inc. | designer: Monotype Design Team
+     cmap min U+0000 max U+FFFD; has ł=True Ł=True €=True „=True ”=True –=True …=True ä=True ß=True č=True ě=True ř=True ů=True ì=True
+fonts.gstatic.com/s/opensans/v44/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsg-1y4iY1M2xLER.woff2 | 57724B | Open Sans / Bold | v=Version 3.003 | wght=700 | axes=- | glyphs=1140 | cmap=1010 | PL 18/18 miss=- | ASCII a-z=True | ital=False
+     copyright: Copyright 2020 The Open Sans Project Authors (https://github.com/googlefonts/opensans)
+     licence: This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL | url: http://scripts.sil.org/OFL | vendor: Monotype Imaging Inc. | designer: Monotype Design Team
+     cmap min U+0000 max U+FFFD; has ł=True Ł=True €=True „=True ”=True –=True …=True ä=True ß=True č=True ě=True ř=True ů=True ì=True
+fonts.gstatic.com/s/opensans/v44/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0B4gaVI.woff2 | 18640B | Open Sans / Regular | v=Version 3.003 | wght=400 | axes=- | glyphs=280 | cmap=231 | PL 2/18 miss=ąćęłńśźżĄĆĘŁŃŚŹŻ | ASCII a-z=True | ital=False
+     copyright: Copyright 2020 The Open Sans Project Authors (https://github.com/googlefonts/opensans)
+     licence:  | url: http://scripts.sil.org/OFL | vendor:  | designer: 
+     cmap min U+0000 max U+FFFD; has ł=False Ł=False €=True „=True ”=True –=True …=True ä=True ß=True č=False ě=False ř=False ů=False ì=True
+fonts.gstatic.com/s/opensans/v44/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0B4iaVIGxA.woff2 | 7960B | Open Sans / Regular | v=Version 3.003 | wght=400 | axes=- | glyphs=86 | cmap=83 | PL 0/18 miss=ąćęłńóśźżĄĆĘŁŃÓŚŹŻ | ASCII a-z=False | ital=False
+     copyright: Copyright 2020 The Open Sans Project Authors (https://github.com/googlefonts/opensans)
+     licence:  | url: http://scripts.sil.org/OFL | vendor:  | designer: 
+     cmap min U+0000 max U+FB4B; has ł=False Ł=False €=False „=False ”=False –=False …=False ä=False ß=False č=False ě=False ř=False ů=False ì=False
+fonts.gstatic.com/s/opensans/v44/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0B4jaVIGxA.woff2 | 9336B | Open Sans / Regular | v=Version 3.003 | wght=400 | axes=- | glyphs=103 | cmap=79 | PL 0/18 miss=ąćęłńóśźżĄĆĘŁŃÓŚŹŻ | ASCII a-z=False | ital=False
+     copyright: Copyright 2020 The Open Sans Project Authors (https://github.com/googlefonts/opensans)
+     licence:  | url: http://scripts.sil.org/OFL | vendor:  | designer: 
+     cmap min U+0000 max U+03D6; has ł=False Ł=False €=False „=False ”=False –=False …=False ä=False ß=False č=False ě=False ř=False ů=False ì=False
+fonts.gstatic.com/s/opensans/v44/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0B4kaVIGxA.woff2 | 11108B | Open Sans / Regular | v=Version 3.003 | wght=400 | axes=- | glyphs=143 | cmap=106 | PL 0/18 miss=ąćęłńóśźżĄĆĘŁŃÓŚŹŻ | ASCII a-z=False | ital=False
+     copyright: Copyright 2020 The Open Sans Project Authors (https://github.com/googlefonts/opensans)
+     licence:  | url: http://scripts.sil.org/OFL | vendor:  | designer: 
+     cmap min U+0000 max U+2116; has ł=False Ł=False €=False „=False ”=False –=False …=False ä=False ß=False č=False ě=False ř=False ů=False ì=False
+fonts.gstatic.com/s/opensans/v44/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0B4saVIGxA.woff2 | 3756B | Open Sans / Regular | v=Version 3.003 | wght=400 | axes=- | glyphs=8 | cmap=6 | PL 0/18 miss=ąćęłńóśźżĄĆĘŁŃÓŚŹŻ | ASCII a-z=False | ital=False
+     copyright: Copyright 2020 The Open Sans Project Authors (https://github.com/googlefonts/opensans)
+     licence:  | url: http://scripts.sil.org/OFL | vendor:  | designer: 
+     cmap min U+0000 max U+1FDE; has ł=False Ł=False €=False „=False ”=False –=False …=False ä=False ß=False č=False ě=False ř=False ů=False ì=False
+fonts.gstatic.com/s/opensans/v44/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0B4taVIGxA.woff2 | 18032B | Open Sans / Regular | v=Version 3.003 | wght=400 | axes=- | glyphs=220 | cmap=179 | PL 0/18 miss=ąćęłńóśźżĄĆĘŁŃÓŚŹŻ | ASCII a-z=False | ital=False
+     copyright: Copyright 2020 The Open Sans Project Authors (https://github.com/googlefonts/opensans)
+     licence:  | url: http://scripts.sil.org/OFL | vendor:  | designer: 
+     cmap min U+0000 max U+0513; has ł=False Ł=False €=False „=False ”=False –=False …=False ä=False ß=False č=False ě=False ř=False ů=False ì=False
+fonts.gstatic.com/s/opensans/v44/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0B4uaVIGxA.woff2 | 15380B | Open Sans / Regular | v=Version 3.003 | wght=400 | axes=- | glyphs=269 | cmap=192 | PL 16/18 miss=óÓ | ASCII a-z=False | ital=False
+     copyright: Copyright 2020 The Open Sans Project Authors (https://github.com/googlefonts/opensans)
+     licence:  | url: http://scripts.sil.org/OFL | vendor:  | designer: 
+     cmap min U+0000 max U+A7B5; has ł=True Ł=True €=False „=False ”=False –=False …=False ä=False ß=False č=True ě=True ř=True ů=True ì=False
+fonts.gstatic.com/s/opensans/v44/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0B4vaVIGxA.woff2 | 8612B | Open Sans / Regular | v=Version 3.003 | wght=400 | axes=- | glyphs=147 | cmap=114 | PL 0/18 miss=ąćęłńóśźżĄĆĘŁŃÓŚŹŻ | ASCII a-z=False | ital=False
+     copyright: Copyright 2020 The Open Sans Project Authors (https://github.com/googlefonts/opensans)
+     licence:  | url: http://scripts.sil.org/OFL | vendor:  | designer: 
+     cmap min U+0000 max U+20AB; has ł=False Ł=False €=False „=False ”=False –=False …=False ä=False ß=False č=False ě=False ř=False ů=False ì=False
+fonts.gstatic.com/s/opensans/v44/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0B5OaVIGxA.woff2 | 10628B | Open Sans / Regular | v=Version 3.003 | wght=400 | axes=- | glyphs=120 | cmap=74 | PL 0/18 miss=ąćęłńóśźżĄĆĘŁŃÓŚŹŻ | ASCII a-z=True | ital=False
+     copyright: Copyright 2020 The Open Sans Project Authors (https://github.com/googlefonts/opensans)
+     licence:  | url: http://scripts.sil.org/OFL | vendor:  | designer: 
+     cmap min U+0000 max U+25CA; has ł=False Ł=False €=False „=False ”=False –=False …=False ä=False ß=False č=False ě=False ř=False ů=False ì=False
+fonts.gstatic.com/s/opensans/v44/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0B5caVIGxA.woff2 | 19700B | Open Sans / Regular | v=Version 3.003 | wght=400 | axes=- | glyphs=272 | cmap=217 | PL 0/18 miss=ąćęłńóśźżĄĆĘŁŃÓŚŹŻ | ASCII a-z=True | ital=False
+     copyright: Copyright 2020 The Open Sans Project Authors (https://github.com/googlefonts/opensans)
+     licence:  | url: http://scripts.sil.org/OFL | vendor:  | designer: 
+     cmap min U+0000 max U+25CA; has ł=False Ł=False €=False „=False ”=False –=False …=False ä=False ß=False č=False ě=False ř=False ů=False ì=False
+fonts.gstatic.com/s/opensans/v44/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0C4iY1M2xLER.woff2 | 59688B | Open Sans / Regular | v=Version 3.003 | wght=400 | axes=- | glyphs=1140 | cmap=1010 | PL 18/18 miss=- | ASCII a-z=True | ital=False
+     copyright: Copyright 2020 The Open Sans Project Authors (https://github.com/googlefonts/opensans)
+     licence: This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL | url: http://scripts.sil.org/OFL | vendor: Monotype Imaging Inc. | designer: Monotype Design Team
+     cmap min U+0000 max U+FFFD; has ł=True Ł=True €=True „=True ”=True –=True …=True ä=True ß=True č=True ě=True ř=True ů=True ì=True
+fonts.gstatic.com/s/opensans/v44/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjr0C4iY1M2xLER.woff2 | 59916B | Open Sans / Medium | v=Version 3.003 | wght=500 | axes=- | glyphs=1140 | cmap=1010 | PL 18/18 miss=- | ASCII a-z=True | ital=False
+     copyright: Copyright 2020 The Open Sans Project Authors (https://github.com/googlefonts/opensans)
+     licence: This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL | url: http://scripts.sil.org/OFL | vendor: Monotype Imaging Inc. | designer: Monotype Design Team
+     cmap min U+0000 max U+FFFD; has ł=True Ł=True €=True „=True ”=True –=True …=True ä=True ß=True č=True ě=True ř=True ů=True ì=True
+fonts/cal-sans-400-latext.woff2 | 13608B | Cal Sans / Regular | v=Version 1.000; ttfautohint ( | wght=400 | axes=- | glyphs=264 | cmap=202 | PL 16/18 miss=óÓ | ASCII a-z=False | ital=False
+     copyright: Copyright 2021 The Cal Sans Project Authors (https://github.com/calcom/font)
+     licence:  | url: https://openfontlicense.org | vendor:  | designer: 
+     cmap min U+000D max U+A78C; has ł=True Ł=True €=False „=False ”=False –=False …=False ä=False ß=False č=True ě=True ř=True ů=True ì=False
+fonts/cal-sans-400-latin.woff2 | 21464B | Cal Sans / Regular | v=Version 1.000; ttfautohint ( | wght=400 | axes=- | glyphs=261 | cmap=224 | PL 2/18 miss=ąćęłńśźżĄĆĘŁŃŚŹŻ | ASCII a-z=True | ital=False
+     copyright: Copyright 2021 The Cal Sans Project Authors (https://github.com/calcom/font)
+     licence:  | url: https://openfontlicense.org | vendor:  | designer: 
+     cmap min U+000D max U+2212; has ł=False Ł=False €=True „=True ”=True –=True …=True ä=True ß=True č=False ě=False ř=False ů=False ì=True
+framerusercontent.com/assets/5vvr9Vy74if2I6bQbJvbw7SY1pQ.woff2 | 8896B | Inter / Regular | v=Version 4.000;git-a52131595 | wght=400 | axes=- | glyphs=224 | cmap=156 | PL 0/18 miss=ąćęłńóśźżĄĆĘŁŃÓŚŹŻ | ASCII a-z=False | ital=False
+     copyright: Copyright 2016 The Inter Project Authors
+     licence:  | url:  | vendor:  | designer: 
+     cmap min U+0460 max U+A69F; has ł=False Ł=False €=False „=False ”=False –=False …=False ä=False ß=False č=False ě=False ř=False ů=False ì=False
+framerusercontent.com/assets/EOr0mi4hNtlgWNn9if640EZzXCo.woff2 | 7116B | Inter / Regular | v=Version 4.000;git-a52131595 | wght=400 | axes=- | glyphs=155 | cmap=102 | PL 0/18 miss=ąćęłńóśźżĄĆĘŁŃÓŚŹŻ | ASCII a-z=False | ital=False
+     copyright: Copyright 2016 The Inter Project Authors
+     licence:  | url:  | vendor:  | designer: 
+     cmap min U+0301 max U+2116; has ł=False Ł=False €=False „=False ”=False –=False …=False ä=False ß=False č=False ě=False ř=False ů=False ì=False
+framerusercontent.com/assets/GrgcKwrN6d3Uz8EwcLHZxwEfC4.woff2 | 27380B | Inter / Regular | v=Version 4.000;git-a52131595 | wght=400 | axes=- | glyphs=771 | cmap=309 | PL 2/18 miss=ąćęłńśźżĄĆĘŁŃŚŹŻ | ASCII a-z=True | ital=False
+     copyright: Copyright 2016 The Inter Project Authors
+     licence:  | url:  | vendor:  | designer: 
+     cmap min U+0000 max U+FEFF; has ł=False Ł=False €=True „=True ”=True –=True …=True ä=True ß=True č=False ě=False ř=False ů=False ì=True
+framerusercontent.com/assets/JeYwfuaPfZHQhEG8U5gtPDZ7WQ.woff2 | 25348B | Inter / Regular | v=Version 4.000;git-a52131595 | wght=400 | axes=- | glyphs=1038 | cmap=622 | PL 16/18 miss=óÓ | ASCII a-z=False | ital=False
+     copyright: Copyright 2016 The Inter Project Authors
+     licence:  | url:  | vendor:  | designer: 
+     cmap min U+0100 max U+A7FF; has ł=True Ł=True €=False „=False ”=False –=False …=False ä=False ß=False č=True ě=True ř=True ů=True ì=False
+framerusercontent.com/assets/OYrD2tBIBPvoJXiIHnLoOXnY9M.woff2 | 6652B | Inter / Regular | v=Version 4.000;git-a52131595 | wght=400 | axes=- | glyphs=146 | cmap=105 | PL 0/18 miss=ąćęłńóśźżĄĆĘŁŃÓŚŹŻ | ASCII a-z=False | ital=False
+     copyright: Copyright 2016 The Inter Project Authors
+     licence:  | url:  | vendor:  | designer: 
+     cmap min U+0374 max U+03FF; has ł=False Ł=False €=False „=False ”=False –=False …=False ä=False ß=False č=False ě=False ř=False ů=False ì=False
+framerusercontent.com/assets/Y9k9QrlZAqio88Klkmbd8VoMQc.woff2 | 4504B | Inter / Regular | v=Version 4.000;git-a52131595 | wght=400 | axes=- | glyphs=273 | cmap=233 | PL 0/18 miss=ąćęłńóśźżĄĆĘŁŃÓŚŹŻ | ASCII a-z=False | ital=False
+     copyright: Copyright 2016 The Inter Project Authors
+     licence:  | url:  | vendor:  | designer: 
+     cmap min U+1F00 max U+1FFE; has ł=False Ł=False €=False „=False ”=False –=False …=False ä=False ß=False č=False ě=False ř=False ů=False ì=False
+framerusercontent.com/assets/b6Y37FthZeALduNqHicBT6FutY.woff2 | 4168B | Inter / Regular | v=Version 4.000;git-a52131595 | wght=400 | axes=- | glyphs=195 | cmap=103 | PL 0/18 miss=ąćęłńóśźżĄĆĘŁŃÓŚŹŻ | ASCII a-z=False | ital=False
+     copyright: Copyright 2016 The Inter Project Authors
+     licence:  | url:  | vendor:  | designer: 
+     cmap min U+0102 max U+20AB; has ł=False Ł=False €=False „=False ”=False –=False …=False ä=False ß=False č=False ě=False ř=False ů=False ì=False
+framerusercontent.com/assets/vQyevYAyHtARFwPqUzQGpnDs.woff2 | 27404B | Inter / Regular | v=Version 4.000;git-a52131595 | wght=400 | axes=- | glyphs=771 | cmap=283 | PL 2/18 miss=ąćęłńśźżĄĆĘŁŃŚŹŻ | ASCII a-z=True | ital=False
+     copyright: Copyright 2016 The Inter Project Authors
+     licence:  | url:  | vendor:  | designer: 
+     cmap min U+0000 max U+FEFF; has ł=False Ł=False €=True „=True ”=True –=True …=True ä=True ß=True č=False ě=False ř=False ů=False ì=True
+framerusercontent.com/third-party-assets/fontshare/wf/DELXRVKO253LHPYOBD6KD7EW3TJKXCXF/L6SILXET3P727LN5N75LL5PG77IET2IT/6DP3DAT2N5LSQGN5ISPRN63WPP32A54A.woff2 | 83040B | Montserrat / SemiBold | v=Version 7.222;hotconv 1.0.10 | wght=600 | axes=- | glyphs=1963 | cmap=970 | PL 18/18 miss=- | ASCII a-z=True | ital=False
+     copyright: Copyright 2011 The Montserrat Project Authors (https://github.com/JulietaUla/Montserrat)
+     licence: This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL | url: http://scripts.sil.org/OFL | vendor: Julieta Ulanovsky | designer: Julieta Ulanovsky
+     cmap min U+0000 max U+FB02; has ł=True Ł=True €=True „=True ”=True –=True …=True ä=True ß=True č=True ě=True ř=True ů=True ì=True
+framerusercontent.com/third-party-assets/fontshare/wf/G3U4AIP7I5YYMBY4PZ5BNYEWWVH7G7QB/WED2HATCWTE6B4XVIFFTI3EALCE4D6PD/GDZ4LVIJF6WODYKVZK6E2737DCDQPEMZ.woff2 | 83628B | Montserrat / Medium | v=Version 7.222;hotconv 1.0.10 | wght=500 | axes=- | glyphs=1963 | cmap=970 | PL 18/18 miss=- | ASCII a-z=True | ital=False
+     copyright: Copyright 2011 The Montserrat Project Authors (https://github.com/JulietaUla/Montserrat)
+     licence: This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL | url: http://scripts.sil.org/OFL | vendor: Julieta Ulanovsky | designer: Julieta Ulanovsky
+     cmap min U+0000 max U+FB02; has ł=True Ł=True €=True „=True ”=True –=True …=True ä=True ß=True č=True ě=True ř=True ů=True ì=True
+framerusercontent.com/third-party-assets/fontshare/wf/JBAX5LNUCKEVXKRK3ARXNMEMQYQYP6WR/P3OTF2DNFMTAXKSAW4JNN6DPWEDDI5MN/4IO2HK2EZ7GHCZN7I3I4WKBAO7IH72SS.woff2 | 82940B | Montserrat / Light | v=Version 7.222;hotconv 1.0.10 | wght=300 | axes=- | glyphs=1963 | cmap=970 | PL 18/18 miss=- | ASCII a-z=True | ital=False
+     copyright: Copyright 2011 The Montserrat Project Authors (https://github.com/JulietaUla/Montserrat)
+     licence: This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL | url: http://scripts.sil.org/OFL | vendor: Julieta Ulanovsky | designer: Julieta Ulanovsky
+     cmap min U+0000 max U+FB02; has ł=True Ł=True €=True „=True ”=True –=True …=True ä=True ß=True č=True ě=True ř=True ů=True ì=True
+framerusercontent.com/third-party-assets/fontshare/wf/KDZE2GHZ4MXZP7RVHASNN75AFABT2ZB2/G33WYZOWF5RLCYVGCMU5BFGBXH4DMKUK/SHZ3SDA4YUDBQPNRSIGO7XNSCQQUBDYR.woff2 | 83440B | false / Bold | v=Version 7.222;hotconv 1.0.10 | wght=700 | axes=- | glyphs=1963 | cmap=970 | PL 18/18 miss=- | ASCII a-z=True | ital=False
+     copyright: Copyright 2011 The Montserrat Project Authors (https://github.com/JulietaUla/Montserrat)
+     licence: This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL | url: http://scripts.sil.org/OFL | vendor: Julieta Ulanovsky | designer: Julieta Ulanovsky
+     cmap min U+0000 max U+FB02; has ł=True Ł=True €=True „=True ”=True –=True …=True ä=True ß=True č=True ě=True ř=True ů=True ì=True
+framerusercontent.com/third-party-assets/fontshare/wf/NZ67QOF3FXYLOR27ABJOZVKKBKNRMKMF/EHBFE55HTLOOJHTZSLD54GSL3EBTAFNQ/DI2GHUWG3WKRXISSCTNDMTWKWZC25UIW.woff2 | 83132B | false / Regular | v=Version 7.222;hotconv 1.0.10 | wght=400 | axes=- | glyphs=1963 | cmap=970 | PL 18/18 miss=- | ASCII a-z=True | ital=False
+     copyright: Copyright 2011 The Montserrat Project Authors (https://github.com/JulietaUla/Montserrat)
+     licence: This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL | url: http://scripts.sil.org/OFL | vendor: Julieta Ulanovsky | designer: Julieta Ulanovsky
+     cmap min U+0000 max U+FB02; has ł=True Ł=True €=True „=True ”=True –=True …=True ä=True ß=True č=True ě=True ř=True ů=True ì=True
