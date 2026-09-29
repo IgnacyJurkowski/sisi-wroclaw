@@ -94,7 +94,7 @@ Files under `contract/`: `urls.json`, `redirects.json`, `seo.json`, `cta.json` (
 | --- | --- | --- |
 | `terms-saturday-entry-30` | The five terms pages say Saturday entry is 30 zł (`src/i18n/legal.ts:42`); the reservation copy and `llms.txt` say 40 zł (`src/i18n/ui/pl.ts:327`). | Phase 3 facts source |
 | `events-hub-indexable-not-in-sitemap` | While `EVENTS` is empty, `src/pages/sitemap.xml.ts:19-21` drops the events hub but `EventsPage` emits `index, follow` (BlogPage sets `noindex` for an empty hub, `src/components/pages/BlogPage.astro:23`). Five hubs are indexable and unlisted; `/wydarzenia` 301s to one. | noindex the empty hub, or list it |
-| `blog-toc-dead-anchors` | 305 dead in-page anchors on 31 of 35 articles: bodies carry a table of contents, `scripts/articles-sync/sanitize.mjs:34` (`ALLOWED`) gives headings no `id`. | sanitiser or renderer (heading ids) |
+| `blog-toc-dead-anchors` | 305 dead in-page anchors on all 31 published articles: bodies carry a table of contents, `scripts/articles-sync/sanitize.mjs:34` (`ALLOWED`) gives headings no `id`. | sanitiser or renderer (heading ids) |
 | `blog-unbroken-string-overflow` | A title, heading, paragraph or link text with one unbroken string over ~335 px scrolls the page sideways at 375 px (scratch build: scrollWidth 2956). No published page does it (82 of 82 clean). | article template CSS |
 
 Also found, not gating (printed as notes):

@@ -14,7 +14,7 @@
       "contract": "links",
       "urlRegex": "^/[a-z]{2}/blog/[^/]+/$",
       "messageRegex": "anchors to #",
-      "reason": "BabyLoveGrowth bodies carry a table of contents (a href=#section) but scripts/articles-sync/sanitize.mjs drops every id attribute (ALLOWED h2..h6 = []), so the in-page anchors point nowhere. Fix belongs in the sanitiser or renderer (heading ids), not here. Found: 305 dead anchors on 31 of the 35 published articles.",
+      "reason": "BabyLoveGrowth bodies carry a table of contents (a href=#section) but scripts/articles-sync/sanitize.mjs drops every id attribute (ALLOWED h2..h6 = []), so the in-page anchors point nowhere. Fix belongs in the sanitiser or renderer (heading ids), not here. Found: 305 dead anchors on all 31 published articles.",
       "found": "2026-09-29, main e1feb25"
     },
     {
