@@ -1,0 +1,37 @@
+{
+  "note": "Known defects found when the baseline was taken (main e1feb25, local build). A waiver keeps the contract green for that exact class of failure only, prints on every run, and must be deleted when the defect is fixed. Anything that does not match a waiver still fails. Never add a waiver to make a new regression pass.",
+  "waivers": [
+    {
+      "id": "events-hub-indexable-not-in-sitemap",
+      "contract": "url",
+      "urlRegex": "^/(pl/wydarzenia|en/events|de/veranstaltungen|it/eventi|cs/akce)/$",
+      "fieldRegex": "dist->sitemap",
+      "reason": "While there are no synced events, sitemap.xml.ts leaves the events hub out (\"Empty hubs stay out of the index\") but the page itself is emitted as \"index, follow\" in a production-context build (BlogPage sets noindex for an empty hub, EventsPage does not). The five empty events hubs are therefore indexable and unlisted, and /wydarzenia 301s to one of them. Fix: noindex the empty events hub, or list it.",
+      "found": "2026-09-29, main e1feb25 (CONTEXT=production build)"
+    },
+    {
+      "id": "blog-toc-dead-anchors",
+      "contract": "links",
+      "urlRegex": "^/[a-z]{2}/blog/[^/]+/$",
+      "messageRegex": "anchors to #",
+      "reason": "BabyLoveGrowth bodies carry a table of contents (a href=#section) but scripts/articles-sync/sanitize.mjs drops every id attribute (ALLOWED h2..h6 = []), so the in-page anchors point nowhere. Fix belongs in the sanitiser or renderer (heading ids), not here. Found: 305 dead anchors on all 31 published articles.",
+      "found": "2026-09-29, main e1feb25"
+    },
+    {
+      "id": "terms-saturday-entry-30",
+      "contract": "facts",
+      "urlRegex": "^/(pl/regulamin|en/terms|de/agb|it/regolamento|cs/pravidla)/$",
+      "messageRegex": "^30 zł ",
+      "reason": "The terms pages state a Saturday entry fee of 30 zł (src/i18n/legal.ts:42, English text reused for en/de/it/cs) while the reservation copy and llms.txt state 40 zł (src/i18n/ui/pl.ts:327). One of them is wrong; Phase 3 must pick the source of truth.",
+      "found": "2026-09-29, main e1feb25"
+    },
+    {
+      "id": "blog-unbroken-string-overflow",
+      "contract": "blog",
+      "urlRegex": "^/pl/blog/contract-fixture-longtokens/$",
+      "fieldRegex": "375px overflow",
+      "reason": "An article whose title, heading, paragraph or link text holds one unbroken string wider than ~335 px makes the whole page scroll sideways at 375 px (scratch build: scrollWidth 2956; h1, h2, p and a all overflow). src/components/pages/BlogArticlePage.astro sets no overflow-wrap on .ba-title or .ba-body. No published article does this today (82 of 82 sitemap pages measured clean at 375 px), but BabyLoveGrowth citations often use a raw URL as link text. Fix belongs in the article template CSS, not in this contract.",
+      "found": "2026-09-29, main e1feb25 (scratch build with fixtures)"
+    }
+  ]
+}

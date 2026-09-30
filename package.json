@@ -18,6 +18,8 @@
     "test:unit": "node --test scripts/*.test.mjs scripts/events-sync/*.test.mjs scripts/articles-sync/*.test.mjs",
     "build:check": "npm run build && node scripts/check-build.mjs",
     "test:notices": "node scripts/site-notices-browser.mjs",
+    "contract": "node scripts/contract/run.mjs",
+    "contract:prod": "node scripts/contract/run.mjs --build",
     "test:build": "node scripts/check-build.mjs && npm run test:notices",
     "perf:backdrop": "node scripts/backdrop-fps.mjs"
   },
@@ -31,6 +33,7 @@
     "@types/node": "^22.20.1",
     "google-auth-library": "^10.9.0",
     "lightningcss": "^1.32.0",
+    "parse5": "7.3.0",
     "playwright-core": "^1.61.1",
     "sharp": "^0.35.2",
     "typescript": "^6.0.3"

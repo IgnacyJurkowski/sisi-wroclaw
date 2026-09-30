@@ -1,0 +1,55 @@
+{
+  "source": "local-build main e1feb25",
+  "note": "Reservation CTA contract: provider URL, the locale segment map from src/data/site.ts (cs deliberately maps to pl), required UTM parameters and the utm_content of every CTA per page. A page may gain CTAs but not lose one.",
+  "base": "https://emenago.com/inner/cart/6619/0519b014958d73fb0d5d2d58c360a661",
+  "localeMap": {
+    "pl": "pl",
+    "en": "en",
+    "de": "de",
+    "it": "it",
+    "cs": "pl"
+  },
+  "requiredParams": [
+    "utm_source",
+    "utm_medium",
+    "utm_campaign",
+    "utm_content"
+  ],
+  "fixedParams": {
+    "utm_source": "website",
+    "utm_medium": "cta",
+    "utm_campaign": "reservation"
+  },
+  "pages": {
+    "/cs/menu/": [
+      "menu"
+    ],
+    "/cs/rezervace/": [
+      "reservations_section"
+    ],
+    "/de/menu/": [
+      "menu"
+    ],
+    "/de/reservierungen/": [
+      "reservations_section"
+    ],
+    "/en/menu/": [
+      "menu"
+    ],
+    "/en/reservations/": [
+      "reservations_section"
+    ],
+    "/it/menu/": [
+      "menu"
+    ],
+    "/it/prenotazioni/": [
+      "reservations_section"
+    ],
+    "/pl/menu/": [
+      "menu"
+    ],
+    "/pl/rezerwacje/": [
+      "reservations_section"
+    ]
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "source": "local-build main e1feb25",
+  "note": "netlify.toml [[redirects]] in file order. Removing or retargeting a rule fails the contract; adding one does not.",
+  "rules": [
+    {
+      "from": "http://sisiwroclaw.pl/",
+      "to": "https://www.sisiwroclaw.pl/pl/",
+      "status": 301,
+      "force": true
+    },
+    {
+      "from": "https://sisiwroclaw.pl/",
+      "to": "https://www.sisiwroclaw.pl/pl/",
+      "status": 301,
+      "force": true
+    },
+    {
+      "from": "http://sisiwroclaw.pl/*",
+      "to": "https://www.sisiwroclaw.pl/:splat",
+      "status": 301,
+      "force": true
+    },
+    {
+      "from": "https://sisiwroclaw.pl/*",
+      "to": "https://www.sisiwroclaw.pl/:splat",
+      "status": 301,
+      "force": true
+    },
+    {
+      "from": "/",
+      "to": "/pl/",
+      "status": 301,
+      "force": true
+    },
+    {
+      "from": "/wydarzenia",
+      "to": "/pl/wydarzenia/",
+      "status": 301,
+      "force": false
+    },
+    {
+      "from": "/menu",
+      "to": "/pl/menu/",
+      "status": 301,
+      "force": false
+    },
+    {
+      "from": "/kariera",
+      "to": "/pl/kariera/",
+      "status": 301,
+      "force": false
+    },
+    {
+      "from": "/rezerwacje",
+      "to": "/pl/rezerwacje/",
+      "status": 301,
+      "force": false
+    },
+    {
+      "from": "/kontakt",
+      "to": "/pl/kontakt/",
+      "status": 301,
+      "force": false
+    },
+    {
+      "from": "/regulamin",
+      "to": "/pl/regulamin/",
+      "status": 301,
+      "force": false
+    },
+    {
+      "from": "/polityka-prywatnosci",
+      "to": "/pl/polityka-prywatnosci/",
+      "status": 301,
+      "force": false
+    },
+    {
+      "from": "/polityka-cookies",
+      "to": "/pl/polityka-cookies/",
+      "status": 301,
+      "force": false
+    },
+    {
+      "from": "/ph/*",
+      "to": "https://eu.i.posthog.com/:splat",
+      "status": 200,
+      "force": true
+    }
+  ]
+}

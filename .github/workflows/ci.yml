@@ -18,3 +18,7 @@ jobs:
 
       - run: npm ci
       - run: npm test
+      # Contract suite (docs/sisi-elevate/CONTRACT.md): rebuilds dist the way
+      # Netlify production does and checks URLs, SEO, links, the blog pipeline
+      # and facts against contract/*.json. --offline: no request leaves the runner.
+      - run: npm run contract:prod -- --offline

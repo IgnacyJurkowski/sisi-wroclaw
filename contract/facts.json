@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "status": "scaffold",
+  "note": "Phase 1 allow-list, derived by hand from src/data/site.ts and src/i18n/ui/pl.ts. Phase 3 replaces this file with data generated from the single source of truth; scripts/contract/contracts/facts.mjs reads nothing else.",
+  "sources": {
+    "phones": "src/data/site.ts CONTACT.phone, CONTACT.eventsPhone",
+    "emails": "src/data/site.ts CONTACT.email, CONTACT.eventsEmail",
+    "address": "src/data/site.ts CONTACT.address, COMPANY.street",
+    "hours": "src/data/site.ts CONTACT.hours; src/i18n/ui/pl.ts reservation pickup copy",
+    "reservation": "src/i18n/ui/pl.ts terms line and reservation rules (100 zł per person credited, Saturday entry 40 zł)"
+  },
+  "reservation": {
+    "perPersonPln": 100,
+    "creditedToTable": true,
+    "saturdayEntryPln": 40,
+    "allowedAmounts": ["100 zł", "40 zł"]
+  },
+  "hours": {
+    "open": "22:00-04:00",
+    "days": "Friday and Saturday",
+    "allowedRanges": ["22:00-04:00", "22:00-23:00", "22:00-23:30"],
+    "allowedTimes": ["22:00", "23:00", "23:30", "04:00", "4 rano", "4 uhr", "22 uhr"],
+    "knownConflicts": [
+      "Reservation pick-up window: pl/rezerwacje/ says 22:00-23:00, pl/regulamin/ (terms) says 22:00-23:30. Both are allowed here until Phase 3 picks one."
+    ]
+  },
+  "phones": ["+48515126260", "+48514032930"],
+  "emails": ["biuro@r32.com.pl", "events@r32.com.pl"],
+  "address": {
+    "street": "Rzeźnicza 32-33",
+    "streetForms": ["Rzeźnicza 32-33", "Rzeźnicza 32"],
+    "postal": "50-130 Wrocław"
+  },
+  "context": {
+    "reservationWords": [
+      "rezerwac", "stolik", "wst[eę]p", "reserv", "\\btable\\b", "\\bentry\\b", "\\bcover\\b",
+      "reservier", "\\btisch", "eintritt", "prenot", "tavolo", "ingresso", "rezervac", "\\bstůl", "\\bstol", "vstup"
+    ],
+    "hoursWords": [
+      "otwart", "godzin", "godz\\.", "\\bopen", "\\bhours\\b", "öffnungs", "geöffnet", "\\borari", "aperto", "otev", "otvír", "provozní", "do rana", "\\buhr\\b"
+    ],
+    "ruleWords": [
+      "dress\\s?code", "wst[eę]p", "wej[sś]ci", "bramk", "regulamin", "obowiązuj", "zakaz", "wiek", "18\\+", "dowód",
+      "kolejk", "odebra", "spóźnien", "depozyt", "zadatek", "przedpłat", "zaliczk", "minimum", "limit", "\\bage\\b", "\\bentry\\b", "\\bid\\b", "queue"
+    ]
+  }
+}
