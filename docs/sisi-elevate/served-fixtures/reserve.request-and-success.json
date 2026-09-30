@@ -1,0 +1,44 @@
+{
+  "_meta": {
+    "derivedFrom": [
+      "served-app src/app/api/booking/reserve/route.ts:18-60",
+      "served-app src/app/actions/public-reservations.ts:69-101, 262-268, 406",
+      "served-app src/test/unit/app/api/booking/reserve/route.test.ts:15-21, 29-35, 45-51",
+      "served-app src/lib/reservations/via.ts:7-20 (allowed channel values)",
+      "served-app supabase/migrations/20260924100000_0292_reservation_via.sql:402-412 (row is inserted with status 'pending')"
+    ],
+    "provenance": "Shape and field names: real. Guest data: fake. Token: fake (the real one is crypto.randomUUID()).",
+    "note": "A post-midnight arrival (time 00:00 to 03:00) must be sent with reserved_at set to the NEXT calendar date, or with date already advanced. The date+time path does not apply slotDateStr. The website form does (BookingForm.tsx:264-265)."
+  },
+  "request": {
+    "method": "POST",
+    "path": "/api/booking/reserve",
+    "headers": { "content-type": "application/json" },
+    "body": {
+      "venue": "[SLUG?]",
+      "name": "Test Guest",
+      "phone": "+48000000000",
+      "email": "guest@example.invalid",
+      "party": 4,
+      "date": "2026-10-02",
+      "time": "23:00",
+      "notes": "",
+      "intent_key": "00000000-0000-4000-8000-0000000000a1",
+      "via": "own_website"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": { "Access-Control-Allow-Origin": "*" },
+    "body": { "success": true, "confirmationToken": "00000000-0000-4000-8000-0000000000b1" }
+  },
+  "replayOfSameIntentKey": {
+    "cause": "same intent_key and same details sent again after a lost response",
+    "response": { "status": 200, "body": { "success": true, "confirmationToken": "00000000-0000-4000-8000-0000000000b1" } },
+    "note": "The first booking comes back. The venue is not notified a second time (public-reservations.ts:262-268)."
+  },
+  "afterwards": {
+    "reservationStatus": "pending",
+    "meaning": "This is a request. The venue confirms or declines later; the guest is told by email only if an email address was given."
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "_meta": {
+    "derivedFrom": [
+      "served-app src/app/api/booking/availability/route.ts:19-41",
+      "served-app src/app/actions/reservation-availability.ts:178-189 (AvailabilityResult)",
+      "served-app src/lib/booking/slots.ts:84-95 (generateSlots)"
+    ],
+    "provenance": "Shape: real. Slot labels: computed with a port of generateSlots for hours 22:00-04:00, close_day_offset 1 (sisi-elevate src/lib/opening-hours.mjs), 30 minute step, last seating 60 minutes before close. Which slots are unavailable: illustrative.",
+    "note": "The labels 00:00 to 03:00 belong to the night that started on the requested date. The wire does not say so."
+  },
+  "request": {
+    "method": "GET",
+    "path": "/api/booking/availability",
+    "query": { "venue": "[SLUG?]", "date": "2026-10-02", "party": "4" }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, OPTIONS",
+      "Access-Control-Allow-Headers": "content-type"
+    },
+    "body": {
+      "date": "2026-10-02",
+      "slots": [
+        { "time": "22:00", "available": true },
+        { "time": "22:30", "available": true },
+        { "time": "23:00", "available": false },
+        { "time": "23:30", "available": false },
+        { "time": "00:00", "available": false },
+        { "time": "00:30", "available": true },
+        { "time": "01:00", "available": true },
+        { "time": "01:30", "available": true },
+        { "time": "02:00", "available": true },
+        { "time": "02:30", "available": true },
+        { "time": "03:00", "available": true }
+      ],
+      "capacityKnown": true
+    }
+  }
+}

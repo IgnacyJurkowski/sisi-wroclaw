@@ -1,0 +1,152 @@
+[
+ {
+  "key": "fri2330",
+  "label": "Friday 23:30 (Warsaw)",
+  "iso": "2026-10-02T23:30:00+02:00",
+  "seenDate": {
+   "now": "Fri Oct 02 2026 23:30:04 GMT+0200 (Central European Summer Time)",
+   "warsaw": "Friday 23:30"
+  },
+  "tLoad": 4.2,
+  "bannerCoverage": 0.25,
+  "statusWordOnPage": false,
+  "hoursFound": true,
+  "hoursText": "22:00 - 04:00",
+  "atHours": {
+   "taps": 0,
+   "swipes": 12,
+   "seconds": 21.6
+  },
+  "tHoursSeconds": 21.6,
+  "hoursBannerDismissed": false,
+  "hamburgerTapped": true,
+  "menuLinks": [
+   "Menu -> /en/menu/",
+   "Careers -> /en/careers/",
+   "Private events -> /en/private-events/",
+   "Corporate -> /en/corporate-events/",
+   "Reservations -> /en/reservations/",
+   " -> https://www.instagram.com/sisiwroclaw/",
+   " -> https://www.facebook.com/sisimusicclub",
+   " -> https://www.tripadvisor.com/Attraction_Review-g274812-d34327483-Reviews-SISI_Wroclaw_Music_Club-Wroclaw_Lower_Silesia_Province_Southern_Poland.html"
+  ],
+  "eventsLinkInMenu": false,
+  "lineupWordsOnHome": false,
+  "taps": 1,
+  "swipes": 12,
+  "seconds": 23.1,
+  "steps": [
+   {
+    "step": "goto /en/",
+    "t": 2.841,
+    "dt": 2.84
+   },
+   {
+    "step": "tap hamburger",
+    "t": 22.166,
+    "taps": 1,
+    "swipes": 12
+   }
+  ]
+ },
+ {
+  "key": "sat0200",
+  "label": "Saturday 02:00 (still Friday business night)",
+  "iso": "2026-10-03T02:00:00+02:00",
+  "seenDate": {
+   "now": "Sat Oct 03 2026 02:00:04 GMT+0200 (Central European Summer Time)",
+   "warsaw": "Saturday 02:00"
+  },
+  "tLoad": 4.2,
+  "bannerCoverage": 0.25,
+  "statusWordOnPage": false,
+  "hoursFound": true,
+  "hoursText": "22:00 - 04:00",
+  "atHours": {
+   "taps": 0,
+   "swipes": 12,
+   "seconds": 21.4
+  },
+  "tHoursSeconds": 21.4,
+  "hoursBannerDismissed": false,
+  "hamburgerTapped": true,
+  "menuLinks": [
+   "Menu -> /en/menu/",
+   "Careers -> /en/careers/",
+   "Private events -> /en/private-events/",
+   "Corporate -> /en/corporate-events/",
+   "Reservations -> /en/reservations/",
+   " -> https://www.instagram.com/sisiwroclaw/",
+   " -> https://www.facebook.com/sisimusicclub",
+   " -> https://www.tripadvisor.com/Attraction_Review-g274812-d34327483-Reviews-SISI_Wroclaw_Music_Club-Wroclaw_Lower_Silesia_Province_Southern_Poland.html"
+  ],
+  "eventsLinkInMenu": false,
+  "lineupWordsOnHome": false,
+  "taps": 1,
+  "swipes": 12,
+  "seconds": 22.8,
+  "steps": [
+   {
+    "step": "goto /en/",
+    "t": 2.781,
+    "dt": 2.78
+   },
+   {
+    "step": "tap hamburger",
+    "t": 21.961,
+    "taps": 1,
+    "swipes": 12
+   }
+  ]
+ },
+ {
+  "key": "tue1500",
+  "label": "Tuesday 15:00",
+  "iso": "2026-09-29T15:00:00+02:00",
+  "seenDate": {
+   "now": "Tue Sep 29 2026 15:00:04 GMT+0200 (Central European Summer Time)",
+   "warsaw": "Tuesday 15:00"
+  },
+  "tLoad": 4,
+  "bannerCoverage": 0.25,
+  "statusWordOnPage": false,
+  "hoursFound": true,
+  "hoursText": "22:00 - 04:00",
+  "atHours": {
+   "taps": 0,
+   "swipes": 12,
+   "seconds": 20.2
+  },
+  "tHoursSeconds": 20.2,
+  "hoursBannerDismissed": false,
+  "hamburgerTapped": true,
+  "menuLinks": [
+   "Menu -> /en/menu/",
+   "Careers -> /en/careers/",
+   "Private events -> /en/private-events/",
+   "Corporate -> /en/corporate-events/",
+   "Reservations -> /en/reservations/",
+   " -> https://www.instagram.com/sisiwroclaw/",
+   " -> https://www.facebook.com/sisimusicclub",
+   " -> https://www.tripadvisor.com/Attraction_Review-g274812-d34327483-Reviews-SISI_Wroclaw_Music_Club-Wroclaw_Lower_Silesia_Province_Southern_Poland.html"
+  ],
+  "eventsLinkInMenu": false,
+  "lineupWordsOnHome": false,
+  "taps": 1,
+  "swipes": 12,
+  "seconds": 21.8,
+  "steps": [
+   {
+    "step": "goto /en/",
+    "t": 2.772,
+    "dt": 2.77
+   },
+   {
+    "step": "tap hamburger",
+    "t": 20.822,
+    "taps": 1,
+    "swipes": 12
+   }
+  ]
+ }
+]

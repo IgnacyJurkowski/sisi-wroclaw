@@ -1,0 +1,991 @@
+{
+ "rowInner": "Hugo Spritz\n\nSt-Germain / Limonka / Mięta / Martini Prosecco / Woda gazowana\n\n160 ml\n44 zł",
+ "rowText": "Hugo SpritzSt-Germain / Limonka / Mięta / Martini Prosecco / Woda gazowana160 ml44 zł",
+ "copied": "Hugo Spritz\n\nSt-Germain / Limonka / Mięta / Martini Prosecco / Woda gazowana\n\n160 ml\n44 zł",
+ "foodInner": "3 SZT49 zł\n6 SZT85 zł\n9 SZT120 zł",
+ "foodText": "3 szt49 zł6 szt85 zł9 szt120 zł",
+ "foodcopied": "3 SZT49 zł\n6 SZT85 zł\n9 SZT120 zł",
+ "metaDisplay": "flex",
+ "metaDir": "column",
+ "foodQtyMargin": "8px",
+ "items": [
+  {
+   "sec": "Koktajle",
+   "name": "Hugo Spritz",
+   "desc": "St-Germain / Limonka / Mięta / Martini Prosecco / Woda gazowana",
+   "vol": "160 ml",
+   "price": "44 zł"
+  },
+  {
+   "sec": "Koktajle",
+   "name": "Fiero Spritz",
+   "desc": "Martini Fiero / Martini Prosecco / Pomarańcze / Woda gazowana",
+   "vol": "180 ml",
+   "price": "42 zł"
+  },
+  {
+   "sec": "Koktajle",
+   "name": "Italicus Spritz",
+   "desc": "Italicus / Martini Prosecco / Woda gazowana",
+   "price": "46 zł"
+  },
+  {
+   "sec": "Koktajle",
+   "name": "Rose Spritz",
+   "desc": "Malfy Rosa / Martini Prosecco / Woda gazowana",
+   "price": "42 zł"
+  },
+  {
+   "sec": "Koktajle",
+   "name": "Lillet Blanc Spritz",
+   "desc": "Lillet Blanc / Martini Prosecco / Woda gazowana",
+   "price": "42 zł"
+  },
+  {
+   "sec": "Koktajle",
+   "name": "Lillet Rosé Spritz",
+   "desc": "Lillet Rosé / Martini Prosecco / Woda gazowana",
+   "price": "42 zł"
+  },
+  {
+   "sec": "Koktajle",
+   "name": "Floral Spritz",
+   "price": "42 zł"
+  },
+  {
+   "sec": "Koktajle",
+   "name": "Porn Star Martini",
+   "desc": "Ostoya / Marakuja / Wanilia / Martini Prosecco",
+   "vol": "120 ml",
+   "price": "44 zł"
+  },
+  {
+   "sec": "Koktajle",
+   "name": "Cosmopolitan",
+   "desc": "Absolut / Triple Sec / Żurawina / Limonka",
+   "price": "42 zł"
+  },
+  {
+   "sec": "Koktajle",
+   "name": "Dry Martini",
+   "desc": "Beefeater 24 / Martini Dry",
+   "price": "44 zł"
+  },
+  {
+   "sec": "Koktajle",
+   "name": "Negroni",
+   "desc": "Beefeater 24 / Czerwony wermut / Martini Bitter / Skórka pomarańczy",
+   "vol": "120 ml",
+   "price": "44 zł"
+  },
+  {
+   "sec": "Koktajle",
+   "name": "Manhattan",
+   "desc": "Chivas XII / Martini Rosso / Angostura Bitters",
+   "price": "44 zł"
+  },
+  {
+   "sec": "Koktajle",
+   "name": "Old Fashioned",
+   "desc": "Chivas XV / Cukier / Angostura Bitters / Skórka pomarańczy",
+   "vol": "80 ml",
+   "price": "48 zł"
+  },
+  {
+   "sec": "Koktajle",
+   "name": "Whisky Sour",
+   "desc": "Chivas XII / Cytryna / Cukier / Egg White / Angostura Bitters / Olejki pomarańczy",
+   "vol": "130 ml",
+   "price": "42 zł"
+  },
+  {
+   "sec": "Koktajle",
+   "name": "Clover Club",
+   "desc": "Beefeater 24 / Malina / Cytryna / Egg White",
+   "price": "42 zł"
+  },
+  {
+   "sec": "Koktajle",
+   "name": "Jasmine",
+   "desc": "Beefeater 24 / Triple Sec / Martini Bitter / Cytryna",
+   "price": "44 zł"
+  },
+  {
+   "sec": "Koktajle",
+   "name": "Gin + Tonic",
+   "desc": "Beefeater 24 / 3 Cents Tonic / Cytrusy",
+   "vol": "200 ml",
+   "price": "39 zł"
+  },
+  {
+   "sec": "Koktajle",
+   "name": "Bloody Mary",
+   "desc": "Ostoya / Sok pomidorowy / Cytryna / Przyprawy",
+   "price": "44 zł"
+  },
+  {
+   "sec": "Koktajle",
+   "name": "Margarita",
+   "desc": "Olmeca Silver / Triple Sec / Limonka",
+   "price": "44 zł"
+  },
+  {
+   "sec": "Koktajle",
+   "name": "Paloma",
+   "desc": "Altos Plata / Grejpfrut / Limonka / Woda gazowana",
+   "price": "42 zł"
+  },
+  {
+   "sec": "Koktajle",
+   "name": "Daiquiri",
+   "desc": "Havana 7 / Limonka / Cukier",
+   "vol": "120 ml",
+   "price": "39 zł"
+  },
+  {
+   "sec": "Koktajle",
+   "name": "Mojito",
+   "desc": "Havana 7 / Limonka / Mięta / Cukier / Woda gazowana",
+   "price": "42 zł"
+  },
+  {
+   "sec": "Koktajle",
+   "name": "Old Cuban",
+   "desc": "Havana 7 / Mięta / Limonka / Cukier / Angostura Bitters / Martini Prosecco",
+   "price": "42 zł"
+  },
+  {
+   "sec": "Koktajle",
+   "name": "Cuba Libre",
+   "desc": "Havana 7 / Limonka / Coca-Cola",
+   "vol": "200 ml",
+   "price": "39 zł"
+  },
+  {
+   "sec": "Koktajle",
+   "name": "Caipirinha",
+   "desc": "Leblon / Limonka / Cukier",
+   "price": "42 zł"
+  },
+  {
+   "sec": "Koktajle",
+   "name": "Mai Tai",
+   "desc": "Havana 7 / Banks 5 / Triple Sec / Limonka / Orgeat",
+   "price": "44 zł"
+  },
+  {
+   "sec": "Koktajle",
+   "name": "Piña Colada",
+   "desc": "Havana 3 / Ananas / Krem kokosowy",
+   "price": "44 zł"
+  },
+  {
+   "sec": "Koktajle",
+   "name": "Jungle Bird",
+   "desc": "Havana 7 / Martini Bitter / Ananas / Limonka",
+   "price": "44 zł"
+  },
+  {
+   "sec": "Koktajle",
+   "name": "Dark 'n' Stormy",
+   "desc": "Santa Teresa / Piwo imbirowe / Limonka",
+   "price": "44 zł"
+  },
+  {
+   "sec": "Koktajle",
+   "name": "Chivas Mule",
+   "desc": "Chivas XII / Piwo imbirowe / Limonka",
+   "price": "46 zł"
+  },
+  {
+   "sec": "Koktajle",
+   "name": "Sicilian Mule",
+   "price": "38 zł"
+  },
+  {
+   "sec": "Koktajle",
+   "name": "Old Gal",
+   "price": "46 zł"
+  },
+  {
+   "sec": "Koktajle",
+   "name": "Long Island Iced Tea",
+   "desc": "Ostoya / Beefeater 24 / Havana 3 / Olmeca Silver / Triple Sec / Coca-Cola / Limonka",
+   "vol": "180 ml",
+   "price": "52 zł"
+  },
+  {
+   "sec": "Bez alkoholu",
+   "name": "Mojito 0%",
+   "desc": "Limonka / Mięta / Cukier / Woda gazowana",
+   "price": "38 zł"
+  },
+  {
+   "sec": "Bez alkoholu",
+   "name": "Cosmo 0%",
+   "desc": "Żurawina / Limonka / Cytrusy",
+   "price": "38 zł"
+  },
+  {
+   "sec": "Bez alkoholu",
+   "name": "Piña Colada 0%",
+   "desc": "Ananas / Krem kokosowy",
+   "price": "38 zł"
+  },
+  {
+   "sec": "Bez alkoholu",
+   "name": "Post",
+   "price": "38 zł"
+  },
+  {
+   "sec": "Bez alkoholu",
+   "name": "Like a Virgin",
+   "price": "38 zł"
+  },
+  {
+   "sec": "Bez alkoholu",
+   "name": "In Rainbows",
+   "price": "38 zł"
+  },
+  {
+   "sec": "Bez alkoholu",
+   "name": "Sober Club",
+   "price": "38 zł"
+  },
+  {
+   "sec": "Bez alkoholu",
+   "name": "Beefeater 0%",
+   "vol": "4 cl",
+   "price": "22 zł"
+  },
+  {
+   "sec": "Bez alkoholu",
+   "name": "Martini Vibrante",
+   "vol": "4 cl",
+   "price": "18 zł"
+  },
+  {
+   "sec": "Bez alkoholu",
+   "name": "Martini Floreale",
+   "vol": "4 cl",
+   "price": "18 zł"
+  },
+  {
+   "sec": "Bez alkoholu",
+   "name": "Prosecco 0%",
+   "vol": "150 / 750 ml",
+   "price": "25 / 120 zł"
+  },
+  {
+   "sec": "Wódka",
+   "name": "Ostoya",
+   "price": "22 zł"
+  },
+  {
+   "sec": "Wódka",
+   "name": "Ostoya Black",
+   "price": "24 zł"
+  },
+  {
+   "sec": "Wódka",
+   "name": "Absolut",
+   "price": "22 zł"
+  },
+  {
+   "sec": "Wódka",
+   "name": "Absolut Lime",
+   "price": "24 zł"
+  },
+  {
+   "sec": "Wódka",
+   "name": "Absolut Grapefruit",
+   "price": "24 zł"
+  },
+  {
+   "sec": "Wódka",
+   "name": "Absolut Pear",
+   "price": "24 zł"
+  },
+  {
+   "sec": "Wódka",
+   "name": "Absolut Currant",
+   "price": "24 zł"
+  },
+  {
+   "sec": "Wódka",
+   "name": "Grey Goose",
+   "price": "30 zł"
+  },
+  {
+   "sec": "Wódka",
+   "name": "Grey Goose Altius",
+   "price": "68 zł"
+  },
+  {
+   "sec": "Gin",
+   "name": "Beefeater",
+   "price": "22 zł"
+  },
+  {
+   "sec": "Gin",
+   "name": "Beefeater 24",
+   "price": "28 zł"
+  },
+  {
+   "sec": "Gin",
+   "name": "Beefeater Blood Orange",
+   "price": "22 zł"
+  },
+  {
+   "sec": "Gin",
+   "name": "Beefeater Pink",
+   "price": "22 zł"
+  },
+  {
+   "sec": "Gin",
+   "name": "Malfy",
+   "price": "26 zł"
+  },
+  {
+   "sec": "Gin",
+   "name": "Malfy con Limone",
+   "price": "26 zł"
+  },
+  {
+   "sec": "Gin",
+   "name": "Malfy Arancia",
+   "price": "26 zł"
+  },
+  {
+   "sec": "Gin",
+   "name": "Malfy Rosa",
+   "price": "26 zł"
+  },
+  {
+   "sec": "Gin",
+   "name": "Bombay Cru",
+   "price": "35 zł"
+  },
+  {
+   "sec": "Gin",
+   "name": "Monkey 47",
+   "price": "50 zł"
+  },
+  {
+   "sec": "Gin",
+   "name": "Monkey 47 Sloe",
+   "price": "50 zł"
+  },
+  {
+   "sec": "Gin",
+   "name": "Ki No Bi",
+   "price": "36 zł"
+  },
+  {
+   "sec": "Gin",
+   "name": "Ki No Bi Sei",
+   "price": "42 zł"
+  },
+  {
+   "sec": "Gin",
+   "name": "Ki No Tea",
+   "price": "46 zł"
+  },
+  {
+   "sec": "Whisky",
+   "name": "Jameson",
+   "price": "24 zł"
+  },
+  {
+   "sec": "Whisky",
+   "name": "Jameson Black Barrel",
+   "price": "32 zł"
+  },
+  {
+   "sec": "Whisky",
+   "name": "Jameson Crested",
+   "price": "26 zł"
+  },
+  {
+   "sec": "Whisky",
+   "name": "Jameson Caskmates IPA",
+   "price": "26 zł"
+  },
+  {
+   "sec": "Whisky",
+   "name": "Jameson Caskmates Stout",
+   "price": "26 zł"
+  },
+  {
+   "sec": "Whisky",
+   "name": "Jameson Single Pot Still",
+   "price": "48 zł"
+  },
+  {
+   "sec": "Whisky",
+   "name": "Redbreast 12",
+   "price": "54 zł"
+  },
+  {
+   "sec": "Whisky",
+   "name": "Chivas XII",
+   "price": "28 zł"
+  },
+  {
+   "sec": "Whisky",
+   "name": "Chivas XIII",
+   "price": "32 zł"
+  },
+  {
+   "sec": "Whisky",
+   "name": "Chivas XV",
+   "price": "38 zł"
+  },
+  {
+   "sec": "Whisky",
+   "name": "Chivas XVIII",
+   "price": "65 zł"
+  },
+  {
+   "sec": "Whisky",
+   "name": "Chivas XX",
+   "price": "120 zł"
+  },
+  {
+   "sec": "Whisky",
+   "name": "Chivas XXI",
+   "price": "150 zł"
+  },
+  {
+   "sec": "Whisky",
+   "name": "Chivas XXV",
+   "price": "220 zł"
+  },
+  {
+   "sec": "Whisky",
+   "name": "Chivas Crystal",
+   "price": "26 zł"
+  },
+  {
+   "sec": "Whisky",
+   "name": "Glenlivet 12",
+   "price": "38 zł"
+  },
+  {
+   "sec": "Whisky",
+   "name": "Glenlivet 15",
+   "price": "56 zł"
+  },
+  {
+   "sec": "Whisky",
+   "name": "Glenlivet 18",
+   "price": "82 zł"
+  },
+  {
+   "sec": "Whisky",
+   "name": "Aberlour 12",
+   "price": "44 zł"
+  },
+  {
+   "sec": "Whisky",
+   "name": "Aberlour 14",
+   "price": "66 zł"
+  },
+  {
+   "sec": "Whisky",
+   "name": "Aberlour A'bunadh Alba",
+   "price": "84 zł"
+  },
+  {
+   "sec": "Whisky",
+   "name": "Aberfeldy 12",
+   "price": "36 zł"
+  },
+  {
+   "sec": "Whisky",
+   "name": "Aberfeldy 16",
+   "price": "60 zł"
+  },
+  {
+   "sec": "Whisky",
+   "name": "Aberfeldy 21",
+   "price": "150 zł"
+  },
+  {
+   "sec": "Whisky",
+   "name": "Royal Brackla",
+   "price": "76 zł"
+  },
+  {
+   "sec": "Whisky",
+   "name": "The Deacon",
+   "price": "30 zł"
+  },
+  {
+   "sec": "Whisky",
+   "name": "Fuji Single Malt",
+   "price": "76 zł"
+  },
+  {
+   "sec": "Whisky",
+   "name": "Fuji Single Grain",
+   "price": "76 zł"
+  },
+  {
+   "sec": "Whisky",
+   "name": "Fuji Blend",
+   "price": "64 zł"
+  },
+  {
+   "sec": "Whisky",
+   "name": "Jefferson's",
+   "price": "32 zł"
+  },
+  {
+   "sec": "Whisky",
+   "name": "Angel's Envy",
+   "price": "50 zł"
+  },
+  {
+   "sec": "Rum",
+   "name": "Havana 3",
+   "price": "22 zł"
+  },
+  {
+   "sec": "Rum",
+   "name": "Havana Especial",
+   "price": "24 zł"
+  },
+  {
+   "sec": "Rum",
+   "name": "Havana 7",
+   "price": "28 zł"
+  },
+  {
+   "sec": "Rum",
+   "name": "Havana Selección de Maestros",
+   "price": "48 zł"
+  },
+  {
+   "sec": "Rum",
+   "name": "Havana 15 Iconica",
+   "price": "150 zł"
+  },
+  {
+   "sec": "Rum",
+   "name": "Bumbu Original",
+   "price": "32 zł"
+  },
+  {
+   "sec": "Rum",
+   "name": "Bumbu XO",
+   "price": "38 zł"
+  },
+  {
+   "sec": "Rum",
+   "name": "Banks 5",
+   "price": "38 zł"
+  },
+  {
+   "sec": "Rum",
+   "name": "Santa Teresa 1796",
+   "price": "44 zł"
+  },
+  {
+   "sec": "Rum",
+   "name": "Leblon",
+   "desc": "Cachaça",
+   "price": "32 zł"
+  },
+  {
+   "sec": "Tequila",
+   "name": "Olmeca Silver",
+   "price": "22 zł"
+  },
+  {
+   "sec": "Tequila",
+   "name": "Olmeca Gold",
+   "price": "24 zł"
+  },
+  {
+   "sec": "Tequila",
+   "name": "Altos Plata",
+   "price": "30 zł"
+  },
+  {
+   "sec": "Tequila",
+   "name": "Altos Reposado",
+   "price": "32 zł"
+  },
+  {
+   "sec": "Tequila",
+   "name": "Patrón Silver",
+   "price": "38 zł"
+  },
+  {
+   "sec": "Tequila",
+   "name": "Patrón Reposado",
+   "price": "44 zł"
+  },
+  {
+   "sec": "Tequila",
+   "name": "Patrón Añejo",
+   "price": "48 zł"
+  },
+  {
+   "sec": "Tequila",
+   "name": "Patrón XO Cafe",
+   "price": "44 zł"
+  },
+  {
+   "sec": "Tequila",
+   "name": "Patrón El Cielo",
+   "price": "130 zł"
+  },
+  {
+   "sec": "Tequila",
+   "name": "Patrón El Alto",
+   "price": "165 zł"
+  },
+  {
+   "sec": "Koniak",
+   "name": "Martell VS",
+   "price": "35 zł"
+  },
+  {
+   "sec": "Koniak",
+   "name": "Martell VSOP",
+   "price": "48 zł"
+  },
+  {
+   "sec": "Koniak",
+   "name": "Martell XO",
+   "price": "160 zł"
+  },
+  {
+   "sec": "Likiery",
+   "name": "St-Germain",
+   "price": "28 zł"
+  },
+  {
+   "sec": "Likiery",
+   "name": "Italicus",
+   "price": "32 zł"
+  },
+  {
+   "sec": "Likiery",
+   "name": "Triple Sec",
+   "price": "18 zł"
+  },
+  {
+   "sec": "Likiery",
+   "name": "Kahlúa",
+   "price": "18 zł"
+  },
+  {
+   "sec": "Likiery",
+   "name": "Jägermeister",
+   "price": "22 zł"
+  },
+  {
+   "sec": "Likiery",
+   "name": "Bumbu Crème",
+   "price": "28 zł"
+  },
+  {
+   "sec": "Wermuty i aperitify",
+   "name": "Martini Bianco",
+   "price": "18 zł"
+  },
+  {
+   "sec": "Wermuty i aperitify",
+   "name": "Martini Rosso",
+   "price": "18 zł"
+  },
+  {
+   "sec": "Wermuty i aperitify",
+   "name": "Martini Dry",
+   "price": "18 zł"
+  },
+  {
+   "sec": "Wermuty i aperitify",
+   "name": "Martini Fiero",
+   "price": "18 zł"
+  },
+  {
+   "sec": "Wermuty i aperitify",
+   "name": "Martini Rubino",
+   "price": "20 zł"
+  },
+  {
+   "sec": "Wermuty i aperitify",
+   "name": "Martini Ambrato",
+   "price": "20 zł"
+  },
+  {
+   "sec": "Wermuty i aperitify",
+   "name": "Martini Bitter",
+   "price": "20 zł"
+  },
+  {
+   "sec": "Wermuty i aperitify",
+   "name": "Lillet Blanc",
+   "price": "18 zł"
+  },
+  {
+   "sec": "Wermuty i aperitify",
+   "name": "Lillet Rosé",
+   "price": "18 zł"
+  },
+  {
+   "sec": "Bottle service",
+   "name": "Ostoya",
+   "vol": "700 ml",
+   "price": "269 zł"
+  },
+  {
+   "sec": "Bottle service",
+   "name": "Ostoya Black",
+   "vol": "700 ml",
+   "price": "289 zł"
+  },
+  {
+   "sec": "Bottle service",
+   "name": "Grey Goose",
+   "vol": "700 ml",
+   "price": "400 zł"
+  },
+  {
+   "sec": "Bottle service",
+   "name": "Grey Goose Altius",
+   "vol": "700 ml",
+   "price": "790 zł"
+  },
+  {
+   "sec": "Bottle service",
+   "name": "Grey Goose Aurora",
+   "vol": "1,75 l",
+   "price": "890 zł"
+  },
+  {
+   "sec": "Bottle service",
+   "name": "Chivas XII",
+   "vol": "700 ml",
+   "price": "379 zł"
+  },
+  {
+   "sec": "Bottle service",
+   "name": "Chivas XV",
+   "vol": "700 ml",
+   "price": "450 zł"
+  },
+  {
+   "sec": "Bottle service",
+   "name": "Chivas XVIII",
+   "vol": "700 ml",
+   "price": "630 zł"
+  },
+  {
+   "sec": "Bottle service",
+   "name": "Chivas Crystal",
+   "vol": "700 ml",
+   "price": "379 zł"
+  },
+  {
+   "sec": "Bottle service",
+   "name": "Patrón Silver",
+   "vol": "700 ml",
+   "price": "630 zł"
+  },
+  {
+   "sec": "Bottle service",
+   "name": "Patrón Reposado",
+   "vol": "700 ml",
+   "price": "730 zł"
+  },
+  {
+   "sec": "Bottle service",
+   "name": "Patrón Añejo",
+   "vol": "700 ml",
+   "price": "800 zł"
+  },
+  {
+   "sec": "Bottle service",
+   "name": "Bumbu Original",
+   "vol": "700 ml",
+   "price": "420 zł"
+  },
+  {
+   "sec": "Bottle service",
+   "name": "Bumbu XO",
+   "vol": "700 ml",
+   "price": "480 zł"
+  },
+  {
+   "sec": "Bottle service",
+   "name": "Jägermeister",
+   "vol": "700 ml",
+   "price": "350 zł"
+  },
+  {
+   "sec": "Piwo",
+   "name": "Stella Artois",
+   "desc": "lager belgijski · 5%",
+   "vol": "330 / 500 ml",
+   "price": "20 / 22 zł"
+  },
+  {
+   "sec": "Piwo",
+   "name": "Hoegaarden",
+   "desc": "belgijskie piwo pszeniczne · 4.9%",
+   "vol": "330 / 500 ml",
+   "price": "22 / 25 zł"
+  },
+  {
+   "sec": "Piwo",
+   "name": "Leffe Blonde",
+   "desc": "belgijski jasny ale · 6.5%",
+   "vol": "330 / 500 ml",
+   "price": "25 / 33 zł"
+  },
+  {
+   "sec": "Piwo",
+   "name": "Corona Extra",
+   "desc": "lager meksykański · 4.5%",
+   "price": "20 zł"
+  },
+  {
+   "sec": "Piwo",
+   "name": "Corona Cero",
+   "desc": "lager meksykański · 0%",
+   "price": "20 zł"
+  },
+  {
+   "sec": "Piwo",
+   "name": "Leffe",
+   "desc": "ale belgijski · Blonde 6.6% / Brune 6.5%",
+   "price": "22 zł"
+  },
+  {
+   "sec": "Piwo",
+   "name": "Beck's",
+   "desc": "lager niemiecki · 5%",
+   "price": "20 zł"
+  },
+  {
+   "sec": "Piwo",
+   "name": "Bud",
+   "desc": "lager amerykański · 5%",
+   "price": "20 zł"
+  },
+  {
+   "sec": "Napoje",
+   "name": "Coca-Cola / Coca-Cola Zero",
+   "vol": "250 ml",
+   "price": "13 zł"
+  },
+  {
+   "sec": "Napoje",
+   "name": "Coca-Cola",
+   "vol": "150 ml",
+   "price": "10 zł"
+  },
+  {
+   "sec": "Napoje",
+   "name": "Sprite / Fanta",
+   "vol": "250 ml",
+   "price": "13 zł"
+  },
+  {
+   "sec": "Napoje",
+   "name": "Cappy",
+   "desc": "Grejpfrut / Jabłko / Multiwitamina",
+   "vol": "250 ml",
+   "price": "13 zł"
+  },
+  {
+   "sec": "Napoje",
+   "name": "Fuze Tea",
+   "desc": "Brzoskwinia / Hibiskus / Cytryna",
+   "vol": "250 ml",
+   "price": "15 zł"
+  },
+  {
+   "sec": "Napoje",
+   "name": "Red Bull",
+   "desc": "Original / Sugar Free / Tropical / Peach",
+   "vol": "250 ml",
+   "price": "16 zł"
+  },
+  {
+   "sec": "Napoje",
+   "name": "3 Cents",
+   "desc": "Tonic / Aegean Tonic / Grapefruit / Cherry / Lemonade",
+   "vol": "250 ml",
+   "price": "14 zł"
+  },
+  {
+   "sec": "Napoje",
+   "name": "Karafka lemoniady",
+   "vol": "1000 ml",
+   "price": "30 zł"
+  },
+  {
+   "sec": "Napoje",
+   "name": "Kropla Beskidu",
+   "desc": "Woda mineralna niegazowana",
+   "vol": "300 ml",
+   "price": "10 zł"
+  },
+  {
+   "sec": "Napoje",
+   "name": "Délice",
+   "desc": "Woda mineralna gazowana",
+   "vol": "300 ml",
+   "price": "10 zł"
+  }
+ ],
+ "champ": [
+  "Grand Cordon125 ml 69 zł · 750 ml 420 zł · 1,5 l 900 zł · 3 l 2300 zł",
+  "Grand Cordon Rosé750 ml 479 zł · 1,5 l 950 zł",
+  "Demi Sec750 ml 450 zł",
+  "Ice Xtra750 ml 479 zł",
+  "Grand Brut125 ml 99 zł · 750 ml 600 zł · 1,5 l 1500 zł · 3 l 4500 zł",
+  "Blason Rosé750 ml 650 zł",
+  "Blanc de Blancs750 ml 700 zł",
+  "Belle Époque Brut 2015750 ml 1700 zł",
+  "Martini Prosecco150 ml 25 zł · 750 ml 120 zł"
+ ],
+ "noPrice": 0,
+ "winesHtml": "KARTA WIN\n9\n\nStawiamy na polskie winnice — selekcję rodzimych win od aromatycznych bieli, przez charakterne wino pomarańczowe i rosé, po eleganckie czerwienie. Wybrane wina serwujemy na kieliszki.\n\n150 ML\n750 ML\n\nBIAŁE\n\nHalka – Winnica L'Opera\n\npółwytrawne · Chardonnay, Bronner, Muscaris\n\nWzgórza Trzebnickie, Dolny Śląsk\n\n37 zł\n220 zł\n\nHibernal – Winnica Turnau\n\npółwytrawne · Hibernal\n\nBaniewice, Pomorze Zachodnie\n\n—\n330 zł\n\nSolaris – Dom Charbielin\n\npółwytrawne · Solaris\n\nCharbielin, Opolskie\n\n—\n360 zł\n\nChardonnay Barrique 2024 – Winnica PłochockichPOLECAMY\n\nwytrawne · Chardonnay\n\nDaromin, Świętokrzyskie\n\n—\n420 zł\n\nCZERWONE\n\nTriada – Winnica L'Opera\n\nwytrawne · Baron, Cabernet Cantor, Cabernet Cortis\n\nWzgórza Trzebnickie, Dolny Śląsk\n\n40 zł\n240 zł\n\nRege – Winnica Płochockich\n\n—\n330 zł\n\nPinot Noir – Winnica Turnau\n\nwytrawne · Pinot Noir\n\nBaniewice, Pomorze Zachodnie\n\n—\n420 zł\n\nRÓŻOWE / P",
+ "pourNote": [
+  "Porcja 4 cl",
+  "Porcja 4 cl",
+  "Porcja 4 cl"
+ ],
+ "axrow": {
+  "parent": {
+   "role": "paragraph",
+   "name": "",
+   "children": [
+    {
+     "role": "StaticText",
+     "name": "Hugo Spritz"
+    }
+   ]
+  },
+  "grand": {
+   "role": "none",
+   "children": [
+    {
+     "role": "paragraph",
+     "name": ""
+    },
+    {
+     "role": "paragraph",
+     "name": ""
+    }
+   ]
+  }
+ }
+}

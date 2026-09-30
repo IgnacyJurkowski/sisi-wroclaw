@@ -1,0 +1,73 @@
+{
+ "locale": "en",
+ "profile": "Lighthouse mobile: 1.6 Mbps down / 750 kbps up / 150 ms RTT, CPU x4, 375x812 DPR2 touch, dark scheme",
+ "homeReadySeconds": 2.8,
+ "cookieBannerCoversViewport": 0.25,
+ "T2": {
+  "tappedNavCta": true,
+  "reachedAt": {
+   "taps": 1,
+   "swipes": 0,
+   "seconds": 4.7
+  },
+  "foundPriceText": true,
+  "termsLine": "A table reservation is 100 zł per person, credited at your table; on Saturdays a 40 zł per-person entry applies.",
+  "bodyLine": "Booking online takes a moment, and the full reservation amount is credited at your table. On Fridays entry is free with a reservation.",
+  "totalOrSumShownOnPage": false,
+  "mentionsPartySizeOrTable": false,
+  "termsFullyVisibleAbovebanner": true,
+  "computedByGuest": "6 x 100 + 6 x 40 = 840 zl (Inference: the page states per-person amounts only)"
+ },
+ "T3": {
+  "ctaAttrs": {
+   "href": "https://emenago.com/inner/cart/6619/0519b014958d73fb0d5d2d58c360a661/en?utm_source=website&utm_medium=cta&utm_campaign=reservation&utm_content=reservations_section",
+   "target": "_blank",
+   "rel": "noopener",
+   "text": "Book online"
+  },
+  "ctaBeforeTap": {
+   "taps": 1,
+   "swipes": 0
+  },
+  "bannerDismissedToReachCta": false,
+  "localeNote": null,
+  "popupUrl": "chrome-error://chromewebdata/",
+  "opener": "null",
+  "outboundRequests": [],
+  "afterTap": {
+   "taps": 2,
+   "swipes": 0,
+   "seconds": 6.4
+  },
+  "parsed": {
+   "host": "emenago.com",
+   "path": "/inner/cart/6619/0519b014958d73fb0d5d2d58c360a661/en",
+   "localeSegment": "en",
+   "params": {
+    "utm_source": "website",
+    "utm_medium": "cta",
+    "utm_campaign": "reservation",
+    "utm_content": "reservations_section"
+   }
+  }
+ },
+ "steps": [
+  {
+   "step": "goto /en/",
+   "t": 2.696,
+   "dt": 2.7
+  },
+  {
+   "step": "tap nav CTA (Rezerwacje)",
+   "t": 2.986,
+   "taps": 1,
+   "swipes": 0
+  },
+  {
+   "step": "tap CTA: book online",
+   "t": 5.497,
+   "taps": 2,
+   "swipes": 0
+  }
+ ]
+}

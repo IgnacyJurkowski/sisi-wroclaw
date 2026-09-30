@@ -1,0 +1,36 @@
+{
+ "locale": "it",
+ "target": "gt",
+ "found": true,
+ "answer": "Gin + Tonic | Beefeater 24 / 3 Cents Tonic / Agrumi | 200 ml | 39 zł",
+ "at": {
+  "taps": 3,
+  "swipes": 5,
+  "seconds": 11.7
+ },
+ "steps": [
+  {
+   "step": "goto /it/",
+   "t": 2.73,
+   "dt": 2.73
+  },
+  {
+   "step": "tap hamburger",
+   "t": 3.059,
+   "taps": 1,
+   "swipes": 0
+  },
+  {
+   "step": "tap menu link",
+   "t": 3.603,
+   "taps": 2,
+   "swipes": 0
+  },
+  {
+   "step": "tap fold: cocktails",
+   "t": 5.88,
+   "taps": 3,
+   "swipes": 0
+  }
+ ]
+}

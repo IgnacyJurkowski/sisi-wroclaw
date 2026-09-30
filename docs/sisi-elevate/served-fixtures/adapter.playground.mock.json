@@ -1,0 +1,646 @@
+{
+  "_meta": {
+    "purpose": "Mock data for the playground reservation prototype. Adapter-side model (see SERVED-ADAPTER.md section 3), not Served wire responses. Served wire shapes are in the other files in this folder.",
+    "provenance": {
+      "capabilities": "Inference from the routes read in SERVED-ADAPTER.md section 2 and from sisi-elevate src/data/site.ts",
+      "pricing": "Numbers quoted from SiSi published copy (src/i18n/ui/pl.ts:203-206, 325-330). PENDING: Saturday entry is 40 zł in the UI copy and 30 zł in the terms (src/i18n/legal.ts:42, 241). Ignacy confirms.",
+      "hours": "sisi-elevate src/lib/opening-hours.mjs (Friday and Saturday 22:00-04:00)",
+      "slots": "Computed with a port of served-app generateSlots (slots.ts:84-95). Unavailable slots are illustrative.",
+      "handoff": "Built with the same rule as sisi-elevate src/data/site.ts:25-37, cs falls back to pl"
+    },
+    "pending": [
+      "[SLUG?] Served venue slug",
+      "Saturday entry 30 or 40 zł",
+      "pickup window 23:00 or 23:30",
+      "refund and cancellation rules",
+      "whether entry (door only) is sold at all"
+    ]
+  },
+  "venue": {
+    "slug": "[SLUG?]",
+    "timezone": "Europe/Warsaw",
+    "hours": [
+      {
+        "day": "friday",
+        "open": "22:00",
+        "close": "04:00",
+        "closeDayOffset": 1
+      },
+      {
+        "day": "saturday",
+        "open": "22:00",
+        "close": "04:00",
+        "closeDayOffset": 1
+      }
+    ],
+    "pickupWindow": {
+      "from": "22:00",
+      "to": "23:00",
+      "lateReleaseAfterMinutes": 30,
+      "pending": "legal.ts says 23:30"
+    }
+  },
+  "capabilities": {
+    "emenago": {
+      "id": "emenago",
+      "availability": "none",
+      "hold": "none",
+      "confirm": "handoff",
+      "cancel": "none",
+      "prepayment": "external",
+      "tablePick": false,
+      "kinds": [
+        "table"
+      ],
+      "maxPartySize": null,
+      "screenLocales": [
+        "pl",
+        "en",
+        "de",
+        "it"
+      ]
+    },
+    "served": {
+      "id": "served",
+      "availability": "per-slot",
+      "hold": "soft",
+      "confirm": "request",
+      "cancel": "guest-link",
+      "prepayment": "none",
+      "tablePick": true,
+      "kinds": [
+        "table"
+      ],
+      "maxPartySize": 20,
+      "screenLocales": [
+        "en"
+      ]
+    }
+  },
+  "pricing": {
+    "friday": {
+      "nightStartsOn": "friday",
+      "table": [
+        {
+          "id": "table-deposit",
+          "per": "person",
+          "unit": {
+            "minor": 10000,
+            "currency": "PLN"
+          },
+          "credit": "credited-at-table",
+          "collectedAt": "booking",
+          "refund": {
+            "type": "refund-if-venue-refuses-entry"
+          },
+          "source": "reservations.deposit.perPerson"
+        }
+      ],
+      "entry": [
+        {
+          "id": "entry",
+          "per": "person",
+          "unit": {
+            "minor": 0,
+            "currency": "PLN"
+          },
+          "credit": "waived",
+          "collectedAt": "door",
+          "refund": {
+            "type": "unspecified"
+          },
+          "source": "reservations.entry.friday"
+        }
+      ]
+    },
+    "saturday": {
+      "nightStartsOn": "saturday",
+      "table": [
+        {
+          "id": "table-deposit",
+          "per": "person",
+          "unit": {
+            "minor": 10000,
+            "currency": "PLN"
+          },
+          "credit": "credited-at-table",
+          "collectedAt": "booking",
+          "refund": {
+            "type": "refund-if-venue-refuses-entry"
+          },
+          "source": "reservations.deposit.perPerson"
+        }
+      ],
+      "entry": [
+        {
+          "id": "entry",
+          "per": "person",
+          "unit": {
+            "minor": 4000,
+            "currency": "PLN"
+          },
+          "credit": "not-credited",
+          "collectedAt": "booking",
+          "refund": {
+            "type": "unspecified"
+          },
+          "source": "reservations.entry.saturday"
+        }
+      ]
+    }
+  },
+  "quotes": {
+    "friday.table.2": {
+      "lines": [
+        {
+          "component": "table-deposit",
+          "qty": 2,
+          "total": {
+            "minor": 20000,
+            "currency": "PLN"
+          },
+          "credit": "credited-at-table"
+        },
+        {
+          "component": "entry",
+          "qty": 2,
+          "total": {
+            "minor": 0,
+            "currency": "PLN"
+          },
+          "credit": "waived"
+        }
+      ],
+      "payAtBooking": {
+        "minor": 20000,
+        "currency": "PLN"
+      },
+      "payAtDoor": {
+        "minor": 0,
+        "currency": "PLN"
+      },
+      "creditedAtTable": {
+        "minor": 20000,
+        "currency": "PLN"
+      }
+    },
+    "friday.table.4": {
+      "lines": [
+        {
+          "component": "table-deposit",
+          "qty": 4,
+          "total": {
+            "minor": 40000,
+            "currency": "PLN"
+          },
+          "credit": "credited-at-table"
+        },
+        {
+          "component": "entry",
+          "qty": 4,
+          "total": {
+            "minor": 0,
+            "currency": "PLN"
+          },
+          "credit": "waived"
+        }
+      ],
+      "payAtBooking": {
+        "minor": 40000,
+        "currency": "PLN"
+      },
+      "payAtDoor": {
+        "minor": 0,
+        "currency": "PLN"
+      },
+      "creditedAtTable": {
+        "minor": 40000,
+        "currency": "PLN"
+      }
+    },
+    "friday.table.6": {
+      "lines": [
+        {
+          "component": "table-deposit",
+          "qty": 6,
+          "total": {
+            "minor": 60000,
+            "currency": "PLN"
+          },
+          "credit": "credited-at-table"
+        },
+        {
+          "component": "entry",
+          "qty": 6,
+          "total": {
+            "minor": 0,
+            "currency": "PLN"
+          },
+          "credit": "waived"
+        }
+      ],
+      "payAtBooking": {
+        "minor": 60000,
+        "currency": "PLN"
+      },
+      "payAtDoor": {
+        "minor": 0,
+        "currency": "PLN"
+      },
+      "creditedAtTable": {
+        "minor": 60000,
+        "currency": "PLN"
+      }
+    },
+    "saturday.table.2": {
+      "lines": [
+        {
+          "component": "table-deposit",
+          "qty": 2,
+          "total": {
+            "minor": 20000,
+            "currency": "PLN"
+          },
+          "credit": "credited-at-table"
+        },
+        {
+          "component": "entry",
+          "qty": 2,
+          "total": {
+            "minor": 8000,
+            "currency": "PLN"
+          },
+          "credit": "not-credited"
+        }
+      ],
+      "payAtBooking": {
+        "minor": 28000,
+        "currency": "PLN"
+      },
+      "payAtDoor": {
+        "minor": 0,
+        "currency": "PLN"
+      },
+      "creditedAtTable": {
+        "minor": 20000,
+        "currency": "PLN"
+      }
+    },
+    "saturday.table.4": {
+      "lines": [
+        {
+          "component": "table-deposit",
+          "qty": 4,
+          "total": {
+            "minor": 40000,
+            "currency": "PLN"
+          },
+          "credit": "credited-at-table"
+        },
+        {
+          "component": "entry",
+          "qty": 4,
+          "total": {
+            "minor": 16000,
+            "currency": "PLN"
+          },
+          "credit": "not-credited"
+        }
+      ],
+      "payAtBooking": {
+        "minor": 56000,
+        "currency": "PLN"
+      },
+      "payAtDoor": {
+        "minor": 0,
+        "currency": "PLN"
+      },
+      "creditedAtTable": {
+        "minor": 40000,
+        "currency": "PLN"
+      }
+    },
+    "saturday.table.6": {
+      "lines": [
+        {
+          "component": "table-deposit",
+          "qty": 6,
+          "total": {
+            "minor": 60000,
+            "currency": "PLN"
+          },
+          "credit": "credited-at-table"
+        },
+        {
+          "component": "entry",
+          "qty": 6,
+          "total": {
+            "minor": 24000,
+            "currency": "PLN"
+          },
+          "credit": "not-credited"
+        }
+      ],
+      "payAtBooking": {
+        "minor": 84000,
+        "currency": "PLN"
+      },
+      "payAtDoor": {
+        "minor": 0,
+        "currency": "PLN"
+      },
+      "creditedAtTable": {
+        "minor": 60000,
+        "currency": "PLN"
+      }
+    }
+  },
+  "scenarios": [
+    {
+      "id": "served.ok",
+      "provider": "served",
+      "query": {
+        "kind": "table",
+        "nightDate": "2026-10-02",
+        "partySize": 4,
+        "locale": "pl",
+        "content": "hero"
+      },
+      "availability": {
+        "status": "ok",
+        "verified": true,
+        "slots": [
+          {
+            "time": "22:00",
+            "available": true
+          },
+          {
+            "time": "22:30",
+            "available": true
+          },
+          {
+            "time": "23:00",
+            "available": false
+          },
+          {
+            "time": "23:30",
+            "available": false
+          },
+          {
+            "time": "00:00",
+            "available": false
+          },
+          {
+            "time": "00:30",
+            "available": true
+          },
+          {
+            "time": "01:00",
+            "available": true
+          },
+          {
+            "time": "01:30",
+            "available": true
+          },
+          {
+            "time": "02:00",
+            "available": true
+          },
+          {
+            "time": "02:30",
+            "available": true
+          },
+          {
+            "time": "03:00",
+            "available": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "served.all-taken",
+      "provider": "served",
+      "query": {
+        "kind": "table",
+        "nightDate": "2026-10-03",
+        "partySize": 6,
+        "locale": "pl",
+        "content": "hero"
+      },
+      "availability": {
+        "status": "ok",
+        "verified": true,
+        "slots": [
+          {
+            "time": "22:00",
+            "available": false
+          },
+          {
+            "time": "22:30",
+            "available": false
+          },
+          {
+            "time": "23:00",
+            "available": false
+          },
+          {
+            "time": "23:30",
+            "available": false
+          },
+          {
+            "time": "00:00",
+            "available": false
+          },
+          {
+            "time": "00:30",
+            "available": false
+          },
+          {
+            "time": "01:00",
+            "available": false
+          },
+          {
+            "time": "01:30",
+            "available": false
+          },
+          {
+            "time": "02:00",
+            "available": false
+          },
+          {
+            "time": "02:30",
+            "available": false
+          },
+          {
+            "time": "03:00",
+            "available": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "served.unverified",
+      "provider": "served",
+      "query": {
+        "kind": "table",
+        "nightDate": "2026-10-02",
+        "partySize": 2,
+        "locale": "en",
+        "content": "header"
+      },
+      "availability": {
+        "status": "ok",
+        "verified": false,
+        "slots": [
+          {
+            "time": "22:00",
+            "available": true
+          },
+          {
+            "time": "22:30",
+            "available": true
+          },
+          {
+            "time": "23:00",
+            "available": true
+          },
+          {
+            "time": "23:30",
+            "available": true
+          },
+          {
+            "time": "00:00",
+            "available": true
+          },
+          {
+            "time": "00:30",
+            "available": true
+          },
+          {
+            "time": "01:00",
+            "available": true
+          },
+          {
+            "time": "01:30",
+            "available": true
+          },
+          {
+            "time": "02:00",
+            "available": true
+          },
+          {
+            "time": "02:30",
+            "available": true
+          },
+          {
+            "time": "03:00",
+            "available": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "served.no-slots",
+      "provider": "served",
+      "query": {
+        "kind": "table",
+        "nightDate": "2026-10-01",
+        "partySize": 2,
+        "locale": "pl",
+        "content": "hero"
+      },
+      "availability": {
+        "status": "no-slots"
+      }
+    },
+    {
+      "id": "served.rate-limited",
+      "provider": "served",
+      "query": {
+        "kind": "table",
+        "nightDate": "2026-10-02",
+        "partySize": 2,
+        "locale": "pl",
+        "content": "hero"
+      },
+      "availability": {
+        "status": "error",
+        "code": "rate_limited"
+      }
+    },
+    {
+      "id": "served.network",
+      "provider": "served",
+      "query": {
+        "kind": "table",
+        "nightDate": "2026-10-02",
+        "partySize": 2,
+        "locale": "pl",
+        "content": "hero"
+      },
+      "availability": {
+        "status": "error",
+        "code": "network"
+      }
+    },
+    {
+      "id": "emenago.handoff",
+      "provider": "emenago",
+      "query": {
+        "kind": "table",
+        "nightDate": "2026-10-02",
+        "partySize": 4,
+        "locale": "cs",
+        "content": "hero"
+      },
+      "availability": {
+        "status": "unknown"
+      },
+      "confirm": {
+        "status": "handoff",
+        "url": "https://emenago.com/inner/cart/6619/0519b014958d73fb0d5d2d58c360a661/pl?utm_source=website&utm_medium=cta&utm_campaign=reservation&utm_content=hero",
+        "resolvedLocale": "pl"
+      }
+    }
+  ],
+  "confirmOutcomes": {
+    "served.requested": {
+      "status": "requested",
+      "bookingRef": "00000000-0000-4000-8000-0000000000b1",
+      "venueMustConfirm": true
+    },
+    "served.rejected.full": {
+      "status": "rejected",
+      "reason": "full",
+      "providerMessage": "This time is fully booked. Please choose another slot."
+    },
+    "served.rejected.venue_busy": {
+      "status": "rejected",
+      "reason": "venue_busy",
+      "providerMessage": "This venue is getting a lot of booking requests right now. Please try again in a few minutes or contact the venue."
+    },
+    "served.error.rate_limited": {
+      "status": "error",
+      "code": "rate_limited"
+    }
+  },
+  "holdOutcomes": {
+    "served.table": {
+      "status": "soft",
+      "recheckedAt": "2026-10-02T20:14:00+02:00"
+    },
+    "emenago": {
+      "status": "unsupported"
+    }
+  },
+  "cancelOutcomes": {
+    "served": {
+      "status": "unsupported",
+      "fallback": "email-link"
+    },
+    "emenago": {
+      "status": "unsupported",
+      "fallback": "call-venue"
+    }
+  }
+}

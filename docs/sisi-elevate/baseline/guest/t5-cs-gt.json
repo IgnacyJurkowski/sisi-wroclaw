@@ -1,0 +1,36 @@
+{
+ "locale": "cs",
+ "target": "gt",
+ "found": true,
+ "answer": "Gin + Tonic | Beefeater 24 / 3 Cents Tonic / Citrusy | 200 ml | 39 zł",
+ "at": {
+  "taps": 3,
+  "swipes": 5,
+  "seconds": 11.6
+ },
+ "steps": [
+  {
+   "step": "goto /cs/",
+   "t": 2.76,
+   "dt": 2.76
+  },
+  {
+   "step": "tap hamburger",
+   "t": 2.988,
+   "taps": 1,
+   "swipes": 0
+  },
+  {
+   "step": "tap menu link",
+   "t": 3.53,
+   "taps": 2,
+   "swipes": 0
+  },
+  {
+   "step": "tap fold: cocktails",
+   "t": 5.767,
+   "taps": 3,
+   "swipes": 0
+  }
+ ]
+}

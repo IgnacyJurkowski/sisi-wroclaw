@@ -1,0 +1,2 @@
+31 files (640w). mean L* over images: 81.6 (min 75.9 max 87.1)
+pooled k-means k=8: #f7f2ea 60% #ddcfc8 13% #bfa8a4 9% #aa7d7e 6% #8e4d54 4% #701a27 4% #726e69 3% #2f2c28 2%

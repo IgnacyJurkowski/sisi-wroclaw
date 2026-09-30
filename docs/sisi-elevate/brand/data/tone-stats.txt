@@ -1,0 +1,10 @@
+pl: prose strings=150 sentences=196 words/sentence mean=8.1 median=7.0 <=8w=66% >=25w=1% | '!'=0 '?'=12 ' - '=20 em-dash=1
+   top: wydarzenia:21, sisi:17, cork:16, gości:12, firmowe:9, rezerwacji:9, wrocławia:8, klub:8, wieczór:7, miejscu:7, można:7, centrum:6, część:6, koktajle:5, piątki:5, soboty:5, jednym:5, kolacje:5, wstęp:5, osoby:5, termin:5, format:5
+en: prose strings=153 sentences=200 words/sentence mean=9.2 median=8.0 <=8w=55% >=25w=2% | '!'=0 '?'=14 ' - '=19 em-dash=1
+   top: event:23, sisi:16, cork:15, guests:15, events:13, music:12, evening:12, wrocław:11, club:9, reservation:9, enquiry:9, night:8, table:8, catering:8, team:8, live:7, only:7, dinner:7, presentations:7, entry:7, will:7, format:7
+de: prose strings=151 sentences=200 words/sentence mean=8.7 median=7.0 <=8w=58% >=25w=1% | '!'=0 '?'=16 ' - '=19 em-dash=1
+   top: sisi:16, cork:15, wird:10, werden:10, musik:9, dinner:9, reservierung:9, gäste:9, event:9, club:8, team:8, catering:8, anfrage:8, breslau:7, abend:7, tisch:7, präsentationen:7, live:6, cocktails:6, einwilligung:6, restaurant:6, sich:6
+it: prose strings=152 sentences=199 words/sentence mean=9.2 median=8 <=8w=59% >=25w=2% | '!'=0 '?'=12 ' - '=19 em-dash=1
+   top: evento:22, sisi:16, cork:16, prenotazione:15, ospiti:15, eventi:14, dell:11, musica:10, serata:10, solo:9, club:9, presentazioni:9, richiesta:9, breslavia:8, tavolo:8, aziendali:8, team:8, cocktail:7, disponibili:7, venerdì:7, sabato:7, cena:7
+cs: prose strings=146 sentences=193 words/sentence mean=8.1 median=7 <=8w=65% >=25w=1% | '!'=0 '?'=13 ' - '=20 em-dash=1
+   top: akce:23, sisi:17, cork:15, večeře:10, večer:9, firemní:9, akci:9, vratislavi:8, klub:7, místě:7, prezentace:7, rezervace:7, termín:7, centru:6, pátek:6, dispozici:6, catering:6, hostů:6, formát:6, hudba:5, koktejly:5, jednom:5

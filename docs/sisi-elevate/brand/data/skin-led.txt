@@ -1,0 +1,7 @@
+u3EOm (singer, 728px)        | skin 5.0% #c28666 | LED 2.2% #fa430f | brass 0.1% #c99348
+RMGSD (band+bar, 900)        | skin 1.6% #c08266 | LED 0.5% #cb4522 | brass 0.2% #daa74d
+cDJcC (band, 900)            | skin 1.7% #c88464 | LED 0.3% #c4451d | brass 0.1% #ce954c
+MHGyp (floor, 900)           | skin 1.4% #af674f | LED 4.8% #e03a03 | brass 0.0% #ffb85f
+bHchR (crowd, 1600)          | skin 0.4% #c3836b | LED 3.5% #e03602 | brass 0.6% #fdca7d
+YANjq (bar crowd, 2048)      | skin 1.9% #b57f65 | LED 2.9% #cc4005 | brass 0.3% #dca55d
+9B6Kt (floor+band, 2048)     | skin 0.6% #d18c70 | LED 1.8% #e84808 | brass 3.3% #da9c01

@@ -1,0 +1,22 @@
+{
+  "_meta": {
+    "derivedFrom": [
+      "served-app src/app/api/booking/availability/route.ts:20-26 (429)",
+      "served-app src/app/api/booking/availability/route.ts:34-37 (404)",
+      "served-app src/lib/booking/rate-limit.ts:23 (120 reads per IP per hour)"
+    ],
+    "provenance": "Shape and strings: real."
+  },
+  "cases": [
+    {
+      "cause": "unknown slug, unknown UUID, or venue not active",
+      "request": { "method": "GET", "path": "/api/booking/availability", "query": { "venue": "no-such-venue", "date": "2026-10-02", "party": "2" } },
+      "response": { "status": 404, "body": { "error": "Venue not found" } }
+    },
+    {
+      "cause": "more than 120 availability reads from one IP in one hour",
+      "request": { "method": "GET", "path": "/api/booking/availability", "query": { "venue": "[SLUG?]", "date": "2026-10-02", "party": "2" } },
+      "response": { "status": 429, "body": { "error": "Too many requests. Please slow down." } }
+    }
+  ]
+}

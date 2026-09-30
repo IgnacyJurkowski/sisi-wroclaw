@@ -1,0 +1,28 @@
+{
+ "locale": "pl",
+ "target": "na-home",
+ "found": true,
+ "answer": [
+  "Mojito 0% | Limonka / Mięta / Cukier / Woda gazowana | 38 zł",
+  "Cosmo 0% | Żurawina / Limonka / Cytrusy | 38 zł",
+  "Piña Colada 0% | Ananas / Krem kokosowy | 38 zł"
+ ],
+ "at": {
+  "taps": 1,
+  "swipes": 7,
+  "seconds": 12.1
+ },
+ "steps": [
+  {
+   "step": "goto /pl/",
+   "t": 2.712,
+   "dt": 2.71
+  },
+  {
+   "step": "tap home teaser tab: alcohol-free",
+   "t": 10.392,
+   "taps": 1,
+   "swipes": 6
+  }
+ ]
+}

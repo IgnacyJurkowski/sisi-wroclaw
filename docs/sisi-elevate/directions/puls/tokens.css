@@ -1,0 +1,127 @@
+/* PULS (direction C): tokens on :root[data-direction="puls"], following the TOKEN CONTRACT in DIRECTION-BRIEF.md.
+ * Every colour is a measured swatch or a site token (source noted per line, see IDEA.md palette table).
+ * No colour appears anywhere else in the direction except inside the two data-URI hooks at the bottom
+ * (a data URI cannot read custom properties) and in the photo ramp baked by tools/tonemap.py.
+ * Extensions beyond the contract are marked EXT and are namespaced: --beat, --beat-*, --sp-line-*. */
+
+:root[data-direction="puls"] {
+  color-scheme: dark;
+
+  /* ---- Colour: ground and surfaces -------------------------------------------------- */
+  --c-bg: #27060f;            /* site --bg, global.css:28 (brand colour, fixed) */
+  --c-bg-raised: #2a0a12;     /* site select-panel ground, global.css (dE76 3.6 from bg) */
+  --c-surface: #34101a;       /* site --panel */
+  --c-surface-2: #3d1320;     /* site --panel-2 */
+
+  /* ---- Colour: text (all three AA on bg and surface, see IDEA.md) --------------------- */
+  --c-text: #eddbc2;          /* site --cream / --text, logo fill */
+  --c-text-dim: #c9b5a2;      /* cream at .82 over bg (site --text-dim) */
+  --c-text-mute: #a28a7e;     /* cream at .62 over bg (site --text-mute); do not go lower */
+
+  /* ---- Colour: lines ------------------------------------------------------------------ */
+  --c-line: #6b432f;          /* hero film cluster 3 (12%), peach-brown. Decorative only, 2.2:1 */
+  --c-line-strong: #a2865f;   /* hero film cluster, dim brass. UI borders, 5.5:1 on bg */
+
+  /* ---- Colour: accent and light ------------------------------------------------------- */
+  --c-accent: #fdca7d;        /* bHchR brass-highlight mask median; = site --gold within dE76 10 */
+  --c-accent-hover: #ffdca3;  /* accent lifted 8 L* (derived, Inference) */
+  --c-accent-ink: #27060f;    /* text on accent (13.2:1) */
+  --c-warm: #d69f3b;          /* RMGSD tungsten-lamp crop: the brass of THE LINE */
+  --c-cool: #70868d;          /* u3EOm grey-blue cluster: closed / off-air, never a glow */
+  --c-danger: #e7889b;        /* site form-error text */
+  --c-success: #72a99b;       /* relacja poster teal highlight median */
+  --c-focus: #cc4005;         /* YANjq LED-strip mask median; 4.0:1 on bg, 3.2:1 on accent */
+  --c-scrim: rgb(20 5 14 / 0.72); /* film shadow #14050e at 72% */
+
+  /* ---- Type --------------------------------------------------------------------------- */
+  --f-display: "Puls Display", "Arial Narrow", "Helvetica Neue Condensed", Impact, sans-serif;
+  --f-body: "Puls Text", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --f-num: "Puls Text", system-ui, sans-serif; /* apply with font-variant-numeric: tabular-nums (Figtree has tnum) */
+
+  /* fluid, 375px -> 1440px viewport */
+  --fs-0: clamp(0.75rem, 0.728rem + 0.0939vw, 0.8125rem);
+  --fs-1: clamp(0.875rem, 0.853rem + 0.0939vw, 0.9375rem);
+  --fs-2: clamp(1rem, 0.956rem + 0.1878vw, 1.125rem);
+  --fs-3: clamp(1.1875rem, 1.077rem + 0.4695vw, 1.5rem);
+  --fs-4: clamp(1.5rem, 1.28rem + 0.939vw, 2.125rem);
+  --fs-5: clamp(2rem, 1.56rem + 1.878vw, 3.25rem);
+  --fs-6: clamp(2.75rem, 1.87rem + 3.756vw, 5.25rem);
+  --fs-7: clamp(4rem, 2.504rem + 6.385vw, 8.25rem);
+  --fs-8: clamp(6.5625rem, 4.692rem + 7.981vw, 11.875rem); /* poster: WROCŁAWIA fills the column at wdth 50-60 */
+  --lh-tight: 0.92;
+  --lh-body: 1.55;
+  --tracking-display: 0.006em;
+  --fw-body: 400;
+  --fw-strong: 700;
+  --fw-display: 800;
+
+  /* ---- Space and shape ---------------------------------------------------------------- */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.5rem;
+  --sp-6: 2rem;
+  --sp-7: 3rem;
+  --sp-8: 4.5rem;
+  --r-1: 2px;
+  --r-2: 6px;
+  --r-3: 12px;
+  --shadow-1: 0 1px 0 rgb(20 5 14 / 0.5), 0 10px 24px -14px rgb(20 5 14 / 0.9);
+  --shadow-2: 0 2px 0 rgb(20 5 14 / 0.5), 0 22px 48px -18px rgb(20 5 14 / 0.95);
+  --tap: 44px;
+  --maxw: 1320px;
+
+  /* ---- Motion ------------------------------------------------------------------------- */
+  --dur-1: 120ms;
+  --dur-2: 240ms;
+  --dur-3: 480ms;
+  --dur-4: 900ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1); /* fallback; linear() version below */
+  --motion-scale: 1;
+
+  /* ---- Time of night: 0 at 22:00, 1 at 04:00, set once by JS ---------------------------
+   * Puls: night-t changes the TEMPO (--beat 1.00 s -> 0.60 s, 60 -> 100 bpm), warms the line
+   * (--c-warm drifts toward amber #fa9f5f) and moves the sparse-to-dense switch of the line
+   * (read by the line generator). It never animates: it is written on load and on the hour. */
+  --night-t: 0;
+
+  /* ---- EXT: the one tempo. Every recurring motion is a multiple or fraction of --beat ---- */
+  --beat: calc(1s - 0.4s * var(--night-t));
+  --beat-swell: calc(0.075 * var(--motion-scale)); /* letter scaleY excess at the lub */
+  --sp-line-w: 1.5px;         /* the line is always this thin */
+  --sp-line-c: var(--c-warm);
+
+  /* ---- Direction hooks ---------------------------------------------------------------- */
+  /* pulse mark: one lub-dub, 32x16, #d69f3b (= --c-warm; a data URI cannot use var()) */
+  --dir-ornament: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 16' fill='none' stroke='%23d69f3b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M0 8H6L7 3L8.5 13L10 5L11.5 10.5L12.5 8H17L18 6L19 10L20 7L21 8H32'/%3E%3C/svg%3E");
+  --dir-frame: 2px; /* photos are almost square-cornered; the ROUND thing is the line */
+  /* divider: a 1px rule with one pulse mark in the middle. Use as: background: var(--dir-rule); height: 14px */
+  --dir-rule:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 14' fill='none' stroke='%23a2865f' stroke-width='1.25' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M0 7H14L15.5 2L17.5 12L19.5 3.5L21.5 10L23 7H29L30.5 5L32 9L33.5 6L34.5 7H48'/%3E%3C/svg%3E") center / 48px 14px no-repeat,
+    linear-gradient(#6b432f, #6b432f) center / 100% 1px no-repeat;
+}
+
+/* Spring easing where linear() exists (overshoot 8%) */
+@supports (transition-timing-function: linear(0, 1)) {
+  :root[data-direction="puls"] {
+    --ease-spring: linear(0, 0.06, 0.204, 0.383, 0.564, 0.727, 0.859, 0.958, 1.025, 1.064, 1.081, 1.083, 1.075, 1.061, 1.046, 1.031, 1.018, 1.008, 1.001, 0.996, 1);
+  }
+}
+
+/* The line warms through the night: brass #d69f3b at 22:00 toward amber #fa9f5f at 04:00 */
+@supports (color: color-mix(in oklab, red, blue)) {
+  :root[data-direction="puls"] {
+    --c-warm: color-mix(in oklab, #d69f3b calc((1 - var(--night-t)) * 100%), #fa9f5f);
+  }
+}
+
+/* Reduced motion: amplitude scale 0.4. Puls goes further: the beat loops stop entirely
+ * (see the hero and line-system rules); what remains is one opacity fade. */
+@media (prefers-reduced-motion: reduce) {
+  :root[data-direction="puls"] {
+    --motion-scale: 0.4;
+  }
+}

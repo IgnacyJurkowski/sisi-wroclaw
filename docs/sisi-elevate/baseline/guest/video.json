@@ -1,0 +1,228 @@
+{
+ "desktop-default": {
+  "hero": {
+   "src": "/video/hero-night-hq-desktop.mp4",
+   "paused": true,
+   "currentTime": 0,
+   "readyState": 0,
+   "muted": true,
+   "loop": true,
+   "autoplayAttr": false,
+   "controlsAttr": false,
+   "preload": "none",
+   "posterAttr": null,
+   "ariaHiddenParent": true,
+   "isReady": false,
+   "opacity": "0",
+   "toggleHidden": true,
+   "toggleLabel": "Odtwórz film",
+   "bgImage": "url(\"http://localhost:4410/framerusercontent.com/images/nBW0AVejCOoiy2Rctqcid0SY6Q.webp\")",
+   "bgVideoClassBg": "none"
+  },
+  "recap": {
+   "display": "block",
+   "paused": true,
+   "currentTime": 0,
+   "readyState": 0,
+   "preload": "none",
+   "poster": "/video/relacja-z-otwarcia-poster-600.webp",
+   "controls": false,
+   "muted": true,
+   "loop": true,
+   "ariaLabel": null,
+   "ariaHidden": false,
+   "tabindex": null,
+   "track": 0,
+   "w": 296.671875,
+   "h": 222,
+   "duration": null
+  },
+  "videoBytesTransferred": {
+   "/video/relacja-z-otwarcia-poster-600.webp": 7663,
+   "partial:/video/hero-night-hq-desktop.mp4": 0,
+   "partial:/video/relacja-z-otwarcia.mp4": 0
+  },
+  "mp4Requests": [
+   "/video/hero-night-hq-desktop.mp4 range=bytes=0-",
+   "/video/relacja-z-otwarcia.mp4 range=bytes=0-"
+  ],
+  "plays": [
+   "hero-film|/video/hero-night-hq-desktop.mp4",
+   "r32-vid|http://localhost:4410/video/relacja-z-otwarcia.mp4"
+  ],
+  "canPlayH264": "",
+  "canPlayMp4": "maybe",
+  "err": [
+   4,
+   4
+  ]
+ },
+ "mobile-default": {
+  "hero": {
+   "src": "/video/hero-night-hq-mobile.mp4",
+   "paused": true,
+   "currentTime": 0,
+   "readyState": 0,
+   "muted": true,
+   "loop": true,
+   "autoplayAttr": false,
+   "controlsAttr": false,
+   "preload": "none",
+   "posterAttr": null,
+   "ariaHiddenParent": true,
+   "isReady": false,
+   "opacity": "0",
+   "toggleHidden": true,
+   "toggleLabel": "Odtwórz film",
+   "bgImage": "url(\"http://localhost:4410/framerusercontent.com/images/nBW0AVejCOoiy2Rctqcid0SY6Q.webp\")",
+   "bgVideoClassBg": "none"
+  },
+  "recap": {
+   "display": "block",
+   "paused": true,
+   "currentTime": 0,
+   "readyState": 0,
+   "preload": "none",
+   "poster": "/video/relacja-z-otwarcia-poster-600.webp",
+   "controls": false,
+   "muted": true,
+   "loop": true,
+   "ariaLabel": null,
+   "ariaHidden": false,
+   "tabindex": null,
+   "track": 0,
+   "w": 333,
+   "h": 249.25,
+   "duration": null
+  },
+  "videoBytesTransferred": {
+   "/video/relacja-z-otwarcia-poster-600.webp": 7663,
+   "partial:/video/hero-night-hq-mobile.mp4": 0,
+   "partial:/video/relacja-z-otwarcia.mp4": 0
+  },
+  "mp4Requests": [
+   "/video/hero-night-hq-mobile.mp4 range=bytes=0-",
+   "/video/relacja-z-otwarcia.mp4 range=bytes=0-"
+  ],
+  "plays": [
+   "hero-film|/video/hero-night-hq-mobile.mp4",
+   "r32-vid|http://localhost:4410/video/relacja-z-otwarcia.mp4"
+  ],
+  "canPlayH264": "",
+  "canPlayMp4": "maybe",
+  "err": [
+   4,
+   4
+  ]
+ },
+ "mobile-reduced-motion": {
+  "hero": {
+   "src": null,
+   "paused": true,
+   "currentTime": 0,
+   "readyState": 0,
+   "muted": true,
+   "loop": true,
+   "autoplayAttr": false,
+   "controlsAttr": false,
+   "preload": "none",
+   "posterAttr": null,
+   "ariaHiddenParent": true,
+   "isReady": false,
+   "opacity": "0",
+   "toggleHidden": true,
+   "toggleLabel": "Odtwórz film",
+   "bgImage": "url(\"http://localhost:4410/framerusercontent.com/images/nBW0AVejCOoiy2Rctqcid0SY6Q.webp\")",
+   "bgVideoClassBg": "none"
+  },
+  "recap": {
+   "display": "block",
+   "paused": true,
+   "currentTime": 0,
+   "readyState": 0,
+   "preload": "none",
+   "poster": "/video/relacja-z-otwarcia-poster-600.webp",
+   "controls": false,
+   "muted": true,
+   "loop": true,
+   "ariaLabel": null,
+   "ariaHidden": false,
+   "tabindex": null,
+   "track": 0,
+   "w": 333,
+   "h": 249.25,
+   "duration": null
+  },
+  "videoBytesTransferred": {
+   "/video/relacja-z-otwarcia-poster-600.webp": 7663,
+   "partial:/video/relacja-z-otwarcia.mp4": 134238
+  },
+  "mp4Requests": [
+   "/video/relacja-z-otwarcia.mp4 range=bytes=0-"
+  ],
+  "plays": [
+   "r32-vid|http://localhost:4410/video/relacja-z-otwarcia.mp4"
+  ],
+  "canPlayH264": "",
+  "canPlayMp4": "maybe",
+  "err": [
+   null,
+   4
+  ]
+ },
+ "mobile-save-data": {
+  "hero": {
+   "src": null,
+   "paused": true,
+   "currentTime": 0,
+   "readyState": 0,
+   "muted": true,
+   "loop": true,
+   "autoplayAttr": false,
+   "controlsAttr": false,
+   "preload": "none",
+   "posterAttr": null,
+   "ariaHiddenParent": true,
+   "isReady": false,
+   "opacity": "0",
+   "toggleHidden": false,
+   "toggleLabel": "Odtwórz film",
+   "bgImage": "url(\"http://localhost:4410/framerusercontent.com/images/nBW0AVejCOoiy2Rctqcid0SY6Q.webp\")",
+   "bgVideoClassBg": "none"
+  },
+  "recap": {
+   "display": "block",
+   "paused": true,
+   "currentTime": 0,
+   "readyState": 0,
+   "preload": "none",
+   "poster": "/video/relacja-z-otwarcia-poster-600.webp",
+   "controls": false,
+   "muted": true,
+   "loop": true,
+   "ariaLabel": null,
+   "ariaHidden": false,
+   "tabindex": null,
+   "track": 0,
+   "w": 333,
+   "h": 249.25,
+   "duration": null
+  },
+  "videoBytesTransferred": {
+   "/video/relacja-z-otwarcia-poster-600.webp": 7663,
+   "partial:/video/relacja-z-otwarcia.mp4": 0
+  },
+  "mp4Requests": [
+   "/video/relacja-z-otwarcia.mp4 range=bytes=0-"
+  ],
+  "plays": [
+   "r32-vid|http://localhost:4410/video/relacja-z-otwarcia.mp4"
+  ],
+  "canPlayH264": "",
+  "canPlayMp4": "maybe",
+  "err": [
+   null,
+   4
+  ]
+ }
+}
